@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mediaPlayer = new MediaPlayer();
-        playPauseBtn = this.findViewById(R.id.PlayPause);
-        playPauseBtn.setEnabled(false);
-        playPauseBtn.setText("...");
+//        playPauseBtn = this.findViewById(R.id.);
+//        playPauseBtn.setEnabled(false);
+//        playPauseBtn.setText("...");
         Toast.makeText(getBaseContext(), "Radio is opening...", Toast.LENGTH_LONG).show();
 
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mp) {
                 mp.start();
-                playPauseBtn.setEnabled(true);
-                playPauseBtn.setText("Pause");
+//                playPauseBtn.setEnabled(true);
+//                playPauseBtn.setText("Pause");
             }
         });
 
@@ -55,15 +55,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onPlayClick(android.view.View view){
-        if (mediaPlayer.isPlaying()){
-            mediaPlayer.pause();
-            playPauseBtn.setText("Play");
-            Toast.makeText(getBaseContext(), "Radio is paused", Toast.LENGTH_SHORT).show();
-        }else{
-            mediaPlayer.start();
-            playPauseBtn.setText("Pause");
-            Toast.makeText(getBaseContext(), "Radio is opening...", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    public void onPlayClick(android.view.View view){
+//        if (mediaPlayer.isPlaying()){
+//            mediaPlayer.pause();
+//            playPauseBtn.setText("Play");
+//            Toast.makeText(getBaseContext(), "Radio is paused", Toast.LENGTH_SHORT).show();
+//        }else{
+//            mediaPlayer.start();
+//            playPauseBtn.setText("Pause");
+//            Toast.makeText(getBaseContext(), "Radio is opening...", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }
