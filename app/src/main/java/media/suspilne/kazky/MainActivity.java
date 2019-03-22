@@ -4,15 +4,14 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
-    private Button playPauseBtn;
-
+    private ImageView playPauseBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +22,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mediaPlayer = new MediaPlayer();
-//        playPauseBtn = this.findViewById(R.id.);
-//        playPauseBtn.setEnabled(false);
-//        playPauseBtn.setText("...");
-        Toast.makeText(getBaseContext(), "Radio is opening...", Toast.LENGTH_LONG).show();
+        playPauseBtn = this.findViewById(R.id.playPause);
+        playPauseBtn.setEnabled(false);
 
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -38,32 +35,27 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mp) {
                 mp.start();
-//                playPauseBtn.setEnabled(true);
-//                playPauseBtn.setText("Pause");
+                playPauseBtn.setEnabled(true);
             }
         });
 
         try {
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+        } catch (IllegalArgumentException e) { /* nothing*/
+        } catch (IllegalStateException e) {  /* nothing*/
+        } catch (IOException e) {  /* nothing*/ }
 
-//    public void onPlayClick(android.view.View view){
-//        if (mediaPlayer.isPlaying()){
-//            mediaPlayer.pause();
-//            playPauseBtn.setText("Play");
-//            Toast.makeText(getBaseContext(), "Radio is paused", Toast.LENGTH_SHORT).show();
-//        }else{
-//            mediaPlayer.start();
-//            playPauseBtn.setText("Pause");
-//            Toast.makeText(getBaseContext(), "Radio is opening...", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+        playPauseBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mediaPlayer.isPlaying()){
+                    mediaPlayer.pause();
+                    playPauseBtn.setImageResource(R.mipmap.play);
+                }else{
+                    mediaPlayer.start();
+                    playPauseBtn.setImageResource(R.mipmap.pause);
+                }
+            }
+        });
+    }
 }
