@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.app.ProgressDialog;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
@@ -12,30 +13,17 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private ImageView playPauseBtn;
+    ProgressDialog progress;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    private void Perpare(){
         String url = "https://radio.nrcu.gov.ua:8443/kazka-mp3";
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mediaPlayer = new MediaPlayer();
-        playPauseBtn = this.findViewById(R.id.playPause);
-        playPauseBtn.setEnabled(false);
 
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 mp.reset();
                 return false;
-            }
-        });
-
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mp) {
-                mp.start();
-                playPauseBtn.setEnabled(true);
             }
         });
 
@@ -45,6 +33,32 @@ public class MainActivity extends AppCompatActivity {
         } catch (IllegalArgumentException e) { /* nothing*/
         } catch (IllegalStateException e) {  /* nothing*/
         } catch (IOException e) {  /* nothing*/ }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mediaPlayer = new MediaPlayer();
+        playPauseBtn = this.findViewById(R.id.playPause);
+        playPauseBtn.setEnabled(false);
+
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                playPauseBtn.setImageResource(R.mipmap.play);
+                playPauseBtn.setEnabled(true);
+                progress.dismiss();
+            }
+        });
+
+        progress = new ProgressDialog(this);
+        progress.setTitle("Радіо казки");
+        progress.setMessage("Почекай...");
+        progress.setCancelable(false);
+        progress.show();
+
+        Perpare();
 
         playPauseBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
