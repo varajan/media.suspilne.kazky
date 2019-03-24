@@ -13,12 +13,31 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private ImageView playPauseBtn;
-    ProgressDialog progress;
+    private ProgressDialog progress;
 
-    private void Perpare(){
+    private void Prepare(){
         String url = "https://radio.nrcu.gov.ua:8443/kazka-mp3";
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        mediaPlayer = new MediaPlayer();
+        playPauseBtn = this.findViewById(R.id.playPause);
+        playPauseBtn.setEnabled(false);
+
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                playPauseBtn.setImageResource(R.mipmap.pause);
+                playPauseBtn.setEnabled(true);
+                progress.dismiss();
+                mediaPlayer.start();
+            }
+        });
+
+        progress = new ProgressDialog(this);
+        progress.setTitle("Радіо казки");
+        progress.setMessage("Почекай...");
+        progress.setCancelable(false);
+        progress.show();
 
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -40,25 +59,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mediaPlayer = new MediaPlayer();
-        playPauseBtn = this.findViewById(R.id.playPause);
-        playPauseBtn.setEnabled(false);
-
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mp) {
-                playPauseBtn.setImageResource(R.mipmap.play);
-                playPauseBtn.setEnabled(true);
-                progress.dismiss();
-            }
-        });
-
-        progress = new ProgressDialog(this);
-        progress.setTitle("Радіо казки");
-        progress.setMessage("Почекай...");
-        progress.setCancelable(false);
-        progress.show();
-
-        Perpare();
+        Prepare();
 
         playPauseBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
