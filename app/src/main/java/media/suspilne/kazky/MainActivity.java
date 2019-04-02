@@ -21,9 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         mediaPlayer = new MediaPlayer();
-        playPauseBtn = this.findViewById(R.id.playPause);
-        playPauseBtn.setEnabled(false);
-
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mp) {
                 playPauseBtn.setImageResource(R.mipmap.pause);
@@ -49,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
-        } catch (IllegalArgumentException e) { /* nothing*/
-        } catch (IllegalStateException e) {  /* nothing*/
         } catch (IOException e) {  /* nothing*/ }
     }
 
@@ -58,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        playPauseBtn = this.findViewById(R.id.playPause);
+        playPauseBtn.setEnabled(false);
 
         Prepare();
 
