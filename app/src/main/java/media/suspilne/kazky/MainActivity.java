@@ -1,72 +1,100 @@
 package media.suspilne.kazky;
 
-import android.app.ProgressDialog;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.io.IOException;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 
 public class MainActivity extends AppCompatActivity {
-    private MediaPlayer mediaPlayer;
+    private ExoPlayer player;
     private ImageView playPauseBtn;
-    private ProgressDialog progress;
 
-    private void Prepare(){
-        String url = "https://radio.nrcu.gov.ua:8443/kazka-mp3";
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
+    }
 
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            initializePlayer();
+        }
+    }
 
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mp) {
-                playPauseBtn.setImageResource(R.mipmap.pause);
-                playPauseBtn.setEnabled(true);
-                progress.dismiss();
-                mediaPlayer.start();
-            }
-        });
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
 
-        progress = new ProgressDialog(this);
-        progress.setTitle("Радіо казки");
-        progress.setMessage("Почекай...");
-        progress.setCancelable(false);
-        progress.show();
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
 
-        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                mp.reset();
-                return false;
-            }
-        });
+    private void releasePlayer() {
+        if (player != null) {
+            player.release();
+            player = null;
+        }
+    }
 
-        try {
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepareAsync();
-        } catch (IOException e) {  /* nothing*/ }
+    private MediaSource buildMediaSource(Uri uri) {
+        return new ExtractorMediaSource.Factory(
+                new DefaultHttpDataSourceFactory("exoplayer-codelab")).
+                createMediaSource(uri);
+    }
+
+    private void initializePlayer() {
+        Uri uri = Uri.parse("https://radio.nrcu.gov.ua:8443/kazka-mp3");
+
+        player = ExoPlayerFactory.newSimpleInstance(
+                new DefaultRenderersFactory(this),
+                new DefaultTrackSelector(), new DefaultLoadControl());
+
+        MediaSource mediaSource = buildMediaSource(uri);
+        player.prepare(mediaSource, true, false);
+        player.setPlayWhenReady(true);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         playPauseBtn = this.findViewById(R.id.playPause);
         playPauseBtn.setEnabled(false);
 
-        Prepare();
-
         playPauseBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.pause();
-                    playPauseBtn.setImageResource(R.mipmap.play);
-                }else{
-                    mediaPlayer.start();
+                if (player == null){
+                    initializePlayer();
                     playPauseBtn.setImageResource(R.mipmap.pause);
+                }else{
+                    releasePlayer();
+                    playPauseBtn.setImageResource(R.mipmap.play);
                 }
             }
         });
