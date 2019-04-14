@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         playPauseBtn = this.findViewById(R.id.playPause);
-        playPauseBtn.setEnabled(false);
-
+        playPauseBtn.setImageResource(R.mipmap.play);
         playPauseBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (player == null){
