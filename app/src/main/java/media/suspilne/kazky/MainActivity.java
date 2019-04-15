@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,6 +16,9 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.gms.security.ProviderInstaller;
+
+import javax.net.ssl.SSLContext;
 
 public class MainActivity extends AppCompatActivity {
     private ExoPlayer player;
@@ -28,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory("exoplayer-codelab")).
-                createMediaSource(uri);
+        return
+            new ExtractorMediaSource.Factory(
+                new DefaultHttpDataSourceFactory("exoplayer-codelab"))
+                    .createMediaSource(uri);
     }
 
     private void initializePlayer() {
@@ -45,11 +50,25 @@ public class MainActivity extends AppCompatActivity {
         player.setPlayWhenReady(true);
     }
 
+    private void UpdateSslProvider(){
+        try {
+            ProviderInstaller.installIfNeeded(getApplicationContext());
+
+            SSLContext sslContext;
+            sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, null, null);
+            sslContext.createSSLEngine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        UpdateSslProvider();
 
         playPauseBtn = this.findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);
