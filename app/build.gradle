@@ -28,4 +28,5 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
     implementation 'com.google.android.gms:play-services-safetynet:15.0.1'
+    implementation 'com.android.support:recyclerview-v7:+'
 }

@@ -5,7 +5,7 @@
     android:background="@mipmap/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Radio">
 
      <ImageView
         android:id="@+id/onlinePlayer"
@@ -20,7 +20,7 @@
         app:srcCompat="@mipmap/online_player" />
 
     <ImageView
-        android:id="@+id/radio"
+        android:id="@+id/menuBtn"
         android:layout_width="wrap_content"
         android:layout_height="105dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.007"
-        app:srcCompat="@mipmap/radio" />
+        app:srcCompat="@mipmap/menu" />
 
     <ImageView
         android:id="@+id/playPause"

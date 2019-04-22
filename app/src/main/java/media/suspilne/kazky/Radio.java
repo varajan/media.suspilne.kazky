@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import com.google.android.gms.security.ProviderInstaller;
 
 import javax.net.ssl.SSLContext;
 
-public class MainActivity extends AppCompatActivity {
+public class Radio extends AppCompatActivity {
     private ExoPlayer player;
     private ImageView playPauseBtn;
 
@@ -65,9 +66,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_radio);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         UpdateSslProvider();
+
+        this.findViewById(R.id.menuBtn).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        {
+                           startActivity(new Intent(Radio.this, Settings.class));
+                        }
+                    }
+                }
+        );
 
         playPauseBtn = this.findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);
