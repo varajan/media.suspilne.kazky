@@ -36,13 +36,6 @@ public class Radio extends AppCompatActivity {
         playPauseBtn.setImageResource(R.mipmap.play);
     }
 
-    private MediaSource buildMediaSource(Uri uri) {
-        return
-            new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory("exoplayer-codelab"))
-                    .createMediaSource(uri);
-    }
-
     private void initializePlayer() {
         Uri uri = Uri.parse("https://radio.nrcu.gov.ua:8443/kazka-mp3");
 
@@ -50,7 +43,9 @@ public class Radio extends AppCompatActivity {
                 new DefaultRenderersFactory(this),
                 new DefaultTrackSelector(), new DefaultLoadControl());
 
-        MediaSource mediaSource = buildMediaSource(uri);
+        MediaSource mediaSource = new ExtractorMediaSource.Factory(
+                new DefaultHttpDataSourceFactory("exoplayer-codelab"))
+                .createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
         playPauseBtn.setImageResource(R.mipmap.pause);
