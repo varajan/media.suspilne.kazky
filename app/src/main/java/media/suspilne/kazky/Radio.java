@@ -23,12 +23,14 @@ import javax.net.ssl.SSLContext;
 public class Radio extends AppCompatActivity {
     private ExoPlayer player;
     private ImageView playPauseBtn;
+    private boolean autoStart;
 
     private void releasePlayer() {
         if (player != null) {
             player.release();
             player = null;
         }
+        playPauseBtn.setImageResource(R.mipmap.play);
     }
 
     private MediaSource buildMediaSource(Uri uri) {
@@ -48,6 +50,7 @@ public class Radio extends AppCompatActivity {
         MediaSource mediaSource = buildMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
+        playPauseBtn.setImageResource(R.mipmap.pause);
     }
 
     private void UpdateSslProvider(){
@@ -87,12 +90,15 @@ public class Radio extends AppCompatActivity {
             public void onClick(View v) {
                 if (player == null){
                     initializePlayer();
-                    playPauseBtn.setImageResource(R.mipmap.pause);
                 }else{
                     releasePlayer();
-                    playPauseBtn.setImageResource(R.mipmap.play);
                 }
             }
         });
+
+        autoStart = SettingsHelper.getBoolean(this, "autoStart");
+        if (autoStart) {
+            initializePlayer();
+        }
     }
 }
