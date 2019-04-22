@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -69,6 +70,25 @@ public class Radio extends AppCompatActivity {
     }
 
     @Override
+    public boolean onKeyDown(int keycode, KeyEvent e) {
+        switch(keycode) {
+            case KeyEvent.KEYCODE_MENU:
+                openSettingsView();
+                return true;
+
+            case KeyEvent.KEYCODE_BACK:
+                System.exit(1);
+                return true;
+        }
+
+        return super.onKeyDown(keycode, e);
+    }
+
+    private void openSettingsView(){
+        startActivity(new Intent(Radio.this, Settings.class));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radio);
@@ -78,11 +98,7 @@ public class Radio extends AppCompatActivity {
         this.findViewById(R.id.menuBtn).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        {
-                           startActivity(new Intent(Radio.this, Settings.class));
-                        }
-                    }
+                    public void onClick(View v) { openSettingsView(); }
                 }
         );
 
@@ -111,7 +127,7 @@ public class Radio extends AppCompatActivity {
     class stopRadioOnTimeout extends TimerTask {
         @Override
         public void run() {
-            finish();
+            System.exit(1);
         }
     }
 }
