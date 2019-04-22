@@ -18,12 +18,14 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.gms.security.ProviderInstaller;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.net.ssl.SSLContext;
 
 public class Radio extends AppCompatActivity {
     private ExoPlayer player;
     private ImageView playPauseBtn;
-    private boolean autoStart;
 
     private void releasePlayer() {
         if (player != null) {
@@ -96,9 +98,21 @@ public class Radio extends AppCompatActivity {
             }
         });
 
-        autoStart = SettingsHelper.getBoolean(this, "autoStart");
-        if (autoStart) {
+        if (SettingsHelper.getBoolean(this, "autoStart")) {
             initializePlayer();
+        }
+
+        if (SettingsHelper.getBoolean(this, "autoStop")) {
+            int timeout = SettingsHelper.getInt(this, "timeout");
+            new Timer().schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+        }
+    }
+
+    class stopRadioOnTimeout extends TimerTask {
+
+        @Override
+        public void run() {
+            finish();
         }
     }
 }
