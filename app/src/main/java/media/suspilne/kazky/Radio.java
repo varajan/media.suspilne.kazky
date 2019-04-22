@@ -109,7 +109,6 @@ public class Radio extends AppCompatActivity {
     }
 
     class stopRadioOnTimeout extends TimerTask {
-
         @Override
         public void run() {
             finish();

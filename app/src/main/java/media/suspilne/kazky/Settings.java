@@ -30,8 +30,8 @@ public class Settings extends AppCompatActivity {
 
         autoStart.setChecked(SettingsHelper.getBoolean(this, "autoStart"));
         autoStop.setChecked(SettingsHelper.getBoolean(this, "autoStop"));
-        timeoutText.setText(SettingsHelper.getString(this, "timeout", "0") + " хвилин");
-        timeout.setProgress(SettingsHelper.getInt(this, "timeout") / step);
+        timeoutText.setText(SettingsHelper.getString(this, "timeout", "30") + " хвилин");
+        timeout.setProgress(SettingsHelper.getInt(this, "timeout", 6) / step);
         timeout.setEnabled(SettingsHelper.getBoolean(this, "autoStop"));
         timeout.setEnabled(SettingsHelper.getBoolean(this, "autoStop"));
 
@@ -53,8 +53,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SettingsHelper.setBoolean(Settings.this, "autoStop", isChecked);
-                timeout.setEnabled(SettingsHelper.getBoolean(Settings.this, "autoStop"));
-                timeout.setEnabled(SettingsHelper.getBoolean(Settings.this, "autoStop"));
+                timeout.setEnabled(isChecked);
             }
         });
 
