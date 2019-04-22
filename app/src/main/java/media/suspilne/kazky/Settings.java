@@ -30,8 +30,8 @@ public class Settings extends AppCompatActivity {
 
         autoStart.setChecked(SettingsHelper.getBoolean(this, "autoStart"));
         autoStop.setChecked(SettingsHelper.getBoolean(this, "autoStop"));
-        timeoutText.setText(SettingsHelper.getString(this, "timeout", "30") + " хвилин");
-        timeout.setProgress(SettingsHelper.getInt(this, "timeout", 6) / step);
+        timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
+        timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
         timeout.setEnabled(SettingsHelper.getBoolean(this, "autoStop"));
         timeout.setEnabled(SettingsHelper.getBoolean(this, "autoStop"));
 
