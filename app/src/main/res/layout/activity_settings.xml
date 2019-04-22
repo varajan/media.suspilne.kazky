@@ -9,14 +9,13 @@
 
     <ImageView
         android:id="@+id/radioBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="105dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.977"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.007"
         app:srcCompat="@mipmap/radio" />
 
     <Switch
