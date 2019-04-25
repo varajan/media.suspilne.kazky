@@ -65,6 +65,10 @@ public class Radio extends AppCompatActivity {
         }
     }
 
+    private void openSettingsView(){
+        startActivityForResult(new Intent(Radio.this, Settings.class), 0);
+    }
+
     @Override
     public boolean onKeyDown(int keycode, KeyEvent e) {
         switch(keycode) {
@@ -78,10 +82,6 @@ public class Radio extends AppCompatActivity {
         }
 
         return super.onKeyDown(keycode, e);
-    }
-
-    private void openSettingsView(){
-        startActivityForResult(new Intent(Radio.this, Settings.class), 0);
     }
 
     @Override
@@ -102,6 +102,13 @@ public class Radio extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) { openSettingsView(); }
+                }
+        );
+
+        this.findViewById(R.id.listBtn).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) { startActivityForResult(new Intent(Radio.this, Tales.class), 0); }
                 }
         );
 

@@ -1,11 +1,11 @@
 package media.suspilne.kazky;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -15,7 +15,6 @@ public class Settings extends AppCompatActivity {
     private Switch autoStop;
     private SeekBar timeout;
     private TextView timeoutText;
-    private ImageView radioButton;
     private int step = 5;
 
     @Override
@@ -27,30 +26,25 @@ public class Settings extends AppCompatActivity {
         autoStop = this.findViewById(R.id.autoStop);
         timeout = this.findViewById(R.id.timeout);
         timeoutText = this.findViewById(R.id.timeoutText);
-        radioButton = this.findViewById(R.id.radioBtn);
 
-        autoStart.setChecked(SettingsHelper.getBoolean(this, "autoStart"));
-        autoStop.setChecked(SettingsHelper.getBoolean(this, "autoStop"));
-        timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
-        timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
-        timeout.setEnabled(SettingsHelper.getBoolean(this, "autoStop"));
-        timeout.setEnabled(SettingsHelper.getBoolean(this, "autoStop"));
+        setColorsAndState();
 
-        radioButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
+        this.findViewById(R.id.backBtn).setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
+            }
         );
 
         autoStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SettingsHelper.setBoolean(Settings.this, "autoStart", isChecked);
+                setColorsAndState();
             }
         });
 
@@ -58,7 +52,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SettingsHelper.setBoolean(Settings.this, "autoStop", isChecked);
-                timeout.setEnabled(isChecked);
+                setColorsAndState();
             }
         });
 
@@ -77,5 +71,22 @@ public class Settings extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+    }
+
+    private void setColorsAndState() {
+        boolean isAutoStart = SettingsHelper.getBoolean(this, "autoStart");
+        boolean isAutoStop = SettingsHelper.getBoolean(this, "autoStop");
+
+        timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
+        timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
+
+        autoStart.setChecked(isAutoStart);
+        autoStop.setChecked(isAutoStop);
+        timeout.setEnabled(isAutoStop);
+        timeout.setEnabled(isAutoStop);
+
+        autoStart.setTextColor(isAutoStart ? Color.RED : Color.GRAY);
+        autoStop.setTextColor(isAutoStop ? Color.RED : Color.GRAY);
+        timeoutText.setTextColor(isAutoStop ? Color.RED : Color.GRAY);
     }
 }

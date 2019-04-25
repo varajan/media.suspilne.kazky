@@ -5,19 +5,7 @@
     android:background="@mipmap/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Radio">
-
-     <ImageView
-        android:id="@+id/onlinePlayer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="214dp"
-        android:layout_marginBottom="214dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/online_player" />
+    tools:context=".Tales">
 
     <ImageView
         android:id="@+id/menuBtn"
@@ -31,22 +19,12 @@
         app:srcCompat="@mipmap/gear" />
 
     <ImageView
-        android:id="@+id/listBtn"
+        android:id="@+id/radioBtn"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/list" />
-
-    <ImageView
-        android:id="@+id/playPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/pause"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:srcCompat="@mipmap/radio" />
 </android.support.constraint.ConstraintLayout>
