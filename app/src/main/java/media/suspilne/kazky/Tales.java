@@ -92,15 +92,10 @@ public class Tales extends AppCompatActivity {
             String[] ids = result.split(":");
 
             for (String id:ids) {
-//                ImageView pic = new ImageView(Tales.this);
-//                pic.layout(0, 0,0,0);
-//                pic.setImageResource(R.mipmap.back);
-//                list.addView(pic);
-
                 Drawable preview = loadImageFromWebOperations(id);
                 View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
 
-//                ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(preview);
+                if (preview!=null) ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(preview);
                 ((TextView)item.findViewById(R.id.title)).setText("Tale title #" + id);
                 ((TextView)item.findViewById(R.id.reader)).setText("Tale reading: " + id);
 
@@ -110,9 +105,10 @@ public class Tales extends AppCompatActivity {
 
         private Drawable loadImageFromWebOperations(String id) {
             try {
-                InputStream is = (InputStream) new URL(url + "/inc/img/songs_img/" + id + ".jpg").getContent();
+                InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + id + ".jpg").getContent();
                 return Drawable.createFromStream(is, "src name");
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }
