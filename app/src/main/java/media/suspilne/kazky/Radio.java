@@ -108,7 +108,10 @@ public class Radio extends AppCompatActivity {
         this.findViewById(R.id.listBtn).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) { startActivityForResult(new Intent(Radio.this, Tales.class), 0); }
+                    public void onClick(View v) {
+                        releasePlayer();
+                        startActivityForResult(new Intent(Radio.this, Tales.class), 0);
+                    }
                 }
         );
 
