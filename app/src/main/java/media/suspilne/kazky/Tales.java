@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Tales extends AppCompatActivity {
     private String url = "https://kazky.suspilne.media/list";
@@ -58,17 +59,19 @@ public class Tales extends AppCompatActivity {
         new GetTales().execute(url);
     }
 
-    class GetTales extends AsyncTask<String, Integer, String> {
-        private String getTalesList(String url) {
+    class GetTales extends AsyncTask<String, Void, ArrayList<Integer>> {
+        private ArrayList<Integer> getTalesList(String url) {
             try {
-                String result = "";
+                ArrayList<Integer> result = new ArrayList<>();
                 Document document = Jsoup.connect(url).get();
                 Elements tales = document.select("div.tales-list a");
                 for (Element tale : tales) {
                     String href = tale.attr("href");
                     String id = href.split("\\?")[0].split("/")[2];
-                    result += id + ":";
+                    result.add(Integer.valueOf(id));
                 }
+
+                Collections.sort(result);
 
                 return result;
             } catch (IOException e) {
@@ -79,38 +82,79 @@ public class Tales extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... arg) {
+        protected ArrayList<Integer> doInBackground(String... arg) {
             return getTalesList(arg[0]);
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(ArrayList<Integer> ids) {
+            super.onPostExecute(ids);
 
+            // https://kazky.suspilne.media/inc/audio/17.mp3
             LinearLayout list = findViewById(R.id.list);
 
-            String[] ids = result.split(":");
-
-            for (String id:ids) {
-                Drawable preview = loadImageFromWebOperations(id);
+            for (int id:ids) {
                 View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
-
-                if (preview!=null) ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(preview);
-                ((TextView)item.findViewById(R.id.title)).setText("Tale title #" + id);
-                ((TextView)item.findViewById(R.id.reader)).setText("Tale reading: " + id);
-
+                item.setTag(id);
                 list.addView(item);
+
+                new SetTaleImage().execute(id);
+                new SetTaleTitle().execute(id);
             }
         }
+    }
 
-        private Drawable loadImageFromWebOperations(String id) {
+    class SetTaleImage extends AsyncTask<Integer, Void, Drawable> {
+        private int id;
+
+        @Override
+        protected Drawable doInBackground(Integer... arg) {
             try {
-                InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + id + ".jpg").getContent();
+                id = arg[0];
+                InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + String.format("%02d", id) + ".jpg").getContent();
                 return Drawable.createFromStream(is, "src name");
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
+        }
+
+        @Override
+        protected void onPostExecute(Drawable preview) {
+            super.onPostExecute(preview);
+            View item = findViewById(R.id.list).findViewWithTag(id);
+            ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(preview);
+        }
+    }
+
+    class SetTaleTitle extends AsyncTask<Integer, Void, String[]> {
+        private int id;
+
+        @Override
+        protected String[] doInBackground(Integer... arg) {
+            try {
+                id = arg[0];
+
+                Document document = Jsoup.connect(url).get();
+                Elements title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']");
+                Elements reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']");
+
+                return new String[] {title.text().trim(), reader.text().trim()};
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String[] titles) {
+            super.onPostExecute(titles);
+
+            View item = findViewById(R.id.list).findViewWithTag(id);
+            ((TextView)item.findViewById(R.id.title)).setText(titles[0]);
+            ((TextView)item.findViewById(R.id.reader)).setText(titles[1]);
         }
     }
 }
