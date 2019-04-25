@@ -27,6 +27,7 @@ import javax.net.ssl.SSLContext;
 public class Radio extends AppCompatActivity {
     private ExoPlayer player;
     private ImageView playPauseBtn;
+    private Timer quitTimer;
 
     private void releasePlayer() {
         if (player != null) {
@@ -80,7 +81,14 @@ public class Radio extends AppCompatActivity {
     }
 
     private void openSettingsView(){
-        startActivity(new Intent(Radio.this, Settings.class));
+        startActivityForResult(new Intent(Radio.this, Settings.class), 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) return;
+
+        setQuiteTimeout();
     }
 
     @Override
@@ -113,9 +121,18 @@ public class Radio extends AppCompatActivity {
             initializePlayer();
         }
 
+        setQuiteTimeout();
+    }
+
+    private void setQuiteTimeout(){
         if (SettingsHelper.getBoolean(this, "autoStop")) {
+            if (quitTimer!=null) quitTimer.cancel();
             int timeout = SettingsHelper.getInt(this, "timeout");
-            new Timer().schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+
+            quitTimer = new Timer();
+            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+        } else {
+            if (quitTimer!=null) quitTimer.cancel();
         }
     }
 

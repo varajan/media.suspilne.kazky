@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,7 +39,11 @@ public class Settings extends AppCompatActivity {
         radioButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) { finish(); }
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
                 }
         );
 
@@ -60,6 +65,8 @@ public class Settings extends AppCompatActivity {
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                SettingsHelper.setInt(Settings.this,"timeout", seekBar.getProgress() * step);
+                timeoutText.setText(SettingsHelper.getString(Settings.this, "timeout", "0") + " хвилин");
             }
 
             @Override
@@ -68,8 +75,6 @@ public class Settings extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                SettingsHelper.setInt(Settings.this,"timeout", seekBar.getProgress() * step);
-                timeoutText.setText(SettingsHelper.getString(Settings.this, "timeout", "0") + " хвилин");
             }
         });
     }
