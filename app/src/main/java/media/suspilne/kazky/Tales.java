@@ -98,8 +98,8 @@ public class Tales extends AppCompatActivity {
                 item.setTag(id);
                 list.addView(item);
 
-                new SetTaleImage().execute(id);
                 new SetTaleTitle().execute(id);
+                new SetTaleImage().execute(id);
             }
         }
     }
@@ -122,8 +122,12 @@ public class Tales extends AppCompatActivity {
         @Override
         protected void onPostExecute(Drawable preview) {
             super.onPostExecute(preview);
-            View item = findViewById(R.id.list).findViewWithTag(id);
-            ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(preview);
+
+            if (preview != null)
+            {
+                View item = findViewById(R.id.list).findViewWithTag(id);
+                ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(preview);
+            }
         }
     }
 
@@ -153,8 +157,15 @@ public class Tales extends AppCompatActivity {
             super.onPostExecute(titles);
 
             View item = findViewById(R.id.list).findViewWithTag(id);
-            ((TextView)item.findViewById(R.id.title)).setText(titles[0]);
-            ((TextView)item.findViewById(R.id.reader)).setText(titles[1]);
+            TextView title = item.findViewById(R.id.title);
+            TextView reader = item.findViewById(R.id.reader);
+            int maxWidth =  item.getWidth() - 290;
+
+            title.setText(titles[0]);
+            reader.setText(titles[1]);
+
+            title.setMaxWidth(maxWidth);
+            reader.setMaxWidth(maxWidth);
         }
     }
 }
