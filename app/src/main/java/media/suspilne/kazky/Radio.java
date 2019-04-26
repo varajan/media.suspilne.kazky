@@ -15,8 +15,6 @@ public class Radio extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radio);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-//        player = new Player(this);
-//        player.UpdateSslProvider();
 
         this.findViewById(R.id.menuBtn).setOnClickListener(
             new View.OnClickListener() {
