@@ -3,15 +3,12 @@ package media.suspilne.kazky;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,27 +19,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Tales extends AppCompatActivity {
+public class Tales extends BaseActivity {
     private Player player;
-
-    private void openSettingsView(){
-        startActivityForResult(new Intent(Tales.this, Settings.class), 0);
-    }
-
-    @Override
-    public boolean onKeyDown(int keycode, KeyEvent e) {
-        switch(keycode) {
-            case KeyEvent.KEYCODE_MENU:
-                openSettingsView();
-                return true;
-
-            case KeyEvent.KEYCODE_BACK:
-                System.exit(1);
-                return true;
-        }
-
-        return super.onKeyDown(keycode, e);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +106,11 @@ public class Tales extends AppCompatActivity {
 
                 player.addListener(new Player.MediaIsEndedListener(){
                     public void mediaIsEnded(){
-                        // if just stop
                         setPlayBtnIcon(ids, -1);
+
+                        if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")) {
+                            // play next
+                        }
                     }
                 });
             }

@@ -11,8 +11,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 public class Settings extends AppCompatActivity {
-    private Switch autoStart;
-    private Switch autoStop;
+    private Switch talesPlayNext;
+    private Switch autoQuit;
     private SeekBar timeout;
     private TextView timeoutText;
     private int step = 5;
@@ -22,8 +22,8 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        autoStart = this.findViewById(R.id.autoStart);
-        autoStop = this.findViewById(R.id.autoStop);
+        talesPlayNext = this.findViewById(R.id.talesPlayNext);
+        autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
         timeoutText = this.findViewById(R.id.timeoutText);
 
@@ -40,18 +40,18 @@ public class Settings extends AppCompatActivity {
             }
         );
 
-        autoStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        talesPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(Settings.this, "autoStart", isChecked);
+                SettingsHelper.setBoolean(Settings.this, "talesPlayNext", isChecked);
                 setColorsAndState();
             }
         });
 
-        autoStop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        autoQuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(Settings.this, "autoStop", isChecked);
+                SettingsHelper.setBoolean(Settings.this, "autoQuit", isChecked);
                 setColorsAndState();
             }
         });
@@ -74,19 +74,19 @@ public class Settings extends AppCompatActivity {
     }
 
     private void setColorsAndState() {
-        boolean isAutoStart = SettingsHelper.getBoolean(this, "autoStart");
-        boolean isAutoStop = SettingsHelper.getBoolean(this, "autoStop");
+        boolean isTalesPlayNext = SettingsHelper.getBoolean(this, "talesPlayNext");
+        boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
 
         timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
         timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
 
-        autoStart.setChecked(isAutoStart);
-        autoStop.setChecked(isAutoStop);
-        timeout.setEnabled(isAutoStop);
-        timeout.setEnabled(isAutoStop);
+        talesPlayNext.setChecked(isTalesPlayNext);
+        autoQuit.setChecked(isAutoQuit);
+        timeout.setEnabled(isAutoQuit);
+        timeout.setEnabled(isAutoQuit);
 
-        autoStart.setTextColor(isAutoStart ? Color.RED : Color.GRAY);
-        autoStop.setTextColor(isAutoStop ? Color.RED : Color.GRAY);
-        timeoutText.setTextColor(isAutoStop ? Color.RED : Color.GRAY);
+        talesPlayNext.setTextColor(isTalesPlayNext ? Color.RED : Color.GRAY);
+        autoQuit.setTextColor(isAutoQuit ? Color.RED : Color.GRAY);
+        timeoutText.setTextColor(isAutoQuit ? Color.RED : Color.GRAY);
     }
 }
