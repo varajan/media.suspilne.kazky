@@ -104,10 +104,10 @@ public class Tales extends AppCompatActivity {
                 final ImageView playBtn = item.findViewById(R.id.play);
                 playBtn.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.pause)){
+                        if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.tale_pause)){
                             player.releasePlayer();
-                            playBtn.setImageResource(R.mipmap.play);
-                            playBtn.setTag(R.mipmap.play);
+                            playBtn.setImageResource(R.mipmap.tale_play);
+                            playBtn.setTag(R.mipmap.tale_play);
                         }else{
                             player.releasePlayer();
                             player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", id) + ".mp3");
@@ -123,8 +123,8 @@ public class Tales extends AppCompatActivity {
 
             for (int x:ids){
                 ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
-                btn.setImageResource(x == id ? R.mipmap.pause : R.mipmap.play);
-                btn.setTag(x == id ? R.mipmap.pause : R.mipmap.play);
+                btn.setImageResource(x == id ? R.mipmap.tale_pause : R.mipmap.tale_play);
+                btn.setTag(x == id ? R.mipmap.tale_pause : R.mipmap.tale_play);
             }
         }
     }

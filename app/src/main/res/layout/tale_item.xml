@@ -44,9 +44,9 @@
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <ImageView
-        android:id="@+id/background"
+        android:id="@+id/play"
         android:layout_width="53dp"
-        android:layout_height="59dp"
+        android:layout_height="53dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
@@ -55,18 +55,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/square"
+        app:srcCompat="@mipmap/tale_play"
         tools:scaleType="fitXY" />
-
-    <ImageView
-        android:id="@+id/play"
-        android:layout_width="46dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:maxWidth="150dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/play" />
 </android.support.constraint.ConstraintLayout>
