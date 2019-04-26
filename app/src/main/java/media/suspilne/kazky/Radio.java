@@ -62,7 +62,7 @@ public class Radio extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     player.releasePlayer();
-                    startActivityForResult(new Intent(Radio.this, Tales.class), 0);
+                    startActivity(new Intent(Radio.this, Tales.class));
                 }
             }
         );

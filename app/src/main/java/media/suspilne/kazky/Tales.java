@@ -58,6 +58,16 @@ public class Tales extends AppCompatActivity {
             }
         );
 
+        this.findViewById(R.id.radioBtn).setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    player.releasePlayer();
+                    startActivity(new Intent(Tales.this, Radio.class));
+                }
+            }
+        );
+
         new GetTales().execute("https://kazky.suspilne.media/list");
     }
 
