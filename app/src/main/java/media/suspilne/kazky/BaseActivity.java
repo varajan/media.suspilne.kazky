@@ -4,17 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class BaseActivity extends AppCompatActivity {
     private Timer quitTimer;
+    protected Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setQuiteTimeout();
+
+        player = new Player(this);
+        player.UpdateSslProvider();
     }
 
     public void openSettingsView(){
@@ -58,7 +61,7 @@ public class BaseActivity extends AppCompatActivity {
     class stopRadioOnTimeout extends TimerTask {
         @Override
         public void run() {
-            System.exit(1);
+            player.releasePlayer();
         }
     }
 }
