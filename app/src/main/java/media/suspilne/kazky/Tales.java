@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Tales extends AppCompatActivity {
-    private String url = "https://kazky.suspilne.media/list";
+    private Player player;
 
     private void openSettingsView(){
         startActivityForResult(new Intent(Tales.this, Settings.class), 0);
@@ -48,6 +48,8 @@ public class Tales extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tales);
+        player = new Player(this);
+        player.UpdateSslProvider();
 
         this.findViewById(R.id.menuBtn).setOnClickListener(
             new View.OnClickListener() {
@@ -56,7 +58,7 @@ public class Tales extends AppCompatActivity {
             }
         );
 
-        new GetTales().execute(url);
+        new GetTales().execute("https://kazky.suspilne.media/list");
     }
 
     class GetTales extends AsyncTask<String, Void, ArrayList<Integer>> {
@@ -87,19 +89,42 @@ public class Tales extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Integer> ids) {
+        protected void onPostExecute(final ArrayList<Integer> ids) {
             super.onPostExecute(ids);
+            final LinearLayout list = findViewById(R.id.list);
 
-            // https://kazky.suspilne.media/inc/audio/17.mp3
-            LinearLayout list = findViewById(R.id.list);
-
-            for (int id:ids) {
+            for (final int id:ids) {
                 View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
                 item.setTag(id);
                 list.addView(item);
 
                 new SetTaleTitle().execute(id);
                 new SetTaleImage().execute(id);
+
+                final ImageView playBtn = item.findViewById(R.id.play);
+                playBtn.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.pause)){
+                            player.releasePlayer();
+                            playBtn.setImageResource(R.mipmap.play);
+                            playBtn.setTag(R.mipmap.play);
+                        }else{
+                            player.releasePlayer();
+                            player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", id) + ".mp3");
+                            setPlayBtnIcon(ids, id);
+                        }
+                    }
+                });
+            }
+        }
+
+        private void setPlayBtnIcon(ArrayList<Integer> ids, int id){
+            LinearLayout list = findViewById(R.id.list);
+
+            for (int x:ids){
+                ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
+                btn.setImageResource(x == id ? R.mipmap.pause : R.mipmap.play);
+                btn.setTag(x == id ? R.mipmap.pause : R.mipmap.play);
             }
         }
     }
@@ -139,7 +164,7 @@ public class Tales extends AppCompatActivity {
             try {
                 id = arg[0];
 
-                Document document = Jsoup.connect(url).get();
+                Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
                 Elements title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']");
                 Elements reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']");
 
