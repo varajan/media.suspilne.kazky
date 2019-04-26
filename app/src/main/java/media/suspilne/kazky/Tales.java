@@ -20,15 +20,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Tales extends BaseActivity {
-    private Player player;
     int nowPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tales);
-        player = new Player(this);
-        player.UpdateSslProvider();
 
         this.findViewById(R.id.menuBtn).setOnClickListener(
             new View.OnClickListener() {

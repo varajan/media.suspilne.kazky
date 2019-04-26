@@ -19,6 +19,7 @@
         app:srcCompat="@mipmap/back" />
 
     <Switch
+        android:fontFamily="@font/chalkboard"
         android:id="@+id/talesPlayNext"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
@@ -32,13 +33,14 @@
         tools:typeface="serif" />
 
     <Switch
+        android:fontFamily="@font/chalkboard"
         android:id="@+id/autoQuit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
-        android:text="Таймер сну (закривати програму) "
+        android:text="Таймер сну (зупиняти казку) "
         android:textSize="20sp"
         tools:typeface="serif"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/autoQuit" />
 
     <TextView
+        android:fontFamily="@font/chalkboard"
         android:id="@+id/timeoutText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
