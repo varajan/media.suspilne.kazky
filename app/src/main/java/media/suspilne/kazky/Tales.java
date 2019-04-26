@@ -1,6 +1,8 @@
 package media.suspilne.kazky;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,10 +11,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -145,12 +149,18 @@ public class Tales extends BaseActivity {
     class SetTaleImage extends AsyncTask<Integer, Void, Drawable> {
         private int id;
 
+        private Drawable resize(Drawable image) {
+            Bitmap b = ((BitmapDrawable)image).getBitmap();
+            Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 120, 90, false);
+            return new BitmapDrawable(getResources(), bitmapResized);
+        }
+
         @Override
         protected Drawable doInBackground(Integer... arg) {
             try {
                 id = arg[0];
                 InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + String.format("%02d", id) + ".jpg").getContent();
-                return Drawable.createFromStream(is, "src name");
+                return resize(Drawable.createFromStream(is, "src name"));
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
