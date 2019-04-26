@@ -21,6 +21,7 @@ import java.util.Collections;
 
 public class Tales extends BaseActivity {
     private Player player;
+    int nowPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ public class Tales extends BaseActivity {
                 new SetTaleImage().execute(id);
 
                 final ImageView playBtn = item.findViewById(R.id.play);
+
                 playBtn.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.tale_pause)){
@@ -97,23 +99,39 @@ public class Tales extends BaseActivity {
                             playBtn.setImageResource(R.mipmap.tale_play);
                             playBtn.setTag(R.mipmap.tale_play);
                         }else{
-                            player.releasePlayer();
-                            player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", id) + ".mp3");
-                            setPlayBtnIcon(ids, id);
-                        }
-                    }
-                });
-
-                player.addListener(new Player.MediaIsEndedListener(){
-                    public void mediaIsEnded(){
-                        setPlayBtnIcon(ids, -1);
-
-                        if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")) {
-                            // play next
+                            playTale(ids, id);
                         }
                     }
                 });
             }
+
+            player.addListener(new Player.MediaIsEndedListener(){
+                @Override
+                public void mediaIsEnded(){
+                    if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")){
+                        int next = ids.get(0);
+
+                        for(int i:ids){
+                            if (i > nowPlaying) {
+                                next = i;
+                                break;
+                            }
+                        }
+
+                        playTale(ids, next);
+                    }else{
+                        nowPlaying = -1;
+                        setPlayBtnIcon(ids, -1);
+                    }
+                }
+            });
+        }
+
+        private void playTale(ArrayList<Integer> ids, int playId){
+            player.releasePlayer();
+            player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", playId) + ".mp3");
+            setPlayBtnIcon(ids, playId);
+            nowPlaying = playId;
         }
 
         private void setPlayBtnIcon(ArrayList<Integer> ids, int id){

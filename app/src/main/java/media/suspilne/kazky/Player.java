@@ -29,7 +29,9 @@ public class Player {
     private ArrayList<MediaIsEndedListener> listeners = new ArrayList<>();
 
     public void addListener(MediaIsEndedListener listener) {
-        listeners.add(listener);
+        if (!listeners.contains(listener)){
+            listeners.add(listener);
+        }
     }
 
     public Player(Context context){
@@ -73,7 +75,7 @@ public class Player {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 switch(playbackState) {
-                    case ExoPlayer.STATE_ENDED:
+                    case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
                         for (MediaIsEndedListener l : listeners)
                             l.mediaIsEnded();
                         break;
