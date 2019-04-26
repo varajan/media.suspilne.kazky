@@ -5,19 +5,32 @@ import android.net.Uri;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.gms.security.ProviderInstaller;
+
+import java.util.ArrayList;
 
 import javax.net.ssl.SSLContext;
 
 public class Player {
     private ExoPlayer player;
     private Context context;
+
+    private ArrayList<MediaIsEndedListener> listeners = new ArrayList<>();
+
+    public void addListener(MediaIsEndedListener listener) {
+        listeners.add(listener);
+    }
 
     public Player(Context context){
         this.context = context;
@@ -46,6 +59,47 @@ public class Player {
                 .createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
+
+        player.addListener(new ExoPlayer.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {}
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                switch(playbackState) {
+                    case ExoPlayer.STATE_ENDED:
+                        for (MediaIsEndedListener l : listeners)
+                            l.mediaIsEnded();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {}
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {}
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {}
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {}
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
+
+            @Override
+            public void onSeekProcessed() {}
+        });
     }
 
     public void UpdateSslProvider(){
@@ -59,5 +113,9 @@ public class Player {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    interface MediaIsEndedListener {
+        void mediaIsEnded();
     }
 }

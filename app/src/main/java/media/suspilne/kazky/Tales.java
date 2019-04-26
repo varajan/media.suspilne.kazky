@@ -125,6 +125,13 @@ public class Tales extends AppCompatActivity {
                         }
                     }
                 });
+
+                player.addListener(new Player.MediaIsEndedListener(){
+                    public void mediaIsEnded(){
+                        // if just stop
+                        setPlayBtnIcon(ids, -1);
+                    }
+                });
             }
         }
 
