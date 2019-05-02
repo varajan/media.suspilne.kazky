@@ -151,7 +151,7 @@ public class Tales extends BaseActivity {
 
         private Drawable resize(Drawable image) {
             Bitmap b = ((BitmapDrawable)image).getBitmap();
-            Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 120, 90, false);
+            Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 150, 113, false);
             return new BitmapDrawable(getResources(), bitmapResized);
         }
 

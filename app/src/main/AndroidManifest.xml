@@ -13,15 +13,15 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Tales"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
         />
         <activity
             android:name=".Settings"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
         />
         <activity
             android:name=".Radio"
-            android:screenOrientation="landscape">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

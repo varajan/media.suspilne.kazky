@@ -19,36 +19,36 @@
         app:srcCompat="@mipmap/back" />
 
     <Switch
-        android:fontFamily="@font/chalkboard"
         android:id="@+id/talesPlayNext"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/chalkboard"
         android:text="Казки: грати одну за одною "
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backBtn"
         tools:typeface="serif" />
 
     <Switch
         android:fontFamily="@font/chalkboard"
         android:id="@+id/autoQuit"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
         android:text="Таймер сну (зупиняти казку) "
-        android:textSize="20sp"
+        android:textSize="16sp"
         tools:typeface="serif"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/talesPlayNext" />
 
     <SeekBar
         android:id="@+id/timeout"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -60,15 +60,16 @@
         app:layout_constraintTop_toBottomOf="@+id/autoQuit" />
 
     <TextView
-        android:fontFamily="@font/chalkboard"
         android:id="@+id/timeoutText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="118dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:fontFamily="@font/chalkboard"
         android:text="45"
-        android:textSize="20sp"
-        tools:typeface="serif"
-        app:layout_constraintStart_toEndOf="@+id/timeout"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeout"
+        tools:typeface="serif" />
 
 </android.support.constraint.ConstraintLayout>
