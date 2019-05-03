@@ -193,8 +193,6 @@ public class Tales extends BaseActivity {
                 Elements reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']");
 
                 return new String[] {title.text().trim(), reader.text().trim()};
-
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -208,8 +206,9 @@ public class Tales extends BaseActivity {
             View item = findViewById(R.id.list).findViewWithTag(id);
             TextView title = item.findViewById(R.id.title);
             TextView reader = item.findViewById(R.id.reader);
-            int margin = ((ConstraintLayout.LayoutParams)item.findViewById(R.id.preview).getLayoutParams()).leftMargin;
-            int imageWidth = item.findViewById(R.id.preview).getWidth();
+            ImageView preview = item.findViewById(R.id.preview);
+            int margin = ((ConstraintLayout.LayoutParams)preview.getLayoutParams()).leftMargin;
+            int imageWidth = preview.getWidth();
             int maxWidth =  item.getWidth() - imageWidth - 2 * margin;
 
             title.setText(titles[0]);
