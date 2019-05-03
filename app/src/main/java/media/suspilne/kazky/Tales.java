@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -207,13 +208,15 @@ public class Tales extends BaseActivity {
             View item = findViewById(R.id.list).findViewWithTag(id);
             TextView title = item.findViewById(R.id.title);
             TextView reader = item.findViewById(R.id.reader);
-            int maxWidth =  item.getWidth() - 290;
+            int margin = ((ConstraintLayout.LayoutParams)item.findViewById(R.id.preview).getLayoutParams()).leftMargin;
+            int imageWidth = item.findViewById(R.id.preview).getWidth();
+            int maxWidth =  item.getWidth() - imageWidth - 2 * margin;
 
             title.setText(titles[0]);
             reader.setText(titles[1]);
 
-            title.setMaxWidth(maxWidth);
-            reader.setMaxWidth(maxWidth);
+            title.setWidth(maxWidth);
+            reader.setWidth(maxWidth);
         }
     }
 }

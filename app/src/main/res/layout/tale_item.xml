@@ -18,12 +18,12 @@
         app:srcCompat="@mipmap/logo" />
 
     <TextView
-        android:fontFamily="@font/chalkboard"
+        app:fontFamily="@font/chalkboard"
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="8dp"
         android:text="Назва казочки..."
         android:textColor="@color/colorAccent"
@@ -33,12 +33,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:fontFamily="@font/chalkboard"
+        app:fontFamily="@font/chalkboard"
         android:id="@+id/reader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:textSize="6pt"
         android:text="Казку читає..."
