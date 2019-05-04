@@ -146,14 +146,7 @@ public class Settings extends AppCompatActivity {
                 list.addView(item);
                 item.setTag(reader.get(0));
 
-                ImageView photo = item.findViewById(R.id.photo);
-                TextView taleReader = item.findViewById(R.id.taleReader);
-                int margin = ((ConstraintLayout.LayoutParams)photo.getLayoutParams()).leftMargin;
-                int imageWidth = photo.getWidth();
-                int maxWidth =  list.getWidth() - imageWidth - 2 * margin;
-
-                taleReader.setText(reader.get(1));
-                taleReader.setWidth(maxWidth);
+                ((TextView)item.findViewById(R.id.taleReader)).setText(reader.get(1));
 
                 new SetPhotos().execute(reader.get(0));
             }
@@ -176,14 +169,22 @@ public class Settings extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Drawable photo) {
-            super.onPostExecute(photo);
+        protected void onPostExecute(Drawable readerPhoto) {
+            super.onPostExecute(readerPhoto);
 
-            if (photo != null)
+            View item = findViewById(R.id.list).findViewWithTag(id);
+            TextView taleReader = item.findViewById(R.id.taleReader);
+            ImageView photo = item.findViewById(R.id.photo);
+
+            if (readerPhoto != null)
             {
-                View item = findViewById(R.id.list).findViewWithTag(id);
-                ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(photo);
+                photo.setImageDrawable(readerPhoto);
             }
+
+            int margin = ((ConstraintLayout.LayoutParams)photo.getLayoutParams()).leftMargin;
+            int maxWidth =  item.getWidth() - photo.getWidth() - 2 * margin;
+
+            taleReader.setWidth(maxWidth);
         }
     }
 }
