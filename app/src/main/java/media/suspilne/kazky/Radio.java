@@ -33,7 +33,7 @@ public class Radio extends BaseActivity {
             }
         );
 
-        playPauseBtn = this.findViewById(R.id.playPause);
+        playPauseBtn = findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);
         playPauseBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

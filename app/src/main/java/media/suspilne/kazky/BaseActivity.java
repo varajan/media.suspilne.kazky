@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -62,6 +65,18 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public void run() {
             player.releasePlayer();
+
+            LinearLayout talesList = findViewById(R.id.list);
+            if (talesList != null){
+                for(int i = 0; i < talesList.getChildCount(); i++){
+                    ((ImageView)talesList.getChildAt(i).findViewById(R.id.play)).setImageResource(R.mipmap.tale_play);
+                }
+            }
+
+            ImageView radioPlayBtn = findViewById(R.id.playPause);
+            if (radioPlayBtn != null){
+                radioPlayBtn.setImageResource(R.mipmap.tale_play);
+            }
         }
     }
 }
