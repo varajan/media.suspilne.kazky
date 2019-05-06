@@ -42,20 +42,14 @@ public class BaseActivity extends AppCompatActivity {
         return super.onKeyDown(keycode, e);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) return;
-
-        setQuiteTimeout();
-    }
-
-    private void setQuiteTimeout(){
+    protected void setQuiteTimeout(){
         if (SettingsHelper.getBoolean(this, "autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
             int timeout = SettingsHelper.getInt(this, "timeout");
 
             quitTimer = new Timer();
-            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+            quitTimer.schedule(new stopRadioOnTimeout(), 10 * 1000);
+//            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
         } else {
             if (quitTimer != null) quitTimer.cancel();
         }
@@ -66,16 +60,28 @@ public class BaseActivity extends AppCompatActivity {
         public void run() {
             player.releasePlayer();
 
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateTalesPlayBtnIcons();
+                    updateRadioPlayBtnIcon();
+                }
+            });
+        }
+
+        private void updateTalesPlayBtnIcons(){
             LinearLayout talesList = findViewById(R.id.list);
             if (talesList != null){
                 for(int i = 0; i < talesList.getChildCount(); i++){
                     ((ImageView)talesList.getChildAt(i).findViewById(R.id.play)).setImageResource(R.mipmap.tale_play);
                 }
             }
+        }
 
+        private void updateRadioPlayBtnIcon(){
             ImageView radioPlayBtn = findViewById(R.id.playPause);
             if (radioPlayBtn != null){
-                radioPlayBtn.setImageResource(R.mipmap.tale_play);
+                radioPlayBtn.setImageResource(R.mipmap.play);
             }
         }
     }

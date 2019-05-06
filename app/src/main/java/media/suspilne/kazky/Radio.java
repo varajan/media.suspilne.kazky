@@ -43,6 +43,7 @@ public class Radio extends BaseActivity {
             }else{
                 player.initializePlayer(radioStream);
                 playPauseBtn.setImageResource(R.mipmap.pause);
+                setQuiteTimeout();
             }
             }
         });

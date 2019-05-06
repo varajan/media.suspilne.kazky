@@ -102,6 +102,7 @@ public class Tales extends BaseActivity {
                             playBtn.setTag(R.mipmap.tale_play);
                         }else{
                             playTale(ids, id);
+                            Tales.this.setQuiteTimeout();
                         }
                     }
                 });

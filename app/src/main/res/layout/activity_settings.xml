@@ -82,6 +82,7 @@
         android:fontFamily="@font/chalkboard"
         android:text="Казки читають:"
         android:textSize="16sp"
+        android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeoutText" />
 

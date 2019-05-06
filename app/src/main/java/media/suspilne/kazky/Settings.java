@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -95,6 +96,7 @@ public class Settings extends AppCompatActivity {
     private void setColorsAndState() {
         boolean isTalesPlayNext = SettingsHelper.getBoolean(this, "talesPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
+        int accent = ContextCompat.getColor(this, R.color.colorAccent);
 
         timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
         timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
@@ -104,9 +106,9 @@ public class Settings extends AppCompatActivity {
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
 
-        talesPlayNext.setTextColor(isTalesPlayNext ? Color.RED : Color.GRAY);
-        autoQuit.setTextColor(isAutoQuit ? Color.RED : Color.GRAY);
-        timeoutText.setTextColor(isAutoQuit ? Color.RED : Color.GRAY);
+        talesPlayNext.setTextColor(isTalesPlayNext ? accent : Color.GRAY);
+        autoQuit.setTextColor(isAutoQuit ? accent : Color.GRAY);
+        timeoutText.setTextColor(isAutoQuit ? accent : Color.GRAY);
     }
 
     class GetTaleReaders extends AsyncTask<String, Void, ArrayList<ArrayList<String>>> {
