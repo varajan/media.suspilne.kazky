@@ -48,8 +48,7 @@ public class BaseActivity extends AppCompatActivity {
             int timeout = SettingsHelper.getInt(this, "timeout");
 
             quitTimer = new Timer();
-            quitTimer.schedule(new stopRadioOnTimeout(), 10 * 1000);
-//            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
         } else {
             if (quitTimer != null) quitTimer.cancel();
         }
