@@ -44,6 +44,14 @@ public class Player {
         }
     }
 
+    public void setPosition(long position){
+        player.seekTo(position);
+    }
+
+    public long position(){
+        return isPlaying() ? player.getCurrentPosition() : 0;
+    }
+
     public Boolean isPlaying(){
         return player != null;
     }

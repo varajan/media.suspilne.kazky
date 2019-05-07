@@ -26,6 +26,31 @@ import java.util.Collections;
 
 public class Tales extends BaseActivity {
     int nowPlaying;
+    long position;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (player.isPlaying())
+            player.releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean("isPlaying", player.isPlaying());
+        outState.putInt("nowPlaying", player.isPlaying() ? nowPlaying : -1);
+        outState.putLong("position", player.position());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        nowPlaying = savedInstanceState.getInt("nowPlaying");
+        position = savedInstanceState.getLong("position");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +131,16 @@ public class Tales extends BaseActivity {
                         }
                     }
                 });
+
+                if (nowPlaying == id){
+                    playBtn.setImageResource(R.mipmap.tale_pause);
+                    playBtn.setTag(R.mipmap.tale_pause);
+
+                    player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", nowPlaying) + ".mp3");
+                    player.setPosition(position);
+
+                    Tales.this.setQuiteTimeout();
+                }
             }
 
             player.addListener(new Player.MediaIsEndedListener(){

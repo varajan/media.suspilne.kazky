@@ -20,15 +20,15 @@ public class Radio extends BaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         outState.putBoolean("isPlaying", player.isPlaying());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        boolean isPlaying = savedInstanceState.getBoolean("isPlaying");
 
-        if (isPlaying){
+        if (savedInstanceState.getBoolean("isPlaying")){
             playPauseBtn.performClick();
         }
     }
