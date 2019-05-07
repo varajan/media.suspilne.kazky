@@ -2,7 +2,6 @@ package media.suspilne.kazky;
 
 import android.content.Context;
 import android.net.Uri;
-
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -91,7 +90,7 @@ public class Player {
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {}
 
             @Override
-            public void onPlayerError(ExoPlaybackException error) {}
+            public void onPlayerError(ExoPlaybackException error) { }
 
             @Override
             public void onPositionDiscontinuity(int reason) {}

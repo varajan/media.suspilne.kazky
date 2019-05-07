@@ -11,6 +11,29 @@ public class Radio extends BaseActivity {
     private String radioStream = "https://radio.nrcu.gov.ua:8443/kazka-mp3";
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (player.isPlaying())
+            player.releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isPlaying", player.isPlaying());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        boolean isPlaying = savedInstanceState.getBoolean("isPlaying");
+
+        if (isPlaying){
+            playPauseBtn.performClick();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radio);
