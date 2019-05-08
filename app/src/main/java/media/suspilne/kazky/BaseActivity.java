@@ -57,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
     class stopRadioOnTimeout extends TimerTask {
         @Override
         public void run() {
-            player.releasePlayer();
+            if (player != null) player.releasePlayer();
 
             runOnUiThread(new Runnable() {
                 @Override
