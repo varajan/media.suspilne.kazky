@@ -245,7 +245,7 @@ public class Tales extends BaseActivity {
             ImageView preview = item.findViewById(R.id.preview);
             int margin = ((ConstraintLayout.LayoutParams)preview.getLayoutParams()).leftMargin;
             int imageWidth = preview.getWidth();
-            int maxWidth =  item.getWidth() - imageWidth - 2 * margin;
+            int maxWidth =  item.getWidth() - imageWidth - 3 * margin;
 
             title.setText(titles[0]);
             reader.setText(titles[1]);

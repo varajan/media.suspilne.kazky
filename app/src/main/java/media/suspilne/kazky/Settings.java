@@ -184,7 +184,7 @@ public class Settings extends AppCompatActivity {
             }
 
             int margin = ((ConstraintLayout.LayoutParams)photo.getLayoutParams()).leftMargin;
-            int maxWidth =  item.getWidth() - photo.getWidth() - 2 * margin;
+            int maxWidth =  item.getWidth() - photo.getWidth() - 3 * margin;
 
             taleReader.setWidth(maxWidth);
         }

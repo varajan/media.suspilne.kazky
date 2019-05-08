@@ -62,7 +62,7 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/chalkboard"
         android:gravity="center"
-        android:text="Радіо хвиля авторських казок українською мовою для дітей"
+        android:text="Радіо хвиля авторських казок українською мовою для дітей 420"
         android:textColor="#EEEEEE"
         android:textSize="32sp"
         android:textStyle="bold"
