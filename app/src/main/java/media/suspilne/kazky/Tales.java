@@ -26,6 +26,7 @@ import java.util.Collections;
 
 public class Tales extends BaseActivity {
     int nowPlaying;
+    int lastPlaying;
     long position;
 
     @Override
@@ -39,9 +40,9 @@ public class Tales extends BaseActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean("isPlaying", player.isPlaying());
         outState.putInt("nowPlaying", player.isPlaying() ? nowPlaying : -1);
-        outState.putLong("position", player.position());
+        outState.putInt("lastPlaying", lastPlaying);
+        outState.putLong("position", player.isPlaying() ? player.position() : position);
     }
 
     @Override
@@ -49,6 +50,7 @@ public class Tales extends BaseActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         nowPlaying = savedInstanceState.getInt("nowPlaying");
+        lastPlaying = savedInstanceState.getInt("lastPlaying");
         position = savedInstanceState.getLong("position");
     }
 
@@ -122,6 +124,9 @@ public class Tales extends BaseActivity {
                 playBtn.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.tale_pause)){
+                            position = player.position();
+                            lastPlaying = id;
+
                             player.releasePlayer();
                             playBtn.setImageResource(R.mipmap.tale_play);
                             playBtn.setTag(R.mipmap.tale_play);
@@ -168,8 +173,12 @@ public class Tales extends BaseActivity {
         private void playTale(ArrayList<Integer> ids, int playId){
             player.releasePlayer();
             player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", playId) + ".mp3");
+            if (playId == lastPlaying){
+                player.setPosition(position);
+            }
             setPlayBtnIcon(ids, playId);
             nowPlaying = playId;
+            lastPlaying = playId;
         }
 
         private void setPlayBtnIcon(ArrayList<Integer> ids, int id){
@@ -188,7 +197,7 @@ public class Tales extends BaseActivity {
 
         private Drawable resize(Drawable image) {
             Bitmap b = ((BitmapDrawable)image).getBitmap();
-            Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 150, 113, false);
+            Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 300, 226, false);
             return new BitmapDrawable(getResources(), bitmapResized);
         }
 
