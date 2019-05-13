@@ -241,12 +241,19 @@ public class Tales extends BaseActivity {
         protected String[] doInBackground(Integer... arg) {
             try {
                 id = arg[0];
+                String title = SettingsHelper.getString(Tales.this, "title-" + id);
+                String reader = SettingsHelper.getString(Tales.this, "reader-" + id);
 
-                Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
-                Elements title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']");
-                Elements reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']");
+                if (title.equals("") || reader.equals("")){
+                    Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
+                    title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
+                    reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
 
-                return new String[] {title.text().trim(), reader.text().trim()};
+                    SettingsHelper.setString(Tales.this, "title-" + id, title);
+                    SettingsHelper.setString(Tales.this, "reader-" + id, reader);
+                }
+
+                return new String[] {title, reader};
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
