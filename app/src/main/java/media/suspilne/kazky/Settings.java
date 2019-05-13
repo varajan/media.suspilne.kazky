@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 
 public class Settings extends AppCompatActivity {
     private Switch talesPlayNext;
@@ -113,10 +112,11 @@ public class Settings extends AppCompatActivity {
     }
 
     class GetTaleReaders extends AsyncTask<String, Void, ArrayList<ArrayList<String>>> {
-        private ArrayList<ArrayList<String>> GetTaleReaders(String url) {
+        @Override
+        protected ArrayList<ArrayList<String>> doInBackground(String... arg) {
             try {
                 ArrayList<ArrayList<String>> result = new ArrayList<>();
-                Document document = Jsoup.connect(url).get();
+                Document document = Jsoup.connect(arg[0]).get();
                 Elements readers = document.select("div.information__main div.reader-line");
                 for (Element reader : readers) {
                     final String src = reader.select("img").attr("src");
@@ -132,11 +132,6 @@ public class Settings extends AppCompatActivity {
             }
 
             return null;
-        }
-
-        @Override
-        protected ArrayList<ArrayList<String>> doInBackground(String... arg) {
-            return GetTaleReaders(arg[0]);
         }
 
         @Override
