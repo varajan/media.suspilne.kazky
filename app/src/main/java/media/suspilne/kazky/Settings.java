@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 public class Settings extends AppCompatActivity {
     private Switch talesPlayNext;
@@ -162,8 +163,16 @@ public class Settings extends AppCompatActivity {
         protected Drawable doInBackground(String... arg) {
             try {
                 id = arg[0];
-                InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/readers/" + arg[0] + ".jpg").getContent();
-                return Drawable.createFromStream(is, "src name");
+                String file = "r" + id + ".jpg";
+                Drawable drawable = SettingsHelper.getImage(Settings.this, file);
+
+                if (drawable == null){
+                    InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/readers/" + id + ".jpg").getContent();
+                    drawable = Drawable.createFromStream(is, "src name");
+                    SettingsHelper.saveImage(Settings.this, file, drawable);
+                }
+
+                return drawable;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

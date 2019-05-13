@@ -205,8 +205,17 @@ public class Tales extends BaseActivity {
         protected Drawable doInBackground(Integer... arg) {
             try {
                 id = arg[0];
-                InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + String.format("%02d", id) + ".jpg").getContent();
-                return resize(Drawable.createFromStream(is, "src name"));
+
+                String file = String.format("%02d", id) + ".jpg";
+                Drawable drawable = SettingsHelper.getImage(Tales.this, file);
+
+                if (drawable == null){
+                    InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + file).getContent();
+                    drawable = resize(Drawable.createFromStream(is, "src name"));
+                    SettingsHelper.saveImage(Tales.this, file, drawable);
+                }
+
+                return drawable;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

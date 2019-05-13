@@ -3,7 +3,17 @@ package media.suspilne.kazky;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 public class SettingsHelper {
     private static String application = "Kazka";
@@ -50,5 +60,40 @@ public class SettingsHelper {
     public static int pxToDp(Context context, int px) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    public static Boolean fileExists(Context context, String name){
+        return context.getFileStreamPath(name).exists();
+    }
+
+    public static void saveImage(Context context, String name, Drawable drawable){
+        try {
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] bytes = stream.toByteArray();
+
+            FileOutputStream outputStream;
+            outputStream = context.openFileOutput(name, Context.MODE_PRIVATE);
+            outputStream.write(bytes);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Drawable getImage(Context context, String name){
+        try {
+            FileInputStream stream = context.openFileInput(name);
+            Bitmap bitmap = BitmapFactory.decodeStream(stream);
+            stream.close();
+
+            return new BitmapDrawable(bitmap);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
