@@ -1,6 +1,9 @@
 package media.suspilne.kazky;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -13,6 +16,13 @@ import java.util.TimerTask;
 public class BaseActivity extends AppCompatActivity {
     private Timer quitTimer;
     protected Player player;
+
+    protected boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

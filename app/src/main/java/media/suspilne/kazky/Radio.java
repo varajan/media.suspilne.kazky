@@ -81,6 +81,5 @@ public class Radio extends BaseActivity {
                 Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 }

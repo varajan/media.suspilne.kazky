@@ -12,6 +12,8 @@ import android.util.DisplayMetrics;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class SettingsHelper {
     private static String application = "Kazka";
@@ -28,6 +30,34 @@ public class SettingsHelper {
         SharedPreferences.Editor editor = activity.getSharedPreferences(application, 0).edit();
         editor.putString(setting, value);
         editor.commit();
+    }
+
+    public static ArrayList<Integer> getSavedTaleIds(Activity activity){
+        ArrayList<Integer> readers = new ArrayList<>();
+        ArrayList<Integer> titles  = new ArrayList<>();
+
+        for (String reader:getAllSettings(activity, "reader-")){
+            readers.add(Integer.parseInt(reader.split("-")[1]));
+        }
+
+        for (String title:getAllSettings(activity, "title-")){
+            titles.add(Integer.parseInt(title.split("-")[1]));
+        }
+
+        return ListHelper.intersect(readers, titles);
+    }
+
+    public static ArrayList<String> getAllSettings(Activity activity, String setting){
+        ArrayList<String> result = new ArrayList<>();
+
+        Map<String, ?> allEntries = activity.getSharedPreferences(application, 0).getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            if (entry.getKey().contains(setting)) {
+                result.add(entry.getKey());
+            }
+        }
+
+        return result;
     }
 
     public static boolean getBoolean(Activity activity, String setting){

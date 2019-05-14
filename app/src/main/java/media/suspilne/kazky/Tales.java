@@ -60,6 +60,10 @@ public class Tales extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tales);
 
+        if (!isNetworkAvailable()){
+            Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+        }
+
         this.findViewById(R.id.menuBtn).setOnClickListener(
             new View.OnClickListener() {
                 @Override
@@ -81,41 +85,32 @@ public class Tales extends BaseActivity {
     }
 
     class GetTales extends AsyncTask<String, Void, ArrayList<Integer>> {
-        private ArrayList<Integer> getTalesList(String url) {
+        @Override
+        protected ArrayList<Integer> doInBackground(String... arg) {
+            ArrayList<Integer> result = new ArrayList<>();
+
             try {
-                ArrayList<Integer> result = new ArrayList<>();
-                Document document = Jsoup.connect(url).get();
+                Document document = Jsoup.connect(arg[0]).get();
                 Elements tales = document.select("div.tales-list a");
                 for (Element tale : tales) {
                     String href = tale.attr("href");
                     String id = href.split("\\?")[0].split("/")[2];
                     result.add(Integer.valueOf(id));
                 }
-
-                Collections.sort(result);
-
-                return result;
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return null;
-        }
+            result = ListHelper.union(result, SettingsHelper.getSavedTaleIds(Tales.this));
+            Collections.sort(result);
 
-        @Override
-        protected ArrayList<Integer> doInBackground(String... arg) {
-            return getTalesList(arg[0]);
+            return result;
         }
 
         @Override
         protected void onPostExecute(final ArrayList<Integer> ids) {
             super.onPostExecute(ids);
             final LinearLayout list = findViewById(R.id.list);
-
-            if (ids == null){
-                Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-                return;
-            }
 
             for (final int id:ids) {
                 View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
@@ -172,6 +167,17 @@ public class Tales extends BaseActivity {
                         nowPlaying = -1;
                         setPlayBtnIcon(ids, -1);
                     }
+                }
+            });
+
+            player.addListener(new Player.SourceIsNotAccessibleListener(){
+                @Override
+                public void sourceIsNotAccessible(){
+                    nowPlaying = -1;
+                    setPlayBtnIcon(ids, -1);
+                    player.releasePlayer();
+
+                    Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
                 }
             });
         }
