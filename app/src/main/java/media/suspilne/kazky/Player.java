@@ -1,6 +1,8 @@
 package media.suspilne.kazky;
 
 import android.content.Context;
+import java.util.ArrayList;
+import javax.net.ssl.SSLContext;
 import android.net.Uri;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -17,19 +19,22 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.gms.security.ProviderInstaller;
 
-import java.util.ArrayList;
-
-import javax.net.ssl.SSLContext;
-
 public class Player {
     private ExoPlayer player;
     private Context context;
 
-    private ArrayList<MediaIsEndedListener> listeners = new ArrayList<>();
+    private ArrayList<MediaIsEndedListener> mediaIsEndedListeners = new ArrayList<>();
+    private ArrayList<SourceIsNotAccessibleListener> sourceIsNotAccessibleListeners = new ArrayList<>();
 
     public void addListener(MediaIsEndedListener listener) {
-        if (!listeners.contains(listener)){
-            listeners.add(listener);
+        if (!mediaIsEndedListeners.contains(listener)){
+            mediaIsEndedListeners.add(listener);
+        }
+    }
+
+    public void addListener(SourceIsNotAccessibleListener listener) {
+        if (!sourceIsNotAccessibleListeners.contains(listener)){
+            sourceIsNotAccessibleListeners.add(listener);
         }
     }
 
@@ -82,10 +87,16 @@ public class Player {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 switch(playbackState) {
+                    case ExoPlayer.DISCONTINUITY_REASON_SEEK:
+                        for (SourceIsNotAccessibleListener l : sourceIsNotAccessibleListeners)
+                            l.sourceIsNotAccessible();
+                        break;
+
                     case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                        for (MediaIsEndedListener l : listeners)
+                        for (MediaIsEndedListener l : mediaIsEndedListeners)
                             l.mediaIsEnded();
                         break;
+
                     default:
                         break;
                 }
@@ -122,6 +133,10 @@ public class Player {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    interface SourceIsNotAccessibleListener {
+        void sourceIsNotAccessible();
     }
 
     interface MediaIsEndedListener {

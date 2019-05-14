@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -138,6 +139,13 @@ public class Settings extends AppCompatActivity {
         protected void onPostExecute(final ArrayList<ArrayList<String>> readers) {
             super.onPostExecute(readers);
             final LinearLayout list = findViewById(R.id.list);
+            TextView sectionTitle = findViewById(R.id.sectionTitle);
+
+            if (readers == null){
+                sectionTitle.setText("Відсутній Інтернет!");
+                Toast.makeText(Settings.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             for (ArrayList<String> reader:readers) {
                 View item = LayoutInflater.from(Settings.this).inflate(R.layout.reader, list, false);

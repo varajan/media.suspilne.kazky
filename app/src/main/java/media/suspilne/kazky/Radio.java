@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class Radio extends BaseActivity {
     private ImageView playPauseBtn;
@@ -70,5 +71,16 @@ public class Radio extends BaseActivity {
             }
             }
         });
+
+        player.addListener(new Player.SourceIsNotAccessibleListener(){
+            @Override
+            public void sourceIsNotAccessible(){
+                playPauseBtn.setImageResource(R.mipmap.play);
+                player.releasePlayer();
+
+                Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

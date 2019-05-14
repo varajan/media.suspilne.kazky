@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -110,6 +111,11 @@ public class Tales extends BaseActivity {
         protected void onPostExecute(final ArrayList<Integer> ids) {
             super.onPostExecute(ids);
             final LinearLayout list = findViewById(R.id.list);
+
+            if (ids == null){
+                Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             for (final int id:ids) {
                 View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
