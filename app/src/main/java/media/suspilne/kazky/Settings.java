@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Settings extends AppCompatActivity {
+    private Switch batteryOptimization;
     private Switch talesPlayNext;
     private Switch autoQuit;
     private SeekBar timeout;
@@ -46,6 +47,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        batteryOptimization = this.findViewById(R.id.batteryOptimization);
         talesPlayNext = this.findViewById(R.id.talesPlayNext);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
@@ -80,6 +82,8 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -98,7 +102,15 @@ public class Settings extends AppCompatActivity {
 
         new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
-//        if (Build.VERSION.SDK_INT > 23) { checkBatteryOptimization(); }
+
+     private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            requestIgnoreBatteryOptimization();
+            setColorsAndState();
+        }
+    };
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean isIgnoringBatteryOptimizations(){
@@ -109,9 +121,18 @@ public class Settings extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestIgnoreBatteryOptimization(){
-        if (!isIgnoringBatteryOptimizations()){
-            startActivity(new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,Uri.parse("package:" + this.getPackageName())));
+        if (isIgnoringBatteryOptimizations()){
+            startActivityForResult(new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS), 0);
+        }else{
+            Uri packageUri = Uri.parse("package:" + this.getPackageName());
+            startActivityForResult(new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, packageUri), 0);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        setColorsAndState();
     }
 
     private void setColorsAndState() {
@@ -122,10 +143,16 @@ public class Settings extends AppCompatActivity {
         timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
         timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
 
+        batteryOptimization.setEnabled(Build.VERSION.SDK_INT > 23);
         talesPlayNext.setChecked(isTalesPlayNext);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
+
+        batteryOptimization.setOnCheckedChangeListener(null);
+        batteryOptimization.setTextColor(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations() ? accent : Color.GRAY);
+        batteryOptimization.setChecked(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations());
+        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
 
         talesPlayNext.setTextColor(isTalesPlayNext ? accent : Color.GRAY);
         autoQuit.setTextColor(isAutoQuit ? accent : Color.GRAY);

@@ -25,33 +25,47 @@
              app:layout_constraintTop_toTopOf="parent"
              app:srcCompat="@mipmap/back" />
 
-        <Switch
-            android:id="@+id/talesPlayNext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/chalkboard"
-            android:text="Казки: грати одну за одною "
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/backBtn"
-            tools:typeface="serif" />
+         <Switch
+             android:id="@+id/batteryOptimization"
+             android:fontFamily="@font/chalkboard"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="24dp"
+             android:layout_marginLeft="24dp"
+             android:layout_marginTop="8dp"
+             android:text="Не оптимізовувати батарею (якщо Андроїд вимикає звук через кілька хвилин)"
+             android:textSize="16sp"
+             tools:typeface="serif"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/talesPlayNext" />
 
-        <Switch
-            android:id="@+id/autoQuit"
-            android:fontFamily="@font/chalkboard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="16dp"
-            android:text="Таймер сну (зупиняти казку) "
-            android:textSize="16sp"
-            tools:typeface="serif"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/talesPlayNext" />
+         <Switch
+             android:id="@+id/talesPlayNext"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="24dp"
+             android:layout_marginLeft="24dp"
+             android:layout_marginTop="8dp"
+             android:fontFamily="@font/chalkboard"
+             android:text="Казки: грати одну за одною"
+             android:textSize="16sp"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/batteryOptimization"
+             tools:typeface="serif" />
+
+         <Switch
+             android:id="@+id/autoQuit"
+             android:fontFamily="@font/chalkboard"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="24dp"
+             android:layout_marginLeft="24dp"
+             android:layout_marginTop="8dp"
+             android:text="Таймер сну (зупиняти казку)"
+             android:textSize="16sp"
+             tools:typeface="serif"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/talesPlayNext" />
 
         <SeekBar
             android:id="@+id/timeout"
@@ -77,7 +91,7 @@
             android:textSize="16sp"
             tools:typeface="serif" />
 
-        <TextView
+         <TextView
             android:id="@+id/sectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
