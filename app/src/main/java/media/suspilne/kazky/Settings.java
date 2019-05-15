@@ -1,9 +1,14 @@
 package media.suspilne.kazky;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.PowerManager;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -92,6 +97,21 @@ public class Settings extends AppCompatActivity {
         });
 
         new GetTaleReaders().execute("https://kazky.suspilne.media/list");
+    }
+//        if (Build.VERSION.SDK_INT > 23) { checkBatteryOptimization(); }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean isIgnoringBatteryOptimizations(){
+        PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+
+        return pm.isIgnoringBatteryOptimizations(this.getPackageName());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestIgnoreBatteryOptimization(){
+        if (!isIgnoringBatteryOptimizations()){
+            startActivity(new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,Uri.parse("package:" + this.getPackageName())));
+        }
     }
 
     private void setColorsAndState() {
