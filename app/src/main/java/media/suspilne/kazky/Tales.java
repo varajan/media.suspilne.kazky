@@ -1,8 +1,6 @@
 package media.suspilne.kazky;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -207,12 +205,6 @@ public class Tales extends BaseActivity {
     class SetTaleImage extends AsyncTask<Integer, Void, Drawable> {
         private int id;
 
-        private Drawable resize(Drawable image) {
-            Bitmap b = ((BitmapDrawable)image).getBitmap();
-            Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 300, 226, false);
-            return new BitmapDrawable(getResources(), bitmapResized);
-        }
-
         @Override
         protected Drawable doInBackground(Integer... arg) {
             try {
@@ -223,7 +215,7 @@ public class Tales extends BaseActivity {
 
                 if (drawable == null){
                     InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + file).getContent();
-                    drawable = resize(Drawable.createFromStream(is, "src name"));
+                    drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), 300, 226);
                     SettingsHelper.saveImage(Tales.this, file, drawable);
                 }
 

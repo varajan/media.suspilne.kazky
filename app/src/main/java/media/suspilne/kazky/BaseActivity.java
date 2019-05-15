@@ -31,6 +31,7 @@ public class BaseActivity extends AppCompatActivity {
 
         player = new Player(this);
         player.UpdateSslProvider();
+        startService(new Intent(this, Player.class));
     }
 
     public void openSettingsView(){

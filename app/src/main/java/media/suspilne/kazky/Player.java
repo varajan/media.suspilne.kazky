@@ -1,9 +1,14 @@
 package media.suspilne.kazky;
 
+import android.app.Service;
 import android.content.Context;
 import java.util.ArrayList;
 import javax.net.ssl.SSLContext;
+
+import android.content.Intent;
 import android.net.Uri;
+import android.os.IBinder;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -19,7 +24,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.gms.security.ProviderInstaller;
 
-public class Player {
+public class Player extends Service {
     private ExoPlayer player;
     private Context context;
 
@@ -36,6 +41,10 @@ public class Player {
         if (!sourceIsNotAccessibleListeners.contains(listener)){
             sourceIsNotAccessibleListeners.add(listener);
         }
+    }
+
+    public Player(){
+        this.context = getBaseContext();
     }
 
     public Player(Context context){
@@ -133,6 +142,11 @@ public class Player {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     interface SourceIsNotAccessibleListener {

@@ -1,13 +1,7 @@
 package media.suspilne.kazky;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
@@ -188,29 +182,6 @@ public class Settings extends AppCompatActivity {
             }
         }
 
-        private Drawable getCircularDrawable(Drawable drawable) {
-            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-            if (bitmap == null || bitmap.isRecycled()) {
-                return null;
-            }
-            float radius = bitmap.getWidth() > bitmap.getHeight() ? ((float) bitmap
-                    .getHeight()) / 2f : ((float) bitmap.getWidth()) / 2f;
-            Bitmap canvasBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-                    bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-            BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
-                    Shader.TileMode.CLAMP);
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setShader(shader);
-
-            Canvas canvas = new Canvas(canvasBitmap);
-
-            canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                    radius, paint);
-
-            return new BitmapDrawable(getResources(), canvasBitmap);
-        }
-
         @Override
         protected void onPostExecute(Drawable readerPhoto) {
             super.onPostExecute(readerPhoto);
@@ -221,7 +192,7 @@ public class Settings extends AppCompatActivity {
 
             if (readerPhoto != null)
             {
-                photo.setImageDrawable(getCircularDrawable(readerPhoto));
+                photo.setImageDrawable(ImageHelper.getCircularDrawable(readerPhoto));
             }
 
             int margin = ((ConstraintLayout.LayoutParams)photo.getLayoutParams()).leftMargin;
