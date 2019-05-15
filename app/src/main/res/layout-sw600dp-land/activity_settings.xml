@@ -33,7 +33,7 @@
              android:layout_marginStart="24dp"
              android:layout_marginLeft="24dp"
              android:layout_marginTop="16dp"
-             android:text="Не оптимізовувати батарею (якщо Андроїд вимикає звук через кілька хвилин)"
+             android:text="Дозволити програмі працювати в фоновому режимі (якщо Андроїд вимикає звук через кілька хвилин)"
              android:textSize="20sp"
              tools:typeface="serif"
              app:layout_constraintStart_toStartOf="parent"
