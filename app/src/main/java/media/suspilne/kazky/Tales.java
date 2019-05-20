@@ -267,7 +267,11 @@ public class Tales extends BaseActivity {
         @Override
         protected void onPostExecute(String[] titles) {
             super.onPostExecute(titles);
-            if (titles == null) return;
+
+            if (titles == null){
+                Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             View item = findViewById(R.id.list).findViewWithTag(id);
             TextView title = item.findViewById(R.id.title);
