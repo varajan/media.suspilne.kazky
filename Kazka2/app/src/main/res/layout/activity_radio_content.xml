@@ -5,11 +5,6 @@
     android:id="@+id/activity_radio_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
-
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@mipmap/background"
     tools:context=".Radio">
 
@@ -22,6 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="12dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,4 +54,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>
