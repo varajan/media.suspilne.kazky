@@ -1,29 +1,80 @@
 package media.suspilne.kazky;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Timer quitTimer;
+    protected Player player;
+
+    protected void setQuiteTimeout(){
+        if (SettingsHelper.getBoolean(this, "autoQuit")) {
+            if (quitTimer != null) quitTimer.cancel();
+            int timeout = SettingsHelper.getInt(this, "timeout");
+
+            quitTimer = new Timer();
+            quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
+        } else {
+            if (quitTimer != null) quitTimer.cancel();
+        }
+    }
+
+    class stopRadioOnTimeout extends TimerTask {
+        @Override
+        public void run() {
+            if (player != null) player.releasePlayer();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateTalesPlayBtnIcons();
+                    updateRadioPlayBtnIcon();
+                }
+            });
+        }
+
+        private void updateTalesPlayBtnIcons(){
+//            LinearLayout talesList = findViewById(R.id.list);
+//            if (talesList != null){
+//                for(int i = 0; i < talesList.getChildCount(); i++){
+//                    ((ImageView)talesList.getChildAt(i).findViewById(R.id.play)).setImageResource(R.mipmap.tale_play);
+//                }
+//            }
+        }
+
+        private void updateRadioPlayBtnIcon(){
+//            ImageView radioPlayBtn = findViewById(R.id.playPause);
+//            if (radioPlayBtn != null){
+//                radioPlayBtn.setImageResource(R.mipmap.play);
+//            }
+        }
+    }
+
+    public void openSettingsView(){
+//        startActivityForResult(new Intent(this, Settings.class), 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+//        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_radio);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -36,7 +87,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.radio_menu));
+//        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.radio_menu));
+    }
+
+//    @Override
+//    public void setContentView(@LayoutRes int layoutResID)
+//    {
+//        super.setContentView(layoutResID);
+//        onCreateDrawer();
+//    }
+
+    protected void onCreateDrawer(){
+
     }
 
     @Override
@@ -93,11 +155,11 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Fragment fragment = null;
         String title = getString(R.string.app_name);
 
         switch (item.getItemId()) {
             case R.id.radio_menu:
+                startActivity(new Intent(this, Radio.class));
 //                fragment = new RadioFragment();
                 title  = item.getTitle().toString();
                 break;
@@ -115,13 +177,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.exit_menu:
                 exit();
                 break;
-        }
-
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(fragment, "some text: " + title);
-//            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
         }
 
         // set the toolbar title
