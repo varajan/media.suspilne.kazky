@@ -14,6 +14,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,19 +55,19 @@ public class MainActivity extends AppCompatActivity
         }
 
         private void updateTalesPlayBtnIcons(){
-//            LinearLayout talesList = findViewById(R.id.list);
-//            if (talesList != null){
-//                for(int i = 0; i < talesList.getChildCount(); i++){
-//                    ((ImageView)talesList.getChildAt(i).findViewById(R.id.play)).setImageResource(R.mipmap.tale_play);
-//                }
-//            }
+            LinearLayout talesList = findViewById(R.id.list);
+            if (talesList != null){
+                for(int i = 0; i < talesList.getChildCount(); i++){
+                    ((ImageView)talesList.getChildAt(i).findViewById(R.id.play)).setImageResource(R.mipmap.tale_play);
+                }
+            }
         }
 
         private void updateRadioPlayBtnIcon(){
-//            ImageView radioPlayBtn = findViewById(R.id.playPause);
-//            if (radioPlayBtn != null){
-//                radioPlayBtn.setImageResource(R.mipmap.play);
-//            }
+            ImageView radioPlayBtn = findViewById(R.id.playPause);
+            if (radioPlayBtn != null){
+                radioPlayBtn.setImageResource(R.mipmap.play);
+            }
         }
     }
 

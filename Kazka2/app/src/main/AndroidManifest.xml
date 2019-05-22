@@ -29,6 +29,9 @@
             android:name=".Tales"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <service
+            android:name=".Player"
+            android:exported="false"/>
     </application>
 
 </manifest>
