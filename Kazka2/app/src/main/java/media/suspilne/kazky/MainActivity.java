@@ -150,18 +150,21 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.radio_menu:
                 if (currentView != R.id.radio_menu) {
+                    if (player != null) player.releasePlayer();
                     startActivity(new Intent(this, Radio.class));
                 }
                 break;
 
             case R.id.tales_menu:
                 if (currentView != R.id.tales_menu) {
+                    if (player != null) player.releasePlayer();
                     startActivity(new Intent(this, Tales.class));
                 }
                 break;
 
             case R.id.settings_menu:
                 if (currentView != R.id.settings_menu) {
+                    if (player != null) player.releasePlayer();
                     startActivity(new Intent(this, Settings.class));
                 }
                 break;
