@@ -33,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="@id/onlinePlayer"
         app:layout_constraintStart_toStartOf="@id/onlinePlayer"
         app:layout_constraintTop_toTopOf="@id/onlinePlayer"
-        app:srcCompat="@mipmap/pause" />
+        app:srcCompat="@mipmap/play" />
 
     <TextView
         android:id="@+id/textView"

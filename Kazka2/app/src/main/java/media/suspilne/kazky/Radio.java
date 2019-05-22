@@ -38,6 +38,8 @@ public class Radio extends MainActivity {
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
+        ((ImageView) findViewById(R.id.onlinePlayer)).setImageResource(R.mipmap.online_player);
+
         playPauseBtn = findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);
         playPauseBtn.setOnClickListener(new View.OnClickListener() {
