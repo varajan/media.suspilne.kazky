@@ -14,8 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,31 +41,7 @@ public class MainActivity extends AppCompatActivity
     class stopRadioOnTimeout extends TimerTask {
         @Override
         public void run() {
-            if (player != null) player.releasePlayer();
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateTalesPlayBtnIcons();
-                    updateRadioPlayBtnIcon();
-                }
-            });
-        }
-
-        private void updateTalesPlayBtnIcons(){
-            LinearLayout talesList = findViewById(R.id.list);
-            if (talesList != null){
-                for(int i = 0; i < talesList.getChildCount(); i++){
-                    ((ImageView)talesList.getChildAt(i).findViewById(R.id.play)).setImageResource(R.mipmap.tale_play);
-                }
-            }
-        }
-
-        private void updateRadioPlayBtnIcon(){
-            ImageView radioPlayBtn = findViewById(R.id.playPause);
-            if (radioPlayBtn != null){
-                radioPlayBtn.setImageResource(R.mipmap.play);
-            }
+            exit();
         }
     }
 
@@ -106,24 +80,28 @@ public class MainActivity extends AppCompatActivity
         startService(new Intent(this, Player.class));
     }
 
+    private void exit(){
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            exit();
+            showQuitDialog();
         }
     }
 
-    private void exit(){
+    private void showQuitDialog(){
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                    System.exit(1);
+                    exit();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -145,32 +123,37 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setTitle(title);
     }
 
+    private void openActivity(Class view){
+        if (player != null) player.releasePlayer();
+
+        Intent intent = new Intent(this, view);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.radio_menu:
                 if (currentView != R.id.radio_menu) {
-                    if (player != null) player.releasePlayer();
-                    startActivity(new Intent(this, Radio.class));
+                    openActivity(Radio.class);
                 }
                 break;
 
             case R.id.tales_menu:
                 if (currentView != R.id.tales_menu) {
-                    if (player != null) player.releasePlayer();
-                    startActivity(new Intent(this, Tales.class));
+                    openActivity(Tales.class);
                 }
                 break;
 
             case R.id.settings_menu:
                 if (currentView != R.id.settings_menu) {
-                    if (player != null) player.releasePlayer();
-                    startActivity(new Intent(this, Settings.class));
+                    openActivity(Settings.class);
                 }
                 break;
 
             case R.id.exit_menu:
-                exit();
+                showQuitDialog();
         }
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
