@@ -74,9 +74,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
-//        setContentView(R.layout.activity_radio);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -92,17 +89,6 @@ public class MainActivity extends AppCompatActivity
 
         setTitle();
 //        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.radio_menu));
-    }
-
-//    @Override
-//    public void setContentView(@LayoutRes int layoutResID)
-//    {
-//        super.setContentView(layoutResID);
-//        onCreateDrawer();
-//    }
-
-    protected void onCreateDrawer(){
-
     }
 
     @Override
@@ -165,21 +151,26 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.radio_menu:
-                startActivity(new Intent(this, Radio.class));
+                if (currentView != R.id.radio_menu) {
+                    startActivity(new Intent(this, Radio.class));
+                }
                 break;
 
             case R.id.tales_menu:
+                if (currentView != R.id.tales_menu) {}
                 break;
 
             case R.id.settings_menu:
+                if (currentView != R.id.settings_menu) {
+                    startActivity(new Intent(this, Settings.class));
+                }
                 break;
 
             case R.id.exit_menu:
                 exit();
-                ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
-                return false;
         }
 
-        return true;
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
+        return false;
     }
 }
