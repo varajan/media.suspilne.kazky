@@ -35,7 +35,9 @@ public class Radio extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_radio);
+        currentView = R.id.radio_menu;
         super.onCreate(savedInstanceState);
+
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         ((ImageView) findViewById(R.id.onlinePlayer)).setImageResource(R.mipmap.online_player);

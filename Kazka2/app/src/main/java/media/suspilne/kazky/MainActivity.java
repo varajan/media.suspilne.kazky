@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity
 
     private Timer quitTimer;
     protected Player player;
+    protected NavigationView navigation;
+    protected int currentView;
 
     protected void setQuiteTimeout(){
         if (SettingsHelper.getBoolean(this, "autoQuit")) {
@@ -84,9 +86,11 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigation = findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(this);
+        navigation.setCheckedItem(currentView);
 
+        setTitle();
 //        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.radio_menu));
     }
 
@@ -152,39 +156,30 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    private void setTitle() {
+        String title = navigation.getMenu().findItem(currentView).getTitle().toString();
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        String title = getString(R.string.app_name);
-
         switch (item.getItemId()) {
             case R.id.radio_menu:
                 startActivity(new Intent(this, Radio.class));
-//                fragment = new RadioFragment();
-                title  = item.getTitle().toString();
                 break;
 
             case R.id.tales_menu:
-//                fragment = new TalesFragment();
-                title  = item.getTitle().toString();
                 break;
 
             case R.id.settings_menu:
-//                fragment = new SettingsFragment();
-                title  = item.getTitle().toString();
                 break;
 
             case R.id.exit_menu:
                 exit();
-                break;
+                ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
+                return false;
         }
 
-        // set the toolbar title
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
-        }
-
-        ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return true;
     }
 }
