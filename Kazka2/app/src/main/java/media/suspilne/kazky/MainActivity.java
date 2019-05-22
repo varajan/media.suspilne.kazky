@@ -14,8 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void openSettingsView(){
-//        startActivityForResult(new Intent(this, Settings.class), 0);
+        startActivity(new Intent(this, Settings.class));
     }
 
     protected boolean isNetworkAvailable() {
@@ -111,25 +109,8 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            exit();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        Toast.makeText(this, "onOptionsItemSelected: " + id, Toast.LENGTH_LONG).show();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void exit(){

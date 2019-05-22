@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class Radio extends MainActivity {
     private ImageView playPauseBtn;
@@ -12,15 +13,15 @@ public class Radio extends MainActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (player.isPlaying())
-//            player.releasePlayer();
+        if (player.isPlaying())
+            player.releasePlayer();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-//        outState.putBoolean("isPlaying", player.isPlaying());
+        outState.putBoolean("isPlaying", player.isPlaying());
     }
 
     @Override
@@ -57,14 +58,14 @@ public class Radio extends MainActivity {
             }
         });
 
-//        player.addListener(new Player.SourceIsNotAccessibleListener(){
-//            @Override
-//            public void sourceIsNotAccessible(){
-//                playPauseBtn.setImageResource(R.mipmap.play);
-//                player.releasePlayer();
-//
-//                Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-//            }
-//        });
+        player.addListener(new Player.SourceIsNotAccessibleListener(){
+            @Override
+            public void sourceIsNotAccessible(){
+                playPauseBtn.setImageResource(R.mipmap.play);
+                player.releasePlayer();
+
+                Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
