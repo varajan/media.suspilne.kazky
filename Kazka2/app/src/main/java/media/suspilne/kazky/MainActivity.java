@@ -1,7 +1,10 @@
 package media.suspilne.kazky;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -71,6 +74,13 @@ public class MainActivity extends AppCompatActivity
 //        startActivityForResult(new Intent(this, Settings.class), 0);
     }
 
+    protected boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +98,11 @@ public class MainActivity extends AppCompatActivity
         navigation.setCheckedItem(currentView);
 
         setTitle();
-//        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.radio_menu));
+        setQuiteTimeout();
+
+        player = new Player(this);
+        player.UpdateSslProvider();
+        startService(new Intent(this, Player.class));
     }
 
     @Override
@@ -157,7 +171,9 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.tales_menu:
-                if (currentView != R.id.tales_menu) {}
+                if (currentView != R.id.tales_menu) {
+                    startActivity(new Intent(this, Tales.class));
+                }
                 break;
 
             case R.id.settings_menu:
