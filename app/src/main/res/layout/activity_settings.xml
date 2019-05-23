@@ -1,108 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@mipmap/background"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-     <LinearLayout
-        android:id="@+id/list"
-        app:layout_constraintTop_toBottomOf="parent"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-         <ImageView
-             android:id="@+id/backBtn"
-             android:layout_width="50dp"
-             android:layout_height="50dp"
-             android:layout_marginTop="8dp"
-             android:layout_marginEnd="8dp"
-             android:layout_marginRight="8dp"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:srcCompat="@mipmap/back" />
-
-         <Switch
-             android:id="@+id/batteryOptimization"
-             android:fontFamily="@font/chalkboard"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="24dp"
-             android:layout_marginLeft="24dp"
-             android:layout_marginTop="8dp"
-             android:text="Дозволити програмі працювати в фоновому режимі (якщо Андроїд вимикає звук через кілька хвилин)"
-             android:textSize="16sp"
-             tools:typeface="serif"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toBottomOf="@id/talesPlayNext" />
-
-         <Switch
-             android:id="@+id/talesPlayNext"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="24dp"
-             android:layout_marginLeft="24dp"
-             android:layout_marginTop="8dp"
-             android:fontFamily="@font/chalkboard"
-             android:text="Казки: грати одну за одною"
-             android:textSize="16sp"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toBottomOf="@id/batteryOptimization"
-             tools:typeface="serif" />
-
-         <Switch
-             android:id="@+id/autoQuit"
-             android:fontFamily="@font/chalkboard"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="24dp"
-             android:layout_marginLeft="24dp"
-             android:layout_marginTop="8dp"
-             android:text="Таймер сну (зупиняти казку)"
-             android:textSize="16sp"
-             tools:typeface="serif"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toBottomOf="@id/talesPlayNext" />
-
-        <SeekBar
-            android:id="@+id/timeout"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:max="18"
-            android:min="1"
-            android:progress="6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/autoQuit" />
-
-        <TextView
-            android:id="@+id/timeoutText"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:fontFamily="@font/chalkboard"
-            android:text="45"
-            android:textSize="16sp"
-            tools:typeface="serif" />
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/sectionTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Казки читають:"
-            android:textSize="20sp"
-            android:textColor="@color/colorAccent"
-            app:fontFamily="@font/chalkboard"
-            app:layout_constraintStart_toStartOf="parent"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-     </LinearLayout>
-</ScrollView>
+        </android.support.design.widget.AppBarLayout>
+
+        <include
+            layout="@layout/activity_settings_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/app_header"
+        app:menu="@menu/activity_main_drawer" />
+
+</android.support.v4.widget.DrawerLayout>

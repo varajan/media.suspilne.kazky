@@ -11,7 +11,6 @@ import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Settings extends AppCompatActivity {
+public class Settings extends MainActivity {
     private Switch batteryOptimization;
     private Switch talesPlayNext;
     private Switch autoQuit;
@@ -44,8 +43,9 @@ public class Settings extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        currentView = R.id.settings_menu;
+        super.onCreate(savedInstanceState);
 
         batteryOptimization = this.findViewById(R.id.batteryOptimization);
         talesPlayNext = this.findViewById(R.id.talesPlayNext);
@@ -54,17 +54,6 @@ public class Settings extends AppCompatActivity {
         timeoutText = this.findViewById(R.id.timeoutText);
 
         setColorsAndState();
-
-        this.findViewById(R.id.backBtn).setOnClickListener(
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
-            }
-        );
 
         talesPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -103,7 +92,7 @@ public class Settings extends AppCompatActivity {
         new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
 
-     private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = new CompoundButton.OnCheckedChangeListener() {
+    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

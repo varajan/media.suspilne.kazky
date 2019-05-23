@@ -1,6 +1,6 @@
 package media.suspilne.kazky;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,10 +23,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Tales extends BaseActivity {
+public class Tales extends MainActivity {
     int nowPlaying;
     int lastPlaying;
     long position;
+    ProgressDialog dialog;
 
     @Override
     public void onDestroy() {
@@ -55,30 +56,15 @@ public class Tales extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tales);
+        currentView = R.id.tales_menu;
+        super.onCreate(savedInstanceState);
 
         if (!isNetworkAvailable()){
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         }
 
-        this.findViewById(R.id.menuBtn).setOnClickListener(
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { openSettingsView(); }
-            }
-        );
-
-        this.findViewById(R.id.radioBtn).setOnClickListener(
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    player.releasePlayer();
-                    startActivity(new Intent(Tales.this, Radio.class));
-                }
-            }
-        );
-
+        dialog = ProgressDialog.show(Tales.this, "", "Завантажую список...", true);
         new GetTales().execute("https://kazky.suspilne.media/list");
     }
 
@@ -117,6 +103,7 @@ public class Tales extends BaseActivity {
 
                 new SetTaleTitle().execute(id);
                 new SetTaleImage().execute(id);
+                dialog.cancel();
 
                 final ImageView playBtn = item.findViewById(R.id.play);
 
