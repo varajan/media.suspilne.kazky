@@ -45,10 +45,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void openSettingsView(){
-        startActivity(new Intent(this, Settings.class));
-    }
-
     protected boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
