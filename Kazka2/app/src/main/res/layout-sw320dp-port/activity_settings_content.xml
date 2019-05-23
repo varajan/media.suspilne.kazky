@@ -92,7 +92,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="Казки читають:"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/colorAccent"
             app:fontFamily="@font/chalkboard"
             app:layout_constraintStart_toStartOf="parent"/>
