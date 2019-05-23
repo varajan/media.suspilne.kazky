@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void exit(){
+        moveTaskToBack(true);
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(1);
     }
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         if (player != null) player.releasePlayer();
 
         Intent intent = new Intent(this, view);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 
