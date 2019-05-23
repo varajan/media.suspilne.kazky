@@ -13,6 +13,12 @@
         app:layout_constraintTop_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
         android:orientation="vertical">
 
         <Switch
@@ -26,8 +32,7 @@
             android:text="Дозволити програмі працювати в фоновому режимі (якщо Андроїд вимикає звук через кілька хвилин)"
             android:textSize="16sp"
             tools:typeface="serif"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/talesPlayNext" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Switch
             android:id="@+id/talesPlayNext"
