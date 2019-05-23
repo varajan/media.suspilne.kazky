@@ -27,7 +27,7 @@ public class Tales extends MainActivity {
     int nowPlaying;
     int lastPlaying;
     long position;
-    ProgressDialog dialog;
+//    ProgressDialog dialog;
 
     @Override
     public void onDestroy() {
@@ -64,7 +64,7 @@ public class Tales extends MainActivity {
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         }
 
-        dialog = ProgressDialog.show(Tales.this, "", "Завантажую список...", true);
+//        dialog = ProgressDialog.show(Tales.this, "", "Завантажую список...", true);
         new GetTales().execute("https://kazky.suspilne.media/list");
     }
 
@@ -103,7 +103,6 @@ public class Tales extends MainActivity {
 
                 new SetTaleTitle().execute(id);
                 new SetTaleImage().execute(id);
-                dialog.cancel();
 
                 final ImageView playBtn = item.findViewById(R.id.play);
 
