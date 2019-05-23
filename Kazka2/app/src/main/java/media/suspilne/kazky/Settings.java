@@ -11,7 +11,6 @@ import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,17 +54,6 @@ public class Settings extends MainActivity {
         timeoutText = this.findViewById(R.id.timeoutText);
 
         setColorsAndState();
-
-        this.findViewById(R.id.backBtn).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                }
-        );
 
         talesPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

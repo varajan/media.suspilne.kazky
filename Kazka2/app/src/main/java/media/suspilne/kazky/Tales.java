@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -62,23 +61,6 @@ public class Tales extends MainActivity {
         if (!isNetworkAvailable()){
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         }
-
-        this.findViewById(R.id.menuBtn).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) { openSettingsView(); }
-                }
-        );
-
-        this.findViewById(R.id.radioBtn).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        player.releasePlayer();
-                        startActivity(new Intent(Tales.this, Radio.class));
-                    }
-                }
-        );
 
         new GetTales().execute("https://kazky.suspilne.media/list");
     }
