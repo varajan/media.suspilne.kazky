@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -106,16 +105,20 @@ public class Tales extends MainActivity {
 
                 playBtn.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.tale_pause)){
-                            position = player.position();
-                            lastPlaying = id;
+                        try{
+                            if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.tale_pause)){
+                                position = player.position();
+                                lastPlaying = id;
 
-                            player.releasePlayer();
-                            playBtn.setImageResource(R.mipmap.tale_play);
-                            playBtn.setTag(R.mipmap.tale_play);
-                        }else{
-                            playTale(ids, id);
-                            Tales.this.setQuiteTimeout();
+                                player.releasePlayer();
+                                playBtn.setImageResource(R.mipmap.tale_play);
+                                playBtn.setTag(R.mipmap.tale_play);
+                            }else{
+                                playTale(ids, id);
+                                Tales.this.setQuiteTimeout();
+                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
                         }
                     }
                 });
