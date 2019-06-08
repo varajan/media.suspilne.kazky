@@ -79,8 +79,8 @@ public class Settings extends MainActivity {
             }
         });
 
-        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
-        talesDownload.setOnCheckedChangeListener(onDownloadTalesListener);
+//        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+//        talesDownload.setOnCheckedChangeListener(onDownloadTalesListener);
 
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -114,10 +114,9 @@ public class Settings extends MainActivity {
         private void download(){
             if (!Settings.this.isNetworkAvailable()){
                 Toast.makeText(Settings.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-                return;
+            } else {
+                new Settings.GetTaleIds().execute("https://kazky.suspilne.media/list");
             }
-
-            new Settings.GetTaleIds().execute("https://kazky.suspilne.media/list");
         }
 
         private void dropDownloads(){
@@ -128,27 +127,29 @@ public class Settings extends MainActivity {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked || !isChecked){
+            if (isChecked){
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 download();
+                                setColorsAndState();
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //'No' button clicked
+                                setColorsAndState();
                                 break;
                         }
                     }
                 };
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
-                builder.setMessage("Скачат казки на пристрій? Це займе деякий час в залежності від швидкості Інтерета.")
-                        .setPositiveButton("Скачати", dialogClickListener)
-                        .setNegativeButton("Ні", dialogClickListener)
-                        .show();
+                new AlertDialog.Builder(Settings.this)
+                    .setMessage("Скачат казки на пристрій? Це займе деякий час в залежності від швидкості Інтерета.")
+                    .setPositiveButton("Скачати", dialogClickListener)
+                    .setNegativeButton("Ні", dialogClickListener)
+                    .show();
             }else{
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
@@ -161,19 +162,18 @@ public class Settings extends MainActivity {
 
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //'No' button clicked
+                                setColorsAndState();
                                 break;
                         }
                     }
                 };
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
-                builder.setMessage("Вдалити казки з пристрою? Ви не зможете слухати казки без Інтерета.")
-                        .setPositiveButton("Видалити", dialogClickListener)
-                        .setNegativeButton("Ні", dialogClickListener)
-                        .show();
+                new AlertDialog.Builder(Settings.this)
+                    .setMessage("Вдалити казки з пристрою? Ви не зможете слухати казки без Інтерета.")
+                    .setPositiveButton("Видалити", dialogClickListener)
+                    .setNegativeButton("Ні", dialogClickListener)
+                    .show();
             }
-
-            setColorsAndState();
         }
     };
 
@@ -210,10 +210,14 @@ public class Settings extends MainActivity {
         timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
 
         talesPlayNext.setChecked(isTalesPlayNext);
-        talesDownload.setChecked(isTalesDownload);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
+
+        talesDownload.setOnCheckedChangeListener(null);
+        talesDownload.setTextColor(isTalesDownload ? accent : Color.GRAY);
+        talesDownload.setChecked(isTalesDownload);
+        talesDownload.setOnCheckedChangeListener(onDownloadTalesListener);
 
         if (Build.VERSION.SDK_INT > 23){
             batteryOptimization.setOnCheckedChangeListener(null);
@@ -225,7 +229,6 @@ public class Settings extends MainActivity {
         }
 
         talesPlayNext.setTextColor(isTalesPlayNext ? accent : Color.GRAY);
-        talesDownload.setTextColor(isTalesDownload ? accent : Color.GRAY);
         autoQuit.setTextColor(isAutoQuit ? accent : Color.GRAY);
         timeoutText.setTextColor(isAutoQuit ? accent : Color.GRAY);
     }
@@ -379,6 +382,7 @@ public class Settings extends MainActivity {
 
             Toast.makeText(Settings.this, "Готово!", Toast.LENGTH_LONG).show();
             SettingsHelper.setBoolean(Settings.this, "talesDownload", true);
+            setColorsAndState();
         }
 
         @Override
@@ -387,7 +391,7 @@ public class Settings extends MainActivity {
 
             try {
                 for (int id:integers) {
-                    Thread.sleep(100);
+                    Thread.sleep(200);
                     publishProgress();
                 }
             }catch (Exception e){
