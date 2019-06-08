@@ -74,7 +74,7 @@ public class Player extends Service {
     public void initializePlayer(String stream) {
         Uri uri = Uri.parse(stream);
 
-        player = ExoPlayerFactory.newSimpleInstance(
+        player = ExoPlayerFactory.newSimpleInstance(context,
                 new DefaultRenderersFactory(context),
                 new DefaultTrackSelector(), new DefaultLoadControl());
 

@@ -418,9 +418,9 @@ public class Settings extends MainActivity {
                     URLConnection connection = url.openConnection();
                     connection.connect();
 
-                    int length = connection.getContentLength(); // -128 ??
+                    int length = connection.getContentLength();
                     byte file[] = new byte[length];
-                    InputStream input = new BufferedInputStream(url.openStream(), length);
+                    InputStream input = new BufferedInputStream(url.openStream(), 1024);
 
                     input.read(file);
                     SettingsHelper.saveFile(Settings.this, name, file);
@@ -429,32 +429,6 @@ public class Settings extends MainActivity {
                 }
             }catch (Exception e){
                 e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
-
-    class DownloadFile extends AsyncTask<Integer, String, String> {
-        @Override
-        protected String doInBackground(Integer... ids) {
-            int count;
-            try {
-                String name = String.format("%02d.mp3", ids[0]);
-                URL url = new URL("https://kazky.suspilne.media/inc/audio/" + name);
-                URLConnection connection = url.openConnection();
-                connection.connect();
-
-                InputStream input = new BufferedInputStream(url.openStream(), 8192);
-
-                byte data[] = new byte[1024*1024*1024];
-                input.read(data);
-                SettingsHelper.saveFile(Settings.this, name, data);
-
-                input.close();
-
-            } catch (Exception e) {
-                Log.e("Error: ", e.getMessage());
             }
 
             return null;
