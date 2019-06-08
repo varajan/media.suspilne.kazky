@@ -15,7 +15,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -29,23 +28,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class Settings extends MainActivity {
     private Switch batteryOptimization;
@@ -413,18 +404,10 @@ public class Settings extends MainActivity {
                     String name = String.format("%02d.mp3", id);
                     URL url = new URL("https://kazky.suspilne.media/inc/audio/" + name);
 
-                    if (SettingsHelper.fileExists(Settings.this, name)) continue;
+                    ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+                    FileOutputStream fos = new FileOutputStream(Settings.this.getFilesDir() + "/" + name);
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
-                    URLConnection connection = url.openConnection();
-                    connection.connect();
-
-                    int length = connection.getContentLength();
-                    byte file[] = new byte[length];
-                    InputStream input = new BufferedInputStream(url.openStream(), 1024);
-
-                    input.read(file);
-                    SettingsHelper.saveFile(Settings.this, name, file);
-                    input.close();
                     publishProgress();
                 }
             }catch (Exception e){
