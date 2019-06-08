@@ -168,8 +168,13 @@ public class Tales extends MainActivity {
         }
 
         private void playTale(ArrayList<Integer> ids, int playId){
+            String name = String.format("%02d.mp3", id);
+            String url = "https://kazky.suspilne.media/inc/audio/" + name;
+
+            if (SettingsHelper.fileExists(Tales.this, name)) continue;
+
             player.releasePlayer();
-            player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", playId) + ".mp3");
+            player.initializePlayer(url);
             if (playId == lastPlaying){
                 player.setPosition(position);
             }

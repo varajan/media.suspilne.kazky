@@ -1,12 +1,14 @@
 package media.suspilne.kazky;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.DisplayMetrics;
 
 import java.io.ByteArrayOutputStream;
@@ -14,6 +16,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
+
+import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class SettingsHelper {
     private static String application = "Kazka";
@@ -101,6 +105,14 @@ public class SettingsHelper {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] bytes = stream.toByteArray();
 
+            saveFile(context, name, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveFile(Context context, String name, byte[] bytes){
+        try {
             FileOutputStream outputStream;
             outputStream = context.openFileOutput(name, Context.MODE_PRIVATE);
             outputStream.write(bytes);

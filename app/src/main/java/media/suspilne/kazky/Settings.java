@@ -15,6 +15,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -24,18 +25,27 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Set;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class Settings extends MainActivity {
     private Switch batteryOptimization;
@@ -385,17 +395,63 @@ public class Settings extends MainActivity {
             setColorsAndState();
         }
 
+        byte[] concat(byte[] first, byte[] second) {
+            byte[] result = Arrays.copyOf(first, first.length + second.length);
+            System.arraycopy(second, 0, result, first.length, second.length);
+            return result;
+        }
+
         @Override
         protected Void doInBackground(Integer... integers) {
             progressDialog.setMax(integers.length);
 
             try {
                 for (int id:integers) {
-                    Thread.sleep(200);
+                    String name = String.format("%02d.mp3", id);
+                    URL url = new URL("https://kazky.suspilne.media/inc/audio/" + name);
+
+                    if (SettingsHelper.fileExists(Settings.this, name)) continue;
+
+                    URLConnection connection = url.openConnection();
+                    connection.connect();
+
+                    int length = connection.getContentLength();
+                    byte file[] = new byte[length];
+                    InputStream input = new BufferedInputStream(url.openStream(), length);
+
+                    input.read(file);
+                    SettingsHelper.saveFile(Settings.this, name, file);
+                    input.close();
                     publishProgress();
                 }
             }catch (Exception e){
                 e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    class DownloadFile extends AsyncTask<Integer, String, String> {
+        @Override
+        protected String doInBackground(Integer... ids) {
+            int count;
+            try {
+                String name = String.format("%02d.mp3", ids[0]);
+                URL url = new URL("https://kazky.suspilne.media/inc/audio/" + name);
+                URLConnection connection = url.openConnection();
+                connection.connect();
+
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+                byte data[] = new byte[1024*1024*1024];
+                input.read(data);
+                SettingsHelper.saveFile(Settings.this, name, data);
+
+                input.close();
+
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
             }
 
             return null;
