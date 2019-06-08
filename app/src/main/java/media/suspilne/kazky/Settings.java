@@ -130,9 +130,11 @@ public class Settings extends MainActivity {
         }
 
         private void dropDownloads(){
-            // TODO
-            // show progress dialog
-            // drop downloads
+            for (String file:SettingsHelper.getFileNames(Settings.this)) {
+                if (file.contains(".mp3")){
+                    SettingsHelper.deleteFile(Settings.this, file);
+                }
+            }
         }
 
         @Override
@@ -168,6 +170,7 @@ public class Settings extends MainActivity {
                             case DialogInterface.BUTTON_POSITIVE:
                                 dropDownloads();
                                 SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
+                                setColorsAndState();
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -415,7 +418,7 @@ public class Settings extends MainActivity {
                     URLConnection connection = url.openConnection();
                     connection.connect();
 
-                    int length = connection.getContentLength();
+                    int length = connection.getContentLength(); // -128 ??
                     byte file[] = new byte[length];
                     InputStream input = new BufferedInputStream(url.openStream(), length);
 

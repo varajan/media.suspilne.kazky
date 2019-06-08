@@ -94,6 +94,14 @@ public class SettingsHelper {
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
+    public static void deleteFile(Context context, String name){
+        context.deleteFile(name);
+    }
+
+    public static String[] getFileNames(Context context){
+        return context.fileList();
+    }
+
     public static Boolean fileExists(Context context, String name){
         return context.getFileStreamPath(name).exists();
     }

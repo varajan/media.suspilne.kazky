@@ -3,6 +3,7 @@ package media.suspilne.kazky;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,13 +169,11 @@ public class Tales extends MainActivity {
         }
 
         private void playTale(ArrayList<Integer> ids, int playId){
-            String name = String.format("%02d.mp3", id);
+            String name = String.format("%02d.mp3", playId);
             String url = "https://kazky.suspilne.media/inc/audio/" + name;
 
-            if (SettingsHelper.fileExists(Tales.this, name)) continue;
-
             player.releasePlayer();
-            player.initializePlayer(url);
+            player.initializePlayer(SettingsHelper.fileExists(Tales.this, name) ? Tales.this.getFilesDir() + "/" + name : url);
             if (playId == lastPlaying){
                 player.setPosition(position);
             }
