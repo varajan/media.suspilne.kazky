@@ -35,6 +35,7 @@ import java.util.Arrays;
 
 public class Settings extends MainActivity {
     private Switch batteryOptimization;
+    private Switch talesDownload;
     private Switch talesPlayNext;
     private Switch autoQuit;
     private SeekBar timeout;
@@ -48,6 +49,7 @@ public class Settings extends MainActivity {
         super.onCreate(savedInstanceState);
 
         batteryOptimization = this.findViewById(R.id.batteryOptimization);
+        talesDownload = this.findViewById(R.id.talesDownload);
         talesPlayNext = this.findViewById(R.id.talesPlayNext);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
@@ -72,6 +74,7 @@ public class Settings extends MainActivity {
         });
 
         batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+        talesDownload.setOnCheckedChangeListener(onDownloadTalesListener);
 
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -97,6 +100,25 @@ public class Settings extends MainActivity {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             requestIgnoreBatteryOptimization();
+            setColorsAndState();
+        }
+    };
+
+    private CompoundButton.OnCheckedChangeListener onDownloadTalesListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked){
+                // ask to confirm
+                // show progress dialog, download
+                // on success: set setting to TRUE
+
+                SettingsHelper.setBoolean(Settings.this, "talesDownload", true);
+            }else{
+                // ask to confirm
+                // clear tales
+                SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
+            }
+
             setColorsAndState();
         }
     };
@@ -127,23 +149,29 @@ public class Settings extends MainActivity {
     private void setColorsAndState() {
         boolean isTalesPlayNext = SettingsHelper.getBoolean(this, "talesPlayNext");
         boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
+        boolean isTalesDownload = SettingsHelper.getBoolean(this, "talesDownload");
         int accent = ContextCompat.getColor(this, R.color.colorAccent);
 
         timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
         timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
 
-        batteryOptimization.setEnabled(Build.VERSION.SDK_INT > 23);
         talesPlayNext.setChecked(isTalesPlayNext);
+        talesDownload.setChecked(isTalesDownload);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
 
-        batteryOptimization.setOnCheckedChangeListener(null);
-        batteryOptimization.setTextColor(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations() ? accent : Color.GRAY);
-        batteryOptimization.setChecked(Build.VERSION.SDK_INT > 23 && isIgnoringBatteryOptimizations());
-        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+        if (Build.VERSION.SDK_INT > 23){
+            batteryOptimization.setOnCheckedChangeListener(null);
+            batteryOptimization.setTextColor(isIgnoringBatteryOptimizations() ? accent : Color.GRAY);
+            batteryOptimization.setChecked(isIgnoringBatteryOptimizations());
+            batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
+        }else{
+            batteryOptimization.setVisibility(View.GONE);
+        }
 
         talesPlayNext.setTextColor(isTalesPlayNext ? accent : Color.GRAY);
+        talesDownload.setTextColor(isTalesDownload ? accent : Color.GRAY);
         autoQuit.setTextColor(isAutoQuit ? accent : Color.GRAY);
         timeoutText.setTextColor(isAutoQuit ? accent : Color.GRAY);
     }
