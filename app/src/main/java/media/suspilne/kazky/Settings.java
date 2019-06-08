@@ -368,7 +368,7 @@ public class Settings extends MainActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            progressDialog.incrementProgressBy(values[0]);
+            progressDialog.incrementProgressBy(1);
         }
 
         @Override
@@ -383,12 +383,16 @@ public class Settings extends MainActivity {
 
         @Override
         protected Void doInBackground(Integer... integers) {
+            progressDialog.setMax(integers.length);
+
             try {
                 for (int id:integers) {
                     Thread.sleep(100);
-                    publishProgress(100/integers.length);
+                    publishProgress();
                 }
-            }catch (Exception e){}
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             return null;
         }
