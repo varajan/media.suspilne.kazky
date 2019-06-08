@@ -80,9 +80,6 @@ public class Settings extends MainActivity {
             }
         });
 
-//        batteryOptimization.setOnCheckedChangeListener(onIgnoreBatteryChangeListener);
-//        talesDownload.setOnCheckedChangeListener(onDownloadTalesListener);
-
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -149,7 +146,9 @@ public class Settings extends MainActivity {
                 };
 
                 new AlertDialog.Builder(Settings.this)
-                    .setMessage("Скачат казки на пристрій? Це займе деякий час в залежності від швидкості Інтерета.")
+                    .setIcon(R.mipmap.logo)
+                    .setTitle("Скачат казки на пристрій?")
+                    .setMessage("Це займе деякий час в залежності від швидкості Інтерета.")
                     .setPositiveButton("Скачати", dialogClickListener)
                     .setNegativeButton("Ні", dialogClickListener)
                     .show();
@@ -173,7 +172,9 @@ public class Settings extends MainActivity {
                 };
 
                 new AlertDialog.Builder(Settings.this)
-                    .setMessage("Вдалити казки з пристрою? Ви не зможете слухати казки без Інтерета.")
+                    .setIcon(R.mipmap.logo)
+                    .setTitle("Видалити казки з пристрою?")
+                    .setMessage("Ви не зможете слухати казки без Інтерета.")
                     .setPositiveButton("Видалити", dialogClickListener)
                     .setNegativeButton("Ні", dialogClickListener)
                     .show();

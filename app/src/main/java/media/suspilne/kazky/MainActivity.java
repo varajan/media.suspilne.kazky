@@ -108,11 +108,12 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Вийти з Казок?")
-                .setPositiveButton("Так", dialogClickListener)
-                .setNegativeButton("Ні", dialogClickListener)
-                .show();
+        new AlertDialog.Builder(this)
+            .setIcon(R.mipmap.logo)
+            .setTitle("Вийти з Казок?")
+            .setPositiveButton("Так", dialogClickListener)
+            .setNegativeButton("Ні", dialogClickListener)
+            .show();
     }
 
     private void setTitle() {
