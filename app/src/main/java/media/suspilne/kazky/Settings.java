@@ -24,8 +24,6 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -400,27 +398,47 @@ public class Settings extends MainActivity {
             }
         }
 
+        private void getMp3File(int id) throws IOException {
+            String track = String.format("%02d.mp3", id);
+            URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
+            int length = url.openConnection().getContentLength();
+
+            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+            FileOutputStream fos = new FileOutputStream(Settings.this.getFilesDir() + "/" + track);
+            fos.getChannel().transferFrom(rbc, 0, length);
+        }
+
+        private void getJpgFile(int id) throws IOException {
+            String image = String.format("%02d", id) + ".jpg";
+            InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + image).getContent();
+            Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), 300, 226);
+            SettingsHelper.saveImage(Settings.this, image, drawable);
+        }
+
+        private void getTitleAndReader(int id) throws IOException {
+            String title = SettingsHelper.getString(Settings.this, "title-" + id);
+            String reader = SettingsHelper.getString(Settings.this, "reader-" + id);
+
+            if (title.equals("") || reader.equals("")){
+                Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
+                title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
+                reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
+
+                SettingsHelper.setString(Settings.this, "title-" + id, title);
+                SettingsHelper.setString(Settings.this, "reader-" + id, reader);
+            }
+        }
+
         @Override
         protected Boolean doInBackground(Integer... integers) {
-            progressDialog.setMax(integers.length * 2);
+            progressDialog.setMax(integers.length);
 
             try {
                 for (int id:integers) {
-                    // get mp3 file
-                    String track = String.format("%02d.mp3", id);
-                    URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
-                    int length = url.openConnection().getContentLength();
+                    getMp3File(id);
+                    getJpgFile(id);
+                    getTitleAndReader(id);
 
-                    ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-                    FileOutputStream fos = new FileOutputStream(Settings.this.getFilesDir() + "/" + track);
-                    fos.getChannel().transferFrom(rbc, 0, length);
-                    publishProgress();
-
-                    // get jpg file
-                    String image = String.format("%02d", id) + ".jpg";
-                    InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + image).getContent();
-                    Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), 300, 226);
-                    SettingsHelper.saveImage(Settings.this, image, drawable);
                     publishProgress();
                 }
             }catch (Exception e){

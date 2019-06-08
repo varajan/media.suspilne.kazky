@@ -3,7 +3,6 @@ package media.suspilne.kazky;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,10 +57,6 @@ public class Tales extends MainActivity {
         setContentView(R.layout.activity_tales);
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
-
-        if (!isNetworkAvailable()){
-            Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-        }
 
         new GetTales().execute("https://kazky.suspilne.media/list");
     }
