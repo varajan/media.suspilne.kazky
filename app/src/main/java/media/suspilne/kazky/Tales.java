@@ -162,7 +162,7 @@ public class Tales extends MainActivity {
                     setPlayBtnIcon(ids, -1);
                     player.releasePlayer();
 
-                    Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
                 }
             });
         }

@@ -1,6 +1,8 @@
 package media.suspilne.kazky;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -12,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -32,6 +35,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Settings extends MainActivity {
     private Switch batteryOptimization;
@@ -41,6 +45,8 @@ public class Settings extends MainActivity {
     private SeekBar timeout;
     private TextView timeoutText;
     private int step = 5;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,18 +111,66 @@ public class Settings extends MainActivity {
     };
 
     private CompoundButton.OnCheckedChangeListener onDownloadTalesListener = new CompoundButton.OnCheckedChangeListener() {
+        private void download(){
+            if (!Settings.this.isNetworkAvailable()){
+                Toast.makeText(Settings.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            new Settings.GetTaleIds().execute("https://kazky.suspilne.media/list");
+        }
+
+        private void dropDownloads(){
+            // TODO
+            // show progress dialog
+            // drop downloads
+        }
+
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked){
-                // ask to confirm
-                // show progress dialog, download
-                // on success: set setting to TRUE
+            if (isChecked || !isChecked){
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                download();
+                                break;
 
-                SettingsHelper.setBoolean(Settings.this, "talesDownload", true);
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //'No' button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
+                builder.setMessage("Скачат казки на пристрій? Це займе деякий час в залежності від швидкості Інтерета.")
+                        .setPositiveButton("Скачати", dialogClickListener)
+                        .setNegativeButton("Ні", dialogClickListener)
+                        .show();
             }else{
-                // ask to confirm
-                // clear tales
-                SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                dropDownloads();
+                                SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //'No' button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
+                builder.setMessage("Вдалити казки з пристрою? Ви не зможете слухати казки без Інтерета.")
+                        .setPositiveButton("Видалити", dialogClickListener)
+                        .setNegativeButton("Ні", dialogClickListener)
+                        .show();
             }
 
             setColorsAndState();
@@ -263,6 +317,80 @@ public class Settings extends MainActivity {
             int maxWidth =  item.getWidth() - photo.getWidth() - 3 * margin;
 
             taleReader.setWidth(maxWidth);
+        }
+    }
+
+
+    class GetTaleIds extends AsyncTask<String, Void, Integer[]> {
+        @Override
+        protected Integer[] doInBackground(String... arg) {
+            ArrayList<Integer> result = new ArrayList<>();
+
+            try {
+                Document document = Jsoup.connect(arg[0]).get();
+                Elements tales = document.select("div.tales-list a");
+                for (Element tale : tales) {
+                    String href = tale.attr("href");
+                    String id = href.split("\\?")[0].split("/")[2];
+                    result.add(Integer.valueOf(id));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            result = ListHelper.union(result, SettingsHelper.getSavedTaleIds(Settings.this));
+            Collections.sort(result);
+
+            return result.toArray(new Integer[0]);
+        }
+
+        @Override
+        protected void onPostExecute(final Integer[] ids) {
+            super.onPostExecute(ids);
+
+            if (ids.length == 0){
+                Toast.makeText(Settings.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
+            }
+            else{
+                new Settings.DownloadTales().execute(ids);
+            }
+        }
+    }
+
+    class DownloadTales extends AsyncTask<Integer, Integer, Void> {
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(Settings.this);
+            progressDialog.setTitle("Завантаження казок");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progressDialog.incrementProgressBy(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(final Void success) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+
+            Toast.makeText(Settings.this, "Готово!", Toast.LENGTH_LONG).show();
+            SettingsHelper.setBoolean(Settings.this, "talesDownload", true);
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            try {
+                for (int id:integers) {
+                    Thread.sleep(100);
+                    publishProgress(100/integers.length);
+                }
+            }catch (Exception e){}
+
+            return null;
         }
     }
 }
