@@ -3,7 +3,6 @@ package media.suspilne.kazky;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -59,24 +58,6 @@ public class Tales extends MainActivity {
     class ShowTales extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... arg) { return null; }
-
-        private void setTitleAndReader(int id, View item){
-            String titleValue = SettingsHelper.getString(Tales.this, "title-" + id);
-            String readerValue = SettingsHelper.getString(Tales.this, "reader-" + id);
-
-            TextView title = item.findViewById(R.id.title);
-            TextView reader = item.findViewById(R.id.reader);
-            ImageView preview = item.findViewById(R.id.preview);
-            int margin = ((ConstraintLayout.LayoutParams)preview.getLayoutParams()).leftMargin;
-            int imageWidth = preview.getWidth();
-            int maxWidth =  item.getWidth() - imageWidth - 3 * margin;
-
-            title.setText(titleValue);
-            reader.setText(readerValue);
-
-            title.setWidth(maxWidth);
-            reader.setWidth(maxWidth);
-        }
 
         private View.OnClickListener onPlayBtnClick = new View.OnClickListener() {
             public void onClick(View v) {
@@ -159,6 +140,16 @@ public class Tales extends MainActivity {
             }
         }
 
+        private void setTaleDetails(View item, int id){
+            Drawable image = SettingsHelper.getImage(Tales.this, String.format("%02d.jpg", id));
+            String title = SettingsHelper.getString(Tales.this, "title-" + id);
+            String reader = SettingsHelper.getString(Tales.this, "reader-" + id);
+
+            ((TextView) item.findViewById(R.id.title)).setText(title);
+            ((TextView) item.findViewById(R.id.reader)).setText(reader);
+            if (image != null) ((ImageView) item.findViewById(R.id.preview)).setImageDrawable(image);
+        }
+
         @Override
         protected void onPostExecute(Void result) {
             final LinearLayout list = findViewById(R.id.list);
@@ -167,14 +158,11 @@ public class Tales extends MainActivity {
 
             for (final int id:ids) {
                 View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
-                Drawable image = SettingsHelper.getImage(Tales.this, String.format("%02d.jpg", id));
                 final ImageView playBtn = item.findViewById(R.id.play);
-                ImageView preview = item.findViewById(R.id.preview);
 
                 item.setTag(id);
                 list.addView(item);
-                setTitleAndReader(id, item);
-                if (image != null) preview.setImageDrawable(image);
+                setTaleDetails(item, id);
 
                 playBtn.setOnClickListener(onPlayBtnClick);
                 playBtn.setTag(id);
