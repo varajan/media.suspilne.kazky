@@ -19,18 +19,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import com.google.android.gms.common.util.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;
@@ -192,23 +187,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void getMp3File(int id) throws IOException {
+    private void getMp3File(int id) throws Exception {
         String track = String.format("%02d.mp3", id);
         URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
-        int length = url.openConnection().getContentLength();
-
-        ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-        FileOutputStream fos = new FileOutputStream(MainActivity.this.getFilesDir() + "/" + track);
-        fos.getChannel().transferFrom(rbc, 0, length);
+        InputStream is = (InputStream) url.getContent();
+        SettingsHelper.saveFile(MainActivity.this, track, IOUtils.toByteArray(is));
     }
 
-    private void getJpgFile(String url, String name, int width, int height) throws IOException {
+    private void getJpgFile(String url, String name, int width, int height) throws Exception {
         InputStream is = (InputStream) new URL(url).getContent();
         Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), width, height);
         SettingsHelper.saveImage(MainActivity.this, name, drawable);
     }
 
-    private void getTitleAndReader(int id) throws IOException {
+    private void getTitleAndReader(int id) throws Exception {
         String title = SettingsHelper.getString(MainActivity.this, "title-" + id);
         String reader = SettingsHelper.getString(MainActivity.this, "reader-" + id);
 
@@ -227,7 +219,7 @@ public class MainActivity extends AppCompatActivity
         final String CACHE_IMAGES = "Cache images";
         final String DOWNLOAD_ALL = "Download all";
 
-        private ArrayList<Integer> getTaleIds(String url) throws IOException {
+        private ArrayList<Integer> getTaleIds(String url) throws Exception {
             ArrayList<Integer> result = new ArrayList<>();
             Document document = Jsoup.connect(url).get();
             Elements tales = document.select("div.tales-list a");
@@ -256,7 +248,7 @@ public class MainActivity extends AppCompatActivity
 
                 result = ListHelper.union(cachedIds, realIds);
                 Collections.sort(result);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -338,9 +330,9 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected Boolean doInBackground(Integer... integers) {
-            progressDialog.setMax(integers.length);
-
             try {
+                progressDialog.setMax(integers.length);
+
                 for (int id:integers) {
                     String name = String.format("%02d.jpg", id);
                     String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
@@ -349,7 +341,7 @@ public class MainActivity extends AppCompatActivity
                     getJpgFile(url, name, 300, 226);
                     getTitleAndReader(id);
 
-                    publishProgress();
+                    publishProgress(id);
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -379,7 +371,7 @@ public class MainActivity extends AppCompatActivity
                     getJpgFile(url, name, 100, 100);
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
