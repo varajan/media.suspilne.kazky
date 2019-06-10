@@ -204,8 +204,11 @@ public class Tales extends MainActivity {
             playBtn.setTag(id);
 
             if (nowPlaying == id){
+                String name = String.format("%02d.mp3", nowPlaying);
+                String url = "https://kazky.suspilne.media/inc/audio/" + name;
+
                 playBtn.setImageResource(R.mipmap.tale_pause);
-                player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", nowPlaying) + ".mp3");
+                player.initializePlayer(SettingsHelper.fileExists(Tales.this, name) ? Tales.this.getFilesDir() + "/" + name : url);
                 player.setPosition(position);
                 Tales.this.setQuiteTimeout();
             }
