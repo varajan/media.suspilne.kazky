@@ -1,8 +1,10 @@
 package media.suspilne.kazky;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 public class Tales extends MainActivity {
     int nowPlaying;
@@ -49,10 +52,50 @@ public class Tales extends MainActivity {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
 
-        GetTaleIds cache = new GetTaleIds();
-        cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
+        askToDownloadTales();
+
+        try {
+            GetTaleIds cache = new GetTaleIds();
+            cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         new ShowTales().execute();
+    }
+
+    private void askToDownloadTales(){
+        if (SettingsHelper.getBoolean(this, "askToDownloadTales")
+         || SettingsHelper.getBoolean(this, "talesDownload")) return;
+
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    GetTaleIds download = new GetTaleIds();
+                    try {
+                        download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL).get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    new ShowTales().execute();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //'No' button clicked
+                    break;
+            }
+        };
+
+        new AlertDialog.Builder(Tales.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle("Скачат казки на пристрій?")
+                .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
+                .setPositiveButton("Скачати", dialogClickListener)
+                .setNegativeButton("Ні", dialogClickListener)
+                .show();
+
+        SettingsHelper.setBoolean(this, "askToDownloadTales", true);
     }
 
     class ShowTales extends AsyncTask<Void, Void, Void> {

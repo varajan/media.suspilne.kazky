@@ -33,6 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class Settings extends MainActivity {
     private Switch batteryOptimization;
     private Switch talesDownload;
@@ -92,13 +93,9 @@ public class Settings extends MainActivity {
         new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
 
-    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            requestIgnoreBatteryOptimization();
-            setColorsAndState();
-        }
+    private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = (buttonView, isChecked) -> {
+        requestIgnoreBatteryOptimization();
+        setColorsAndState();
     };
 
     private void download(){
@@ -110,61 +107,52 @@ public class Settings extends MainActivity {
         }
     }
 
-    private CompoundButton.OnCheckedChangeListener onDownloadTalesListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked){
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                download();
-                                setColorsAndState();
-                                break;
+    private CompoundButton.OnCheckedChangeListener onDownloadTalesListener = (buttonView, isChecked) -> {
+        if (isChecked){
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        download();
+                        setColorsAndState();
+                        break;
 
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //'No' button clicked
-                                setColorsAndState();
-                                break;
-                        }
-                    }
-                };
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //'No' button clicked
+                        setColorsAndState();
+                        break;
+                }
+            };
 
-                new AlertDialog.Builder(Settings.this)
-                    .setIcon(R.mipmap.logo)
-                    .setTitle("Скачат казки на пристрій?")
-                    .setMessage("Це займе деякий час в залежності від швидкості Інтерета.")
-                    .setPositiveButton("Скачати", dialogClickListener)
-                    .setNegativeButton("Ні", dialogClickListener)
-                    .show();
-            }else{
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                dropDownloads(".mp3");
-                                SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
-                                setColorsAndState();
-                                break;
+            new AlertDialog.Builder(Settings.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle("Скачат казки на пристрій?")
+                .setMessage("Це займе деякий час в залежності від швидкості Інтерета.")
+                .setPositiveButton("Скачати", dialogClickListener)
+                .setNegativeButton("Ні", dialogClickListener)
+                .show();
+        }else{
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        dropDownloads(".mp3");
+                        SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
+                        setColorsAndState();
+                        break;
 
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //'No' button clicked
-                                setColorsAndState();
-                                break;
-                        }
-                    }
-                };
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //'No' button clicked
+                        setColorsAndState();
+                        break;
+                }
+            };
 
-                new AlertDialog.Builder(Settings.this)
-                    .setIcon(R.mipmap.logo)
-                    .setTitle("Видалити казки з пристрою?")
-                    .setMessage("Ви не зможете слухати казки без Інтерета.")
-                    .setPositiveButton("Видалити", dialogClickListener)
-                    .setNegativeButton("Ні", dialogClickListener)
-                    .show();
-            }
+            new AlertDialog.Builder(Settings.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle("Видалити казки з пристрою?")
+                .setMessage("Ви не зможете слухати казки без Інтерета.")
+                .setPositiveButton("Видалити", dialogClickListener)
+                .setNegativeButton("Ні", dialogClickListener)
+                .show();
         }
     };
 
