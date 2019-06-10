@@ -33,6 +33,18 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Switch
+            android:id="@+id/talesDownload"
+            android:fontFamily="@font/chalkboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:text="Зберегти казки на пристрій (Казки будуть доступні без Інтернета)"
+            android:textSize="16sp"
+            tools:typeface="serif"
+            app:layout_constraintStart_toStartOf="parent" />
+        <Switch
             android:id="@+id/talesPlayNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
