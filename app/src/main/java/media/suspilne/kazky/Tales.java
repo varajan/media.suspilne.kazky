@@ -49,6 +49,12 @@ public class Tales extends MainActivity {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState != null){
+            nowPlaying = savedInstanceState.getInt("nowPlaying");
+            lastPlaying = savedInstanceState.getInt("lastPlaying");
+            position = savedInstanceState.getLong("position");
+        }
+
         showTales();
         askToDownloadTales();
     }
