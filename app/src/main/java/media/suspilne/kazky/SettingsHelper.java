@@ -47,6 +47,15 @@ public class SettingsHelper {
         return ListHelper.intersect(readers, titles);
     }
 
+    public static ArrayList<Integer> getTaleReaderIds(Activity activity){
+        ArrayList<Integer> readers = new ArrayList<>();
+
+        for (String reader:getAllSettings(activity, "readerName-")){
+            readers.add(Integer.parseInt(reader.split("-")[1]));
+        }
+        return readers;
+    }
+
     public static ArrayList<String> getAllSettings(Activity activity, String setting){
         ArrayList<String> result = new ArrayList<>();
 

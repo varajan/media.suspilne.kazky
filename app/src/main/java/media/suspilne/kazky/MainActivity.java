@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity
 
         GetTaleIds cache = new GetTaleIds();
         cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
+        new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
 
     private void exit(){
@@ -201,11 +202,10 @@ public class MainActivity extends AppCompatActivity
         fos.getChannel().transferFrom(rbc, 0, length);
     }
 
-    private void getJpgFile(int id) throws IOException {
-        String image = String.format("%02d", id) + ".jpg";
-        InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + image).getContent();
-        Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), 300, 226);
-        SettingsHelper.saveImage(MainActivity.this, image, drawable);
+    private void getJpgFile(String url, String name, int width, int height) throws IOException {
+        InputStream is = (InputStream) new URL(url).getContent();
+        Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), width, height);
+        SettingsHelper.saveImage(MainActivity.this, name, drawable);
     }
 
     private void getTitleAndReader(int id) throws IOException {
@@ -274,7 +274,6 @@ public class MainActivity extends AppCompatActivity
 
             switch (action){
                 case CACHE_IMAGES:
-//                    if (ids.length < 10)
                     new CacheImages().execute(ids);
                     break;
 
@@ -290,7 +289,10 @@ public class MainActivity extends AppCompatActivity
         protected Boolean doInBackground(Integer... integers) {
             try {
                 for (int id:integers) {
-                    getJpgFile(id);
+                    String name = String.format("%02d.jpg", id);
+                    String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
+
+                    getJpgFile(url, name, 300, 226);
                     getTitleAndReader(id);
                 }
             }catch (Exception e){
@@ -326,13 +328,11 @@ public class MainActivity extends AppCompatActivity
             if (success){
                 Toast.makeText(MainActivity.this, "Готово!", Toast.LENGTH_LONG).show();
                 SettingsHelper.setBoolean(MainActivity.this, "talesDownload", true);
-//                setColorsAndState(); TODO
             }
             else{
                 dropDownloads(".mp3");
                 Toast.makeText(MainActivity.this, "Сталась помлка, можливо мало місця!", Toast.LENGTH_LONG).show();
                 SettingsHelper.setBoolean(MainActivity.this, "talesDownload", false);
-//                setColorsAndState(); TODO
             }
         }
 
@@ -342,8 +342,11 @@ public class MainActivity extends AppCompatActivity
 
             try {
                 for (int id:integers) {
+                    String name = String.format("%02d.jpg", id);
+                    String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
+
                     getMp3File(id);
-                    getJpgFile(id);
+                    getJpgFile(url, name, 300, 226);
                     getTitleAndReader(id);
 
                     publishProgress();
@@ -354,6 +357,33 @@ public class MainActivity extends AppCompatActivity
             }
 
             return true;
+        }
+    }
+
+    class GetTaleReaders extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... arg) {
+            try {
+                Document document = Jsoup.connect(arg[0]).get();
+                Elements readers = document.select("div.information__main div.reader-line");
+
+                for (Element reader : readers) {
+                    final String src = reader.select("img").attr("src");
+                    final String id = src.split("readers/")[1].split("\\.")[0];
+                    final String fullName = reader.select("div.reader").text().trim().split("\\.")[0];
+                    String readerName = String.format("readerName-%s", id);
+                    String name = String.format("%s.jpg", readerName);
+                    String url = String.format("https://kazky.suspilne.media/inc/img/readers/%s.jpg", id);
+
+                    SettingsHelper.setString(MainActivity.this, readerName, fullName);
+                    getJpgFile(url, name, 100, 100);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 }
