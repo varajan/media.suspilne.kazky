@@ -177,6 +177,15 @@ public class Tales extends MainActivity {
         ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
         Collections.sort(ids);
 
+        if (ids.size() == 0){
+            new AlertDialog.Builder(Tales.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle("Відсутній Інтернет!")
+                .setMessage("Щоб схухати казки треба підключення до Інтернета.")
+                .setPositiveButton("OK", (dialog, which) -> SettingsHelper.setBoolean(Tales.this, "askToDownloadTales", false))
+                .show();
+        }
+
         for (final int id:ids) {
             View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
             final ImageView playBtn = item.findViewById(R.id.play);

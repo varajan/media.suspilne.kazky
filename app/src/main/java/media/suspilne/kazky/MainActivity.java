@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity
         startService(new Intent(this, Player.class));
 
         GetTaleIds cache = new GetTaleIds();
-        cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
-        new GetTaleReaders().execute("https://kazky.suspilne.media/list");
+        if (isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
+        if (isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
 
     private void exit(){

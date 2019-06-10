@@ -82,6 +82,8 @@ public class Settings extends MainActivity {
         ArrayList<Integer> ids = SettingsHelper.getTaleReaderIds(Settings.this);
         Collections.sort(ids);
 
+        if (ids.size() == 0) ((TextView) findViewById(R.id.sectionTitle)).setText("");
+
         for (final int id:ids) {
             String readerName = SettingsHelper.getString(this, String.format("readerName-%d", id));
             Drawable readerPhoto = SettingsHelper.getImage(this, String.format("readerName-%d.jpg", id));
