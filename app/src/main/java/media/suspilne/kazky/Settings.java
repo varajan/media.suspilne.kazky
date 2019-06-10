@@ -58,20 +58,14 @@ public class Settings extends MainActivity {
 
         setColorsAndState();
 
-        talesPlayNext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(Settings.this, "talesPlayNext", isChecked);
-                setColorsAndState();
-            }
+        talesPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SettingsHelper.setBoolean(Settings.this, "talesPlayNext", isChecked);
+            setColorsAndState();
         });
 
-        autoQuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsHelper.setBoolean(Settings.this, "autoQuit", isChecked);
-                setColorsAndState();
-            }
+        autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SettingsHelper.setBoolean(Settings.this, "autoQuit", isChecked);
+            setColorsAndState();
         });
 
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

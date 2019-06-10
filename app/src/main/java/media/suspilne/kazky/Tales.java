@@ -11,10 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ExecutionException;
 
 public class Tales extends MainActivity {
     int nowPlaying;
@@ -52,16 +50,8 @@ public class Tales extends MainActivity {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
 
-        askToDownloadTales();
-
-        try {
-            GetTaleIds cache = new GetTaleIds();
-            cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         new ShowTales().execute();
+        askToDownloadTales();
     }
 
     private void askToDownloadTales(){
@@ -72,13 +62,7 @@ public class Tales extends MainActivity {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     GetTaleIds download = new GetTaleIds();
-                    try {
-                        download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL).get();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    new ShowTales().execute();
+                    download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

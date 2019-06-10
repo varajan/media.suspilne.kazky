@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity
         player = new Player(this);
         player.UpdateSslProvider();
         startService(new Intent(this, Player.class));
+
+        GetTaleIds cache = new GetTaleIds();
+        cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
     }
 
     private void exit(){
@@ -271,7 +274,8 @@ public class MainActivity extends AppCompatActivity
 
             switch (action){
                 case CACHE_IMAGES:
-                    if (ids.length < 10) new CacheImages().execute(ids);
+//                    if (ids.length < 10)
+                    new CacheImages().execute(ids);
                     break;
 
                 case DOWNLOAD_ALL:
@@ -282,26 +286,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     class CacheImages extends AsyncTask<Integer, Integer, Boolean> {
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setIcon(R.mipmap.logo);
-            progressDialog.setTitle("Завантаження казок");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-        }
-
         @Override
         protected Boolean doInBackground(Integer... integers) {
-            progressDialog.setMax(integers.length);
-
             try {
                 for (int id:integers) {
                     getJpgFile(id);
