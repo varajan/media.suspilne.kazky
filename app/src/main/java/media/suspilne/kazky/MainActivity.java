@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity
             .show();
     }
 
+
     private void setTitle() {
         String title = navigation.getMenu().findItem(currentView).getTitle().toString();
         getSupportActionBar().setTitle(title);
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity
 
             switch (action){
                 case CACHE_IMAGES:
-                    new CacheImages().execute(ids);
+                    if (ids.length < 10) new CacheImages().execute(ids);
                     break;
 
                 case DOWNLOAD_ALL:

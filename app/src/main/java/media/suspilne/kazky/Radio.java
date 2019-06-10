@@ -51,21 +51,22 @@ public class Radio extends MainActivity {
                     player.releasePlayer();
                     playPauseBtn.setImageResource(R.mipmap.play);
                 }else{
-                    player.initializePlayer(radioStream);
-                    playPauseBtn.setImageResource(R.mipmap.pause);
-                    setQuiteTimeout();
+                    if (isNetworkAvailable()){
+                        player.initializePlayer(radioStream);
+                        playPauseBtn.setImageResource(R.mipmap.pause);
+                        setQuiteTimeout();
+                    }else{
+                        Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
 
-        player.addListener(new Player.SourceIsNotAccessibleListener(){
-            @Override
-            public void sourceIsNotAccessible(){
-                playPauseBtn.setImageResource(R.mipmap.play);
-                player.releasePlayer();
+        player.addListener((Player.SourceIsNotAccessibleListener) () -> {
+            playPauseBtn.setImageResource(R.mipmap.play);
+            player.releasePlayer();
 
-                Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         });
     }
 }

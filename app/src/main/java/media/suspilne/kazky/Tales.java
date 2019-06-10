@@ -84,9 +84,8 @@ public class Tales extends MainActivity {
                     ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
                     ImageView playBtn = (ImageView) v;
                     int id = (int) playBtn.getTag();
-                    boolean vrr = playBtn.getDrawable().equals(getResources().getDrawable(R.mipmap.tale_pause));
 
-                    if (player.isPlaying() && playBtn.getDrawable().equals(getResources().getDrawable(R.mipmap.tale_pause))){
+                    if (player.isPlaying() && id == nowPlaying){
                         position = player.position();
                         lastPlaying = id;
 
