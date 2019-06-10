@@ -11,14 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -58,110 +50,91 @@ public class Tales extends MainActivity {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
 
-        new GetTales().execute("https://kazky.suspilne.media/list");
+        GetTaleIds cache = new GetTaleIds();
+        cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
+
+        new ShowTales().execute();
     }
 
-    class GetTales extends AsyncTask<String, Void, ArrayList<Integer>> {
+    class ShowTales extends AsyncTask<Void, Void, Void> {
         @Override
-        protected ArrayList<Integer> doInBackground(String... arg) {
-            ArrayList<Integer> result = new ArrayList<>();
+        protected Void doInBackground(Void... arg) { return null; }
 
-            try {
-                Document document = Jsoup.connect(arg[0]).get();
-                Elements tales = document.select("div.tales-list a");
-                for (Element tale : tales) {
-                    String href = tale.attr("href");
-                    String id = href.split("\\?")[0].split("/")[2];
-                    result.add(Integer.valueOf(id));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        private void setTitleAndReader(int id, View item){
+            String titleValue = SettingsHelper.getString(Tales.this, "title-" + id);
+            String readerValue = SettingsHelper.getString(Tales.this, "reader-" + id);
 
-            result = ListHelper.union(result, SettingsHelper.getSavedTaleIds(Tales.this));
-            Collections.sort(result);
+            TextView title = item.findViewById(R.id.title);
+            TextView reader = item.findViewById(R.id.reader);
+            ImageView preview = item.findViewById(R.id.preview);
+            int margin = ((ConstraintLayout.LayoutParams)preview.getLayoutParams()).leftMargin;
+            int imageWidth = preview.getWidth();
+            int maxWidth =  item.getWidth() - imageWidth - 3 * margin;
 
-            return result;
+            title.setText(titleValue);
+            reader.setText(readerValue);
+
+            title.setWidth(maxWidth);
+            reader.setWidth(maxWidth);
         }
 
-        @Override
-        protected void onPostExecute(final ArrayList<Integer> ids) {
-            super.onPostExecute(ids);
-            final LinearLayout list = findViewById(R.id.list);
+        private View.OnClickListener onPlayBtnClick = new View.OnClickListener() {
+            public void onClick(View v) {
+                try{
+                    ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+                    ImageView playBtn = (ImageView) v;
+                    int id = (int) playBtn.getTag();
+                    boolean vrr = playBtn.getDrawable().equals(getResources().getDrawable(R.mipmap.tale_pause));
 
-            for (final int id:ids) {
-                View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
-                item.setTag(id);
-                list.addView(item);
+                    if (player.isPlaying() && playBtn.getDrawable().equals(getResources().getDrawable(R.mipmap.tale_pause))){
+                        position = player.position();
+                        lastPlaying = id;
 
-                new SetTaleTitle().execute(id);
-                new SetTaleImage().execute(id);
-
-                final ImageView playBtn = item.findViewById(R.id.play);
-
-                playBtn.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        try{
-                            if (player.isPlaying() && playBtn.getTag().equals(R.mipmap.tale_pause)){
-                                position = player.position();
-                                lastPlaying = id;
-
-                                player.releasePlayer();
-                                playBtn.setImageResource(R.mipmap.tale_play);
-                                playBtn.setTag(R.mipmap.tale_play);
-                            }else{
-                                playTale(ids, id);
-                                Tales.this.setQuiteTimeout();
-                            }
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
+                        player.releasePlayer();
+                        playBtn.setImageResource(R.mipmap.tale_play);
+                    }else{
+                        playTale(ids, id);
+                        Tales.this.setQuiteTimeout();
                     }
-                });
-
-                if (nowPlaying == id){
-                    playBtn.setImageResource(R.mipmap.tale_pause);
-                    playBtn.setTag(R.mipmap.tale_pause);
-
-                    player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", nowPlaying) + ".mp3");
-                    player.setPosition(position);
-
-                    Tales.this.setQuiteTimeout();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
+        };
 
-            player.addListener(new Player.MediaIsEndedListener(){
-                @Override
-                public void mediaIsEnded(){
-                    if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")){
-                        int next = ids.get(0);
+        private Player.MediaIsEndedListener onPlaybackEnded = new Player.MediaIsEndedListener(){
+            @Override
+            public void mediaIsEnded(){
+                ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+                if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")){
+                    int next = ids.get(0);
 
-                        for(int i:ids){
-                            if (i > nowPlaying) {
-                                next = i;
-                                break;
-                            }
+                    for(int i:ids){
+                        if (i > nowPlaying) {
+                            next = i;
+                            break;
                         }
-
-                        playTale(ids, next);
-                    }else{
-                        nowPlaying = -1;
-                        setPlayBtnIcon(ids, -1);
                     }
-                }
-            });
 
-            player.addListener(new Player.SourceIsNotAccessibleListener(){
-                @Override
-                public void sourceIsNotAccessible(){
+                    playTale(ids, next);
+                }else{
                     nowPlaying = -1;
                     setPlayBtnIcon(ids, -1);
-                    player.releasePlayer();
+                }
+            }
+        };
+
+        private Player.SourceIsNotAccessibleListener onSourceNotAccessible = new Player.SourceIsNotAccessibleListener(){
+            @Override
+            public void sourceIsNotAccessible(){
+                ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+                nowPlaying = -1;
+                setPlayBtnIcon(ids, -1);
+                player.releasePlayer();
 
                 Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+            }
+        };
 
         private void playTale(ArrayList<Integer> ids, int playId){
             String name = String.format("%02d.mp3", playId);
@@ -172,6 +145,7 @@ public class Tales extends MainActivity {
             if (playId == lastPlaying){
                 player.setPosition(position);
             }
+
             setPlayBtnIcon(ids, playId);
             nowPlaying = playId;
             lastPlaying = playId;
@@ -183,95 +157,39 @@ public class Tales extends MainActivity {
             for (int x:ids){
                 ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
                 btn.setImageResource(x == id ? R.mipmap.tale_pause : R.mipmap.tale_play);
-                btn.setTag(x == id ? R.mipmap.tale_pause : R.mipmap.tale_play);
             }
         }
-    }
-
-    class SetTaleImage extends AsyncTask<Integer, Void, Drawable> {
-        private int id;
 
         @Override
-        protected Drawable doInBackground(Integer... arg) {
-            try {
-                id = arg[0];
+        protected void onPostExecute(Void result) {
+            final LinearLayout list = findViewById(R.id.list);
+            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+            Collections.sort(ids);
 
-                String file = String.format("%02d", id) + ".jpg";
-                Drawable drawable = SettingsHelper.getImage(Tales.this, file);
+            for (final int id:ids) {
+                View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
+                Drawable image = SettingsHelper.getImage(Tales.this, String.format("%02d.jpg", id));
+                final ImageView playBtn = item.findViewById(R.id.play);
+                ImageView preview = item.findViewById(R.id.preview);
 
-                if (drawable == null){
-                    InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + file).getContent();
-                    drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), 300, 226);
-                    SettingsHelper.saveImage(Tales.this, file, drawable);
+                item.setTag(id);
+                list.addView(item);
+                setTitleAndReader(id, item);
+                if (image != null) preview.setImageDrawable(image);
+
+                playBtn.setOnClickListener(onPlayBtnClick);
+                playBtn.setTag(id);
+
+                if (nowPlaying == id){
+                    playBtn.setImageResource(R.mipmap.tale_pause);
+                    player.initializePlayer("https://kazky.suspilne.media/inc/audio/" + String.format("%02d", nowPlaying) + ".mp3");
+                    player.setPosition(position);
+                    Tales.this.setQuiteTimeout();
                 }
-
-                return drawable;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Drawable preview) {
-            super.onPostExecute(preview);
-
-            if (preview != null)
-            {
-                View item = findViewById(R.id.list).findViewWithTag(id);
-                ((ImageView)item.findViewById(R.id.preview)).setImageDrawable(preview);
-            }
-        }
-    }
-
-    class SetTaleTitle extends AsyncTask<Integer, Void, String[]> {
-        private int id;
-
-        @Override
-        protected String[] doInBackground(Integer... arg) {
-            try {
-                id = arg[0];
-                String title = SettingsHelper.getString(Tales.this, "title-" + id);
-                String reader = SettingsHelper.getString(Tales.this, "reader-" + id);
-
-                if (title.equals("") || reader.equals("")){
-                    Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
-                    title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
-                    reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
-
-                    SettingsHelper.setString(Tales.this, "title-" + id, title);
-                    SettingsHelper.setString(Tales.this, "reader-" + id, reader);
-                }
-
-                return new String[] {title, reader};
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String[] titles) {
-            super.onPostExecute(titles);
-
-            if (titles == null){
-                Toast.makeText(Tales.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-                return;
             }
 
-            View item = findViewById(R.id.list).findViewWithTag(id);
-            TextView title = item.findViewById(R.id.title);
-            TextView reader = item.findViewById(R.id.reader);
-            ImageView preview = item.findViewById(R.id.preview);
-            int margin = ((ConstraintLayout.LayoutParams)preview.getLayoutParams()).leftMargin;
-            int imageWidth = preview.getWidth();
-            int maxWidth =  item.getWidth() - imageWidth - 3 * margin;
-
-            title.setText(titles[0]);
-            reader.setText(titles[1]);
-
-            title.setWidth(maxWidth);
-            reader.setWidth(maxWidth);
+            player.addListener(onPlaybackEnded);
+            player.addListener(onSourceNotAccessible);
         }
     }
 }

@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,15 +27,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class Settings extends MainActivity {
     private Switch batteryOptimization;
@@ -46,8 +41,6 @@ public class Settings extends MainActivity {
     private SeekBar timeout;
     private TextView timeoutText;
     private int step = 5;
-
-    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,15 +105,8 @@ public class Settings extends MainActivity {
         if (!this.isNetworkAvailable()){
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         } else {
-            new GetTaleIds().execute("https://kazky.suspilne.media/list");
-        }
-    }
-
-    private void dropDownloads(){
-        for (String file:SettingsHelper.getFileNames(this)) {
-            if (file.contains(".mp3")){
-                SettingsHelper.deleteFile(this, file);
-            }
+            GetTaleIds download = new GetTaleIds();
+            download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);
         }
     }
 
@@ -158,7 +144,7 @@ public class Settings extends MainActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
-                                dropDownloads();
+                                dropDownloads(".mp3");
                                 SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
                                 setColorsAndState();
                                 break;
@@ -327,126 +313,141 @@ public class Settings extends MainActivity {
             taleReader.setWidth(maxWidth);
         }
     }
-
-    class GetTaleIds extends AsyncTask<String, Void, Integer[]> {
-        @Override
-        protected Integer[] doInBackground(String... arg) {
-            ArrayList<Integer> result = new ArrayList<>();
-
-            try {
-                Document document = Jsoup.connect(arg[0]).get();
-                Elements tales = document.select("div.tales-list a");
-                for (Element tale : tales) {
-                    String href = tale.attr("href");
-                    String id = href.split("\\?")[0].split("/")[2];
-                    result.add(Integer.valueOf(id));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            result = ListHelper.union(result, SettingsHelper.getSavedTaleIds(Settings.this));
-            Collections.sort(result);
-
-            return result.toArray(new Integer[0]);
-        }
-
-        @Override
-        protected void onPostExecute(final Integer[] ids) {
-            super.onPostExecute(ids);
-
-            if (ids.length == 0){
-                Toast.makeText(Settings.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
-            }
-            else{
-                new Settings.DownloadTales().execute(ids);
-            }
-        }
-    }
-
-    class DownloadTales extends AsyncTask<Integer, Integer, Boolean> {
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(Settings.this);
-            progressDialog.setIcon(R.mipmap.logo);
-            progressDialog.setTitle("Завантаження казок");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            progressDialog.incrementProgressBy(1);
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-
-            if (success){
-                Toast.makeText(Settings.this, "Готово!", Toast.LENGTH_LONG).show();
-                SettingsHelper.setBoolean(Settings.this, "talesDownload", true);
-                setColorsAndState();
-            }
-            else{
-                dropDownloads();
-                Toast.makeText(Settings.this, "Сталась помлка, можливо мало місця!", Toast.LENGTH_LONG).show();
-                SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
-                setColorsAndState();
-            }
-        }
-
-        private void getMp3File(int id) throws IOException {
-            String track = String.format("%02d.mp3", id);
-            URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
-            int length = url.openConnection().getContentLength();
-
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream(Settings.this.getFilesDir() + "/" + track);
-            fos.getChannel().transferFrom(rbc, 0, length);
-        }
-
-        private void getJpgFile(int id) throws IOException {
-            String image = String.format("%02d", id) + ".jpg";
-            InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + image).getContent();
-            Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), 300, 226);
-            SettingsHelper.saveImage(Settings.this, image, drawable);
-        }
-
-        private void getTitleAndReader(int id) throws IOException {
-            String title = SettingsHelper.getString(Settings.this, "title-" + id);
-            String reader = SettingsHelper.getString(Settings.this, "reader-" + id);
-
-            if (title.equals("") || reader.equals("")){
-                Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
-                title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
-                reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
-
-                SettingsHelper.setString(Settings.this, "title-" + id, title);
-                SettingsHelper.setString(Settings.this, "reader-" + id, reader);
-            }
-        }
-
-        @Override
-        protected Boolean doInBackground(Integer... integers) {
-            progressDialog.setMax(integers.length);
-
-            try {
-                for (int id:integers) {
-                    getMp3File(id);
-                    getJpgFile(id);
-                    getTitleAndReader(id);
-
-                    publishProgress();
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                return false;
-            }
-
-            return true;
-        }
-    }
+//
+//    class GetTaleIds extends AsyncTask<String, Void, Integer[]> {
+//        String action;
+//
+//        private ArrayList<Integer> getTaleIds(String url) throws IOException {
+//            ArrayList<Integer> result = new ArrayList<>();
+//            Document document = Jsoup.connect(url).get();
+//            Elements tales = document.select("div.tales-list a");
+//
+//            for (Element tale : tales) {
+//                String href = tale.attr("href");
+//                String id = href.split("\\?")[0].split("/")[2];
+//                result.add(Integer.valueOf(id));
+//            }
+//
+//            return result;
+//        }
+//
+//        @Override
+//        protected Integer[] doInBackground(String... arg) {
+//            ArrayList<Integer> result = new ArrayList<>();
+//
+//            try {
+//                ArrayList<Integer> cachedIds =  SettingsHelper.getSavedTaleIds(Settings.this);
+//                ArrayList<Integer> realIds = new ArrayList<>();
+//
+//                if (cachedIds.size() < 10){
+//                    realIds = getTaleIds(arg[0]);
+//                }
+//
+//                result = ListHelper.union(cachedIds, realIds);
+//                Collections.sort(result);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return result.toArray(new Integer[0]);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Integer[] ids) {
+//            super.onPostExecute(ids);
+//
+//            if (ids.length == 0){
+//                Toast.makeText(Settings.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
+//            }
+//            else{
+//                new Settings.DownloadTales().execute(ids);
+//            }
+//        }
+//    }
+//
+//    class DownloadTales extends AsyncTask<Integer, Integer, Boolean> {
+//        protected void onPreExecute() {
+//            progressDialog = new ProgressDialog(Settings.this);
+//            progressDialog.setIcon(R.mipmap.logo);
+//            progressDialog.setTitle("Завантаження казок");
+//            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//            progressDialog.setCancelable(false);
+//            progressDialog.show();
+//        }
+//
+//        @Override
+//        protected void onProgressUpdate(Integer... values) {
+//            progressDialog.incrementProgressBy(1);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            if (progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+//
+//            if (success){
+//                Toast.makeText(Settings.this, "Готово!", Toast.LENGTH_LONG).show();
+//                SettingsHelper.setBoolean(Settings.this, "talesDownload", true);
+//                setColorsAndState();
+//            }
+//            else{
+//                dropDownloads(".mp3");
+//                Toast.makeText(Settings.this, "Сталась помлка, можливо мало місця!", Toast.LENGTH_LONG).show();
+//                SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
+//                setColorsAndState();
+//            }
+//        }
+//
+//        private void getMp3File(int id) throws IOException {
+//            String track = String.format("%02d.mp3", id);
+//            URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
+//            int length = url.openConnection().getContentLength();
+//
+//            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+//            FileOutputStream fos = new FileOutputStream(Settings.this.getFilesDir() + "/" + track);
+//            fos.getChannel().transferFrom(rbc, 0, length);
+//        }
+//
+//        private void getJpgFile(int id) throws IOException {
+//            String image = String.format("%02d", id) + ".jpg";
+//            InputStream is = (InputStream) new URL("https://kazky.suspilne.media/inc/img/songs_img/" + image).getContent();
+//            Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), 300, 226);
+//            SettingsHelper.saveImage(Settings.this, image, drawable);
+//        }
+//
+//        private void getTitleAndReader(int id) throws IOException {
+//            String title = SettingsHelper.getString(Settings.this, "title-" + id);
+//            String reader = SettingsHelper.getString(Settings.this, "reader-" + id);
+//
+//            if (title.equals("") || reader.equals("")){
+//                Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
+//                title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
+//                reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
+//
+//                SettingsHelper.setString(Settings.this, "title-" + id, title);
+//                SettingsHelper.setString(Settings.this, "reader-" + id, reader);
+//            }
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Integer... integers) {
+//            progressDialog.setMax(integers.length);
+//
+//            try {
+//                for (int id:integers) {
+//                    getMp3File(id);
+//                    getJpgFile(id);
+//                    getTitleAndReader(id);
+//
+//                    publishProgress();
+//                }
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                return false;
+//            }
+//
+//            return true;
+//        }
+//    }
 }
