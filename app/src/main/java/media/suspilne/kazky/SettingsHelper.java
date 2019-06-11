@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 public class SettingsHelper {
@@ -35,6 +36,7 @@ public class SettingsHelper {
     public static ArrayList<Integer> getSavedTaleIds(Activity activity){
         ArrayList<Integer> readers = new ArrayList<>();
         ArrayList<Integer> titles  = new ArrayList<>();
+        ArrayList<Integer> result;
 
         for (String reader:getAllSettings(activity, "reader-")){
             readers.add(Integer.parseInt(reader.split("-")[1]));
@@ -44,7 +46,10 @@ public class SettingsHelper {
             titles.add(Integer.parseInt(title.split("-")[1]));
         }
 
-        return ListHelper.intersect(readers, titles);
+        result = ListHelper.intersect(readers, titles);
+        Collections.sort(result);
+
+        return result;
     }
 
     public static ArrayList<Integer> getTaleReaderIds(Activity activity){
@@ -53,6 +58,8 @@ public class SettingsHelper {
         for (String reader:getAllSettings(activity, "readerName-")){
             readers.add(Integer.parseInt(reader.split("-")[1]));
         }
+        Collections.sort(readers);
+
         return readers;
     }
 

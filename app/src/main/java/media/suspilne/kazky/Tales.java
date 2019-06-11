@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Tales extends MainActivity {
     int nowPlaying;
@@ -147,9 +146,10 @@ public class Tales extends MainActivity {
     private void playTale(ArrayList<Integer> ids, int playId){
         String name = String.format("%02d.mp3", playId);
         String url = "https://kazky.suspilne.media/inc/audio/" + name;
+        String stream = SettingsHelper.fileExists(Tales.this, name) ? Tales.this.getFilesDir() + "/" + name : url;
 
         player.releasePlayer();
-        player.initializePlayer(SettingsHelper.fileExists(Tales.this, name) ? Tales.this.getFilesDir() + "/" + name : url);
+        player.initializePlayer(stream);
         if (playId == lastPlaying){
             player.setPosition(position);
         }
@@ -181,7 +181,6 @@ public class Tales extends MainActivity {
     void showTales() {
         final LinearLayout list = findViewById(R.id.list);
         ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
-        Collections.sort(ids);
 
         if (ids.size() == 0){
             new AlertDialog.Builder(Tales.this)
