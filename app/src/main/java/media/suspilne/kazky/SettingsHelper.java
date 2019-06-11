@@ -118,6 +118,10 @@ public class SettingsHelper {
         return context.getFileStreamPath(name).exists();
     }
 
+    public static Boolean taleExists(Context context, int id){
+        return fileExists(context, String.format("%02d.mp3", id));
+    }
+
     public static void saveImage(Context context, String name, Drawable drawable){
         try {
             Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();

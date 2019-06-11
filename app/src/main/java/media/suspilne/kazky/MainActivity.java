@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     protected NavigationView navigation;
     protected int currentView;
 
-    ProgressDialog progressDialog;
+    ProgressDialog progress;
 
     protected void setQuiteTimeout(){
         if (SettingsHelper.getBoolean(this, "autoQuit")) {
@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
@@ -94,6 +94,29 @@ public class MainActivity extends AppCompatActivity
         GetTaleIds cache = new GetTaleIds();
         if (isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
         if (isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
+    }
+
+    protected void askToContinueDownloadTales(){
+        if (!SettingsHelper.getBoolean(this, "talesDownload")) return;
+
+        boolean allTalesAreDownloaded = true;
+        for (int id : SettingsHelper.getSavedTaleIds(this)){
+            if (!SettingsHelper.taleExists(this, id)){
+                allTalesAreDownloaded = false;
+            }
+        }
+
+        if (allTalesAreDownloaded || !isNetworkAvailable()) return;
+
+        new AlertDialog.Builder(MainActivity.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle("Продовжити закачку казок?")
+                .setMessage("Не всі казки скачані на пристрій. Докачати?")
+                .setPositiveButton("Докачати", (dialog, which) -> {
+                    GetTaleIds download = new GetTaleIds();
+                    download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);})
+                .setNegativeButton("Ні", null)
+                .show();
     }
 
     private void exit(){
@@ -188,6 +211,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getMp3File(int id) throws Exception {
+        if (SettingsHelper.taleExists(MainActivity.this, id)) return;
+
         String track = String.format("%02d.mp3", id);
         URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
         InputStream is = (InputStream) url.getContent();
@@ -195,6 +220,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getJpgFile(String url, String name, int width, int height) throws Exception {
+        if (SettingsHelper.fileExists(MainActivity.this, name)) return;
+
         InputStream is = (InputStream) new URL(url).getContent();
         Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), width, height);
         SettingsHelper.saveImage(MainActivity.this, name, drawable);
@@ -261,6 +288,10 @@ public class MainActivity extends AppCompatActivity
 
             if (ids.length == 0){
                 Toast.makeText(MainActivity.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
+
+                if (action == DOWNLOAD_ALL){
+                    SettingsHelper.setBoolean(MainActivity.this, "talesDownload", false);
+                }
                 return;
             }
 
@@ -298,23 +329,23 @@ public class MainActivity extends AppCompatActivity
 
     class DownloadAll extends AsyncTask<Integer, Integer, Boolean> {
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setIcon(R.mipmap.logo);
-            progressDialog.setTitle("Завантаження казок");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            progress = new ProgressDialog(MainActivity.this);
+            progress.setIcon(R.mipmap.logo);
+            progress.setTitle("Завантаження казок");
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setCancelable(false);
+            progress.show();
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            progressDialog.incrementProgressBy(1);
+            progress.incrementProgressBy(1);
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
+            if (progress.isShowing()) {
+                progress.dismiss();
             }
 
             if (success){
@@ -331,7 +362,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Integer... integers) {
             try {
-                progressDialog.setMax(integers.length);
+                progress.setMax(integers.length);
 
                 for (int id:integers) {
                     String name = String.format("%02d.jpg", id);

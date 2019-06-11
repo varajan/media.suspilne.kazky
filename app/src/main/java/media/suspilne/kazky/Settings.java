@@ -49,6 +49,7 @@ public class Settings extends MainActivity {
 
         setColorsAndState();
         setTaleReaders();
+        askToContinueDownloadTales();
 
         talesPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SettingsHelper.setBoolean(Settings.this, "talesPlayNext", isChecked);

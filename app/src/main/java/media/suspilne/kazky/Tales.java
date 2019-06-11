@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -56,31 +55,21 @@ public class Tales extends MainActivity {
 
         showTales();
         askToDownloadTales();
+        askToContinueDownloadTales();
     }
 
     private void askToDownloadTales(){
         if (SettingsHelper.getBoolean(this, "askToDownloadTales")
          || SettingsHelper.getBoolean(this, "talesDownload")) return;
 
-        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    GetTaleIds download = new GetTaleIds();
-                    download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    //'No' button clicked
-                    break;
-            }
-        };
-
         new AlertDialog.Builder(Tales.this)
                 .setIcon(R.mipmap.logo)
                 .setTitle("Скачат казки на пристрій?")
                 .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
-                .setPositiveButton("Скачати", dialogClickListener)
-                .setNegativeButton("Ні", dialogClickListener)
+                .setPositiveButton("Скачати", (dialog, which) -> {
+                    GetTaleIds download = new GetTaleIds();
+                    download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);})
+                .setNegativeButton("Ні", null)
                 .show();
 
         SettingsHelper.setBoolean(this, "askToDownloadTales", true);
@@ -109,22 +98,36 @@ public class Tales extends MainActivity {
         }
     };
 
+    private int getNextTale(ArrayList<Integer> ids){
+        boolean online = isNetworkAvailable();
+
+        if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")){
+            for(int nextId:ids) {
+                if (nextId > nowPlaying && (online || SettingsHelper.taleExists(this, nextId))) {
+                    return nextId;
+                }
+            }
+
+            for(int prevId:ids){
+                if (prevId < nowPlaying && (online || SettingsHelper.taleExists(this, prevId))) {
+                    return prevId;
+                    }
+                }
+            }
+
+        return -1;
+    }
+
     private Player.MediaIsEndedListener onPlaybackEnded = new Player.MediaIsEndedListener(){
         @Override
         public void mediaIsEnded(){
             ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
-            if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")){
-                int next = ids.get(0);
+            int next = getNextTale(ids);
 
-                for(int i:ids){
-                    if (i > nowPlaying) {
-                        next = i;
-                        break;
-                    }
-                }
-
+            if (next > 0){
                 playTale(ids, next);
-            }else{
+            }
+            else{
                 nowPlaying = -1;
                 setPlayBtnIcon(ids, -1);
             }
@@ -146,7 +149,7 @@ public class Tales extends MainActivity {
     private void playTale(ArrayList<Integer> ids, int playId){
         String name = String.format("%02d.mp3", playId);
         String url = "https://kazky.suspilne.media/inc/audio/" + name;
-        String stream = SettingsHelper.fileExists(Tales.this, name) ? Tales.this.getFilesDir() + "/" + name : url;
+        String stream = SettingsHelper.taleExists(Tales.this, playId) ? Tales.this.getFilesDir() + "/" + name : url;
 
         player.releasePlayer();
         player.initializePlayer(stream);
@@ -207,7 +210,7 @@ public class Tales extends MainActivity {
                 String url = "https://kazky.suspilne.media/inc/audio/" + name;
 
                 playBtn.setImageResource(R.mipmap.tale_pause);
-                player.initializePlayer(SettingsHelper.fileExists(Tales.this, name) ? Tales.this.getFilesDir() + "/" + name : url);
+                player.initializePlayer(SettingsHelper.taleExists(Tales.this, nowPlaying) ? Tales.this.getFilesDir() + "/" + name : url);
                 player.setPosition(position);
                 Tales.this.setQuiteTimeout();
             }
