@@ -2,9 +2,9 @@ package media.suspilne.kazky;
 
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class Radio extends MainActivity {
     private ImageView playPauseBtn;
@@ -51,21 +51,30 @@ public class Radio extends MainActivity {
                     player.releasePlayer();
                     playPauseBtn.setImageResource(R.mipmap.play);
                 }else{
-                    player.initializePlayer(radioStream);
-                    playPauseBtn.setImageResource(R.mipmap.pause);
-                    setQuiteTimeout();
+                    if (isNetworkAvailable()){
+                        player.initializePlayer(radioStream);
+                        playPauseBtn.setImageResource(R.mipmap.pause);
+                        setQuiteTimeout();
+                    }else{
+                        showNoConnectionAlert();
+                  }
                 }
             }
         });
 
-        player.addListener(new Player.SourceIsNotAccessibleListener(){
-            @Override
-            public void sourceIsNotAccessible(){
-                playPauseBtn.setImageResource(R.mipmap.play);
-                player.releasePlayer();
-
-                Toast.makeText(Radio.this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
-            }
+        player.addListener((Player.SourceIsNotAccessibleListener) () -> {
+            playPauseBtn.setImageResource(R.mipmap.play);
+            player.releasePlayer();
+            showNoConnectionAlert();
         });
+    }
+
+    private void showNoConnectionAlert(){
+        new AlertDialog.Builder(Radio.this)
+            .setIcon(R.mipmap.logo)
+            .setTitle("Відсутній Інтернет!")
+            .setMessage("Щоб схухати радіо потрібно підключення до Інтернета.")
+            .setPositiveButton("OK", null)
+            .show();
     }
 }

@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 public class SettingsHelper {
@@ -35,6 +36,7 @@ public class SettingsHelper {
     public static ArrayList<Integer> getSavedTaleIds(Activity activity){
         ArrayList<Integer> readers = new ArrayList<>();
         ArrayList<Integer> titles  = new ArrayList<>();
+        ArrayList<Integer> result;
 
         for (String reader:getAllSettings(activity, "reader-")){
             readers.add(Integer.parseInt(reader.split("-")[1]));
@@ -44,7 +46,21 @@ public class SettingsHelper {
             titles.add(Integer.parseInt(title.split("-")[1]));
         }
 
-        return ListHelper.intersect(readers, titles);
+        result = ListHelper.intersect(readers, titles);
+        Collections.sort(result);
+
+        return result;
+    }
+
+    public static ArrayList<Integer> getTaleReaderIds(Activity activity){
+        ArrayList<Integer> readers = new ArrayList<>();
+
+        for (String reader:getAllSettings(activity, "readerName-")){
+            readers.add(Integer.parseInt(reader.split("-")[1]));
+        }
+        Collections.sort(readers);
+
+        return readers;
     }
 
     public static ArrayList<String> getAllSettings(Activity activity, String setting){
@@ -90,8 +106,20 @@ public class SettingsHelper {
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
+    public static void deleteFile(Context context, String name){
+        context.deleteFile(name);
+    }
+
+    public static String[] getFileNames(Context context){
+        return context.fileList();
+    }
+
     public static Boolean fileExists(Context context, String name){
         return context.getFileStreamPath(name).exists();
+    }
+
+    public static Boolean taleExists(Context context, int id){
+        return fileExists(context, String.format("%02d.mp3", id));
     }
 
     public static void saveImage(Context context, String name, Drawable drawable){
@@ -101,9 +129,18 @@ public class SettingsHelper {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] bytes = stream.toByteArray();
 
+            saveFile(context, name, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveFile(Context context, String name, byte[] bytes){
+        try {
             FileOutputStream outputStream;
             outputStream = context.openFileOutput(name, Context.MODE_PRIVATE);
             outputStream.write(bytes);
+            outputStream.flush();
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();

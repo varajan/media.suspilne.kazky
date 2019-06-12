@@ -21,7 +21,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.gms.security.ProviderInstaller;
 
 public class Player extends Service {
@@ -73,12 +73,12 @@ public class Player extends Service {
     public void initializePlayer(String stream) {
         Uri uri = Uri.parse(stream);
 
-        player = ExoPlayerFactory.newSimpleInstance(
+        player = ExoPlayerFactory.newSimpleInstance(context,
                 new DefaultRenderersFactory(context),
                 new DefaultTrackSelector(), new DefaultLoadControl());
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory("exoplayer-codelab"))
+                new DefaultDataSourceFactory(context, "exoplayer-codelab"))
                 .createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
