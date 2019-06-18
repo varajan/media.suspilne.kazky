@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    class DownloadAll extends AsyncTask<Integer, Integer, Boolean> {
+    class DownloadAll extends AsyncTask<Integer, Integer, String> {
         protected void onPreExecute() {
             progress = new ProgressDialog(MainActivity.this);
             progress.setIcon(R.mipmap.logo);
@@ -343,28 +343,35 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final String result) {
             if (progress.isShowing()) {
                 progress.dismiss();
             }
 
-            if (success){
+            if (result.isEmpty()){
                 Toast.makeText(MainActivity.this, "Готово!", Toast.LENGTH_LONG).show();
-                SettingsHelper.setBoolean(MainActivity.this, "talesDownload", true);
-            }
-            else{
-                dropDownloads(".mp3");
-                Toast.makeText(MainActivity.this, "Сталась помлка, можливо мало місця!", Toast.LENGTH_LONG).show();
-                SettingsHelper.setBoolean(MainActivity.this, "talesDownload", false);
+            }else{
+                new AlertDialog.Builder(MainActivity.this)
+                    .setIcon(R.mipmap.logo)
+                    .setTitle("Сталась помлка")
+                    .setMessage(result)
+                    .setNeutralButton("OK", null)
+                    .show();
             }
         }
 
         @Override
-        protected Boolean doInBackground(Integer... integers) {
+        protected String doInBackground(Integer... integers) {
             try {
                 progress.setMax(integers.length);
 
                 for (int id:integers) {
+                    long freeSpace = SettingsHelper.freeSpace();
+
+                    if (freeSpace < 50){
+                        throw new Exception(String.format("Лишилось лише %dМБ вільного місця!", freeSpace));
+                    }
+
                     String name = String.format("%02d.jpg", id);
                     String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
 
@@ -376,10 +383,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                return false;
+                return e.getMessage();
             }
 
-            return true;
+            return "";
         }
     }
 
