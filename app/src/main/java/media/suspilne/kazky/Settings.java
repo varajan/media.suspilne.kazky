@@ -3,7 +3,6 @@ package media.suspilne.kazky;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
@@ -11,17 +10,12 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.Collections;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class Settings extends MainActivity {
@@ -47,7 +41,6 @@ public class Settings extends MainActivity {
         timeoutText = this.findViewById(R.id.timeoutText);
 
         setColorsAndState();
-        setTaleReaders();
         askToContinueDownloadTales();
 
         talesPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -73,27 +66,6 @@ public class Settings extends MainActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-    }
-
-    private void setTaleReaders(){
-        LinearLayout list = findViewById(R.id.list);
-        ArrayList<Integer> ids = SettingsHelper.getTaleReaderIds(Settings.this);
-        Collections.sort(ids);
-
-        if (ids.size() == 0) ((TextView) findViewById(R.id.sectionTitle)).setText("");
-
-        for (final int id:ids) {
-            String readerName = SettingsHelper.getString(this, String.format("readerName-%d", id));
-            Drawable readerPhoto = SettingsHelper.getImage(this, String.format("readerName-%d.jpg", id));
-            View item = LayoutInflater.from(Settings.this).inflate(R.layout.reader, list, false);
-            list.addView(item);
-
-            TextView reader = item.findViewById(R.id.taleReader);
-            ImageView photo = item.findViewById(R.id.photo);
-
-            reader.setText(readerName);
-            if (readerPhoto != null) photo.setImageDrawable(ImageHelper.getCircularDrawable(readerPhoto));
-        }
     }
 
     private CompoundButton.OnCheckedChangeListener onIgnoreBatteryChangeListener = (buttonView, isChecked) -> {

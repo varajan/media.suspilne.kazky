@@ -1,11 +1,14 @@
 package media.suspilne.kazky;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Info extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,20 +16,29 @@ public class Info extends MainActivity {
         currentView = R.id.info_menu;
         super.onCreate(savedInstanceState);
 
+        setTaleReaders();
         String version = SettingsHelper.getVersionName(this);
         ((TextView)findViewById(R.id.infoText)).setText(getString(R.string.description, version));
-        findViewById(R.id.fiveStars).setOnClickListener(rateApp);
     }
 
-    View.OnClickListener rateApp = view -> {
-        try {
-            Uri uri = Uri.parse("market://details?id=" + getPackageName());
-            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+    private void setTaleReaders(){
+        LinearLayout list = findViewById(R.id.list);
+        ArrayList<Integer> ids = SettingsHelper.getTaleReaderIds(this);
+        Collections.sort(ids);
 
-            startActivity(goToMarket);
-        } catch (ActivityNotFoundException e) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        if (ids.size() == 0) findViewById(R.id.sectionTitle).setVisibility(View.GONE);
+
+        for (final int id:ids) {
+            String readerName = SettingsHelper.getString(this, String.format("readerName-%d", id));
+            Drawable readerPhoto = SettingsHelper.getImage(this, String.format("readerName-%d.jpg", id));
+            View item = LayoutInflater.from(this).inflate(R.layout.reader, list, false);
+            list.addView(item);
+
+            TextView reader = item.findViewById(R.id.taleReader);
+            ImageView photo = item.findViewById(R.id.photo);
+
+            reader.setText(readerName);
+            if (readerPhoto != null) photo.setImageDrawable(ImageHelper.getCircularDrawable(readerPhoto));
         }
-    };
+    }
 }

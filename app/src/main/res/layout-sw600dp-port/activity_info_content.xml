@@ -31,6 +31,7 @@
                 android:layout_margin="5dp"
                 android:text="Версія: 1.0.0"
                 app:fontFamily="@font/chalkboard"
+                android:fontFamily="@font/chalkboard"
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp"/>
 
@@ -43,6 +44,7 @@
                 android:textSize="20sp"
                 android:textColor="@color/colorAccent"
                 app:fontFamily="@font/chalkboard"
+                android:fontFamily="@font/chalkboard"
                 app:layout_constraintStart_toStartOf="parent"/>
         </LinearLayout>
 

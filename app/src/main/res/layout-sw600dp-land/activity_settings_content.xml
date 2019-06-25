@@ -97,19 +97,5 @@
             android:text="45"
             android:textSize="20sp"
             tools:typeface="serif" />
-
-        <TextView
-            android:id="@+id/sectionTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Казки читають:"
-            android:textSize="24sp"
-            android:textColor="@color/colorAccent"
-            app:fontFamily="@font/chalkboard"
-            app:layout_constraintStart_toStartOf="parent"/>
-
     </LinearLayout>
 </ScrollView>
