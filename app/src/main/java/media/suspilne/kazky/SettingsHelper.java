@@ -3,6 +3,8 @@ package media.suspilne.kazky;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -176,5 +178,14 @@ public class SettingsHelper {
         }
 
         return bytesAvailable / (1024 * 1024);
+    }
+
+    public static String getVersionName(Context context){
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "1.0.0";
+        }
     }
 }
