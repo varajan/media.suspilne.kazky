@@ -137,6 +137,7 @@ public class Settings extends MainActivity {
             .setMessage(message)
             .setPositiveButton(yes, (dialog, which) -> {if (isChecked) doDownload(); else doCleanup();})
             .setNegativeButton("Ні", (dialog, which) -> setColorsAndState())
+            .setOnDismissListener(dialog -> setColorsAndState())
             .show();
     };
 
