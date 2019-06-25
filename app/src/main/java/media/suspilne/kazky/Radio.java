@@ -3,7 +3,6 @@ package media.suspilne.kazky;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
 import android.widget.ImageView;
 
 public class Radio extends MainActivity {
@@ -45,20 +44,18 @@ public class Radio extends MainActivity {
 
         playPauseBtn = findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);
-        playPauseBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (player.isPlaying()){
-                    player.releasePlayer();
-                    playPauseBtn.setImageResource(R.mipmap.play);
+        playPauseBtn.setOnClickListener(v -> {
+            if (player.isPlaying()){
+                player.releasePlayer();
+                playPauseBtn.setImageResource(R.mipmap.play);
+            }else{
+                if (isNetworkAvailable()){
+                    player.initializePlayer(radioStream);
+                    playPauseBtn.setImageResource(R.mipmap.pause);
+                    setQuiteTimeout();
                 }else{
-                    if (isNetworkAvailable()){
-                        player.initializePlayer(radioStream);
-                        playPauseBtn.setImageResource(R.mipmap.pause);
-                        setQuiteTimeout();
-                    }else{
-                        showNoConnectionAlert();
-                  }
-                }
+                    showNoConnectionAlert();
+              }
             }
         });
 

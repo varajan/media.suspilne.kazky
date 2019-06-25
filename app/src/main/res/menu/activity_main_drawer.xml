@@ -18,6 +18,10 @@
             android:icon="@drawable/ic_settings"
             android:title="Налаштування" />
         <item
+            android:id="@+id/info_menu"
+            android:icon="@drawable/ic_info"
+            android:title="Про програму" />
+        <item
             android:id="@+id/exit_menu"
             android:icon="@drawable/ic_exit"
             android:title="Вихід" />

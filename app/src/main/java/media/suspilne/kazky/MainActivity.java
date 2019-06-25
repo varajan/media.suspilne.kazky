@@ -194,6 +194,12 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
 
+            case R.id.info_menu:
+                if (currentView != R.id.info_menu) {
+                    openActivity(Info.class);
+                }
+                break;
+
             case R.id.exit_menu:
                 showQuitDialog();
         }

@@ -26,6 +26,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".Info"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".Tales"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

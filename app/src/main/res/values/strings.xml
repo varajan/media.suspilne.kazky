@@ -6,7 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description">[Радіо] Цілодобове радіо казок від Суспільного Мовлення. І для його роботи потрібен Інтернет.
+[Казки] Дві дюжини казок можна скачати на пристрій і вони будуть доступні і без Інтернета.
+[Налаштування] Вмикайте казочки перед сном, а щоб радіо не грало всю ніч - скористайтесь "Таймером сну".</string>
 </resources>
