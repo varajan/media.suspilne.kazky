@@ -125,8 +125,8 @@ public class Settings extends MainActivity {
     }
 
     private CompoundButton.OnCheckedChangeListener onDownloadTalesListener = (buttonView, isChecked) -> {
-        String yes = isChecked ? "Скачати" : "Видалити";
-        String title = isChecked ? "Скачати казки на пристрій?" : "Видалити казки з пристрою?";
+        String yes = isChecked ? "Завантажити" : "Видалити";
+        String title = isChecked ? "Завантажити казки у пристрій?" : "Видалити казки із пристрою?";
         String message = isChecked
                 ? "Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета."
                 : "Ви не зможете слухати казки без Інтерета.";
