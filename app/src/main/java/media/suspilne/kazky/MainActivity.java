@@ -216,7 +216,6 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-
     private void rateApp(){
         try {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
