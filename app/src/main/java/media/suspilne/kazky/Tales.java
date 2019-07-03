@@ -163,7 +163,14 @@ public class Tales extends MainActivity {
     }
 
     private void setPlayBtnIcon(ArrayList<Integer> ids, int id){
-        LinearLayout list = findViewById(R.id.list);
+        long start = System.currentTimeMillis();
+        LinearLayout list = null;
+
+        while (list == null && System.currentTimeMillis() - start < 1000){
+            list = findViewById(R.id.list);
+        }
+
+        if (list == null) return;
 
         for (int x:ids){
             ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
