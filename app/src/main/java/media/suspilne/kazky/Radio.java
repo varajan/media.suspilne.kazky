@@ -59,7 +59,7 @@ public class Radio extends MainActivity {
             }
         });
 
-        player.addListener((Player.SourceIsNotAccessibleListener) () -> {
+        player.addListener((PlayerService.SourceIsNotAccessibleListener) () -> {
             playPauseBtn.setImageResource(R.mipmap.play);
             player.releasePlayer();
             showNoConnectionAlert();

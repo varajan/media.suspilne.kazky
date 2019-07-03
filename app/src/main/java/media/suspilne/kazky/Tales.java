@@ -118,7 +118,7 @@ public class Tales extends MainActivity {
         return -1;
     }
 
-    private Player.MediaIsEndedListener onPlaybackEnded = new Player.MediaIsEndedListener(){
+    private PlayerService.MediaIsEndedListener onPlaybackEnded = new PlayerService.MediaIsEndedListener(){
         @Override
         public void mediaIsEnded(){
             ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
@@ -134,7 +134,7 @@ public class Tales extends MainActivity {
         }
     };
 
-    private Player.SourceIsNotAccessibleListener onSourceNotAccessible = new Player.SourceIsNotAccessibleListener(){
+    private PlayerService.SourceIsNotAccessibleListener onSourceNotAccessible = new PlayerService.SourceIsNotAccessibleListener(){
         @Override
         public void sourceIsNotAccessible(){
             ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);

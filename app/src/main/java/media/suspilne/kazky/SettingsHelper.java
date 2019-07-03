@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Map;
 
 public class SettingsHelper {
-    private static String application = "Kazka";
+    public static String application = "Kazka";
 
     public static String getString(Activity activity, String setting){
         return getString(activity, setting, "");

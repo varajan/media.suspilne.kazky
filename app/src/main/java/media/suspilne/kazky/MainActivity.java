@@ -20,7 +20,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 import com.google.android.gms.common.util.IOUtils;
 import org.jsoup.Jsoup;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Timer quitTimer;
-    protected Player player;
+    protected PlayerService player;
     protected NavigationView navigation;
     protected int currentView;
 
@@ -90,9 +89,9 @@ public class MainActivity extends AppCompatActivity
         setTitle();
         setQuiteTimeout();
 
-        player = new Player(this);
+        player = new PlayerService(this);
         player.UpdateSslProvider();
-        startService(new Intent(this, Player.class));
+        startService(new Intent(this, PlayerService.class));
 
         GetTaleIds cache = new GetTaleIds();
         if (isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);

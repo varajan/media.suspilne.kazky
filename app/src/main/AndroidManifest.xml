@@ -34,7 +34,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <service
-            android:name=".Player"
+            android:name=".PlayerService"
             android:exported="false"/>
     </application>
 
