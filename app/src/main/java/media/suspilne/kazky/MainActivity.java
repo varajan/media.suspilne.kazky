@@ -1,6 +1,7 @@
 package media.suspilne.kazky;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -44,10 +45,13 @@ public class MainActivity extends AppCompatActivity
 
     ProgressDialog progress;
 
+    private static Activity activity;
+    public static Activity getActivity(){ return activity; }
+
     protected void setQuiteTimeout(){
-        if (SettingsHelper.getBoolean(this, "autoQuit")) {
+        if (SettingsHelper.getBoolean("autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
-            int timeout = SettingsHelper.getInt(this, "timeout");
+            int timeout = SettingsHelper.getInt("timeout");
 
             quitTimer = new Timer();
             quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
@@ -72,6 +76,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MainActivity.activity = this;
+
         super.onCreate(savedInstanceState);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,11 +101,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void askToContinueDownloadTales(){
-        if (!SettingsHelper.getBoolean(this, "talesDownload")) return;
+        if (!SettingsHelper.getBoolean("talesDownload")) return;
 
         boolean allTalesAreDownloaded = true;
         for (int id : SettingsHelper.getSavedTaleIds(this)){
-            if (!SettingsHelper.taleExists(this, id)){
+            if (!SettingsHelper.taleExists(id)){
                 allTalesAreDownloaded = false;
             }
         }
@@ -241,39 +247,39 @@ public class MainActivity extends AppCompatActivity
     void dropDownloads(String extension){
         for (String file:SettingsHelper.getFileNames(this)) {
             if (file.toLowerCase().contains(extension.toLowerCase())){
-                SettingsHelper.deleteFile(this, file);
+                SettingsHelper.deleteFile(file);
             }
         }
     }
 
     private void getMp3File(int id) throws Exception {
-        if (SettingsHelper.taleExists(MainActivity.this, id)) return;
+        if (SettingsHelper.taleExists(id)) return;
 
         String track = String.format("%02d.mp3", id);
         URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
         InputStream is = (InputStream) url.getContent();
-        SettingsHelper.saveFile(MainActivity.this, track, IOUtils.toByteArray(is));
+        SettingsHelper.saveFile(track, IOUtils.toByteArray(is));
     }
 
     private void getJpgFile(String url, String name, int width, int height) throws Exception {
-        if (SettingsHelper.fileExists(MainActivity.this, name)) return;
+        if (SettingsHelper.fileExists(name)) return;
 
         InputStream is = (InputStream) new URL(url).getContent();
         Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), width, height);
-        SettingsHelper.saveImage(MainActivity.this, name, drawable);
+        SettingsHelper.saveImage(name, drawable);
     }
 
     private void getTitleAndReader(int id) throws Exception {
-        String title = SettingsHelper.getString(MainActivity.this, "title-" + id);
-        String reader = SettingsHelper.getString(MainActivity.this, "reader-" + id);
+        String title = SettingsHelper.getString("title-" + id);
+        String reader = SettingsHelper.getString("reader-" + id);
 
         if (title.equals("") || reader.equals("")){
             Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
             title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
             reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
 
-            SettingsHelper.setString(MainActivity.this, "title-" + id, title);
-            SettingsHelper.setString(MainActivity.this, "reader-" + id, reader);
+            SettingsHelper.setString("title-" + id, title);
+            SettingsHelper.setString("reader-" + id, reader);
         }
     }
 
@@ -326,7 +332,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
 
                 if (action == DOWNLOAD_ALL){
-                    SettingsHelper.setBoolean(MainActivity.this, "talesDownload", false);
+                    SettingsHelper.setBoolean("talesDownload", false);
                 }
                 return;
             }
@@ -441,7 +447,7 @@ public class MainActivity extends AppCompatActivity
                     String name = String.format("%s.jpg", readerName);
                     String url = String.format("https://kazky.suspilne.media/inc/img/readers/%s.jpg", id);
 
-                    SettingsHelper.setString(MainActivity.this, readerName, fullName);
+                    SettingsHelper.setString(readerName, fullName);
                     getJpgFile(url, name, 100, 100);
                 }
 

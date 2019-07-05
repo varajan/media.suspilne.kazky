@@ -29,8 +29,8 @@ public class Info extends MainActivity {
         if (ids.size() == 0) findViewById(R.id.sectionTitle).setVisibility(View.GONE);
 
         for (final int id:ids) {
-            String readerName = SettingsHelper.getString(this, String.format("readerName-%d", id));
-            Drawable readerPhoto = SettingsHelper.getImage(this, String.format("readerName-%d.jpg", id));
+            String readerName = SettingsHelper.getString(String.format("readerName-%d", id));
+            Drawable readerPhoto = SettingsHelper.getImage(String.format("readerName-%d.jpg", id));
             View item = LayoutInflater.from(this).inflate(R.layout.reader, list, false);
             list.addView(item);
 

@@ -14,14 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Tales extends MainActivity {
-    int nowPlaying;
-    int lastPlaying;
-    long position;
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -40,12 +37,6 @@ public class Tales extends MainActivity {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null){
-            nowPlaying = savedInstanceState.getInt("nowPlaying");
-            lastPlaying = savedInstanceState.getInt("lastPlaying");
-            position = savedInstanceState.getLong("position");
-        }
-
         showTales();
         askToDownloadTales();
         askToContinueDownloadTales();
@@ -53,8 +44,8 @@ public class Tales extends MainActivity {
     }
 
     private void askToDownloadTales(){
-        if (SettingsHelper.getBoolean(this, "askToDownloadTales")
-         || SettingsHelper.getBoolean(this, "talesDownload")) return;
+        if (SettingsHelper.getBoolean("askToDownloadTales")
+         || SettingsHelper.getBoolean("talesDownload")) return;
 
         new AlertDialog.Builder(Tales.this)
                 .setIcon(R.mipmap.logo)
@@ -66,47 +57,70 @@ public class Tales extends MainActivity {
                 .setNegativeButton("Ні", null)
                 .show();
 
-        SettingsHelper.setBoolean(this, "askToDownloadTales", true);
+        SettingsHelper.setBoolean("askToDownloadTales", true);
     }
 
-    private View.OnClickListener onPlayBtnClick = new View.OnClickListener() {
-        public void onClick(View v) {
-            try{
-                ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
-                ImageView playBtn = (ImageView) v;
-                int id = (int) playBtn.getTag();
+    private View.OnClickListener onPlayBtnClick = v -> {
+        try{
+            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+            ImageView playBtn = (ImageView) v;
+            int id = (int) playBtn.getTag();
 
-                if (isServiceRunning(PlayerService.class) && id == nowPlaying){
+            if (isServiceRunning(PlayerService.class) && id == getNowPlaying()){
 //                    position = player.position();
 //                    lastPlaying = id;
-                    stopPlayerService();
-                    playBtn.setImageResource(R.mipmap.tale_play);
-                }else{
-                    playTale(ids, id);
-                    setQuiteTimeout();
-                }
-            } catch (Exception e){
-                e.printStackTrace();
+                stopPlayerService();
+                playBtn.setImageResource(R.mipmap.tale_play);
+            }else{
+                playTale(ids, id);
+                setQuiteTimeout();
             }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     };
 
-    private int getNextTale(ArrayList<Integer> ids){
+    public int getNext(){
+        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
         boolean online = isNetworkAvailable();
+        int nowPlaying = getNowPlaying();
 
-        if (SettingsHelper.getBoolean(Tales.this, "talesPlayNext")){
+        if (SettingsHelper.getBoolean("talesPlayNext")){
             for(int nextId:ids) {
-                if (nextId > nowPlaying && (online || SettingsHelper.taleExists(this, nextId))) {
+                if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
                     return nextId;
                 }
             }
 
             for(int prevId:ids){
-                if (prevId < nowPlaying && (online || SettingsHelper.taleExists(this, prevId))) {
+                if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
                     return prevId;
                     }
                 }
             }
+
+        return -1;
+    }
+
+    public int getPrevious(){
+        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+        boolean online = isNetworkAvailable();
+        int nowPlaying = getNowPlaying();
+        Collections.reverse(Arrays.asList(ids));
+
+        if (SettingsHelper.getBoolean("talesPlayNext")){
+            for(int prevId:ids){
+                if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
+                    return prevId;
+                }
+            }
+
+            for(int nextId:ids) {
+                if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
+                    return nextId;
+                }
+            }
+        }
 
         return -1;
     }
@@ -116,18 +130,7 @@ public class Tales extends MainActivity {
 
         if (id > 0){
             Intent intent = new Intent(this, PlayerService.class);
-            String name = String.format("%02d.mp3", id);
-            String url = "https://kazky.suspilne.media/inc/audio/" + name;
-            String stream = SettingsHelper.taleExists(Tales.this, id) ? Tales.this.getFilesDir() + "/" + name : url;
-            String title = SettingsHelper.getString(Tales.this, "title-" + id);
-            String reader = SettingsHelper.getString(Tales.this, "reader-" + id);
-
-            intent.putExtra("stream", stream);
             intent.putExtra("id", id);
-            intent.putExtra("reader", reader);
-            intent.putExtra("title", title);
-            intent.putExtra("position", 0);
-//            intent.putExtra("position", track.id == tracks.getLastPlaying() ? SettingsHelper.getLong("PlayerPosition") : 0);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(intent);
@@ -136,11 +139,7 @@ public class Tales extends MainActivity {
                 startService(intent);
             }
         }
-
-//        tracks.setNowPlaying(track.id);
-//        tracks.setLastPlaying(track.id);
-
-        setPlayBtnIcon(ids, id);
+//        setPlayBtnIcon(ids, id);
     }
 
     private void setPlayBtnIcon(ArrayList<Integer> ids, int id){
@@ -160,9 +159,9 @@ public class Tales extends MainActivity {
     }
 
     private void setTaleDetails(View item, int id){
-        Drawable image = SettingsHelper.getImage(Tales.this, String.format("%02d.jpg", id));
-        String title = SettingsHelper.getString(Tales.this, "title-" + id);
-        String reader = SettingsHelper.getString(Tales.this, "reader-" + id);
+        Drawable image = SettingsHelper.getImage(String.format("%02d.jpg", id));
+        String title = SettingsHelper.getString("title-" + id);
+        String reader = SettingsHelper.getString("reader-" + id);
 
         ((TextView) item.findViewById(R.id.title)).setText(title);
         ((TextView) item.findViewById(R.id.reader)).setText(reader);
@@ -178,7 +177,7 @@ public class Tales extends MainActivity {
                 .setIcon(R.mipmap.logo)
                 .setTitle("Відсутній Інтернет!")
                 .setMessage("Щоб схухати казки потрібне підключення до Інтернета.")
-                .setPositiveButton("OK", (dialog, which) -> SettingsHelper.setBoolean(Tales.this, "askToDownloadTales", false))
+                .setPositiveButton("OK", (dialog, which) -> SettingsHelper.setBoolean("askToDownloadTales", false))
                 .show();
         }
 
@@ -193,12 +192,12 @@ public class Tales extends MainActivity {
             playBtn.setOnClickListener(onPlayBtnClick);
             playBtn.setTag(id);
 
-            if (nowPlaying == id){
-                String name = String.format("%02d.mp3", nowPlaying);
+            if (getNowPlaying() == id){
+                String name = String.format("%02d.mp3", getNowPlaying());
                 String url = "https://kazky.suspilne.media/inc/audio/" + name;
 
                 playBtn.setImageResource(R.mipmap.tale_pause);
-//                player.initializePlayer(SettingsHelper.taleExists(Tales.this, nowPlaying) ? Tales.this.getFilesDir() + "/" + name : url);
+//                player.initializePlayer(SettingsHelper.taleExists(nowPlaying) ? Tales.this.getFilesDir() + "/" + name : url);
 //                player.setPosition(position);
                 Tales.this.setQuiteTimeout();
             }
@@ -227,7 +226,7 @@ public class Tales extends MainActivity {
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
                     setPlayBtnIcon(ids, -1);
-                    Toast.makeText(Tales.this, "Сталась помилка!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Tales.this,"Сталась помилка!", Toast.LENGTH_LONG).show();
                     break;
 
                 case "SetPlayBtnIcon":
@@ -236,4 +235,13 @@ public class Tales extends MainActivity {
             }
         }
     };
+
+    public static int getNowPlaying() { return SettingsHelper.getInt("nowPlaying"); }
+    public static void setNowPlaying(int value) { SettingsHelper.setInt("nowPlaying", value); }
+
+    public static int getLastPlaying() { return SettingsHelper.getInt("lastPlaying"); }
+    public static void setLastPlaying(int value) { SettingsHelper.setInt("lastPlaying", value); }
+
+    public static long getPosition() { return SettingsHelper.getLong("position"); }
+    public static void setPosition(long value) { SettingsHelper.setLong("position", value); }
 }

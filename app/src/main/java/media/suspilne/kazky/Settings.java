@@ -44,20 +44,20 @@ public class Settings extends MainActivity {
         askToContinueDownloadTales();
 
         talesPlayNext.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SettingsHelper.setBoolean(Settings.this, "talesPlayNext", isChecked);
+            SettingsHelper.setBoolean("talesPlayNext", isChecked);
             setColorsAndState();
         });
 
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SettingsHelper.setBoolean(Settings.this, "autoQuit", isChecked);
+            SettingsHelper.setBoolean("autoQuit", isChecked);
             setColorsAndState();
         });
 
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SettingsHelper.setInt(Settings.this,"timeout", seekBar.getProgress() * step);
-                timeoutText.setText(SettingsHelper.getString(Settings.this, "timeout", "0") + " хвилин");
+                SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
+                timeoutText.setText(SettingsHelper.getString("timeout", "0") + " хвилин");
             }
 
             @Override
@@ -84,13 +84,13 @@ public class Settings extends MainActivity {
 
     private void doDownload(){
         download();
-        SettingsHelper.setBoolean(Settings.this, "talesDownload", true);
+        SettingsHelper.setBoolean("talesDownload", true);
         setColorsAndState();
     }
 
     private void doCleanup(){
         dropDownloads(".mp3");
-        SettingsHelper.setBoolean(Settings.this, "talesDownload", false);
+        SettingsHelper.setBoolean("talesDownload", false);
         setColorsAndState();
     }
 
@@ -135,13 +135,13 @@ public class Settings extends MainActivity {
     }
 
     private void setColorsAndState() {
-        boolean isTalesPlayNext = SettingsHelper.getBoolean(this, "talesPlayNext");
-        boolean isAutoQuit = SettingsHelper.getBoolean(this, "autoQuit");
-        boolean isTalesDownload = SettingsHelper.getBoolean(this, "talesDownload");
+        boolean isTalesPlayNext = SettingsHelper.getBoolean("talesPlayNext");
+        boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
+        boolean isTalesDownload = SettingsHelper.getBoolean("talesDownload");
         int accent = ContextCompat.getColor(this, R.color.colorAccent);
 
-        timeoutText.setText(SettingsHelper.getString(this, "timeout", "5") + " хвилин");
-        timeout.setProgress(SettingsHelper.getInt(this, "timeout", 1) / step);
+        timeoutText.setText(SettingsHelper.getString("timeout", "5") + " хвилин");
+        timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
 
         talesPlayNext.setChecked(isTalesPlayNext);
         autoQuit.setChecked(isAutoQuit);

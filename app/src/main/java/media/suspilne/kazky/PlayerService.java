@@ -40,23 +40,7 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        String reader = intent.getStringExtra("reader");
-        String title = intent.getStringExtra("title");
-        int id = intent.getIntExtra("id", 0);
-
-        playStream(intent.getStringExtra("stream"), intent.getLongExtra("position", 0));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setSound(null, null);
-            notificationChannel.setShowBadge(false);
-
-            notificationManager.createNotificationChannel(notificationChannel);
-
-            this.startForeground(1, getNotification(id, reader, title));
-        } else{
-            notificationManager.notify(1, getNotification(id, reader, title));
-        }
+        playTale(intent.getIntExtra("id", 0));
 
         return START_NOT_STICKY;
     }
@@ -135,7 +119,7 @@ public class PlayerService extends Service {
 
     private Notification getNotification(int id, String reader, String title){
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        Drawable image = SettingsHelper.getImage(this, String.format("%02d.jpg", id));
+        Drawable image = SettingsHelper.getImage(String.format("%02d.jpg", id));
 
         Intent notificationIntent = new Intent(this, Tales.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -186,7 +170,7 @@ public class PlayerService extends Service {
     @Override
     public void onDestroy() {
         if (player != null) {
-            SettingsHelper.setLong(this, "PlayerPosition", player.getCurrentPosition());
+            SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
         }
 
         releasePlayer();
@@ -226,10 +210,41 @@ public class PlayerService extends Service {
         }catch (Exception e){ /*nothing*/ }
     }
 
+    private void playTale(int id){
+        Tales tales = new Tales();
+
+        if (id > 0){
+            String name = String.format("%02d.mp3", id);
+            String url = "https://kazky.suspilne.media/inc/audio/" + name;
+            String stream = SettingsHelper.taleExists(id) ? this.getFilesDir() + "/" + name : url;
+            String title = SettingsHelper.getString("title-" + id);
+            String reader = SettingsHelper.getString("reader-" + id);
+            long position = id == tales.getLastPlaying() ? tales.getPosition() : 0;
+
+            playStream(stream, position);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.setSound(null, null);
+                notificationChannel.setShowBadge(false);
+
+                notificationManager.createNotificationChannel(notificationChannel);
+
+                this.startForeground(1, getNotification(id, reader, title));
+            } else{
+                notificationManager.notify(1, getNotification(id, reader, title));
+            }
+        }
+
+        tales.setLastPlaying(id);
+        tales.setNowPlaying(id);
+        sendMessage("SetPlayBtnIcon", id);
+    }
+
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            Tracks tracks = new Tracks();
+            Tales tales = new Tales();
 
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
@@ -238,24 +253,26 @@ public class PlayerService extends Service {
 
                 case "MediaIsEnded":
                     releasePlayer();
-//                    playTrack(tracks.getNext());
+                    playTale(tales.getNext());
                     break;
 
                 case "PlayNext":
                     releasePlayer();
-//                    playTrack(tracks.getNext());
+                    playTale(tales.getNext());
                     break;
 
                 case "PlayPrevious":
                     releasePlayer();
-//                    playTrack(tracks.getPrevious());
+                    playTale(tales.getPrevious());
                     break;
 
                 case "StopPlay":
-//                    tracks.setNowPlaying(-1);
-//                    tracks.setLastPlaying(-1);
-                    stopService(new Intent(PlayerService.this, PlayerService.class));
+                    tales.setNowPlaying(-1);
+                    tales.setLastPlaying(-1);
+                    tales.setPosition(player.getCurrentPosition());
+
                     sendMessage("SetPlayBtnIcon", -1);
+                    stopService(new Intent(PlayerService.this, PlayerService.class));
                     break;
             }
         }
