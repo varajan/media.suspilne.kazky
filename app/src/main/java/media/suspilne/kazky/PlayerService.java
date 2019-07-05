@@ -199,10 +199,6 @@ public class PlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        if (player != null) {
-            SettingsHelper.setLong("PlayerPosition", player.getCurrentPosition());
-        }
-
         releasePlayer();
         clearNotifications();
         unregisterReceiver();
@@ -210,6 +206,7 @@ public class PlayerService extends Service {
 
     private void releasePlayer(){
         while (player != null){
+            ActivityTales.setPosition(player.getCurrentPosition());
             player.release();
             player = null;
         }
@@ -250,7 +247,6 @@ public class PlayerService extends Service {
             String title = SettingsHelper.getString("title-" + id);
             String reader = SettingsHelper.getString("reader-" + id);
             long position = id == tales.getLastPlaying() ? tales.getPosition() : 0;
-
             playStream(stream, position);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -316,8 +312,6 @@ public class PlayerService extends Service {
 
                 case "StopPlay":
                     tales.setNowPlaying(-1);
-                    tales.setLastPlaying(-1);
-                    tales.setPosition(player.getCurrentPosition());
 
                     sendMessage("SetPlayBtnIcon", -1);
                     stopService(new Intent(PlayerService.this, PlayerService.class));

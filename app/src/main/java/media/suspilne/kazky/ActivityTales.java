@@ -69,15 +69,14 @@ public class ActivityTales extends ActivityBase {
 
     private View.OnClickListener onPlayBtnClick = v -> {
         try{
-            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
             ImageView playBtn = (ImageView) v;
             int id = (int) playBtn.getTag();
 
-            if (isServiceRunning(PlayerService.class) && id == getNowPlaying()){
+            if (isTalePlaying() && id == getNowPlaying()){
                 stopPlayerService();
                 playBtn.setImageResource(R.mipmap.tale_play);
             }else{
-                playTale(ids, id);
+                playTale(id);
                 setQuiteTimeout();
             }
         } catch (Exception e){
@@ -126,7 +125,7 @@ public class ActivityTales extends ActivityBase {
         return -1;
     }
 
-    private void playTale(ArrayList<Integer> ids, int id){
+    private void playTale(int id){
         super.stopPlayerService();
 
         if (id > 0){
