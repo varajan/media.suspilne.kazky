@@ -82,20 +82,18 @@ public class Tales extends MainActivity {
 
     public int getNext(){
         ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
-        boolean online = isNetworkAvailable();
+        boolean online = SettingsHelper.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
 
-        if (SettingsHelper.getBoolean("talesPlayNext")){
-            for(int nextId:ids) {
-                if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
-                    return nextId;
-                }
+        for(int nextId:ids) {
+            if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
+                return nextId;
             }
+        }
 
-            for(int prevId:ids){
-                if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
-                    return prevId;
-                    }
+        for(int prevId:ids){
+            if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
+                return prevId;
                 }
             }
 
@@ -104,21 +102,19 @@ public class Tales extends MainActivity {
 
     public int getPrevious(){
         ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
-        boolean online = isNetworkAvailable();
+        boolean online = SettingsHelper.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
-        Collections.reverse(Arrays.asList(ids));
+        Collections.reverse(ids);
 
-        if (SettingsHelper.getBoolean("talesPlayNext")){
-            for(int prevId:ids){
-                if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
-                    return prevId;
-                }
+        for(int prevId:ids){
+            if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
+                return prevId;
             }
+        }
 
-            for(int nextId:ids) {
-                if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
-                    return nextId;
-                }
+        for(int nextId:ids) {
+            if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
+                return nextId;
             }
         }
 

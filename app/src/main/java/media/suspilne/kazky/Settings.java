@@ -74,7 +74,7 @@ public class Settings extends MainActivity {
     };
 
     private void download(){
-        if (!this.isNetworkAvailable()){
+        if (!SettingsHelper.isNetworkAvailable()){
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         } else {
             GetTaleIds download = new GetTaleIds();

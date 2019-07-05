@@ -67,13 +67,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    protected boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MainActivity.activity = this;
@@ -96,8 +89,8 @@ public class MainActivity extends AppCompatActivity
         setQuiteTimeout();
 
         GetTaleIds cache = new GetTaleIds();
-        if (isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
-        if (isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
+        if (SettingsHelper.isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
+        if (SettingsHelper.isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
 
     protected void askToContinueDownloadTales(){
@@ -110,7 +103,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        if (allTalesAreDownloaded || !isNetworkAvailable()) return;
+        if (allTalesAreDownloaded || !SettingsHelper.isNetworkAvailable()) return;
 
         new AlertDialog.Builder(MainActivity.this)
                 .setIcon(R.mipmap.logo)

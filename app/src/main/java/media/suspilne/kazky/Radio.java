@@ -40,7 +40,7 @@ public class Radio extends MainActivity {
 //                player.releasePlayer();
                 playPauseBtn.setImageResource(R.mipmap.play);
             }else{
-                if (isNetworkAvailable()){
+                if (SettingsHelper.isNetworkAvailable()){
 //                    player.initializePlayer(radioStream);
                     playPauseBtn.setImageResource(R.mipmap.pause);
                     setQuiteTimeout();
