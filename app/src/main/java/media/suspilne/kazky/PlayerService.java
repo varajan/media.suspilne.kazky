@@ -147,13 +147,13 @@ public class PlayerService extends Service {
         playPrevIntent.setAction(SettingsHelper.application + "previous");
         playPrevIntent.putExtra("code", "PlayPrevious");
         PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
-        notificationBuilder.addAction(0, "<<", playPrevPendingIntent);
+        notificationBuilder.addAction(0, "        <<", playPrevPendingIntent);
 
         Intent stopIntent = new Intent();
         stopIntent.setAction(SettingsHelper.application + "stop");
         stopIntent.putExtra("code", "StopPlay");
         PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-        notificationBuilder.addAction(0, "||", stopPendingIntent);
+        notificationBuilder.addAction(0, "  ||", stopPendingIntent);
 
         Intent playNextIntent = new Intent();
         playNextIntent.setAction(SettingsHelper.application + "next");

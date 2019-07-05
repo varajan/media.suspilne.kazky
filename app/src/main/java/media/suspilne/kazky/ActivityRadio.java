@@ -23,6 +23,7 @@ public class ActivityRadio extends ActivityBase {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         registerReceiver();
+        setPlayBtnIcon();
     }
 
     @Override
