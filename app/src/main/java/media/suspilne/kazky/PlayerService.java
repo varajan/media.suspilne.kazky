@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -34,7 +36,18 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        playTale(intent.getIntExtra("id", 0));
+        String type = intent.getStringExtra("type");
+        SettingsHelper.setString("StreamType", type);
+
+        switch (type){
+            case "radio":
+                playRadio();
+                break;
+
+            case "tale":
+                playTale(intent.getIntExtra("id", 0));
+                break;
+        }
 
         return START_NOT_STICKY;
     }
@@ -111,13 +124,13 @@ public class PlayerService extends Service {
         sendBroadcast(intent);
     }
 
-    private Notification getNotification(int id, String reader, String title){
+    private Notification getTalesNotification(int id, String reader, String title){
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Drawable image = SettingsHelper.getImage(String.format("%02d.jpg", id));
 
         Intent notificationIntent = new Intent(this, ActivityTales.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent openTalesIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
                 .setSmallIcon(R.drawable.ic_radio)
@@ -128,7 +141,7 @@ public class PlayerService extends Service {
                 .setLargeIcon(ImageHelper.getBitmap(image))
                 .setUsesChronometer(true)
                 .setSound(null)
-                .setContentIntent(openTracksIntent);
+                .setContentIntent(openTalesIntent);
 
         Intent playPrevIntent = new Intent();
         playPrevIntent.setAction(SettingsHelper.application + "previous");
@@ -151,14 +164,37 @@ public class PlayerService extends Service {
         return notificationBuilder.build();
     }
 
+    private Notification getRadioNotification(){
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        Drawable image = ContextCompat.getDrawable(this, R.mipmap.radio);
+
+        Intent notificationIntent = new Intent(this, ActivityRadio.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent openRadioIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
+                .setSmallIcon(R.drawable.ic_radio)
+                .setContentTitle("Радіо казок")
+                .setContentText("Радіо хвиля казок українською мовою")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setLargeIcon(ImageHelper.getBitmap(image))
+                .setSound(null)
+                .setContentIntent(openRadioIntent);
+
+        Intent stopIntent = new Intent();
+        stopIntent.setAction(SettingsHelper.application + "stop");
+        stopIntent.putExtra("code", "StopPlay");
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
+        notificationBuilder.addAction(0, "Зупинити", stopPendingIntent);
+
+        return notificationBuilder.build();
+    }
+
     @Override
     public void onCreate(){
         registerReceiver();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForeground(1, getNotification(-1, "", ""));
-        }
     }
 
     @Override
@@ -224,15 +260,33 @@ public class PlayerService extends Service {
 
                 notificationManager.createNotificationChannel(notificationChannel);
 
-                this.startForeground(1, getNotification(id, reader, title));
+                this.startForeground(1, getTalesNotification(id, reader, title));
             } else{
-                notificationManager.notify(1, getNotification(id, reader, title));
+                notificationManager.notify(1, getTalesNotification(id, reader, title));
             }
         }
 
         tales.setLastPlaying(id);
         tales.setNowPlaying(id);
         sendMessage("SetPlayBtnIcon", id);
+    }
+
+    private void playRadio(){
+        playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setSound(null, null);
+            notificationChannel.setShowBadge(false);
+
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            this.startForeground(1, getRadioNotification());
+        } else{
+            notificationManager.notify(1, getRadioNotification());
+        }
+
+        sendMessage("SetPlayBtnIcon", -1);
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {

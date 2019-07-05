@@ -28,6 +28,7 @@ public class ActivityTales extends ActivityBase {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         registerReceiver();
+        setPlayBtnIcon(ActivityTales.getNowPlaying());
     }
 
     @Override
@@ -40,6 +41,13 @@ public class ActivityTales extends ActivityBase {
         askToDownloadTales();
         askToContinueDownloadTales();
         registerReceiver();
+        setPlayBtnIcon(ActivityTales.getNowPlaying());
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver();
     }
 
     private void askToDownloadTales(){
@@ -123,6 +131,7 @@ public class ActivityTales extends ActivityBase {
 
         if (id > 0){
             Intent intent = new Intent(this, PlayerService.class);
+            intent.putExtra("type", "tale");
             intent.putExtra("id", id);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -134,7 +143,12 @@ public class ActivityTales extends ActivityBase {
         }
     }
 
-    private void setPlayBtnIcon(ArrayList<Integer> ids, int id){
+    private boolean isTalePlaying(){
+        return isServiceRunning(PlayerService.class) && SettingsHelper.getString("StreamType").equals("tale");
+    }
+
+    private void setPlayBtnIcon(int id){
+        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
         long start = System.currentTimeMillis();
         LinearLayout list = null;
 
@@ -146,7 +160,7 @@ public class ActivityTales extends ActivityBase {
 
         for (int x:ids){
             ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
-            btn.setImageResource(x == id ? R.mipmap.tale_pause : R.mipmap.tale_play);
+            btn.setImageResource(x == id && isTalePlaying() ? R.mipmap.tale_pause : R.mipmap.tale_play);
         }
     }
 
@@ -209,15 +223,14 @@ public class ActivityTales extends ActivityBase {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
-                    setPlayBtnIcon(ids, -1);
+                    setPlayBtnIcon(-1);
                     Toast.makeText(ActivityTales.this,"Сталась помилка!", Toast.LENGTH_LONG).show();
                     break;
 
                 case "SetPlayBtnIcon":
-                    setPlayBtnIcon(ids, intent.getIntExtra("id", -1));
+                    setPlayBtnIcon(intent.getIntExtra("id", -1));
                     break;
             }
         }

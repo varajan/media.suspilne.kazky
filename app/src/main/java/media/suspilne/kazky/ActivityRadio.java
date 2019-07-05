@@ -1,26 +1,34 @@
 package media.suspilne.kazky;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.widget.ImageView;
 
 public class ActivityRadio extends ActivityBase {
     private ImageView playPauseBtn;
-    private String radioStream = "https://radio.nrcu.gov.ua:8443/kazka-mp3";
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        unregisterReceiver();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        registerReceiver();
+    }
 
-        if (savedInstanceState.getBoolean("isPlaying")){
-            playPauseBtn.performClick();
-        }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver();
     }
 
     @Override
@@ -28,6 +36,7 @@ public class ActivityRadio extends ActivityBase {
         setContentView(R.layout.activity_radio);
         currentView = R.id.radio_menu;
         super.onCreate(savedInstanceState);
+        registerReceiver();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -36,25 +45,35 @@ public class ActivityRadio extends ActivityBase {
         playPauseBtn = findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);
         playPauseBtn.setOnClickListener(v -> {
-            if (super.isServiceRunning(PlayerService.class)){
-//                player.releasePlayer();
-                playPauseBtn.setImageResource(R.mipmap.play);
+            if (isRadioPlaying()){
+                stopPlayerService();
+                setPlayBtnIcon();
             }else{
+                stopPlayerService();
+
                 if (SettingsHelper.isNetworkAvailable()){
-//                    player.initializePlayer(radioStream);
-                    playPauseBtn.setImageResource(R.mipmap.pause);
+
+                    Intent intent = new Intent(this, PlayerService.class);
+                    intent.putExtra("type", "radio");
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(intent);
+                    }
+                    else {
+                        startService(intent);
+                    }
+
+                    setPlayBtnIcon();
                     setQuiteTimeout();
                 }else{
                     showNoConnectionAlert();
               }
             }
         });
+    }
 
-//        player.addListener((PlayerService.SourceIsNotAccessibleListener) () -> {
-//            playPauseBtn.setImageResource(R.mipmap.play);
-//            player.releasePlayer();
-//            showNoConnectionAlert();
-//        });
+    private boolean isRadioPlaying(){
+        return isServiceRunning(PlayerService.class) && SettingsHelper.getString("StreamType").equals("radio");
     }
 
     private void showNoConnectionAlert(){
@@ -65,4 +84,38 @@ public class ActivityRadio extends ActivityBase {
             .setPositiveButton("OK", null)
             .show();
     }
+
+    private void setPlayBtnIcon(){
+        playPauseBtn.setImageResource(isServiceRunning(PlayerService.class) ? R.mipmap.pause : R.mipmap.play);
+    }
+
+    private void registerReceiver(){
+        try{
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(SettingsHelper.application);
+            this.registerReceiver(receiver, filter);
+        }catch (Exception e){ /*nothing*/ }
+    }
+
+    private void unregisterReceiver(){
+        try{
+            this.unregisterReceiver(receiver);
+        }catch (Exception e){ /*nothing*/ }
+    }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getStringExtra("code")){
+                case "SourceIsNotAccessible":
+                    setPlayBtnIcon();
+                    showNoConnectionAlert();
+                    break;
+
+                case "SetPlayBtnIcon":
+                    setPlayBtnIcon();
+                    break;
+            }
+        }
+    };
 }

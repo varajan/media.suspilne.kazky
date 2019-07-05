@@ -12,10 +12,9 @@ public class ApplicationKazky extends Application {
         UpdateSslProvider();
 
         SharedPreferences.Editor editor = getSharedPreferences(SettingsHelper.application, 0).edit();
-//        editor.putString("askedToContinueDownload", String.valueOf(false));
-//        editor.putString("tracks.lastPlaying", String.valueOf(-1));
-//        editor.putString("tracks.nowPlaying", String.valueOf(-1));
-//        editor.putString("tracksFilter", "");
+        editor.putString("StreamType", "");
+        editor.putString("nowPlaying", String.valueOf(-1));
+        editor.putString("lastPlaying", String.valueOf(-1));
         editor.apply();
     }
 
