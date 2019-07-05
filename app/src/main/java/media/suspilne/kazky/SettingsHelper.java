@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -24,30 +23,30 @@ import java.util.Map;
 public class SettingsHelper {
     public static String application = "Kazka";
 
-    public static String getString(Activity activity, String setting){
-        return getString(activity, setting, "");
+    public static String getString(Context context, String setting){
+        return getString(context, setting, "");
     }
 
-    public static String getString(Activity activity, String setting, String defaultValue){
-        return activity.getSharedPreferences(application,0).getString(setting, defaultValue);
+    public static String getString(Context context, String setting, String defaultValue){
+        return context.getSharedPreferences(application,0).getString(setting, defaultValue);
     }
 
-    public static void setString(Activity activity, String setting, String value){
-        SharedPreferences.Editor editor = activity.getSharedPreferences(application, 0).edit();
+    public static void setString(Context context, String setting, String value){
+        SharedPreferences.Editor editor = context.getSharedPreferences(application, 0).edit();
         editor.putString(setting, value);
         editor.commit();
     }
 
-    public static ArrayList<Integer> getSavedTaleIds(Activity activity){
+    public static ArrayList<Integer> getSavedTaleIds(Context context){
         ArrayList<Integer> readers = new ArrayList<>();
         ArrayList<Integer> titles  = new ArrayList<>();
         ArrayList<Integer> result;
 
-        for (String reader:getAllSettings(activity, "reader-")){
+        for (String reader:getAllSettings(context, "reader-")){
             readers.add(Integer.parseInt(reader.split("-")[1]));
         }
 
-        for (String title:getAllSettings(activity, "title-")){
+        for (String title:getAllSettings(context, "title-")){
             titles.add(Integer.parseInt(title.split("-")[1]));
         }
 
@@ -57,10 +56,10 @@ public class SettingsHelper {
         return result;
     }
 
-    public static ArrayList<Integer> getTaleReaderIds(Activity activity){
+    public static ArrayList<Integer> getTaleReaderIds(Context context){
         ArrayList<Integer> readers = new ArrayList<>();
 
-        for (String reader:getAllSettings(activity, "readerName-")){
+        for (String reader:getAllSettings(context, "readerName-")){
             readers.add(Integer.parseInt(reader.split("-")[1]));
         }
         Collections.sort(readers);
@@ -68,10 +67,10 @@ public class SettingsHelper {
         return readers;
     }
 
-    public static ArrayList<String> getAllSettings(Activity activity, String setting){
+    public static ArrayList<String> getAllSettings(Context context, String setting){
         ArrayList<String> result = new ArrayList<>();
 
-        Map<String, ?> allEntries = activity.getSharedPreferences(application, 0).getAll();
+        Map<String, ?> allEntries = context.getSharedPreferences(application, 0).getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             if (entry.getKey().contains(setting)) {
                 result.add(entry.getKey());
@@ -81,24 +80,32 @@ public class SettingsHelper {
         return result;
     }
 
-    public static boolean getBoolean(Activity activity, String setting){
-        return getString(activity, setting).toLowerCase().equals("true");
+    public static boolean getBoolean(Context context, String setting){
+        return getString(context, setting).toLowerCase().equals("true");
     }
 
-    public static void setBoolean(Activity activity, String setting, boolean value){
-        setString(activity, setting, String.valueOf(value));
+    public static void setBoolean(Context context, String setting, boolean value){
+        setString(context, setting, String.valueOf(value));
     }
 
-    public static int getInt(Activity activity, String setting, int defaultValue){
-        return Integer.parseInt(getString(activity, setting, String.valueOf(defaultValue)));
+    public static int getInt(Context context, String setting, int defaultValue){
+        return Integer.parseInt(getString(context, setting, String.valueOf(defaultValue)));
     }
 
-    public static int getInt(Activity activity, String setting){
-        return Integer.parseInt(getString(activity, setting, "0"));
+    public static int getInt(Context context, String setting){
+        return Integer.parseInt(getString(context, setting, "0"));
     }
 
-    public static void setInt(Activity activity, String setting, int value){
-        setString(activity, setting, String.valueOf(value));
+    public static void setInt(Context context, String setting, int value){
+        setString(context, setting, String.valueOf(value));
+    }
+
+    public static long getLong(Context context, String setting){
+        return Long.parseLong(getString(context, setting, "0"));
+    }
+
+    public static void setLong(Context context, String setting, long value){
+        setString(context, setting, String.valueOf(value));
     }
 
     public static int dpToPx(Context context, int dp) {

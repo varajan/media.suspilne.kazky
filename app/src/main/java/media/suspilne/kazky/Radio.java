@@ -10,17 +10,8 @@ public class Radio extends MainActivity {
     private String radioStream = "https://radio.nrcu.gov.ua:8443/kazka-mp3";
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (player.isPlaying())
-            player.releasePlayer();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putBoolean("isPlaying", player.isPlaying());
     }
 
     @Override
@@ -45,12 +36,12 @@ public class Radio extends MainActivity {
         playPauseBtn = findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);
         playPauseBtn.setOnClickListener(v -> {
-            if (player.isPlaying()){
-                player.releasePlayer();
+            if (super.isServiceRunning(PlayerService.class)){
+//                player.releasePlayer();
                 playPauseBtn.setImageResource(R.mipmap.play);
             }else{
                 if (isNetworkAvailable()){
-                    player.initializePlayer(radioStream);
+//                    player.initializePlayer(radioStream);
                     playPauseBtn.setImageResource(R.mipmap.pause);
                     setQuiteTimeout();
                 }else{
@@ -59,11 +50,11 @@ public class Radio extends MainActivity {
             }
         });
 
-        player.addListener((PlayerService.SourceIsNotAccessibleListener) () -> {
-            playPauseBtn.setImageResource(R.mipmap.play);
-            player.releasePlayer();
-            showNoConnectionAlert();
-        });
+//        player.addListener((PlayerService.SourceIsNotAccessibleListener) () -> {
+//            playPauseBtn.setImageResource(R.mipmap.play);
+//            player.releasePlayer();
+//            showNoConnectionAlert();
+//        });
     }
 
     private void showNoConnectionAlert(){

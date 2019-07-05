@@ -1,6 +1,7 @@
 package media.suspilne.kazky;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Timer quitTimer;
-    protected PlayerService player;
     protected NavigationView navigation;
     protected int currentView;
 
@@ -88,10 +88,6 @@ public class MainActivity extends AppCompatActivity
 
         setTitle();
         setQuiteTimeout();
-
-        player = new PlayerService(this);
-        player.UpdateSslProvider();
-        startService(new Intent(this, PlayerService.class));
 
         GetTaleIds cache = new GetTaleIds();
         if (isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
@@ -161,18 +157,33 @@ public class MainActivity extends AppCompatActivity
             .show();
     }
 
-
     private void setTitle() {
         String title = navigation.getMenu().findItem(currentView).getTitle().toString();
         getSupportActionBar().setTitle(title);
     }
 
     private void openActivity(Class view){
-        if (player != null) player.releasePlayer();
+//        if (player != null) player.releasePlayer();
 
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
+    }
+
+    protected boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void stopPlayerService(){
+        if (isServiceRunning(PlayerService.class)){
+            stopService(new Intent(this, PlayerService.class));
+        }
     }
 
     @Override
