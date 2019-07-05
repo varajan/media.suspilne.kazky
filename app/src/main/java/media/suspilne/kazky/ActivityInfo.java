@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Info extends MainActivity {
+public class ActivityInfo extends ActivityBase {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_info);
         currentView = R.id.info_menu;

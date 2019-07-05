@@ -11,7 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Settings extends MainActivity {
+public class ActivitySettings extends ActivityBase {
     private Switch talesDownload;
     private Switch autoQuit;
     private SeekBar timeout;
@@ -80,7 +80,7 @@ public class Settings extends MainActivity {
                 ? "Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета."
                 : "Ви не зможете слухати казки без Інтерета.";
 
-        new AlertDialog.Builder(Settings.this)
+        new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.logo)
             .setTitle(title)
             .setMessage(message)

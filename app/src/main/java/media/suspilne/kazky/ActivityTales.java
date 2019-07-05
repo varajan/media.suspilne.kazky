@@ -15,10 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
-public class Tales extends MainActivity {
+public class ActivityTales extends ActivityBase {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -47,7 +46,7 @@ public class Tales extends MainActivity {
         if (SettingsHelper.getBoolean("askToDownloadTales")
          || SettingsHelper.getBoolean("talesDownload")) return;
 
-        new AlertDialog.Builder(Tales.this)
+        new AlertDialog.Builder(ActivityTales.this)
                 .setIcon(R.mipmap.logo)
                 .setTitle("Скачат казки на пристрій?")
                 .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
@@ -62,13 +61,11 @@ public class Tales extends MainActivity {
 
     private View.OnClickListener onPlayBtnClick = v -> {
         try{
-            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
             ImageView playBtn = (ImageView) v;
             int id = (int) playBtn.getTag();
 
             if (isServiceRunning(PlayerService.class) && id == getNowPlaying()){
-//                    position = player.position();
-//                    lastPlaying = id;
                 stopPlayerService();
                 playBtn.setImageResource(R.mipmap.tale_play);
             }else{
@@ -81,7 +78,7 @@ public class Tales extends MainActivity {
     };
 
     public int getNext(){
-        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
         boolean online = SettingsHelper.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
 
@@ -101,7 +98,7 @@ public class Tales extends MainActivity {
     }
 
     public int getPrevious(){
-        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
         boolean online = SettingsHelper.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
         Collections.reverse(ids);
@@ -135,7 +132,6 @@ public class Tales extends MainActivity {
                 startService(intent);
             }
         }
-//        setPlayBtnIcon(ids, id);
     }
 
     private void setPlayBtnIcon(ArrayList<Integer> ids, int id){
@@ -166,10 +162,10 @@ public class Tales extends MainActivity {
 
     void showTales() {
         final LinearLayout list = findViewById(R.id.list);
-        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
 
         if (ids.size() == 0){
-            new AlertDialog.Builder(Tales.this)
+            new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.logo)
                 .setTitle("Відсутній Інтернет!")
                 .setMessage("Щоб схухати казки потрібне підключення до Інтернета.")
@@ -178,7 +174,7 @@ public class Tales extends MainActivity {
         }
 
         for (final int id:ids) {
-            View item = LayoutInflater.from(Tales.this).inflate(R.layout.tale_item, list, false);
+            View item = LayoutInflater.from(this).inflate(R.layout.tale_item, list, false);
             final ImageView playBtn = item.findViewById(R.id.play);
 
             item.setTag(id);
@@ -189,13 +185,8 @@ public class Tales extends MainActivity {
             playBtn.setTag(id);
 
             if (getNowPlaying() == id){
-                String name = String.format("%02d.mp3", getNowPlaying());
-                String url = "https://kazky.suspilne.media/inc/audio/" + name;
-
                 playBtn.setImageResource(R.mipmap.tale_pause);
-//                player.initializePlayer(SettingsHelper.taleExists(nowPlaying) ? Tales.this.getFilesDir() + "/" + name : url);
-//                player.setPosition(position);
-                Tales.this.setQuiteTimeout();
+                ActivityTales.this.setQuiteTimeout();
             }
         }
     }
@@ -218,11 +209,11 @@ public class Tales extends MainActivity {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds(Tales.this);
+            ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
                     setPlayBtnIcon(ids, -1);
-                    Toast.makeText(Tales.this,"Сталась помилка!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityTales.this,"Сталась помилка!", Toast.LENGTH_LONG).show();
                     break;
 
                 case "SetPlayBtnIcon":

@@ -115,7 +115,7 @@ public class PlayerService extends Service {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Drawable image = SettingsHelper.getImage(String.format("%02d.jpg", id));
 
-        Intent notificationIntent = new Intent(this, Tales.class);
+        Intent notificationIntent = new Intent(this, ActivityTales.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent openTracksIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
@@ -205,7 +205,7 @@ public class PlayerService extends Service {
     }
 
     private void playTale(int id){
-        Tales tales = new Tales();
+        ActivityTales tales = new ActivityTales();
 
         if (id > 0){
             String name = String.format("%02d.mp3", id);
@@ -238,7 +238,7 @@ public class PlayerService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Tales tales = new Tales();
+            ActivityTales tales = new ActivityTales();
 
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":

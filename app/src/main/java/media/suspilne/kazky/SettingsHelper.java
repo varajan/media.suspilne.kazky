@@ -30,16 +30,16 @@ public class SettingsHelper {
     }
 
     public static String getString(String setting, String defaultValue){
-        return MainActivity.getActivity().getSharedPreferences(application,0).getString(setting, defaultValue);
+        return ActivityBase.getActivity().getSharedPreferences(application,0).getString(setting, defaultValue);
     }
 
     public static void setString(String setting, String value){
-        SharedPreferences.Editor editor = MainActivity.getActivity().getSharedPreferences(application, 0).edit();
+        SharedPreferences.Editor editor = ActivityBase.getActivity().getSharedPreferences(application, 0).edit();
         editor.putString(setting, value);
         editor.commit();
     }
 
-    public static ArrayList<Integer> getSavedTaleIds(Context context){
+    public static ArrayList<Integer> getSavedTaleIds(){
         ArrayList<Integer> readers = new ArrayList<>();
         ArrayList<Integer> titles  = new ArrayList<>();
         ArrayList<Integer> result;
@@ -72,7 +72,7 @@ public class SettingsHelper {
     public static ArrayList<String> getAllSettings(String setting){
         ArrayList<String> result = new ArrayList<>();
 
-        Map<String, ?> allEntries = MainActivity.getActivity().getSharedPreferences(application, 0).getAll();
+        Map<String, ?> allEntries = ActivityBase.getActivity().getSharedPreferences(application, 0).getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             if (entry.getKey().contains(setting)) {
                 result.add(entry.getKey());
@@ -111,17 +111,17 @@ public class SettingsHelper {
     }
 
     public static int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = MainActivity.getActivity().getResources().getDisplayMetrics();
+        DisplayMetrics displayMetrics = ActivityBase.getActivity().getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static int pxToDp(int px) {
-        DisplayMetrics displayMetrics = MainActivity.getActivity().getResources().getDisplayMetrics();
+        DisplayMetrics displayMetrics = ActivityBase.getActivity().getResources().getDisplayMetrics();
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static void deleteFile(String name){
-        MainActivity.getActivity().deleteFile(name);
+        ActivityBase.getActivity().deleteFile(name);
     }
 
     public static String[] getFileNames(Context context){
@@ -129,7 +129,7 @@ public class SettingsHelper {
     }
 
     public static Boolean fileExists(String name){
-        return MainActivity.getActivity().getFileStreamPath(name).exists();
+        return ActivityBase.getActivity().getFileStreamPath(name).exists();
     }
 
     public static Boolean taleExists(int id){
@@ -152,7 +152,7 @@ public class SettingsHelper {
     public static void saveFile(String name, byte[] bytes){
         try {
             FileOutputStream outputStream;
-            outputStream = MainActivity.getActivity().openFileOutput(name, Context.MODE_PRIVATE);
+            outputStream = ActivityBase.getActivity().openFileOutput(name, Context.MODE_PRIVATE);
             outputStream.write(bytes);
             outputStream.flush();
             outputStream.close();
@@ -163,7 +163,7 @@ public class SettingsHelper {
 
     public static Drawable getImage(String name){
         try {
-            FileInputStream stream = MainActivity.getActivity().openFileInput(name);
+            FileInputStream stream = ActivityBase.getActivity().openFileInput(name);
             Bitmap bitmap = BitmapFactory.decodeStream(stream);
             stream.close();
 
@@ -199,7 +199,7 @@ public class SettingsHelper {
     }
 
     public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) MainActivity.getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) ActivityBase.getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();

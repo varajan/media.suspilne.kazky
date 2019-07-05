@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import com.google.android.gms.security.ProviderInstaller;
 import javax.net.ssl.SSLContext;
 
-public class Kazky extends Application {
+public class ApplicationKazky extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

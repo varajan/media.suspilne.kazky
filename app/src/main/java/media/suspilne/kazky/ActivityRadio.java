@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.widget.ImageView;
 
-public class Radio extends MainActivity {
+public class ActivityRadio extends ActivityBase {
     private ImageView playPauseBtn;
     private String radioStream = "https://radio.nrcu.gov.ua:8443/kazka-mp3";
 
@@ -58,7 +58,7 @@ public class Radio extends MainActivity {
     }
 
     private void showNoConnectionAlert(){
-        new AlertDialog.Builder(Radio.this)
+        new AlertDialog.Builder(ActivityRadio.this)
             .setIcon(R.mipmap.logo)
             .setTitle("Відсутній Інтернет!")
             .setMessage("Щоб схухати радіо потрібно підключення до Інтернета.")

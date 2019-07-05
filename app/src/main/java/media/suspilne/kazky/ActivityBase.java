@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,7 +34,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @SuppressLint("Registered")
-public class MainActivity extends AppCompatActivity
+public class ActivityBase extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Timer quitTimer;
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MainActivity.activity = this;
+        ActivityBase.activity = this;
 
         super.onCreate(savedInstanceState);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         if (!SettingsHelper.getBoolean("talesDownload")) return;
 
         boolean allTalesAreDownloaded = true;
-        for (int id : SettingsHelper.getSavedTaleIds(this)){
+        for (int id : SettingsHelper.getSavedTaleIds()){
             if (!SettingsHelper.taleExists(id)){
                 allTalesAreDownloaded = false;
             }
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity
 
         if (allTalesAreDownloaded || !SettingsHelper.isNetworkAvailable()) return;
 
-        new AlertDialog.Builder(MainActivity.this)
+        new AlertDialog.Builder(ActivityBase.this)
                 .setIcon(R.mipmap.logo)
                 .setTitle("Продовжити закачку казок?")
                 .setMessage("Не всі казки скачані на пристрій. Докачати?")
@@ -190,25 +188,25 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.radio_menu:
                 if (currentView != R.id.radio_menu) {
-                    openActivity(Radio.class);
+                    openActivity(ActivityRadio.class);
                 }
                 break;
 
             case R.id.tales_menu:
                 if (currentView != R.id.tales_menu) {
-                    openActivity(Tales.class);
+                    openActivity(ActivityTales.class);
                 }
                 break;
 
             case R.id.settings_menu:
                 if (currentView != R.id.settings_menu) {
-                    openActivity(Settings.class);
+                    openActivity(ActivitySettings.class);
                 }
                 break;
 
             case R.id.info_menu:
                 if (currentView != R.id.info_menu) {
-                    openActivity(Info.class);
+                    openActivity(ActivityInfo.class);
                 }
                 break;
 
@@ -301,7 +299,7 @@ public class MainActivity extends AppCompatActivity
 
             try {
                 action = arg[1];
-                ArrayList<Integer> cachedIds =  SettingsHelper.getSavedTaleIds(MainActivity.this);
+                ArrayList<Integer> cachedIds =  SettingsHelper.getSavedTaleIds();
                 ArrayList<Integer> realIds = new ArrayList<>();
 
                 if (cachedIds.size() < 10){
@@ -322,7 +320,7 @@ public class MainActivity extends AppCompatActivity
             super.onPostExecute(ids);
 
             if (ids.length == 0){
-                Toast.makeText(MainActivity.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
+                Toast.makeText(ActivityBase.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
 
                 if (action == DOWNLOAD_ALL){
                     SettingsHelper.setBoolean("talesDownload", false);
@@ -364,7 +362,7 @@ public class MainActivity extends AppCompatActivity
 
     class DownloadAll extends AsyncTask<Integer, Integer, String> {
         protected void onPreExecute() {
-            progress = new ProgressDialog(MainActivity.this);
+            progress = new ProgressDialog(ActivityBase.this);
             progress.setIcon(R.mipmap.logo);
             progress.setTitle("Завантаження казок");
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -384,9 +382,9 @@ public class MainActivity extends AppCompatActivity
             }
 
             if (result.isEmpty()){
-                Toast.makeText(MainActivity.this, "Готово!", Toast.LENGTH_LONG).show();
+                Toast.makeText(ActivityBase.this, "Готово!", Toast.LENGTH_LONG).show();
             }else{
-                new AlertDialog.Builder(MainActivity.this)
+                new AlertDialog.Builder(ActivityBase.this)
                     .setIcon(R.mipmap.logo)
                     .setTitle("Сталась помлка")
                     .setMessage(result)
