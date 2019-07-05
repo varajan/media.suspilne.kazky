@@ -108,6 +108,7 @@ public class ActivityRadio extends ActivityBase {
         public void onReceive(Context context, Intent intent) {
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
+                    stopPlayerService();
                     setPlayBtnIcon();
                     showNoConnectionAlert();
                     break;

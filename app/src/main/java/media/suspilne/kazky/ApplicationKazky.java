@@ -20,7 +20,7 @@ public class ApplicationKazky extends Application {
 
     public void UpdateSslProvider(){
         try {
-            ProviderInstaller.installIfNeeded(getApplicationContext());
+            ProviderInstaller.installIfNeeded(this);
 
             SSLContext sslContext;
             sslContext = SSLContext.getInstance("TLSv1.2");
