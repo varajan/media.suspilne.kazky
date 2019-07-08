@@ -52,10 +52,10 @@ public class ActivityRadio extends ActivityBase {
             }else{
                 stopPlayerService();
 
-                if (SettingsHelper.isNetworkAvailable()){
+                if (HSettings.isNetworkAvailable()){
 
                     Intent intent = new Intent(this, PlayerService.class);
-                    intent.putExtra("type", "radio");
+                    intent.putExtra("type", getString(R.string.radio));
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(intent);
@@ -74,7 +74,7 @@ public class ActivityRadio extends ActivityBase {
     }
 
     private boolean isRadioPlaying(){
-        return isServiceRunning(PlayerService.class) && SettingsHelper.getString("StreamType").equals("radio");
+        return isServiceRunning(PlayerService.class) && HSettings.getString("StreamType").equals(getString(R.string.radio));
     }
 
     private void showNoConnectionAlert(){
@@ -93,7 +93,7 @@ public class ActivityRadio extends ActivityBase {
     private void registerReceiver(){
         try{
             IntentFilter filter = new IntentFilter();
-            filter.addAction(SettingsHelper.application);
+            filter.addAction(HSettings.application);
             this.registerReceiver(receiver, filter);
         }catch (Exception e){ /*nothing*/ }
     }

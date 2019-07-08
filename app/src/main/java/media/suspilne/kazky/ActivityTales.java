@@ -28,7 +28,14 @@ public class ActivityTales extends ActivityBase {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         registerReceiver();
-        setPlayBtnIcon(ActivityTales.getNowPlaying());
+        setPlayBtnIcon(getNowPlaying());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+        setPlayBtnIcon(getNowPlaying());
     }
 
     @Override
@@ -41,18 +48,19 @@ public class ActivityTales extends ActivityBase {
         askToDownloadTales();
         askToContinueDownloadTales();
         registerReceiver();
-        setPlayBtnIcon(ActivityTales.getNowPlaying());
+        setPlayBtnIcon(getNowPlaying());
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        stopPlayerService();
         unregisterReceiver();
     }
 
     private void askToDownloadTales(){
-        if (SettingsHelper.getBoolean("askToDownloadTales")
-         || SettingsHelper.getBoolean("talesDownload")) return;
+        if (HSettings.getBoolean("askToDownloadTales")
+         || HSettings.getBoolean("talesDownload")) return;
 
         new AlertDialog.Builder(ActivityTales.this)
                 .setIcon(R.mipmap.logo)
@@ -64,7 +72,7 @@ public class ActivityTales extends ActivityBase {
                 .setNegativeButton("Ні", null)
                 .show();
 
-        SettingsHelper.setBoolean("askToDownloadTales", true);
+        HSettings.setBoolean("askToDownloadTales", true);
     }
 
     private View.OnClickListener onPlayBtnClick = v -> {
@@ -85,18 +93,18 @@ public class ActivityTales extends ActivityBase {
     };
 
     public int getNext(){
-        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
-        boolean online = SettingsHelper.isNetworkAvailable();
+        ArrayList<Integer> ids = HSettings.getSavedTaleIds();
+        boolean online = HSettings.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
 
         for(int nextId:ids) {
-            if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
+            if (nextId > nowPlaying && (online || HSettings.taleExists(nextId))) {
                 return nextId;
             }
         }
 
         for(int prevId:ids){
-            if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
+            if (prevId < nowPlaying && (online || HSettings.taleExists(prevId))) {
                 return prevId;
                 }
             }
@@ -105,19 +113,19 @@ public class ActivityTales extends ActivityBase {
     }
 
     public int getPrevious(){
-        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
-        boolean online = SettingsHelper.isNetworkAvailable();
+        ArrayList<Integer> ids = HSettings.getSavedTaleIds();
+        boolean online = HSettings.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
         Collections.reverse(ids);
 
         for(int prevId:ids){
-            if (prevId < nowPlaying && (online || SettingsHelper.taleExists(prevId))) {
+            if (prevId < nowPlaying && (online || HSettings.taleExists(prevId))) {
                 return prevId;
             }
         }
 
         for(int nextId:ids) {
-            if (nextId > nowPlaying && (online || SettingsHelper.taleExists(nextId))) {
+            if (nextId > nowPlaying && (online || HSettings.taleExists(nextId))) {
                 return nextId;
             }
         }
@@ -130,7 +138,7 @@ public class ActivityTales extends ActivityBase {
 
         if (id > 0){
             Intent intent = new Intent(this, PlayerService.class);
-            intent.putExtra("type", "tale");
+            intent.putExtra("type", getString(R.string.tales));
             intent.putExtra("id", id);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -143,11 +151,11 @@ public class ActivityTales extends ActivityBase {
     }
 
     private boolean isTalePlaying(){
-        return isServiceRunning(PlayerService.class) && SettingsHelper.getString("StreamType").equals("tale");
+        return isServiceRunning(PlayerService.class) && HSettings.getString("StreamType").equals(getString(R.string.tales));
     }
 
     private void setPlayBtnIcon(int id){
-        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
+        ArrayList<Integer> ids = HSettings.getSavedTaleIds();
         long start = System.currentTimeMillis();
         LinearLayout list = null;
 
@@ -156,17 +164,18 @@ public class ActivityTales extends ActivityBase {
         }
 
         if (list == null) return;
+        boolean isTalePlaying = isTalePlaying();
 
         for (int x:ids){
             ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
-            btn.setImageResource(x == id && isTalePlaying() ? R.mipmap.tale_pause : R.mipmap.tale_play);
+            btn.setImageResource(x == id && isTalePlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
         }
     }
 
     private void setTaleDetails(View item, int id){
-        Drawable image = SettingsHelper.getImage(String.format("%02d.jpg", id));
-        String title = SettingsHelper.getString("title-" + id);
-        String reader = SettingsHelper.getString("reader-" + id);
+        Drawable image = HSettings.getImage(String.format("%02d.jpg", id));
+        String title = HSettings.getString("title-" + id);
+        String reader = HSettings.getString("reader-" + id);
 
         ((TextView) item.findViewById(R.id.title)).setText(title);
         ((TextView) item.findViewById(R.id.reader)).setText(reader);
@@ -175,14 +184,14 @@ public class ActivityTales extends ActivityBase {
 
     void showTales() {
         final LinearLayout list = findViewById(R.id.list);
-        ArrayList<Integer> ids = SettingsHelper.getSavedTaleIds();
+        ArrayList<Integer> ids = HSettings.getSavedTaleIds();
 
         if (ids.size() == 0){
             new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.logo)
                 .setTitle("Відсутній Інтернет!")
                 .setMessage("Щоб схухати казки потрібне підключення до Інтернета.")
-                .setPositiveButton("OK", (dialog, which) -> SettingsHelper.setBoolean("askToDownloadTales", false))
+                .setPositiveButton("OK", (dialog, which) -> HSettings.setBoolean("askToDownloadTales", false))
                 .show();
         }
 
@@ -207,7 +216,7 @@ public class ActivityTales extends ActivityBase {
     private void registerReceiver(){
         try{
             IntentFilter filter = new IntentFilter();
-            filter.addAction(SettingsHelper.application);
+            filter.addAction(HSettings.application);
             this.registerReceiver(receiver, filter);
         }catch (Exception e){
         }
@@ -235,12 +244,12 @@ public class ActivityTales extends ActivityBase {
         }
     };
 
-    public static int getNowPlaying() { return SettingsHelper.getInt("nowPlaying"); }
-    public static void setNowPlaying(int value) { SettingsHelper.setInt("nowPlaying", value); }
+    public static int getNowPlaying() { return HSettings.getInt("nowPlaying"); }
+    public static void setNowPlaying(int value) { HSettings.setInt("nowPlaying", value); }
 
-    public static int getLastPlaying() { return SettingsHelper.getInt("lastPlaying"); }
-    public static void setLastPlaying(int value) { SettingsHelper.setInt("lastPlaying", value); }
+    public static int getLastPlaying() { return HSettings.getInt("lastPlaying"); }
+    public static void setLastPlaying(int value) { HSettings.setInt("lastPlaying", value); }
 
-    public static long getPosition() { return SettingsHelper.getLong("position"); }
-    public static void setPosition(long value) { SettingsHelper.setLong("position", value); }
+    public static long getPosition() { return HSettings.getLong("position"); }
+    public static void setPosition(long value) { HSettings.setLong("position", value); }
 }

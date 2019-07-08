@@ -47,9 +47,9 @@ public class ActivityBase extends AppCompatActivity
     public static Activity getActivity(){ return activity; }
 
     protected void setQuiteTimeout(){
-        if (SettingsHelper.getBoolean("autoQuit")) {
+        if (HSettings.getBoolean("autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
-            int timeout = SettingsHelper.getInt("timeout");
+            int timeout = HSettings.getInt("timeout");
 
             quitTimer = new Timer();
             quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
@@ -87,21 +87,21 @@ public class ActivityBase extends AppCompatActivity
         setQuiteTimeout();
 
         GetTaleIds cache = new GetTaleIds();
-        if (SettingsHelper.isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
-        if (SettingsHelper.isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
+        if (HSettings.isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
+        if (HSettings.isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
 
     protected void askToContinueDownloadTales(){
-        if (!SettingsHelper.getBoolean("talesDownload")) return;
+        if (!HSettings.getBoolean("talesDownload")) return;
 
         boolean allTalesAreDownloaded = true;
-        for (int id : SettingsHelper.getSavedTaleIds()){
-            if (!SettingsHelper.taleExists(id)){
+        for (int id : HSettings.getSavedTaleIds()){
+            if (!HSettings.taleExists(id)){
                 allTalesAreDownloaded = false;
             }
         }
 
-        if (allTalesAreDownloaded || !SettingsHelper.isNetworkAvailable()) return;
+        if (allTalesAreDownloaded || !HSettings.isNetworkAvailable()) return;
 
         new AlertDialog.Builder(ActivityBase.this)
                 .setIcon(R.mipmap.logo)
@@ -236,41 +236,41 @@ public class ActivityBase extends AppCompatActivity
     }
 
     void dropDownloads(String extension){
-        for (String file:SettingsHelper.getFileNames(this)) {
+        for (String file: HSettings.getFileNames(this)) {
             if (file.toLowerCase().contains(extension.toLowerCase())){
-                SettingsHelper.deleteFile(file);
+                HSettings.deleteFile(file);
             }
         }
     }
 
     private void getMp3File(int id) throws Exception {
-        if (SettingsHelper.taleExists(id)) return;
+        if (HSettings.taleExists(id)) return;
 
         String track = String.format("%02d.mp3", id);
         URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
         InputStream is = (InputStream) url.getContent();
-        SettingsHelper.saveFile(track, IOUtils.toByteArray(is));
+        HSettings.saveFile(track, IOUtils.toByteArray(is));
     }
 
     private void getJpgFile(String url, String name, int width, int height) throws Exception {
-        if (SettingsHelper.fileExists(name)) return;
+        if (HSettings.fileExists(name)) return;
 
         InputStream is = (InputStream) new URL(url).getContent();
-        Drawable drawable = ImageHelper.resize(Drawable.createFromStream(is, "src name"), width, height);
-        SettingsHelper.saveImage(name, drawable);
+        Drawable drawable = HImages.resize(Drawable.createFromStream(is, "src name"), width, height);
+        HSettings.saveImage(name, drawable);
     }
 
     private void getTitleAndReader(int id) throws Exception {
-        String title = SettingsHelper.getString("title-" + id);
-        String reader = SettingsHelper.getString("reader-" + id);
+        String title = HSettings.getString("title-" + id);
+        String reader = HSettings.getString("reader-" + id);
 
         if (title.equals("") || reader.equals("")){
             Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
             title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
             reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
 
-            SettingsHelper.setString("title-" + id, title);
-            SettingsHelper.setString("reader-" + id, reader);
+            HSettings.setString("title-" + id, title);
+            HSettings.setString("reader-" + id, reader);
         }
     }
 
@@ -299,14 +299,14 @@ public class ActivityBase extends AppCompatActivity
 
             try {
                 action = arg[1];
-                ArrayList<Integer> cachedIds =  SettingsHelper.getSavedTaleIds();
+                ArrayList<Integer> cachedIds =  HSettings.getSavedTaleIds();
                 ArrayList<Integer> realIds = new ArrayList<>();
 
                 if (cachedIds.size() < 10){
                     realIds = getTaleIds(arg[0]);
                 }
 
-                result = ListHelper.union(cachedIds, realIds);
+                result = HList.union(cachedIds, realIds);
                 Collections.sort(result);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -323,7 +323,7 @@ public class ActivityBase extends AppCompatActivity
                 Toast.makeText(ActivityBase.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
 
                 if (action == DOWNLOAD_ALL){
-                    SettingsHelper.setBoolean("talesDownload", false);
+                    HSettings.setBoolean("talesDownload", false);
                 }
                 return;
             }
@@ -399,7 +399,7 @@ public class ActivityBase extends AppCompatActivity
                 progress.setMax(integers.length);
 
                 for (int id:integers) {
-                    long freeSpace = SettingsHelper.freeSpace();
+                    long freeSpace = HSettings.freeSpace();
 
                     if (freeSpace < 50){
                         throw new Exception(String.format("Лишилось лише %dМБ вільного місця!", freeSpace));
@@ -438,7 +438,7 @@ public class ActivityBase extends AppCompatActivity
                     String name = String.format("%s.jpg", readerName);
                     String url = String.format("https://kazky.suspilne.media/inc/img/readers/%s.jpg", id);
 
-                    SettingsHelper.setString(readerName, fullName);
+                    HSettings.setString(readerName, fullName);
                     getJpgFile(url, name, 100, 100);
                 }
 

@@ -37,16 +37,16 @@ public class PlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         String type = intent.getStringExtra("type");
-        SettingsHelper.setString("StreamType", type);
+        HSettings.setString("StreamType", type);
 
-        switch (type){
-            case "radio":
-                playRadio();
-                break;
+        if (type.equals(getString(R.string.radio))){
+            playRadio();
+            return START_NOT_STICKY;
+        }
 
-            case "tale":
-                playTale(intent.getIntExtra("id", 0));
-                break;
+        if (type.equals(getString(R.string.tales))){
+            playTale(intent.getIntExtra("id", 0));
+            return START_NOT_STICKY;
         }
 
         return START_NOT_STICKY;
@@ -118,53 +118,57 @@ public class PlayerService extends Service {
 
     private void sendMessage(String code, int id){
         Intent intent = new Intent();
-        intent.setAction(SettingsHelper.application);
+        intent.setAction(HSettings.application);
         intent.putExtra("code", code);
         intent.putExtra("id", id);
         sendBroadcast(intent);
     }
 
     private Notification getTalesNotification(int id, String reader, String title){
+        HSettings.setString("StreamType", getString(R.string.tales));
+
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        Drawable image = SettingsHelper.getImage(String.format("%02d.jpg", id));
+        Drawable image = HSettings.getImage(String.format("%02d.jpg", id));
 
         Intent notificationIntent = new Intent(this, ActivityTales.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent openTalesIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, HSettings.application)
                 .setSmallIcon(R.drawable.ic_radio)
                 .setContentTitle(title)
                 .setContentText(reader)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(ImageHelper.getBitmap(image))
+                .setLargeIcon(HImages.getBitmap(image))
                 .setUsesChronometer(true)
                 .setSound(null)
                 .setContentIntent(openTalesIntent);
 
         Intent playPrevIntent = new Intent();
-        playPrevIntent.setAction(SettingsHelper.application + "previous");
+        playPrevIntent.setAction(HSettings.application + "previous");
         playPrevIntent.putExtra("code", "PlayPrevious");
         PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
-        notificationBuilder.addAction(0, "        <<", playPrevPendingIntent);
+        notificationBuilder.addAction(0, "<< Назад", playPrevPendingIntent);
 
         Intent stopIntent = new Intent();
-        stopIntent.setAction(SettingsHelper.application + "stop");
+        stopIntent.setAction(HSettings.application + "stop");
         stopIntent.putExtra("code", "StopPlay");
         PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-        notificationBuilder.addAction(0, "  ||", stopPendingIntent);
+        notificationBuilder.addAction(0, "Зупинити", stopPendingIntent);
 
         Intent playNextIntent = new Intent();
-        playNextIntent.setAction(SettingsHelper.application + "next");
+        playNextIntent.setAction(HSettings.application + "next");
         playNextIntent.putExtra("code", "PlayNext");
         PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
-        notificationBuilder.addAction(0, ">>", playNextPendingIntent);
+        notificationBuilder.addAction(0, "Вперед >>", playNextPendingIntent);
 
         return notificationBuilder.build();
     }
 
     private Notification getRadioNotification(){
+        HSettings.setString("StreamType", getString(R.string.radio));
+
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Drawable image = ContextCompat.getDrawable(this, R.mipmap.radio);
 
@@ -172,18 +176,18 @@ public class PlayerService extends Service {
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent openRadioIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, HSettings.application)
                 .setSmallIcon(R.drawable.ic_radio)
                 .setContentTitle("Радіо казок")
                 .setContentText("Радіо хвиля казок українською мовою")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(ImageHelper.getBitmap(image))
+                .setLargeIcon(HImages.getBitmap(image))
                 .setSound(null)
                 .setContentIntent(openRadioIntent);
 
         Intent stopIntent = new Intent();
-        stopIntent.setAction(SettingsHelper.application + "stop");
+        stopIntent.setAction(HSettings.application + "stop");
         stopIntent.putExtra("code", "StopPlay");
         PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
         notificationBuilder.addAction(0, "Зупинити", stopPendingIntent);
@@ -205,6 +209,8 @@ public class PlayerService extends Service {
     }
 
     private void releasePlayer(){
+        HSettings.setString("StreamType", "");
+
         while (player != null){
             ActivityTales.setPosition(player.getCurrentPosition());
             player.release();
@@ -222,10 +228,10 @@ public class PlayerService extends Service {
         try{
             IntentFilter filter = new IntentFilter();
 
-            filter.addAction(SettingsHelper.application);
-            filter.addAction(SettingsHelper.application + "previous");
-            filter.addAction(SettingsHelper.application + "next");
-            filter.addAction(SettingsHelper.application + "stop");
+            filter.addAction(HSettings.application);
+            filter.addAction(HSettings.application + "previous");
+            filter.addAction(HSettings.application + "next");
+            filter.addAction(HSettings.application + "stop");
 
             this.registerReceiver(receiver, filter);
         }catch (Exception e){ /*nothing*/ }
@@ -243,14 +249,14 @@ public class PlayerService extends Service {
         if (id > 0){
             String name = String.format("%02d.mp3", id);
             String url = "https://kazky.suspilne.media/inc/audio/" + name;
-            String stream = SettingsHelper.taleExists(id) ? this.getFilesDir() + "/" + name : url;
-            String title = SettingsHelper.getString("title-" + id);
-            String reader = SettingsHelper.getString("reader-" + id);
+            String stream = HSettings.taleExists(id) ? this.getFilesDir() + "/" + name : url;
+            String title = HSettings.getString("title-" + id);
+            String reader = HSettings.getString("reader-" + id);
             long position = id == tales.getLastPlaying() ? tales.getPosition() : 0;
             playStream(stream, position);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationChannel notificationChannel = new NotificationChannel(HSettings.application, HSettings.application, NotificationManager.IMPORTANCE_DEFAULT);
                 notificationChannel.setSound(null, null);
                 notificationChannel.setShowBadge(false);
 
@@ -271,7 +277,7 @@ public class PlayerService extends Service {
         playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel(HSettings.application, HSettings.application, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setSound(null, null);
             notificationChannel.setShowBadge(false);
 

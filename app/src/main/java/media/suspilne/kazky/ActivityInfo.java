@@ -17,20 +17,20 @@ public class ActivityInfo extends ActivityBase {
         super.onCreate(savedInstanceState);
 
         setTaleReaders();
-        String version = SettingsHelper.getVersionName(this);
+        String version = HSettings.getVersionName(this);
         ((TextView)findViewById(R.id.infoText)).setText(getString(R.string.description, version));
     }
 
     private void setTaleReaders(){
         LinearLayout list = findViewById(R.id.list);
-        ArrayList<Integer> ids = SettingsHelper.getTaleReaderIds(this);
+        ArrayList<Integer> ids = HSettings.getTaleReaderIds(this);
         Collections.sort(ids);
 
         if (ids.size() == 0) findViewById(R.id.sectionTitle).setVisibility(View.GONE);
 
         for (final int id:ids) {
-            String readerName = SettingsHelper.getString(String.format("readerName-%d", id));
-            Drawable readerPhoto = SettingsHelper.getImage(String.format("readerName-%d.jpg", id));
+            String readerName = HSettings.getString(String.format("readerName-%d", id));
+            Drawable readerPhoto = HSettings.getImage(String.format("readerName-%d.jpg", id));
             View item = LayoutInflater.from(this).inflate(R.layout.reader, list, false);
             list.addView(item);
 
@@ -38,7 +38,7 @@ public class ActivityInfo extends ActivityBase {
             ImageView photo = item.findViewById(R.id.photo);
 
             reader.setText(readerName);
-            if (readerPhoto != null) photo.setImageDrawable(ImageHelper.getCircularDrawable(readerPhoto));
+            if (readerPhoto != null) photo.setImageDrawable(HImages.getCircularDrawable(readerPhoto));
         }
     }
 }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
-public class SettingsHelper {
+public class HSettings {
     public static String application = "Kazka";
 
     public static String getString(String setting){
@@ -52,7 +52,7 @@ public class SettingsHelper {
             titles.add(Integer.parseInt(title.split("-")[1]));
         }
 
-        result = ListHelper.intersect(readers, titles);
+        result = HList.intersect(readers, titles);
         Collections.sort(result);
 
         return result;

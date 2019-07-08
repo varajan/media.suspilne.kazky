@@ -11,7 +11,7 @@ public class ApplicationKazky extends Application {
         super.onCreate();
         UpdateSslProvider();
 
-        SharedPreferences.Editor editor = getSharedPreferences(SettingsHelper.application, 0).edit();
+        SharedPreferences.Editor editor = getSharedPreferences(HSettings.application, 0).edit();
         editor.putString("StreamType", "");
         editor.putString("nowPlaying", String.valueOf(-1));
         editor.putString("lastPlaying", String.valueOf(-1));

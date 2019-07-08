@@ -33,15 +33,15 @@ public class ActivitySettings extends ActivityBase {
         askToContinueDownloadTales();
 
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SettingsHelper.setBoolean("autoQuit", isChecked);
+            HSettings.setBoolean("autoQuit", isChecked);
             setColorsAndState();
         });
 
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
-                timeoutText.setText(SettingsHelper.getString("timeout", "0") + " хвилин");
+                HSettings.setInt("timeout", seekBar.getProgress() * step);
+                timeoutText.setText(HSettings.getString("timeout", "0") + " хвилин");
             }
 
             @Override
@@ -53,7 +53,7 @@ public class ActivitySettings extends ActivityBase {
     }
 
     private void download(){
-        if (!SettingsHelper.isNetworkAvailable()){
+        if (!HSettings.isNetworkAvailable()){
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         } else {
             GetTaleIds download = new GetTaleIds();
@@ -63,13 +63,13 @@ public class ActivitySettings extends ActivityBase {
 
     private void doDownload(){
         download();
-        SettingsHelper.setBoolean("talesDownload", true);
+        HSettings.setBoolean("talesDownload", true);
         setColorsAndState();
     }
 
     private void doCleanup(){
         dropDownloads(".mp3");
-        SettingsHelper.setBoolean("talesDownload", false);
+        HSettings.setBoolean("talesDownload", false);
         setColorsAndState();
     }
 
@@ -97,12 +97,12 @@ public class ActivitySettings extends ActivityBase {
     }
 
     private void setColorsAndState() {
-        boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
-        boolean isTalesDownload = SettingsHelper.getBoolean("talesDownload");
+        boolean isAutoQuit = HSettings.getBoolean("autoQuit");
+        boolean isTalesDownload = HSettings.getBoolean("talesDownload");
         int accent = ContextCompat.getColor(this, R.color.colorAccent);
 
-        timeoutText.setText(SettingsHelper.getString("timeout", "5") + " хвилин");
-        timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
+        timeoutText.setText(HSettings.getString("timeout", "5") + " хвилин");
+        timeout.setProgress(HSettings.getInt("timeout", 1) / step);
 
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
