@@ -28,7 +28,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="16dp"
-            android:text="Зберегти казки на пристрій (Казки будуть доступні без Інтернета)"
+            android:text="@string/save_tales_locally"
             android:textSize="20sp"
             tools:typeface="serif"
             app:layout_constraintStart_toStartOf="parent" />
@@ -41,7 +41,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="16sp"
-            android:text="Таймер сну (закривати програму)"
+            android:text="@string/sleep_timeout"
             android:textSize="20sp"
             tools:typeface="serif"
             app:layout_constraintStart_toStartOf="parent"
