@@ -27,6 +27,13 @@ public class ActivityRadio extends ActivityBase {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+        setPlayBtnIcon();
+    }
+
+    @Override
     public void onDestroy(){
         super.onDestroy();
         unregisterReceiver();

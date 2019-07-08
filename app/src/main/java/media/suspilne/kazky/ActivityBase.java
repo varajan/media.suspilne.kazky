@@ -3,6 +3,7 @@ package media.suspilne.kazky;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -116,7 +117,7 @@ public class ActivityBase extends AppCompatActivity
 
     private void exit(){
         moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
+        stopPlayerService();
         System.exit(1);
     }
 
@@ -178,9 +179,8 @@ public class ActivityBase extends AppCompatActivity
     }
 
     protected void stopPlayerService(){
-        if (isServiceRunning(PlayerService.class)){
-            stopService(new Intent(this, PlayerService.class));
-        }
+        stopService(new Intent(this, PlayerService.class));
+        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();
     }
 
     @Override

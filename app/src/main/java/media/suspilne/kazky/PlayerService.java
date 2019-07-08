@@ -38,6 +38,7 @@ public class PlayerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         String type = intent.getStringExtra("type");
         HSettings.setString("StreamType", type);
+        registerReceiver();
 
         if (type.equals(getString(R.string.radio))){
             playRadio();
@@ -203,24 +204,20 @@ public class PlayerService extends Service {
 
     @Override
     public void onDestroy() {
+        notificationManager.cancelAll();
         releasePlayer();
-        clearNotifications();
         unregisterReceiver();
+        super.onDestroy();
     }
 
     private void releasePlayer(){
         HSettings.setString("StreamType", "");
+        notificationManager.cancelAll();
 
         while (player != null){
             ActivityTales.setPosition(player.getCurrentPosition());
             player.release();
             player = null;
-        }
-    }
-
-    private void clearNotifications(){
-        if (notificationManager != null){
-            notificationManager.cancelAll();
         }
     }
 
@@ -298,7 +295,7 @@ public class PlayerService extends Service {
 
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
-                    stopService(new Intent(PlayerService.this, PlayerService.class));
+                    stopSelf();
                     break;
 
                 case "MediaIsEnded":
@@ -320,7 +317,7 @@ public class PlayerService extends Service {
                     tales.setNowPlaying(-1);
 
                     sendMessage("SetPlayBtnIcon", -1);
-                    stopService(new Intent(PlayerService.this, PlayerService.class));
+                    stopSelf();
                     break;
             }
         }

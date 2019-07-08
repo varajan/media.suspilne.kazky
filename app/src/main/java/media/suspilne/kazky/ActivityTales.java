@@ -54,7 +54,6 @@ public class ActivityTales extends ActivityBase {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        stopPlayerService();
         unregisterReceiver();
     }
 
