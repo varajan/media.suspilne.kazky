@@ -6,7 +6,7 @@
     android:background="@mipmap/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings">
+    tools:context=".ActivitySettings">
 
 <LinearLayout
         android:id="@+id/list"
@@ -21,19 +21,6 @@
         android:orientation="vertical">
 
         <Switch
-            android:id="@+id/batteryOptimization"
-            android:fontFamily="@font/chalkboard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
-            android:text="Дозволити програмі працювати в фоновому режимі (якщо Андроїд вимикає звук через кілька хвилин)"
-            android:textSize="16sp"
-            tools:typeface="serif"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Switch
             android:id="@+id/talesDownload"
             android:fontFamily="@font/chalkboard"
             android:layout_width="match_parent"
@@ -41,24 +28,10 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="8dp"
-            android:text="Зберегти казки на пристрій (Казки будуть доступні без Інтернета)"
+            android:text="@string/save_tales_locally"
             android:textSize="16sp"
             tools:typeface="serif"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <Switch
-            android:id="@+id/talesPlayNext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/chalkboard"
-            android:text="Казки: грати одну за одною"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/batteryOptimization"
-            tools:typeface="serif" />
 
         <Switch
             android:id="@+id/autoQuit"
@@ -68,11 +41,11 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="8dp"
-            android:text="Таймер сну (закривати програму)"
+            android:text="@string/sleep_timeout"
             android:textSize="16sp"
             tools:typeface="serif"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/talesPlayNext" />
+            app:layout_constraintTop_toBottomOf="@id/talesDownload" />
 
         <SeekBar
             android:id="@+id/timeout"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/background"
-    tools:context=".Radio">
+    tools:context=".ActivityRadio">
 
     <ImageView
         android:id="@+id/onlinePlayer"
@@ -44,7 +44,7 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/chalkboard"
         android:gravity="center"
-        android:text="Радіо хвиля авторських казок українською мовою для дітей"
+        android:text="@string/radio_description"
         android:textColor="#EEEEEE"
         android:textSize="32sp"
         android:textStyle="bold"

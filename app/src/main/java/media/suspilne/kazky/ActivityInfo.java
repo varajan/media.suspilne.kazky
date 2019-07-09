@@ -10,27 +10,27 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Info extends MainActivity {
+public class ActivityInfo extends ActivityBase {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_info);
         currentView = R.id.info_menu;
         super.onCreate(savedInstanceState);
 
         setTaleReaders();
-        String version = SettingsHelper.getVersionName(this);
+        String version = HSettings.getVersionName(this);
         ((TextView)findViewById(R.id.infoText)).setText(getString(R.string.description, version));
     }
 
     private void setTaleReaders(){
         LinearLayout list = findViewById(R.id.list);
-        ArrayList<Integer> ids = SettingsHelper.getTaleReaderIds(this);
+        ArrayList<Integer> ids = HSettings.getTaleReaderIds(this);
         Collections.sort(ids);
 
         if (ids.size() == 0) findViewById(R.id.sectionTitle).setVisibility(View.GONE);
 
         for (final int id:ids) {
-            String readerName = SettingsHelper.getString(this, String.format("readerName-%d", id));
-            Drawable readerPhoto = SettingsHelper.getImage(this, String.format("readerName-%d.jpg", id));
+            String readerName = HSettings.getString(String.format("readerName-%d", id));
+            Drawable readerPhoto = HSettings.getImage(String.format("readerName-%d.jpg", id));
             View item = LayoutInflater.from(this).inflate(R.layout.reader, list, false);
             list.addView(item);
 
@@ -38,7 +38,7 @@ public class Info extends MainActivity {
             ImageView photo = item.findViewById(R.id.photo);
 
             reader.setText(readerName);
-            if (readerPhoto != null) photo.setImageDrawable(ImageHelper.getCircularDrawable(readerPhoto));
+            if (readerPhoto != null) photo.setImageDrawable(HImages.getCircularDrawable(readerPhoto));
         }
     }
 }

@@ -2,7 +2,7 @@ package media.suspilne.kazky;
 
 import java.util.ArrayList;
 
-public class ListHelper {
+public class HList {
     public static ArrayList<Integer> intersect(ArrayList<Integer> list1, ArrayList<Integer> list2){
         ArrayList<Integer> result = new ArrayList<>();
 
