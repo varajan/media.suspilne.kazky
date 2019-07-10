@@ -166,7 +166,12 @@ public class ActivityTales extends ActivityBase {
         boolean isTalePlaying = isTalePlaying();
 
         for (int x:ids){
-            ImageView btn = list.findViewWithTag(x).findViewById(R.id.play);
+            View tale = list.findViewWithTag(x);
+            if (tale == null) continue;
+
+            ImageView btn =tale.findViewById(R.id.play);
+            if (btn == null) continue;
+
             btn.setImageResource(x == id && isTalePlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
         }
     }

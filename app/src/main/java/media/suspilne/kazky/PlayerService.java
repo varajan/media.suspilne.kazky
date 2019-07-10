@@ -40,6 +40,10 @@ public class PlayerService extends Service {
         HSettings.setString("StreamType", type);
         registerReceiver();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForeground(1, getRadioNotification());
+        }
+
         if (type.equals(getString(R.string.radio))){
             playRadio();
             return START_NOT_STICKY;
@@ -136,15 +140,16 @@ public class PlayerService extends Service {
         PendingIntent openTalesIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, HSettings.application)
-                .setSmallIcon(R.drawable.ic_radio)
-                .setContentTitle(title)
-                .setContentText(reader)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(HImages.getBitmap(image))
-                .setUsesChronometer(true)
-                .setSound(null)
-                .setContentIntent(openTalesIntent);
+            .setSmallIcon(R.drawable.ic_radio)
+            .setContentTitle(title)
+            .setContentText(reader)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(HImages.getBitmap(image))
+            .setUsesChronometer(true)
+            .setSound(null)
+            .setChannelId(HSettings.application)
+            .setContentIntent(openTalesIntent);
 
         Intent playPrevIntent = new Intent();
         playPrevIntent.setAction(HSettings.application + "previous");
@@ -178,14 +183,15 @@ public class PlayerService extends Service {
         PendingIntent openRadioIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, HSettings.application)
-                .setSmallIcon(R.drawable.ic_radio)
-                .setContentTitle("Радіо казок")
-                .setContentText("Радіо хвиля казок українською мовою")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(HImages.getBitmap(image))
-                .setSound(null)
-                .setContentIntent(openRadioIntent);
+            .setSmallIcon(R.drawable.ic_radio)
+            .setContentTitle("Радіо казок")
+            .setContentText("Радіо хвиля казок українською мовою")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(HImages.getBitmap(image))
+            .setSound(null)
+            .setChannelId(HSettings.application)
+            .setContentIntent(openRadioIntent);
 
         Intent stopIntent = new Intent();
         stopIntent.setAction(HSettings.application + "stop");
