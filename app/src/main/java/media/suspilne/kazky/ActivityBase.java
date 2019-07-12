@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.google.android.gms.common.util.IOUtils;
@@ -180,7 +181,12 @@ public class ActivityBase extends AppCompatActivity
 
     protected void stopPlayerService(){
         stopService(new Intent(this, PlayerService.class));
+        try {
         ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();
+        } catch (Exception ex) {
+            Log.e(HSettings.application, ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     @Override

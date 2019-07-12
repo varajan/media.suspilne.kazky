@@ -57,7 +57,7 @@ public class PlayerService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void playStream(String stream) { playStream(stream, 0); }
+    private void playStream() { playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3", 0); }
 
     private void playStream(String stream, long position) {
         Uri uri = Uri.parse(stream);
@@ -247,15 +247,13 @@ public class PlayerService extends Service {
     }
 
     private void playTale(int id){
-        ActivityTales tales = new ActivityTales();
-
         if (id > 0){
             String name = String.format("%02d.mp3", id);
             String url = "https://kazky.suspilne.media/inc/audio/" + name;
             String stream = HSettings.taleExists(id) ? this.getFilesDir() + "/" + name : url;
             String title = HSettings.getString("title-" + id);
             String reader = HSettings.getString("reader-" + id);
-            long position = id == tales.getLastPlaying() ? tales.getPosition() : 0;
+            long position = id == ActivityTales.getLastPlaying() ? ActivityTales.getPosition() : 0;
             playStream(stream, position);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -271,13 +269,13 @@ public class PlayerService extends Service {
             }
         }
 
-        tales.setLastPlaying(id);
-        tales.setNowPlaying(id);
+        ActivityTales.setLastPlaying(id);
+        ActivityTales.setNowPlaying(id);
         sendMessage("SetPlayBtnIcon", id);
     }
 
     private void playRadio(){
-        playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3");
+        playStream();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(HSettings.application, HSettings.application, NotificationManager.IMPORTANCE_DEFAULT);
@@ -297,8 +295,6 @@ public class PlayerService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ActivityTales tales = new ActivityTales();
-
             switch (intent.getStringExtra("code")){
                 case "SourceIsNotAccessible":
                     stopSelf();
@@ -306,21 +302,21 @@ public class PlayerService extends Service {
 
                 case "MediaIsEnded":
                     releasePlayer();
-                    playTale(tales.getNext());
+                    playTale(ActivityTales.getNext());
                     break;
 
                 case "PlayNext":
                     releasePlayer();
-                    playTale(tales.getNext());
+                    playTale(ActivityTales.getNext());
                     break;
 
                 case "PlayPrevious":
                     releasePlayer();
-                    playTale(tales.getPrevious());
+                    playTale(ActivityTales.getPrevious());
                     break;
 
                 case "StopPlay":
-                    tales.setNowPlaying(-1);
+                    ActivityTales.setNowPlaying(-1);
 
                     sendMessage("SetPlayBtnIcon", -1);
                     stopSelf();

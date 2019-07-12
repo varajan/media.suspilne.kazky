@@ -91,7 +91,7 @@ public class ActivityTales extends ActivityBase {
         }
     };
 
-    public int getNext(){
+    public static int getNext(){
         ArrayList<Integer> ids = HSettings.getSavedTaleIds();
         boolean online = HSettings.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
@@ -111,7 +111,7 @@ public class ActivityTales extends ActivityBase {
         return -1;
     }
 
-    public int getPrevious(){
+    public static int getPrevious(){
         ArrayList<Integer> ids = HSettings.getSavedTaleIds();
         boolean online = HSettings.isNetworkAvailable();
         int nowPlaying = getNowPlaying();
