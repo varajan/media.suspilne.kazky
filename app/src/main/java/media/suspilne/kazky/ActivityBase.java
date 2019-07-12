@@ -76,8 +76,7 @@ public class ActivityBase extends AppCompatActivity
         setQuiteTimeout();
         showErrorMessage();
 
-        GetTaleIds cache = new GetTaleIds();
-        if (HSettings.isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
+        if (HSettings.isNetworkAvailable()) new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.CACHE_IMAGES);
         if (HSettings.isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
     }
 
@@ -107,7 +106,7 @@ public class ActivityBase extends AppCompatActivity
                 .show();
     }
 
-    protected void askToContinueDownloadTales(){
+    protected void continueDownloadTales(){
         if (!HSettings.getBoolean("talesDownload")) return;
 
         boolean allTalesAreDownloaded = true;
@@ -119,15 +118,7 @@ public class ActivityBase extends AppCompatActivity
 
         if (allTalesAreDownloaded || !HSettings.isNetworkAvailable()) return;
 
-        new AlertDialog.Builder(ActivityBase.this)
-                .setIcon(R.mipmap.logo)
-                .setTitle("Продовжити закачку казок?")
-                .setMessage("Не всі казки скачані на пристрій. Докачати?")
-                .setPositiveButton("Докачати", (dialog, which) -> {
-                    GetTaleIds download = new GetTaleIds();
-                    download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);})
-                .setNegativeButton("Ні", null)
-                .show();
+        new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.DOWNLOAD_ALL);
     }
 
     private void exit(){

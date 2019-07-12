@@ -30,7 +30,7 @@ public class ActivitySettings extends ActivityBase {
         timeoutText = this.findViewById(R.id.timeoutText);
 
         setColorsAndState();
-        askToContinueDownloadTales();
+        continueDownloadTales();
 
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> {
             HSettings.setBoolean("autoQuit", isChecked);
@@ -56,8 +56,7 @@ public class ActivitySettings extends ActivityBase {
         if (!HSettings.isNetworkAvailable()){
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         } else {
-            GetTaleIds download = new GetTaleIds();
-            download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);
+            new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.DOWNLOAD_ALL);
         }
     }
 

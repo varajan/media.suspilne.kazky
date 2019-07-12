@@ -55,10 +55,10 @@ public class Tasks {
     }
 }
 
-    class GetTaleIds extends AsyncTask<String, Void, Integer[]> {
+    class DownloadTalesData extends AsyncTask<String, Void, Integer[]> {
         String action = "null";
-        final String CACHE_IMAGES = "Cache images";
-        final String DOWNLOAD_ALL = "Download all";
+        final static String CACHE_IMAGES = "Cache images";
+        final static String DOWNLOAD_ALL = "Download all";
 
         private ArrayList<Integer> getTaleIds(String url) throws Exception {
             ArrayList<Integer> result = new ArrayList<>();
@@ -101,9 +101,7 @@ public class Tasks {
             super.onPostExecute(ids);
 
             if (ids.length == 0){
-//                Toast.makeText(ActivityBase.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
-
-                if (action == DOWNLOAD_ALL){
+                if (action.equals(DOWNLOAD_ALL)){
                     HSettings.setBoolean("talesDownload", false);
                 }
                 return;

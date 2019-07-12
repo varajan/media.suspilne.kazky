@@ -47,7 +47,7 @@ public class ActivityTales extends ActivityBase {
 
         showTales();
         askToDownloadTales();
-        askToContinueDownloadTales();
+        continueDownloadTales();
         registerReceiver();
         setPlayBtnIcon(getNowPlaying());
     }
@@ -63,14 +63,13 @@ public class ActivityTales extends ActivityBase {
          || HSettings.getBoolean("talesDownload")) return;
 
         new AlertDialog.Builder(ActivityTales.this)
-                .setIcon(R.mipmap.logo)
-                .setTitle("Скачат казки на пристрій?")
-                .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
-                .setPositiveButton("Скачати", (dialog, which) -> {
-                    GetTaleIds download = new GetTaleIds();
-                    download.execute("https://kazky.suspilne.media/list", download.DOWNLOAD_ALL);})
-                .setNegativeButton("Ні", null)
-                .show();
+            .setIcon(R.mipmap.logo)
+            .setTitle("Скачат казки на пристрій?")
+            .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
+            .setPositiveButton("Скачати", (dialog, which) -> {
+                new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.DOWNLOAD_ALL);})
+            .setNegativeButton("Ні", null)
+            .show();
 
         HSettings.setBoolean("askToDownloadTales", true);
     }
