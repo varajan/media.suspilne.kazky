@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,16 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
-import com.google.android.gms.common.util.IOUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,7 +30,7 @@ public class ActivityBase extends AppCompatActivity
     protected NavigationView navigation;
     protected int currentView;
 
-    ProgressDialog progress;
+    NotificationManager notificationManager;
 
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
@@ -87,10 +74,37 @@ public class ActivityBase extends AppCompatActivity
 
         setTitle();
         setQuiteTimeout();
+        showErrorMessage();
 
         GetTaleIds cache = new GetTaleIds();
         if (HSettings.isNetworkAvailable()) cache.execute("https://kazky.suspilne.media/list", cache.CACHE_IMAGES);
         if (HSettings.isNetworkAvailable()) new GetTaleReaders().execute("https://kazky.suspilne.media/list");
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        showErrorMessage();
+    }
+
+    private void showErrorMessage(){
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        String errorMessage = HSettings.getString("errorMessage");
+
+        if (!errorMessage.isEmpty()){
+            showAlert("Сталась помлка", errorMessage);
+            notificationManager.cancel(DownloadAll.notificationId);
+            HSettings.setString("errorMessage", "");
+        }
+    }
+
+    protected void showAlert(String title, String message){
+        new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.logo)
+                .setTitle(title)
+                .setMessage(message)
+                .setNeutralButton("OK", null)
+                .show();
     }
 
     protected void askToContinueDownloadTales(){
@@ -246,213 +260,6 @@ public class ActivityBase extends AppCompatActivity
             if (file.toLowerCase().contains(extension.toLowerCase())){
                 HSettings.deleteFile(file);
             }
-        }
-    }
-
-    private void getMp3File(int id) throws Exception {
-        if (HSettings.taleExists(id)) return;
-
-        String track = String.format("%02d.mp3", id);
-        URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
-        InputStream is = (InputStream) url.getContent();
-        HSettings.saveFile(track, IOUtils.toByteArray(is));
-    }
-
-    private void getJpgFile(String url, String name, int width, int height) throws Exception {
-        if (HSettings.fileExists(name)) return;
-
-        InputStream is = (InputStream) new URL(url).getContent();
-        Drawable drawable = HImages.resize(Drawable.createFromStream(is, "src name"), width, height);
-        HSettings.saveImage(name, drawable);
-    }
-
-    private void getTitleAndReader(int id) throws Exception {
-        String title = HSettings.getString("title-" + id);
-        String reader = HSettings.getString("reader-" + id);
-
-        if (title.equals("") || reader.equals("")){
-            Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
-            title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
-            reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
-
-            HSettings.setString("title-" + id, title);
-            HSettings.setString("reader-" + id, reader);
-        }
-    }
-
-    class GetTaleIds extends AsyncTask<String, Void, Integer[]> {
-        String action = "null";
-        final String CACHE_IMAGES = "Cache images";
-        final String DOWNLOAD_ALL = "Download all";
-
-        private ArrayList<Integer> getTaleIds(String url) throws Exception {
-            ArrayList<Integer> result = new ArrayList<>();
-            Document document = Jsoup.connect(url).get();
-            Elements tales = document.select("div.tales-list a");
-
-            for (Element tale : tales) {
-                String href = tale.attr("href");
-                String id = href.split("\\?")[0].split("/")[2];
-                result.add(Integer.valueOf(id));
-            }
-
-            return result;
-        }
-
-        @Override
-        protected Integer[] doInBackground(String... arg) {
-            ArrayList<Integer> result = new ArrayList<>();
-
-            try {
-                action = arg[1];
-                ArrayList<Integer> cachedIds =  HSettings.getSavedTaleIds();
-                ArrayList<Integer> realIds = new ArrayList<>();
-
-                if (cachedIds.size() < 10){
-                    realIds = getTaleIds(arg[0]);
-                }
-
-                result = HList.union(cachedIds, realIds);
-                Collections.sort(result);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return result.toArray(new Integer[0]);
-        }
-
-        @Override
-        protected void onPostExecute(final Integer[] ids) {
-            super.onPostExecute(ids);
-
-            if (ids.length == 0){
-                Toast.makeText(ActivityBase.this, "Сталася помилка, спробуйте пізніше!", Toast.LENGTH_LONG).show();
-
-                if (action == DOWNLOAD_ALL){
-                    HSettings.setBoolean("talesDownload", false);
-                }
-                return;
-            }
-
-            switch (action){
-                case CACHE_IMAGES:
-                    new CacheImages().execute(ids);
-                    break;
-
-                case DOWNLOAD_ALL:
-                    new DownloadAll().execute(ids);
-                    break;
-            }
-        }
-    }
-
-    class CacheImages extends AsyncTask<Integer, Integer, Boolean> {
-        @Override
-        protected Boolean doInBackground(Integer... integers) {
-            try {
-                for (int id:integers) {
-                    String name = String.format("%02d.jpg", id);
-                    String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
-
-                    getJpgFile(url, name, 300, 226);
-                    getTitleAndReader(id);
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    class DownloadAll extends AsyncTask<Integer, Integer, String> {
-        protected void onPreExecute() {
-            progress = new ProgressDialog(ActivityBase.this);
-            progress.setIcon(R.mipmap.logo);
-            progress.setTitle("Завантаження казок");
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progress.setCancelable(false);
-            progress.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            progress.incrementProgressBy(1);
-        }
-
-        @Override
-        protected void onPostExecute(final String result) {
-            if (progress.isShowing()) {
-                progress.dismiss();
-            }
-
-            if (result.isEmpty()){
-                Toast.makeText(ActivityBase.this, "Готово!", Toast.LENGTH_LONG).show();
-            }else{
-                new AlertDialog.Builder(ActivityBase.this)
-                    .setIcon(R.mipmap.logo)
-                    .setTitle("Сталась помлка")
-                    .setMessage(result)
-                    .setNeutralButton("OK", null)
-                    .show();
-            }
-        }
-
-        @Override
-        protected String doInBackground(Integer... integers) {
-            try {
-                progress.setMax(integers.length);
-
-                for (int id:integers) {
-                    long freeSpace = HSettings.freeSpace();
-
-                    if (freeSpace < 50){
-                        throw new Exception(String.format("Лишилось лише %dМБ вільного місця!", freeSpace));
-                    }
-
-                    String name = String.format("%02d.jpg", id);
-                    String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
-
-                    getMp3File(id);
-                    getJpgFile(url, name, 300, 226);
-                    getTitleAndReader(id);
-
-                    publishProgress(id);
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                return e.getMessage();
-            }
-
-            return "";
-        }
-    }
-
-    class GetTaleReaders extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... arg) {
-            try {
-                Document document = Jsoup.connect(arg[0]).get();
-                Elements readers = document.select("div.information__main div.reader-line");
-
-                for (Element reader : readers) {
-                    final String src = reader.select("img").attr("src");
-                    final String id = src.split("readers/")[1].split("\\.")[0];
-                    final String fullName = reader.select("div.reader").text().trim().split("\\.")[0];
-                    String readerName = String.format("readerName-%s", id);
-                    String name = String.format("%s.jpg", readerName);
-                    String url = String.format("https://kazky.suspilne.media/inc/img/readers/%s.jpg", id);
-
-                    HSettings.setString(readerName, fullName);
-                    getJpgFile(url, name, 100, 100);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
         }
     }
 }

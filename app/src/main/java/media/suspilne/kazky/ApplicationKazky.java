@@ -15,6 +15,7 @@ public class ApplicationKazky extends Application {
         editor.putString("StreamType", "");
         editor.putString("nowPlaying", String.valueOf(-1));
         editor.putString("lastPlaying", String.valueOf(-1));
+        editor.putString("errorMessage", "");
         editor.apply();
     }
 

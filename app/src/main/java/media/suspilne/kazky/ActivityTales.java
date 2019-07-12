@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 public class ActivityTales extends ActivityBase {
     @Override
@@ -223,6 +224,7 @@ public class ActivityTales extends ActivityBase {
             filter.addAction(HSettings.application);
             this.registerReceiver(receiver, filter);
         }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
