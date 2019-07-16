@@ -31,6 +31,8 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
 
 public class PlayerService extends Service {
+    final int NOTIFICATION_ID = 2001;
+
     private ExoPlayer player;
     private NotificationManager notificationManager;
 
@@ -39,10 +41,6 @@ public class PlayerService extends Service {
         String type = intent.getStringExtra("type");
         HSettings.setString("StreamType", type);
         registerReceiver();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForeground(1, getRadioNotification());
-        }
 
         if (type.equals(getString(R.string.radio))){
             playRadio();
@@ -206,6 +204,20 @@ public class PlayerService extends Service {
     public void onCreate(){
         registerReceiver();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = notificationManager.getNotificationChannel(HSettings.application);
+
+            if (channel == null){
+                NotificationChannel notificationChannel = new NotificationChannel(HSettings.application, HSettings.application, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.setSound(null, null);
+                notificationChannel.setShowBadge(false);
+
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
+            this.startForeground(NOTIFICATION_ID, getRadioNotification());
+        }
     }
 
     @Override
@@ -257,15 +269,9 @@ public class PlayerService extends Service {
             playStream(stream, position);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(HSettings.application, HSettings.application, NotificationManager.IMPORTANCE_DEFAULT);
-                notificationChannel.setSound(null, null);
-                notificationChannel.setShowBadge(false);
-
-                notificationManager.createNotificationChannel(notificationChannel);
-
-                this.startForeground(1, getTalesNotification(id, reader, title));
+                this.startForeground(NOTIFICATION_ID, getTalesNotification(id, reader, title));
             } else{
-                notificationManager.notify(1, getTalesNotification(id, reader, title));
+                notificationManager.notify(NOTIFICATION_ID, getTalesNotification(id, reader, title));
             }
         }
 
@@ -278,15 +284,9 @@ public class PlayerService extends Service {
         playStream();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(HSettings.application, HSettings.application, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setSound(null, null);
-            notificationChannel.setShowBadge(false);
-
-            notificationManager.createNotificationChannel(notificationChannel);
-
-            this.startForeground(1, getRadioNotification());
+            this.startForeground(NOTIFICATION_ID, getRadioNotification());
         } else{
-            notificationManager.notify(1, getRadioNotification());
+            notificationManager.notify(NOTIFICATION_ID, getRadioNotification());
         }
 
         sendMessage("SetPlayBtnIcon", -1);

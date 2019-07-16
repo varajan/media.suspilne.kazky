@@ -30,10 +30,12 @@ public class ActivityBase extends AppCompatActivity
     protected NavigationView navigation;
     protected int currentView;
 
-    NotificationManager notificationManager;
-
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
+
+    private NotificationManager getNotificationManager(){
+        return (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+    }
 
     protected void setQuiteTimeout(){
         if (HSettings.getBoolean("autoQuit")) {
@@ -87,12 +89,11 @@ public class ActivityBase extends AppCompatActivity
     }
 
     private void showErrorMessage(){
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         String errorMessage = HSettings.getString("errorMessage");
 
         if (!errorMessage.isEmpty()){
             showAlert("Сталась помлка", errorMessage);
-            notificationManager.cancel(DownloadAll.notificationId);
+            getNotificationManager().cancel(DownloadAll.notificationId);
             HSettings.setString("errorMessage", "");
         }
     }
@@ -187,7 +188,7 @@ public class ActivityBase extends AppCompatActivity
     protected void stopPlayerService(){
         stopService(new Intent(this, PlayerService.class));
         try {
-        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();
+            getNotificationManager().cancelAll();
         } catch (Exception ex) {
             Log.e(HSettings.application, ex.getMessage());
             ex.printStackTrace();
