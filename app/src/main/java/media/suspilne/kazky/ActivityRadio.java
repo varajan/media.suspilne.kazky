@@ -94,7 +94,8 @@ public class ActivityRadio extends ActivityBase {
     }
 
     private void setPlayBtnIcon(){
-        playPauseBtn.setImageResource(isRadioPlaying() ? R.mipmap.pause : R.mipmap.play);
+        boolean isPaused = HSettings.getBoolean("playbackIsPaused");
+        playPauseBtn.setImageResource(isRadioPlaying() && !isPaused ? R.mipmap.pause : R.mipmap.play);
     }
 
     private void registerReceiver(){

@@ -62,6 +62,7 @@ public class PlayerService extends Service {
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
         if (position > 0) player.seekTo(position);
+        HSettings.setBoolean("playbackIsPaused", false);
 
         player.addListener(new ExoPlayer.EventListener() {
             @Override
@@ -75,8 +76,8 @@ public class PlayerService extends Service {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-//                Tracks.setPause(!playWhenReady);
-//                sendMessage("SetPlayBtnIcon");
+                HSettings.setBoolean("playbackIsPaused", !playWhenReady);
+                sendMessage("SetPlayBtnIcon", -1);
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
