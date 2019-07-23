@@ -16,8 +16,6 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -25,7 +23,6 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
@@ -59,7 +56,7 @@ public class PlayerService extends Service {
 
     private void playStream(String stream, long position) {
         Uri uri = Uri.parse(stream);
-        player = newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
+        player = newSimpleInstance(this);
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
                 new DefaultDataSourceFactory(this,"exoplayer-codelab"))
