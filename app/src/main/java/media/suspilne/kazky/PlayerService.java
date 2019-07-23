@@ -230,7 +230,7 @@ public class PlayerService extends Service {
 
     private void releasePlayer(){
         HSettings.setString("StreamType", "");
-        notificationManager.cancelAll();
+        notificationManager.cancel(this.NOTIFICATION_ID);
 
         while (player != null){
             ActivityTales.setPosition(player.getCurrentPosition());
@@ -272,12 +272,6 @@ public class PlayerService extends Service {
             playerNotificationManager.setFastForwardIncrementMs(10_000_000);
             playerNotificationManager.setRewindIncrementMs(10_000_000);
             playerNotificationManager.setUseNavigationActions(false);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                this.startForeground(NOTIFICATION_ID, getTalesNotification(id, reader, title));
-            } else{
-                notificationManager.notify(NOTIFICATION_ID, getTalesNotification(id, reader, title));
-            }
         }
 
         ActivityTales.setLastPlaying(id);
@@ -292,13 +286,6 @@ public class PlayerService extends Service {
         playerNotificationManager.setUseNavigationActions(false);
 
         playStream();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForeground(NOTIFICATION_ID, getRadioNotification());
-        } else{
-            notificationManager.notify(NOTIFICATION_ID, getRadioNotification());
-        }
-
         sendMessage("SetPlayBtnIcon", -1);
     }
 
@@ -306,25 +293,6 @@ public class PlayerService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getStringExtra("code")){
-//                case "SourceIsNotAccessible":
-//                    stopSelf();
-//                    break;
-//
-//                case "MediaIsEnded":
-//                    releasePlayer();
-//                    playTale(ActivityTales.getNext());
-//                    break;
-//
-//                case "PlayNext":
-//                    releasePlayer();
-//                    playTale(ActivityTales.getNext());
-//                    break;
-//
-//                case "PlayPrevious":
-//                    releasePlayer();
-//                    playTale(ActivityTales.getPrevious());
-//                    break;
-
                 case "StopPlay":
                     ActivityTales.setNowPlaying(-1);
 
