@@ -1,20 +1,15 @@
 package media.suspilne.kazky;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -80,6 +75,9 @@ public class PlayerService extends Service {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+//                Tracks.setPause(!playWhenReady);
+//                sendMessage("SetPlayBtnIcon");
+
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
                         sendMessage("SourceIsNotAccessible", -1);
@@ -101,7 +99,10 @@ public class PlayerService extends Service {
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {}
 
             @Override
-            public void onPlayerError(ExoPlaybackException error) { }
+            public void onPlayerError(ExoPlaybackException error) {
+                stopSelf();
+                sendMessage("SourceIsNotAccessible", -1);
+            }
 
             @Override
             public void onPositionDiscontinuity(int reason) {}
@@ -110,7 +111,16 @@ public class PlayerService extends Service {
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
 
             @Override
-            public void onSeekProcessed() {}
+            public void onSeekProcessed() {
+                long position = player.getCurrentPosition();
+                long duration = player.getContentDuration();
+
+                if (position < 0) {
+                    playTale(ActivityTales.getNext());
+                } else if(position > duration && duration > 0){
+                    playTale(ActivityTales.getPrevious());
+                }
+            }
         });
     }
 
@@ -125,79 +135,6 @@ public class PlayerService extends Service {
         intent.putExtra("code", code);
         intent.putExtra("id", id);
         sendBroadcast(intent);
-    }
-
-    private Notification getTalesNotification(int id, String reader, String title){
-        HSettings.setString("StreamType", getString(R.string.tales));
-
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        Drawable image = HSettings.getImage(String.format("%02d.jpg", id));
-
-        Intent notificationIntent = new Intent(this, ActivityTales.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openTalesIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, HSettings.application)
-            .setSmallIcon(R.drawable.ic_radio)
-            .setContentTitle(title)
-            .setContentText(reader)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setLargeIcon(HImages.getBitmap(image))
-            .setUsesChronometer(true)
-            .setSound(null)
-            .setChannelId(HSettings.application)
-            .setContentIntent(openTalesIntent);
-
-        Intent playPrevIntent = new Intent();
-        playPrevIntent.setAction(HSettings.application + "previous");
-        playPrevIntent.putExtra("code", "PlayPrevious");
-        PendingIntent playPrevPendingIntent = PendingIntent.getBroadcast(this, 0, playPrevIntent, 0);
-        notificationBuilder.addAction(0, "<< Назад", playPrevPendingIntent);
-
-        Intent stopIntent = new Intent();
-        stopIntent.setAction(HSettings.application + "stop");
-        stopIntent.putExtra("code", "StopPlay");
-        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-        notificationBuilder.addAction(0, "Зупинити", stopPendingIntent);
-
-        Intent playNextIntent = new Intent();
-        playNextIntent.setAction(HSettings.application + "next");
-        playNextIntent.putExtra("code", "PlayNext");
-        PendingIntent playNextPendingIntent = PendingIntent.getBroadcast(this, 0, playNextIntent, 0);
-        notificationBuilder.addAction(0, "Вперед >>", playNextPendingIntent);
-
-        return notificationBuilder.build();
-    }
-
-    private Notification getRadioNotification(){
-        HSettings.setString("StreamType", getString(R.string.radio));
-
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        Drawable image = ContextCompat.getDrawable(this, R.mipmap.radio);
-
-        Intent notificationIntent = new Intent(this, ActivityRadio.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openRadioIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, HSettings.application)
-            .setSmallIcon(R.drawable.ic_radio)
-            .setContentTitle("Радіо казок")
-            .setContentText("Радіо хвиля казок українською мовою")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setLargeIcon(HImages.getBitmap(image))
-            .setSound(null)
-            .setChannelId(HSettings.application)
-            .setContentIntent(openRadioIntent);
-
-        Intent stopIntent = new Intent();
-        stopIntent.setAction(HSettings.application + "stop");
-        stopIntent.putExtra("code", "StopPlay");
-        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, 0);
-        notificationBuilder.addAction(0, "Зупинити", stopPendingIntent);
-
-        return notificationBuilder.build();
     }
 
     @Override
@@ -215,8 +152,6 @@ public class PlayerService extends Service {
 
                 notificationManager.createNotificationChannel(notificationChannel);
             }
-
-            this.startForeground(NOTIFICATION_ID, getRadioNotification());
         }
     }
 
@@ -230,7 +165,7 @@ public class PlayerService extends Service {
 
     private void releasePlayer(){
         HSettings.setString("StreamType", "");
-        notificationManager.cancel(this.NOTIFICATION_ID);
+        notificationManager.cancel(NOTIFICATION_ID);
 
         while (player != null){
             ActivityTales.setPosition(player.getCurrentPosition());
