@@ -24,14 +24,17 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
 
 public class PlayerService extends Service {
-    final int NOTIFICATION_ID = 2001;
+    public static String NOTIFICATION_CHANNEL = HSettings.application;
+    public static int NOTIFICATION_ID = 2001;
 
     private ExoPlayer player;
     private NotificationManager notificationManager;
+    private PlayerNotificationManager playerNotificationManager;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
@@ -265,6 +268,11 @@ public class PlayerService extends Service {
             long position = id == ActivityTales.getLastPlaying() ? ActivityTales.getPosition() : 0;
             playStream(stream, position);
 
+            playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this, id));
+            playerNotificationManager.setFastForwardIncrementMs(10_000_000);
+            playerNotificationManager.setRewindIncrementMs(10_000_000);
+            playerNotificationManager.setUseNavigationActions(false);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 this.startForeground(NOTIFICATION_ID, getTalesNotification(id, reader, title));
             } else{
@@ -278,6 +286,11 @@ public class PlayerService extends Service {
     }
 
     private void playRadio(){
+        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerRadioAdapter(this));
+        playerNotificationManager.setFastForwardIncrementMs(0);
+        playerNotificationManager.setRewindIncrementMs(0);
+        playerNotificationManager.setUseNavigationActions(false);
+
         playStream();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -293,24 +306,24 @@ public class PlayerService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getStringExtra("code")){
-                case "SourceIsNotAccessible":
-                    stopSelf();
-                    break;
-
-                case "MediaIsEnded":
-                    releasePlayer();
-                    playTale(ActivityTales.getNext());
-                    break;
-
-                case "PlayNext":
-                    releasePlayer();
-                    playTale(ActivityTales.getNext());
-                    break;
-
-                case "PlayPrevious":
-                    releasePlayer();
-                    playTale(ActivityTales.getPrevious());
-                    break;
+//                case "SourceIsNotAccessible":
+//                    stopSelf();
+//                    break;
+//
+//                case "MediaIsEnded":
+//                    releasePlayer();
+//                    playTale(ActivityTales.getNext());
+//                    break;
+//
+//                case "PlayNext":
+//                    releasePlayer();
+//                    playTale(ActivityTales.getNext());
+//                    break;
+//
+//                case "PlayPrevious":
+//                    releasePlayer();
+//                    playTale(ActivityTales.getPrevious());
+//                    break;
 
                 case "StopPlay":
                     ActivityTales.setNowPlaying(-1);
