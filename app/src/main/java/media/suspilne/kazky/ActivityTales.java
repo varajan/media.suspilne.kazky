@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
 public class ActivityTales extends ActivityBase {
     @Override
@@ -156,6 +155,7 @@ public class ActivityTales extends ActivityBase {
     private void setPlayBtnIcon(int id){
         ArrayList<Integer> ids = HSettings.getSavedTaleIds();
         long start = System.currentTimeMillis();
+        boolean isPaused = HSettings.getBoolean("playbackIsPaused");
         LinearLayout list = null;
 
         while (list == null && System.currentTimeMillis() - start < 1000){
@@ -172,7 +172,7 @@ public class ActivityTales extends ActivityBase {
             ImageView btn =tale.findViewById(R.id.play);
             if (btn == null) continue;
 
-            btn.setImageResource(x == id && isTalePlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
+            btn.setImageResource(!isPaused && x == id && isTalePlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
         }
     }
 
