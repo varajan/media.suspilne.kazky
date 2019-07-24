@@ -220,6 +220,10 @@ public class PlayerService extends Service {
             String stream = HSettings.taleExists(id) ? this.getFilesDir() + "/" + name : url;
             long position = id == ActivityTales.getLastPlaying() ? ActivityTales.getPosition() : 0;
 
+            if (!HSettings.taleExists(id) && !HSettings.isNetworkAvailable()){
+                sendMessage("SourceIsNotAccessible", -1);
+            }
+
             playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this, id));
             playerNotificationManager.setFastForwardIncrementMs(1_000_000);
             playerNotificationManager.setRewindIncrementMs(1_000_000);
@@ -238,6 +242,7 @@ public class PlayerService extends Service {
         playerNotificationManager.setFastForwardIncrementMs(0);
         playerNotificationManager.setRewindIncrementMs(0);
         playerNotificationManager.setUseNavigationActions(false);
+        playerNotificationManager.setStopAction(null);
         playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
             @Override
             public void onNotificationStarted(int notificationId, Notification notification) {
@@ -249,6 +254,10 @@ public class PlayerService extends Service {
                 stopSelf();
             }
         });
+
+        if (!HSettings.isNetworkAvailable()){
+            sendMessage("SourceIsNotAccessible", -1);
+        }
 
         playStream();
         sendMessage("SetPlayBtnIcon", -1);
