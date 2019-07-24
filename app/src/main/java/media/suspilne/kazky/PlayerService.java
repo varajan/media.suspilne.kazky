@@ -91,15 +91,18 @@ public class PlayerService extends Service {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 HSettings.setBoolean("playbackIsPaused", !playWhenReady);
-                sendMessage("SetPlayBtnIcon", -1);
+                sendMessage("SetPlayBtnIcon", HSettings.getInt("nowPlaying"));
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-                        sendMessage("SourceIsNotAccessible", -1);
+//                        Tracks.setNowPlaying(-1);
+//                        Tracks.setLastPosition(player.getCurrentPosition());
+                        stopSelf();
+                        sendMessage("SetPlayBtnIcon", -1);
                         break;
 
                     case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                        sendMessage("MediaIsEnded", -1);
+                        playTale(ActivityTales.getNext());
                         break;
 
                     default:
@@ -172,14 +175,14 @@ public class PlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        notificationManager.cancelAll();
+        notificationManager.cancel(NOTIFICATION_ID);
+        HSettings.setString("StreamType", "");
         releasePlayer();
         unregisterReceiver();
         super.onDestroy();
     }
 
     private void releasePlayer(){
-        HSettings.setString("StreamType", "");
         notificationManager.cancel(NOTIFICATION_ID);
 
         while (player != null){
