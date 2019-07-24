@@ -14,20 +14,20 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
     private Context context;
     private int id;
 
-    public PlayerTaleAdapter(Context context, int id) {
+    PlayerTaleAdapter(Context context, int id) {
         this.context = context;
         this.id = id;
     }
 
     @Override
     public String getCurrentContentTitle(Player player) {
-        return HSettings.getString("reader-" + id);
+        return HSettings.getString("title-" + id);
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        return HSettings.getString("title-" + id);
+        return HSettings.getString("reader-" + id);
     }
 
     @Nullable
@@ -42,8 +42,7 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
     public PendingIntent createCurrentContentIntent(Player player) {
         Intent notificationIntent = new Intent(context, ActivityTales.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-        return openTracksIntent;
+        return PendingIntent.getActivity(context, 0, notificationIntent, 0);
     }
 }

@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -64,6 +65,19 @@ public class PlayerService extends Service {
         if (position > 0) player.seekTo(position);
         HSettings.setBoolean("playbackIsPaused", false);
 
+        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
+            @Override
+            public void onNotificationStarted(int notificationId, Notification notification) {
+                startForeground(notificationId, notification);
+            }
+
+            @Override
+            public void onNotificationCancelled(int notificationId) {
+                stopSelf();
+            }
+        });
+        playerNotificationManager.setPlayer(player);
+
         player.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
@@ -117,9 +131,9 @@ public class PlayerService extends Service {
                 long duration = player.getContentDuration();
 
                 if (position < 0) {
-                    playTale(ActivityTales.getNext());
-                } else if(position > duration && duration > 0){
                     playTale(ActivityTales.getPrevious());
+                } else if(position > duration && duration > 0){
+                    playTale(ActivityTales.getNext());
                 }
             }
         });
@@ -196,18 +210,19 @@ public class PlayerService extends Service {
 
     private void playTale(int id){
         if (id > 0){
+            releasePlayer();
+
             String name = String.format("%02d.mp3", id);
             String url = "https://kazky.suspilne.media/inc/audio/" + name;
             String stream = HSettings.taleExists(id) ? this.getFilesDir() + "/" + name : url;
-            String title = HSettings.getString("title-" + id);
-            String reader = HSettings.getString("reader-" + id);
             long position = id == ActivityTales.getLastPlaying() ? ActivityTales.getPosition() : 0;
-            playStream(stream, position);
 
             playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this, id));
-            playerNotificationManager.setFastForwardIncrementMs(10_000_000);
-            playerNotificationManager.setRewindIncrementMs(10_000_000);
+            playerNotificationManager.setFastForwardIncrementMs(1_000_000);
+            playerNotificationManager.setRewindIncrementMs(1_000_000);
             playerNotificationManager.setUseNavigationActions(false);
+
+            playStream(stream, position);
         }
 
         ActivityTales.setLastPlaying(id);
@@ -220,6 +235,17 @@ public class PlayerService extends Service {
         playerNotificationManager.setFastForwardIncrementMs(0);
         playerNotificationManager.setRewindIncrementMs(0);
         playerNotificationManager.setUseNavigationActions(false);
+        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
+            @Override
+            public void onNotificationStarted(int notificationId, Notification notification) {
+                startForeground(notificationId, notification);
+            }
+
+            @Override
+            public void onNotificationCancelled(int notificationId) {
+                stopSelf();
+            }
+        });
 
         playStream();
         sendMessage("SetPlayBtnIcon", -1);
