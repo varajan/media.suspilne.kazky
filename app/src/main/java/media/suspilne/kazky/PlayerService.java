@@ -269,7 +269,6 @@ public class PlayerService extends Service {
             switch (intent.getStringExtra("code")){
                 case "StopPlay":
                     ActivityTales.setNowPlaying(-1);
-
                     sendMessage("SetPlayBtnIcon", -1);
                     stopSelf();
                     break;

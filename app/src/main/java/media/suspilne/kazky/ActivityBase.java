@@ -123,9 +123,10 @@ public class ActivityBase extends AppCompatActivity
     }
 
     private void exit(){
-        moveTaskToBack(true);
-        stopPlayerService();
-        System.exit(1);
+        Intent intent = new Intent();
+        intent.setAction(HSettings.application);
+        intent.putExtra("code", "StopPlay");
+        sendBroadcast(intent);
     }
 
     @Override
