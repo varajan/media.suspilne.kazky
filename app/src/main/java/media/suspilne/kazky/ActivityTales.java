@@ -149,7 +149,9 @@ public class ActivityTales extends ActivityBase {
     }
 
     private boolean isTalePlaying(){
-        return isServiceRunning(PlayerService.class) && HSettings.getString("StreamType").equals(getString(R.string.tales));
+        return isServiceRunning(PlayerService.class)
+                && HSettings.getString("StreamType").equals(getString(R.string.tales))
+                && !HSettings.getBoolean("playbackIsPaused");
     }
 
     private void setPlayBtnIcon(int id){

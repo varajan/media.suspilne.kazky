@@ -81,7 +81,9 @@ public class ActivityRadio extends ActivityBase {
     }
 
     private boolean isRadioPlaying(){
-        return isServiceRunning(PlayerService.class) && HSettings.getString("StreamType").equals(getString(R.string.radio));
+        return isServiceRunning(PlayerService.class)
+                && HSettings.getString("StreamType").equals(getString(R.string.radio))
+                && !HSettings.getBoolean("playbackIsPaused");
     }
 
     private void showNoConnectionAlert(){

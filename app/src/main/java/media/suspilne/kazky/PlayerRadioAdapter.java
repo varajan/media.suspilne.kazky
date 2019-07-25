@@ -39,7 +39,7 @@ public class PlayerRadioAdapter implements PlayerNotificationManager.MediaDescri
     @Nullable
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
-        Intent notificationIntent = new Intent(context, ActivityTales.class);
+        Intent notificationIntent = new Intent(context, ActivityRadio.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
