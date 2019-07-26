@@ -66,7 +66,9 @@ public class ActivityTales extends ActivityBase {
             .setTitle("Скачат казки на пристрій?")
             .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
             .setPositiveButton("Скачати", (dialog, which) -> {
-                new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.DOWNLOAD_ALL);})
+                HSettings.setBoolean("talesDownload", true);
+                new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.DOWNLOAD_ALL);
+            })
             .setNegativeButton("Ні", null)
             .show();
 
@@ -81,9 +83,10 @@ public class ActivityTales extends ActivityBase {
             if (isTalePlaying() && id == getNowPlaying()){
                 stopPlayerService();
                 playBtn.setImageResource(R.mipmap.tale_play);
+                resetQuitTimer();
             }else{
                 playTale(id);
-                setQuiteTimeout();
+                resetQuitTimer();
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -214,7 +217,7 @@ public class ActivityTales extends ActivityBase {
 
             if (getNowPlaying() == id){
                 playBtn.setImageResource(R.mipmap.tale_pause);
-                ActivityTales.this.setQuiteTimeout();
+                ActivityTales.this.resetQuitTimer();
             }
         }
     }

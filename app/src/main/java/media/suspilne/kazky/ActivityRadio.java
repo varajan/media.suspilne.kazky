@@ -72,7 +72,7 @@ public class ActivityRadio extends ActivityBase {
                     }
 
                     setPlayBtnIcon();
-                    setQuiteTimeout();
+                    resetQuitTimer();
                 }else{
                     showNoConnectionAlert();
               }
