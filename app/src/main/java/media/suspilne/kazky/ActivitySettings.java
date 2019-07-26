@@ -35,6 +35,7 @@ public class ActivitySettings extends ActivityBase {
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> {
             HSettings.setBoolean("autoQuit", isChecked);
             setColorsAndState();
+            resetQuitTimer();
         });
 
         timeout.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -42,6 +43,7 @@ public class ActivitySettings extends ActivityBase {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 HSettings.setInt("timeout", seekBar.getProgress() * step);
                 timeoutText.setText(HSettings.getString("timeout", "0") + " хвилин");
+                resetQuitTimer();
             }
 
             @Override

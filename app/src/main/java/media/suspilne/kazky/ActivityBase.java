@@ -26,7 +26,7 @@ import java.util.TimerTask;
 public class ActivityBase extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Timer quitTimer;
+    protected Timer quitTimer;
     protected NavigationView navigation;
     protected int currentView;
 
@@ -37,16 +37,31 @@ public class ActivityBase extends AppCompatActivity
         return (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
     }
 
-    protected void setQuiteTimeout(){
+    protected void setQuitTimeout(){
         if (HSettings.getBoolean("autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
-            int timeout = HSettings.getInt("timeout");
+            int timeout = HSettings.getInt("timeout", 5);
 
             quitTimer = new Timer();
             quitTimer.schedule(new stopRadioOnTimeout(), timeout * 60 * 1000);
         } else {
-            if (quitTimer != null) quitTimer.cancel();
+            cancelQuitTimer();
         }
+    }
+
+    protected void resetQuitTimer(){
+        boolean playbackIsPaused = HSettings.getBoolean("playbackIsPaused");
+        boolean autoQuit = HSettings.getBoolean("autoQuit");
+
+        if (!playbackIsPaused && autoQuit){
+            setQuitTimeout();
+        } else {
+            cancelQuitTimer();
+        }
+    }
+
+    private void cancelQuitTimer(){
+        if (quitTimer != null) quitTimer.cancel();
     }
 
     class stopRadioOnTimeout extends TimerTask {
@@ -75,7 +90,7 @@ public class ActivityBase extends AppCompatActivity
         navigation.setCheckedItem(currentView);
 
         setTitle();
-        setQuiteTimeout();
+        setQuitTimeout();
         showErrorMessage();
 
         if (HSettings.isNetworkAvailable()) new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.CACHE_IMAGES);
@@ -123,6 +138,11 @@ public class ActivityBase extends AppCompatActivity
     }
 
     private void exit(){
+        Intent intent = new Intent();
+        intent.setAction(HSettings.application);
+        intent.putExtra("code", "StopPlay");
+        sendBroadcast(intent);
+
         moveTaskToBack(true);
         stopPlayerService();
         System.exit(1);
@@ -139,19 +159,16 @@ public class ActivityBase extends AppCompatActivity
     }
 
     private void showQuitDialog(){
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    exit();
-                    break;
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+        switch (which){
+            case DialogInterface.BUTTON_POSITIVE:
+                exit();
+                break;
 
-                case DialogInterface.BUTTON_NEGATIVE:
-                    //'No' button clicked
-                    break;
-            }
-            }
+            case DialogInterface.BUTTON_NEGATIVE:
+                //'No' button clicked
+                break;
+        }
         };
 
         new AlertDialog.Builder(this)
@@ -168,8 +185,6 @@ public class ActivityBase extends AppCompatActivity
     }
 
     private void openActivity(Class view){
-//        if (player != null) player.releasePlayer();
-
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);

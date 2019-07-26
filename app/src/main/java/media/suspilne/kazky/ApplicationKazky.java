@@ -13,6 +13,7 @@ public class ApplicationKazky extends Application {
 
         SharedPreferences.Editor editor = getSharedPreferences(HSettings.application, 0).edit();
         editor.putString("StreamType", "");
+        editor.putString("playbackIsPaused", String.valueOf(false));
         editor.putString("nowPlaying", String.valueOf(-1));
         editor.putString("lastPlaying", String.valueOf(-1));
         editor.putString("errorMessage", "");

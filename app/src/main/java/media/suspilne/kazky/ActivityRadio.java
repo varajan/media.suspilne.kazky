@@ -72,7 +72,7 @@ public class ActivityRadio extends ActivityBase {
                     }
 
                     setPlayBtnIcon();
-                    setQuiteTimeout();
+                    resetQuitTimer();
                 }else{
                     showNoConnectionAlert();
               }
@@ -81,7 +81,9 @@ public class ActivityRadio extends ActivityBase {
     }
 
     private boolean isRadioPlaying(){
-        return isServiceRunning(PlayerService.class) && HSettings.getString("StreamType").equals(getString(R.string.radio));
+        return isServiceRunning(PlayerService.class)
+                && HSettings.getString("StreamType").equals(getString(R.string.radio))
+                && !HSettings.getBoolean("playbackIsPaused");
     }
 
     private void showNoConnectionAlert(){
@@ -94,7 +96,8 @@ public class ActivityRadio extends ActivityBase {
     }
 
     private void setPlayBtnIcon(){
-        playPauseBtn.setImageResource(isRadioPlaying() ? R.mipmap.pause : R.mipmap.play);
+        boolean isPaused = HSettings.getBoolean("playbackIsPaused");
+        playPauseBtn.setImageResource(!isPaused && isRadioPlaying() ? R.mipmap.pause : R.mipmap.play);
     }
 
     private void registerReceiver(){
