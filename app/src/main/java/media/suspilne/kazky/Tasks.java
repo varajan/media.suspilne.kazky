@@ -143,19 +143,22 @@ public class Tasks {
         private NotificationManager notificationManager;
         private PendingIntent openApplication;
 
+        private int applicationIcon = ActivityBase.getActivity().getApplicationInfo().icon;
         private Drawable image = ContextCompat.getDrawable(ActivityBase.getActivity(), R.mipmap.logo);
+        private boolean useAppIcon = Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2;
+
         private int count;
         private int current;
         static int notificationId = 2;
 
         private void showProgressNotification(String text){
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityBase.getActivity(), HSettings.application)
-//                .setSmallIcon(R.drawable.ic_cloud_download)
+                .setSmallIcon(useAppIcon ? applicationIcon : R.drawable.ic_cloud_download)
                 .setContentTitle("Завантаження казок")
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//                .setLargeIcon(HImages.getBitmap(image))
+                .setLargeIcon(useAppIcon ? null : HImages.getBitmap(image))
                 .setProgress(count, current, false)
                 .setContentIntent(openApplication)
                 .setSound(null);
@@ -168,11 +171,11 @@ public class Tasks {
                 notificationManager.cancel(notificationId);
             } else {
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityBase.getActivity(), HSettings.application)
-                    .setSmallIcon(R.drawable.ic_cloud_done)
+                    .setSmallIcon(useAppIcon ? applicationIcon : R.drawable.ic_cloud_done)
                     .setContentTitle("Завантаження завершено")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setLargeIcon(HImages.getBitmap(image))
+                    .setLargeIcon(useAppIcon ? null : HImages.getBitmap(image))
                     .setContentIntent(openApplication)
                     .setSound(null);
 
@@ -182,11 +185,11 @@ public class Tasks {
 
         private void showFailedNotification(String errorMessage){
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityBase.getActivity(), HSettings.application)
-                .setSmallIcon(R.drawable.ic_error)
+                .setSmallIcon(useAppIcon ? applicationIcon : R.drawable.ic_error)
                 .setContentTitle("Сталась помлка")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(HImages.getBitmap(image))
+                .setLargeIcon(useAppIcon ? null : HImages.getBitmap(image))
                 .setContentIntent(openApplication)
                 .setSound(null);
 
