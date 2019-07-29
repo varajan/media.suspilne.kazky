@@ -207,6 +207,8 @@ public class ActivityTales extends ActivityBase {
         for (final int id:ids) {
             View item = LayoutInflater.from(this).inflate(R.layout.tale_item, list, false);
             final ImageView playBtn = item.findViewById(R.id.play);
+            final ImageView savedIcon = item.findViewById(R.id.saved);
+            boolean taleExists = HSettings.taleExists(id);
 
             item.setTag(id);
             list.addView(item);
@@ -214,6 +216,7 @@ public class ActivityTales extends ActivityBase {
 
             playBtn.setOnClickListener(onPlayBtnClick);
             playBtn.setTag(id);
+            savedIcon.setVisibility(taleExists ? View.VISIBLE : View.GONE);
 
             if (getNowPlaying() == id){
                 playBtn.setImageResource(R.mipmap.tale_pause);

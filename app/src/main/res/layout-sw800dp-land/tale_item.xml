@@ -31,6 +31,18 @@
             android:layout_marginBottom="0dp"
             app:srcCompat="@mipmap/tale_play"
             tools:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/saved"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/preview"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            app:srcCompat="@drawable/ic_save"
+            tools:scaleType="fitXY" />
     </RelativeLayout>
 
     <RelativeLayout

@@ -150,12 +150,12 @@ public class Tasks {
 
         private void showProgressNotification(String text){
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityBase.getActivity(), HSettings.application)
-                .setSmallIcon(R.drawable.ic_cloud_download)
+//                .setSmallIcon(R.drawable.ic_cloud_download)
                 .setContentTitle("Завантаження казок")
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(HImages.getBitmap(image))
+//                .setLargeIcon(HImages.getBitmap(image))
                 .setProgress(count, current, false)
                 .setContentIntent(openApplication)
                 .setSound(null);
