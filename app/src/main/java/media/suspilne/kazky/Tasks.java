@@ -15,10 +15,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -27,7 +30,7 @@ public class Tasks {
         if (HSettings.taleExists(id)) return;
 
         String track = String.format("%02d.mp3", id);
-        URL url = new URL("https://kazky.suspilne.media/inc/audio/" + track);
+        URL url = new URL("https://kazky.suspilne.media/tales/songs/" + track);
         InputStream is = (InputStream) url.getContent();
         HSettings.saveFile(track, IOUtils.toByteArray(is));
     }
@@ -41,13 +44,25 @@ public class Tasks {
     }
 
     public static void getTitleAndReader(int id) throws Exception {
+        String url = HSettings.getResourceString(R.string.index_json);
         String title = HSettings.getString("title-" + id);
         String reader = HSettings.getString("reader-" + id);
 
         if (title.equals("") || reader.equals("")) {
-            Document document = Jsoup.connect("https://kazky.suspilne.media/list").get();
-            title = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='caption']").text().trim();
-            reader = document.select("div.tales-list a[href*='/" + id + "?'] div[class$='tale-time']").text().trim();
+            String json = HSettings.getPageContent(url);
+            String[] sections = json.split("\\},");
+            String taleSection = "";
+
+            for (String section: sections) {
+                if (section.contains("\"" + id + "\"")){
+                    taleSection = section;
+                    break;
+                }
+            }
+
+            String[] parts = taleSection.split("\"");
+            title = parts[5].trim();
+            reader = parts[9].split(",")[0].trim();
 
             HSettings.setString("title-" + id, title);
             HSettings.setString("reader-" + id, reader);
@@ -60,15 +75,14 @@ public class Tasks {
         final static String CACHE_IMAGES = "Cache images";
         final static String DOWNLOAD_ALL = "Download all";
 
-        private ArrayList<Integer> getTaleIds(String url) throws Exception {
+        private ArrayList<Integer> getTaleIds(String url) {
             ArrayList<Integer> result = new ArrayList<>();
-            Document document = Jsoup.connect(url).get();
-            Elements tales = document.select("div.tales-list a");
+            String json = HSettings.getPageContent(url);
+            String regex = "\\\"\\d+\\\"";
+            Matcher matcher = Pattern.compile(regex).matcher(json);
 
-            for (Element tale : tales) {
-                String href = tale.attr("href");
-                String id = href.split("\\?")[0].split("/")[2];
-                result.add(Integer.valueOf(id));
+            while (matcher.find()) {
+                result.add(Integer.valueOf(matcher.group(0).replace("\"", "")));
             }
 
             return result;
@@ -125,7 +139,7 @@ public class Tasks {
             try {
                 for (int id:integers) {
                     String name = String.format("%02d.jpg", id);
-                    String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
+                    String url = String.format("https://kazky.suspilne.media/tales/img/%02d-min.jpg", id);
 
                     Tasks.getJpgFile(url, name, 300, 226);
                     Tasks.getTitleAndReader(id);
@@ -245,7 +259,7 @@ public class Tasks {
                     }
 
                     String name = String.format("%02d.jpg", id);
-                    String url = String.format("https://kazky.suspilne.media/inc/img/songs_img/%02d.jpg", id);
+                    String url = String.format("https://kazky.suspilne.media/tales/img/%02d-min.jpg", id);
 
                     Tasks.getMp3File(id);
                     Tasks.getJpgFile(url, name, 300, 226);
@@ -275,7 +289,7 @@ public class Tasks {
                     final String fullName = reader.select("div.reader").text().trim().split("\\.")[0];
                     String readerName = String.format("readerName-%s", id);
                     String name = String.format("%s.jpg", readerName);
-                    String url = String.format("https://kazky.suspilne.media/inc/img/readers/%s.jpg", id);
+                    String url = String.format("https://kazky.suspilne.media/img/readers/%s.jpg", id);
 
                     HSettings.setString(readerName, fullName);
                     Tasks.getJpgFile(url, name, 100, 100);

@@ -67,7 +67,7 @@ public class ActivityTales extends ActivityBase {
             .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
             .setPositiveButton("Скачати", (dialog, which) -> {
                 HSettings.setBoolean("talesDownload", true);
-                new DownloadTalesData().execute("https://kazky.suspilne.media/list", DownloadTalesData.DOWNLOAD_ALL);
+                new DownloadTalesData().execute(this.getResources().getString(R.string.index_json), DownloadTalesData.DOWNLOAD_ALL);
             })
             .setNegativeButton("Ні", null)
             .show();

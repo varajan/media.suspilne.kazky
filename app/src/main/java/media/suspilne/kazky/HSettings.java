@@ -15,9 +15,13 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -120,6 +124,10 @@ public class HSettings {
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
+    public static String getResourceString(int id){
+        return ActivityBase.getActivity().getResources().getString(id);
+    }
+
     public static void deleteFile(String name){
         ActivityBase.getActivity().deleteFile(name);
     }
@@ -203,5 +211,26 @@ public class HSettings {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static String getPageContent(String url){
+        try
+        {
+            URLConnection uc = new URL(url).openConnection();
+
+            uc.setDoInput(true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+            String inputLine;
+            StringBuilder a = new StringBuilder();
+            while ((inputLine = in.readLine()) != null)
+                a.append(inputLine);
+            in.close();
+
+            return a.toString();
+        }
+        catch (Exception e)
+        {
+            return e.getMessage();
+        }
     }
 }
