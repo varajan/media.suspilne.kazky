@@ -95,8 +95,6 @@ public class PlayerService extends Service {
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-//                        Tracks.setNowPlaying(-1);
-//                        Tracks.setLastPosition(player.getCurrentPosition());
                         stopSelf();
                         sendMessage("SetPlayBtnIcon", -1);
                         break;
@@ -216,7 +214,7 @@ public class PlayerService extends Service {
             releasePlayer();
 
             String name = String.format("%02d.mp3", id);
-            String url = "https://kazky.suspilne.media/inc/audio/" + name;
+            String url = "https://kazky.suspilne.media/tales/songs/" + name;
             String stream = HSettings.taleExists(id) ? this.getFilesDir() + "/" + name : url;
             long position = id == ActivityTales.getLastPlaying() ? ActivityTales.getPosition() : 0;
 
