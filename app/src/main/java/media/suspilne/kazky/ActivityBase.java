@@ -93,8 +93,8 @@ public class ActivityBase extends AppCompatActivity
         setQuitTimeout();
         showErrorMessage();
 
-        if (HSettings.isNetworkAvailable()) new DownloadTalesData().execute(this.getResources().getString(R.string.index_json), DownloadTalesData.CACHE_IMAGES);
-        if (HSettings.isNetworkAvailable()) new GetTaleReaders().execute(this.getResources().getString(R.string.index_json));
+        if (HSettings.isNetworkAvailable()) new DownloadTalesData().execute(HSettings.getResourceString(R.string.index_json), DownloadTalesData.CACHE_IMAGES);
+        if (HSettings.isNetworkAvailable()) new GetTaleReaders().execute(HSettings.getResourceString(R.string.index_json));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class ActivityBase extends AppCompatActivity
 
         if (allTalesAreDownloaded || !HSettings.isNetworkAvailable()) return;
 
-        new DownloadTalesData().execute(this.getResources().getString(R.string.index_json), DownloadTalesData.DOWNLOAD_ALL);
+        new DownloadTalesData().execute(HSettings.getResourceString(R.string.index_json), DownloadTalesData.DOWNLOAD_ALL);
     }
 
     private void exit(){

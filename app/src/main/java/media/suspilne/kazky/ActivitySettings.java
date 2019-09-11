@@ -58,7 +58,7 @@ public class ActivitySettings extends ActivityBase {
         if (!HSettings.isNetworkAvailable()){
             Toast.makeText(this, "Відсутній Інтернет!", Toast.LENGTH_LONG).show();
         } else {
-            new DownloadTalesData().execute(this.getResources().getString(R.string.index_json), DownloadTalesData.DOWNLOAD_ALL);
+            new DownloadTalesData().execute(HSettings.getResourceString(R.string.index_json), DownloadTalesData.DOWNLOAD_ALL);
         }
     }
 
@@ -78,7 +78,7 @@ public class ActivitySettings extends ActivityBase {
         String yes = isChecked ? "Завантажити" : "Видалити";
         String title = isChecked ? "Завантажити казки у пристрій?" : "Видалити казки із пристрою?";
         String message = isChecked
-                ? "Це займе приблизно 250MB. Але потім казки можна слухати без Інтернета."
+                ? HSettings.getResourceString(R.string.download_tales_description)
                 : "Ви не зможете слухати казки без Інтерета.";
 
         new AlertDialog.Builder(ActivitySettings.this)

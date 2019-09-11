@@ -43,7 +43,7 @@ public class Tasks {
         HSettings.saveImage(name, drawable);
     }
 
-    public static void getTitleAndReader(int id) throws Exception {
+    public static void getTitleAndReader(int id) {
         String url = HSettings.getResourceString(R.string.index_json);
         String title = HSettings.getString("title-" + id);
         String reader = HSettings.getString("reader-" + id);
@@ -97,7 +97,7 @@ public class Tasks {
                 ArrayList<Integer> cachedIds =  HSettings.getSavedTaleIds();
                 ArrayList<Integer> realIds = new ArrayList<>();
 
-                if (cachedIds.size() < 10){
+                if (cachedIds.size() == 0){
                     realIds = getTaleIds(arg[0]);
                 }
 

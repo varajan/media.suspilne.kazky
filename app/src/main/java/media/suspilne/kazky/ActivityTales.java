@@ -64,10 +64,10 @@ public class ActivityTales extends ActivityBase {
         new AlertDialog.Builder(ActivityTales.this)
             .setIcon(R.mipmap.logo)
             .setTitle("Скачат казки на пристрій?")
-            .setMessage("Це займе приблизно 130MB. Але потім казки можна слухати без Інтернета.")
+            .setMessage(HSettings.getResourceString(R.string.download_tales_description))
             .setPositiveButton("Скачати", (dialog, which) -> {
                 HSettings.setBoolean("talesDownload", true);
-                new DownloadTalesData().execute(this.getResources().getString(R.string.index_json), DownloadTalesData.DOWNLOAD_ALL);
+                new DownloadTalesData().execute(HSettings.getResourceString(R.string.index_json), DownloadTalesData.DOWNLOAD_ALL);
             })
             .setNegativeButton("Ні", null)
             .show();
@@ -183,8 +183,8 @@ public class ActivityTales extends ActivityBase {
 
     private void setTaleDetails(View item, int id){
         Drawable image = HSettings.getImage(String.format("%02d.jpg", id));
-        String title = HSettings.getString("title-" + id);
-        String reader = HSettings.getString("reader-" + id);
+        String title = HStrings.startFromCapital( HSettings.getString("title-" + id), false);
+        String reader = HStrings.startFromCapital( HSettings.getString("reader-" + id), true);
 
         ((TextView) item.findViewById(R.id.title)).setText(title);
         ((TextView) item.findViewById(R.id.reader)).setText(reader);

@@ -20,6 +20,7 @@
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
     <string name="save_tales_locally">Зберегти казки на пристрій (Казки будуть доступні без Інтернета)</string>
     <string name="radio_description">Радіо хвиля авторських казок українською мовою для дітей</string>
+    <string name="download_tales_description">Це займе приблизно 250MB. Але потім казки можна слухати без Інтернета.</string>
     <string name="radio">Radio</string>
     <string name="tales">Tales</string>
     <string name="index_json">https://kazky.suspilne.media/index.json</string>
