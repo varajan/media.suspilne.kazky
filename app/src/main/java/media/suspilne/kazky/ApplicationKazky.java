@@ -1,7 +1,11 @@
 package media.suspilne.kazky;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.google.android.gms.security.ProviderInstaller;
 import javax.net.ssl.SSLContext;
 
@@ -18,6 +22,18 @@ public class ApplicationKazky extends Application {
         editor.putString("lastPlaying", String.valueOf(-1));
         editor.putString("errorMessage", "");
         editor.apply();
+
+        if (isNetworkAvailable()){
+            String url = getResources().getString(R.string.index_json);
+            new DownloadTalesData().execute(url, DownloadTalesData.CACHE_IMAGES);
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void UpdateSslProvider(){
