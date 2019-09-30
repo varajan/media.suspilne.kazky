@@ -11,10 +11,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.common.util.IOUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -159,7 +155,7 @@ public class Tasks {
 
         private int applicationIcon = ActivityBase.getActivity().getApplicationInfo().icon;
         private Drawable image = ContextCompat.getDrawable(ActivityBase.getActivity(), R.mipmap.logo);
-        private boolean useAppIcon = Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2;
+        private boolean useAppIcon = Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT;
 
         private int count;
         private int current;
@@ -275,31 +271,3 @@ public class Tasks {
             return "";
         }
     }
-
-    class GetTaleReaders extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... arg) {
-            try {
-                Document document = Jsoup.connect(arg[0]).get();
-                Elements readers = document.select("div.information__main div.reader-line");
-
-                for (Element reader : readers) {
-                    final String src = reader.select("img").attr("src");
-                    final String id = src.split("readers/")[1].split("\\.")[0];
-                    final String fullName = reader.select("div.reader").text().trim().split("\\.")[0];
-                    String readerName = String.format("readerName-%s", id);
-                    String name = String.format("%s.jpg", readerName);
-                    String url = String.format("https://kazky.suspilne.media/img/readers/%s.jpg", id);
-
-                    HSettings.setString(readerName, fullName);
-                    Tasks.getJpgFile(url, name, 100, 100);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
-

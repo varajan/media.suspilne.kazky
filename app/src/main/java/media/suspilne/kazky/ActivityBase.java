@@ -94,7 +94,6 @@ public class ActivityBase extends AppCompatActivity
         showErrorMessage();
 
         if (HSettings.isNetworkAvailable()) new DownloadTalesData().execute(HSettings.getResourceString(R.string.index_json), DownloadTalesData.CACHE_IMAGES);
-        if (HSettings.isNetworkAvailable()) new GetTaleReaders().execute(HSettings.getResourceString(R.string.index_json));
     }
 
     @Override
