@@ -21,13 +21,13 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
 
     @Override
     public String getCurrentContentTitle(Player player) {
-        return HSettings.getString("title-" + id);
+        return HStrings.startFromCapital(HSettings.getString("title-" + id));
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        return HSettings.getString("reader-" + id);
+        return HStrings.startFromCapital(HSettings.getString("reader-" + id));
     }
 
     @Nullable

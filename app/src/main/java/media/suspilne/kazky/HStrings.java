@@ -14,7 +14,7 @@ public class HStrings {
         return result.trim();
     }
 
-    private static String startFromCapital(String word){
+    public static String startFromCapital(String word){
         String first = word.substring(0, 1).toUpperCase();
         String rest = word.substring(1).toLowerCase();
 

@@ -46,7 +46,7 @@
         android:gravity="center"
         android:text="@string/radio_description"
         android:textColor="#EEEEEE"
-        android:textSize="32sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/onlinePlayer"
         app:layout_constraintEnd_toEndOf="parent"

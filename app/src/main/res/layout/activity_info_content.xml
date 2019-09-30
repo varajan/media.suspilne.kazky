@@ -31,19 +31,9 @@
                 android:layout_margin="5dp"
                 android:text="Версія: 1.0.0"
                 app:fontFamily="@font/chalkboard"
+                android:fontFamily="@font/chalkboard"
                 android:textColor="@color/colorAccent"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:id="@+id/sectionTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Казки читають:"
-                android:textSize="20sp"
-                android:textColor="@color/colorAccent"
-                app:fontFamily="@font/chalkboard"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:textSize="22sp"/>
         </LinearLayout>
 
     </ScrollView>
