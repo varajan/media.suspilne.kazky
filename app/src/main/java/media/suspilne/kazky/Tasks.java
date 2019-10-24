@@ -91,11 +91,7 @@ public class Tasks {
             try {
                 action = arg[1];
                 ArrayList<Integer> cachedIds =  HSettings.getSavedTaleIds();
-                ArrayList<Integer> realIds = new ArrayList<>();
-
-                if (cachedIds.size() == 0){
-                    realIds = getTaleIds(arg[0]);
-                }
+                ArrayList<Integer> realIds = getTaleIds(arg[0]);
 
                 result = HList.union(cachedIds, realIds);
                 Collections.sort(result);
