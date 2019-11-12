@@ -14,6 +14,10 @@
             android:icon="@drawable/ic_tales_list"
             android:title="Казки" />
         <item
+            android:id="@+id/readers_menu"
+            android:icon="@drawable/ic_readers"
+            android:title="@string/taleReaders" />
+        <item
             android:id="@+id/settings_menu"
             android:icon="@drawable/ic_settings"
             android:title="Налаштування" />

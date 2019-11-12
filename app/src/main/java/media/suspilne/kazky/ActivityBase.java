@@ -19,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,6 +30,7 @@ public class ActivityBase extends AppCompatActivity
 
     protected Timer quitTimer;
     protected NavigationView navigation;
+    protected TextView activityTitle;
     protected int currentView;
 
     private static Activity activity;
