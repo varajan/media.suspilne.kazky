@@ -78,21 +78,19 @@ public class ActivityMain extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
-        String language = SettingsHelper.getString("Language", LocaleManager.getLanguage());
-        LocaleManager.setLanguage(this, language);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String language = SettingsHelper.getString(this, "Language", LocaleManager.getLanguage());
-        LocaleManager.setLanguage(this, language);
-
         ActivityMain.activity = this;
 
         switch (currentView){
             case R.id.tales_menu:
                 setContentView(R.layout.activity_tales);
+                break;
+
+            case R.id.radio_menu:
+                setContentView(R.layout.activity_radio);
                 break;
 
             case R.id.readers_menu:
@@ -200,6 +198,12 @@ public class ActivityMain extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.radio_menu:
+                if (currentView != R.id.radio_menu) {
+                    openActivity(ActivityRadio.class);
+                }
+                break;
+
             case R.id.tales_menu:
                 if (currentView != R.id.tales_menu) {
                     openActivity(ActivityTales.class);
