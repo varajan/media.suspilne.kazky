@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_marginStart="8dp"
-            android:text="@string/author"
+            android:text="@string/reader"
             android:textColor="@color/colorAccent"
             android:textSize="6pt"
             app:fontFamily="@font/chalkboard"
