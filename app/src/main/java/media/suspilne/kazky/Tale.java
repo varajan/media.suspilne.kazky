@@ -13,7 +13,7 @@ import com.google.android.gms.common.util.IOUtils;
 import java.io.InputStream;
 import java.net.URL;
 
-public class TrackEntry{
+public class Tale{
     public int id;
     private int titleId;
     private int authorNameId;
@@ -22,9 +22,9 @@ public class TrackEntry{
     String stream;
     String fileName;
 
-    TrackEntry(){ id = -1; }
+    Tale(){ id = -1; }
 
-    TrackEntry(int id, int title, int name){
+    Tale(int id, int title, int name){
         this.id = id;
         this.titleId = title;
         this.authorNameId = name;
@@ -39,16 +39,16 @@ public class TrackEntry{
     }
 
     String getAuthor(){
-        return Activitytales.getActivity().getResources().getString(authorNameId);
+        return ActivityTales.getActivity().getResources().getString(authorNameId);
     }
 
     String getTitle(){
-        return Activitytales.getActivity().getResources().getString(titleId);
+        return ActivityTales.getActivity().getResources().getString(titleId);
     }
 
     private View getTrackView(){
         try{
-            return Activitytales.getActivity().findViewById(R.id.talesList).findViewWithTag(id);
+            return ActivityTales.getActivity().findViewById(R.id.talesList).findViewWithTag(id);
         }
         catch (Exception e) {
             return null;
@@ -89,7 +89,7 @@ public class TrackEntry{
     void scrollIntoView(){
         try
         {
-            ScrollView scrollView = Activitytales.getActivity().findViewById(R.id.scrollView);
+            ScrollView scrollView = ActivityTales.getActivity().findViewById(R.id.scrollView);
             if (scrollView == null) return;
 
             View track = getTrackView();
@@ -98,7 +98,7 @@ public class TrackEntry{
             scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
         }
         catch (Exception e){
-            Classic.logError(e.getMessage());
+            Kazky.logError(e.getMessage());
         }
     }
 
@@ -122,11 +122,11 @@ public class TrackEntry{
             ((ImageView)trackView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
             ((ImageView)trackView.findViewById(R.id.photo)).setImageBitmap(author);
             ((TextView) trackView.findViewById(R.id.title)).setText(titleId);
-            ((TextView) trackView.findViewById(R.id.author)).setText(authorNameId);
+            ((TextView) trackView.findViewById(R.id.reader)).setText(authorNameId);
             setDownloadedIcon();
         }catch (Exception e){
-            Classic.logError("Failed to load track #" + id, false);
-            Classic.logError(e.getMessage());
+            Kazky.logError("Failed to load track #" + id, false);
+            Kazky.logError(e.getMessage());
         }
     }
 
@@ -142,7 +142,7 @@ public class TrackEntry{
     private String stream(int track){
         return isDownloaded(track)
             ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(track)
-            : Activitytales.getActivity().getResources().getString(R.string.trackUrl, track);
+            : ActivityTales.getActivity().getResources().getString(R.string.trackUrl, track);
     }
 
     public void download(){
@@ -154,8 +154,8 @@ public class TrackEntry{
         setDownloadedIcon();
     }
 
-    static class DownloadTrack extends AsyncTask<TrackEntry, Void, Void> {
-        private TrackEntry track;
+    static class DownloadTrack extends AsyncTask<Tale, Void, Void> {
+        private Tale track;
 
         @Override
         protected void onPostExecute(Void result) {
@@ -164,7 +164,7 @@ public class TrackEntry{
         }
 
         @Override
-        protected Void doInBackground(TrackEntry... tales) {
+        protected Void doInBackground(Tale... tales) {
             try {
                 track = tales[0];
                 if (!track.isDownloaded)

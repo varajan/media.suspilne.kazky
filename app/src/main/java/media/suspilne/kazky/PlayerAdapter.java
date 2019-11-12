@@ -16,8 +16,8 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
         this.context = context;
     }
 
-    private TrackEntry track(){
-        return new tales().getById(tales.getNowPlaying());
+    private Tale track(){
+        return new Tales().getById(Tales.getNowPlaying());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PlayerAdapter implements PlayerNotificationManager.MediaDescription
     @Nullable
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
-        Intent notificationIntent = new Intent(context, Activitytales.class);
+        Intent notificationIntent = new Intent(context, ActivityTales.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent opentalesIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 

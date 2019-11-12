@@ -29,10 +29,10 @@ public class ActivityReaders extends ActivityMain {
 
     @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {
-        currentView = R.id.Readers_menu;
+        currentView = R.id.readers_menu;
         super.onCreate(savedInstanceState);
 
-        ReadersList = findViewById(R.id.ReadersList);
+        ReadersList = findViewById(R.id.readersList);
         searchField = findViewById(R.id.searchField);
         searchIcon = findViewById(R.id.searchIcon);
         sortIcon = findViewById(R.id.sortIcon);
@@ -75,7 +75,7 @@ public class ActivityReaders extends ActivityMain {
     };
 
     private View.OnClickListener onPlayClick = view -> {
-        Intent intent = new Intent(this, Activitytales.class);
+        Intent intent = new Intent(this, ActivityTales.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("filter", view.getTag().toString());
         intent.putExtra("returnToReaders", true);
@@ -124,7 +124,7 @@ public class ActivityReaders extends ActivityMain {
     private void filterReaders(){
         boolean anything = false;
         String filter = searchField.getText().toString();
-        activityTitle.setText(filter.equals("") ? getString(R.string.Readers) : "\u2315 " + filter);
+        activityTitle.setText(filter.equals("") ? getString(R.string.readers) : "\u2315 " + filter);
 
         for (int i = 0; i < ReadersList.getChildCount(); i++){
             View reader = ReadersList.getChildAt(i);
@@ -147,7 +147,7 @@ public class ActivityReaders extends ActivityMain {
         nothing.setVisibility(View.GONE);
 
         for (final Reader reader:new Readers().Readers) {
-            View readerView = LayoutInflater.from(this).inflate(R.layout.track_item, ReadersList, false);
+            View readerView = LayoutInflater.from(this).inflate(R.layout.tale_item, ReadersList, false);
             readerView.setTag(reader.getName());
             ReadersList.addView(readerView);
             reader.setViewDetails(this);

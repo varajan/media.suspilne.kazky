@@ -142,15 +142,15 @@ public class ActivityTales extends ActivityMain {
     private void filterTales(){
         SettingsHelper.setString("TalesFilter", Tales.filter);
         favoriteIcon.setImageResource(Tales.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
-        activityTitle.setText(Tales.filter.equals("") ? getString(R.string.Tales) : "\u2315 " + Tales.filter);
+        activityTitle.setText(Tales.filter.equals("") ? getString(R.string.tales) : "\u2315 " + Tales.filter);
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
 
-        for (final TaleEntry Tale:Tales.getTales()) {
-            if (Tales.showOnlyFavorite && !Tale.isFavorite || !Tale.matchesFilter(Tales.filter)){
-                Tale.hide();
+        for (final Tale tale:Tales.getTales()) {
+            if (Tales.showOnlyFavorite && !tale.isFavorite || !tale.matchesFilter(Tales.filter)){
+                tale.hide();
             }else{
-                Tale.show();
+                tale.show();
                 visibility = View.GONE;
             }
         }
@@ -159,32 +159,32 @@ public class ActivityTales extends ActivityMain {
     }
 
     private void showTales(){
-        for (final TaleEntry Tale:Tales.getTales()) {
-            View TaleView = LayoutInflater.from(this).inflate(R.layout.Tale_item, TalesList, false);
-            TaleView.setTag(Tale.id);
+        for (final Tale tale:Tales.getTales()) {
+            View TaleView = LayoutInflater.from(this).inflate(R.layout.tale_item, TalesList, false);
+            TaleView.setTag(tale.id);
             TalesList.addView(TaleView);
-            Tale.setViewDetails();
+            tale.setViewDetails();
 
             final ImageView playBtn = TaleView.findViewById(R.id.play);
-            playBtn.setTag(R.mipmap.Tale_play);
+            playBtn.setTag(R.mipmap.tale_play);
             playBtn.setOnClickListener(v -> {
-                if (playBtn.getTag().equals(R.mipmap.Tale_pause)){
-                    Tales.setLastPlaying(Tale.id);
+                if (playBtn.getTag().equals(R.mipmap.tale_pause)){
+                    Tales.setLastPlaying(tale.id);
                     Tales.setNowPlaying(-1);
 
                     super.stopPlayerService();
-                    playBtn.setImageResource(R.mipmap.Tale_play);
-                    playBtn.setTag(R.mipmap.Tale_play);
+                    playBtn.setImageResource(R.mipmap.tale_play);
+                    playBtn.setTag(R.mipmap.tale_play);
                 }else{
-                    playTale(Tale);
+                    playTale(tale);
                     setQuiteTimeout();
 
-                    playBtn.setImageResource(R.mipmap.Tale_pause);
-                    playBtn.setTag(R.mipmap.Tale_pause);
+                    playBtn.setImageResource(R.mipmap.tale_pause);
+                    playBtn.setTag(R.mipmap.tale_pause);
                 }
             });
 
-            TaleView.findViewById(R.id.favorite).setOnClickListener(v -> { Tale.resetFavorite(); filterTales(); });
+            TaleView.findViewById(R.id.favorite).setOnClickListener(v -> { tale.resetFavorite(); filterTales(); });
         }
 
         setPlayBtnIcon();
@@ -202,14 +202,14 @@ public class ActivityTales extends ActivityMain {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        currentView = R.id.Tales_menu;
+        currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
         String filter = intent.getStringExtra("filter");
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
 
-        TalesList = findViewById(R.id.TalesList);
+        TalesList = findViewById(R.id.talesList);
         Tales = new Tales();
         Tales.filter = filter == null ? "" : filter;
 
@@ -222,7 +222,7 @@ public class ActivityTales extends ActivityMain {
         registerReceiver();
     }
 
-    private void playTale(TaleEntry Tale){
+    private void playTale(Tale Tale){
         super.stopPlayerService();
 
         if (Tale.id != -1){
@@ -242,16 +242,16 @@ public class ActivityTales extends ActivityMain {
     private void setPlayBtnIcon(){ setPlayBtnIcon(true); }
 
     private void setPlayBtnIcon(boolean scrollToTale){
-        LinearLayout list = findViewById(R.id.TalesList);
-        TaleEntry Tale = Tales.getById(Tales.getNowPlaying());
+        LinearLayout list = findViewById(R.id.talesList);
+        Tale Tale = Tales.getById(Tales.getNowPlaying());
         boolean isPaused = Tales.isPaused();
 
-        for (TaleEntry item:Tales.getTales()){
-            ImageView btn = list.findViewWithTag(item.id).findViewById(R.id.play);
-            boolean isPlaying = !isPaused && Tale != null && item.id == Tale.id;
+        for (Tale tale:Tales.getTales()){
+            ImageView btn = list.findViewWithTag(tale.id).findViewById(R.id.play);
+            boolean isPlaying = !isPaused && Tale != null && tale.id == Tale.id;
 
-            btn.setImageResource(isPlaying ? R.mipmap.Tale_pause : R.mipmap.Tale_play);
-            btn.setTag(isPlaying ? R.mipmap.Tale_pause : R.mipmap.Tale_play);
+            btn.setImageResource(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
+            btn.setTag(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
         }
 
         if (scrollToTale && Tale != null){

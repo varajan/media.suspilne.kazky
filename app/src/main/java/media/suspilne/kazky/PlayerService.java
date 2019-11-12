@@ -21,7 +21,7 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.taleselection.taleselectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
@@ -67,8 +67,8 @@ public class PlayerService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        TrackEntry track = new tales().getById(intent.getIntExtra("track.id", -1));
-        playTrack(track);
+        Tale tale = new Tales().getById(intent.getIntExtra("track.id", -1));
+        playTale(tale);
 
         return START_NOT_STICKY;
     }
@@ -103,26 +103,26 @@ public class PlayerService extends IntentService {
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
 
             @Override
-            public void ontalesChanged(TrackGroupArray trackGroups, taleselectionArray taleselections) {}
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelectionArray) {}
 
             @Override
             public void onLoadingChanged(boolean isLoading) {}
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                tales.setPause(!playWhenReady);
+                Tales.setPause(!playWhenReady);
                 sendMessage("SetPlayBtnIcon");
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-                        tales.setNowPlaying(-1);
-                        tales.setLastPosition(player.getCurrentPosition());
+                        Tales.setNowPlaying(-1);
+                        Tales.setLastPosition(player.getCurrentPosition());
                         stopSelf();
                         sendMessage("SetPlayBtnIcon");
                         break;
 
                     case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                        playTrack(new tales().getNext());
+                        playTale(new Tales().getNext());
                         break;
 
                     default:
@@ -152,12 +152,12 @@ public class PlayerService extends IntentService {
             public void onSeekProcessed() {
                 long position = player.getCurrentPosition();
                 long duration = player.getContentDuration();
-                tales tales = new tales();
+                Tales tales = new Tales();
 
                 if (position < 0) {
-                    playTrack(tales.getPrevious());
+                    playTale(tales.getPrevious());
                 } else if(position > duration && duration > 0){
-                    playTrack(tales.getNext());
+                    playTale(tales.getNext());
                 }
             }
         });
@@ -166,7 +166,7 @@ public class PlayerService extends IntentService {
     @Override
     public void onDestroy() {
         if (player != null) {
-            tales.setLastPosition(player.getCurrentPosition());
+            Tales.setLastPosition(player.getCurrentPosition());
         }
 
         playerNotificationManager.setPlayer(null);
@@ -188,14 +188,14 @@ public class PlayerService extends IntentService {
         sendBroadcast(intent);
     }
 
-    private void playTrack(TrackEntry track){
-        if (track.id != -1){
-            long position = track.id == tales.getLastPlaying() ? tales.getLastPosition() : 0;
+    private void playTale(Tale tale){
+        if (tale.id != -1){
+            long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
 
-            SettingsHelper.setInt("tales.nowPlaying", track.id);
-            SettingsHelper.setInt("tales.lastPlaying", track.id);
+            SettingsHelper.setInt("tales.nowPlaying", tale.id);
+            SettingsHelper.setInt("tales.lastPlaying", tale.id);
 
-            playStream(track.stream, position);
+            playStream(tale.stream, position);
         } else {
             SettingsHelper.setInt("tales.nowPlaying", -1);
 
@@ -225,8 +225,8 @@ public class PlayerService extends IntentService {
         public void onReceive(Context context, Intent intent) {
             switch (intent.getStringExtra("code")){
                 case "StopPlay":
-                    tales.setNowPlaying(-1);
-                    tales.setLastPosition(player.getCurrentPosition());
+                    Tales.setNowPlaying(-1);
+                    Tales.setLastPosition(player.getCurrentPosition());
                     stopSelf();
                     sendMessage("SetPlayBtnIcon");
                     break;

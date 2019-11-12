@@ -17,13 +17,12 @@ import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
-    private Switch downloadAlltales;
-    private Switch downloadFavoritetales;
+    private Switch downloadAllTales;
+    private Switch downloadFavoriteTales;
     private Switch showOnlyFavorite;
     private Switch autoQuit;
     private SeekBar timeout;
     private TextView timeoutText;
-    private Spinner languages;
     private int step = 5;
     private long totalRequiredSpace = 1400 * 1024 * 1024;
     private long hundred_kb  = 100 * 1024;
@@ -33,45 +32,23 @@ public class ActivitySettings extends ActivityMain {
         currentView = R.id.settings_menu;
         super.onCreate(savedInstanceState);
 
-        downloadAlltales = this.findViewById(R.id.downloadAlltales);
-        downloadFavoritetales = this.findViewById(R.id.downloadFavoritetales);
+        downloadAllTales = this.findViewById(R.id.downloadAllTales);
+        downloadFavoriteTales = this.findViewById(R.id.downloadFavoriteTales);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
         timeoutText = this.findViewById(R.id.timeoutText);
-        languages = this.findViewById(R.id.languages);
 
-        setLanguages();
         setColorsAndState();
 
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
-
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
-        languages.setOnItemSelectedListener(omLanguageSelect);
     }
 
     void setSwitch(String title, boolean isChecked){
         SettingsHelper.setBoolean(title, isChecked);
         setColorsAndState();
-    }
-
-    private void setLanguages(){
-        ArrayList<Country> countries = new ArrayList<>();
-        countries.add( new Country("en", getString(R.string.language_en), R.mipmap.uk));
-        countries.add( new Country("uk", getString(R.string.language_ua), R.mipmap.ua));
-
-        LanguageArrayAdapter arrayAdapter = new LanguageArrayAdapter(this, R.layout.language, countries);
-        String currentLanguage = getResources().getConfiguration().locale.getLanguage();
-
-        languages.setAdapter(arrayAdapter);
-
-        for (int i = 0; i < countries.size(); i++) {
-            if (countries.get(i).code.equals(currentLanguage)){
-                languages.setSelection(i);
-                break;
-            }
-        }
     }
 
     private void doDownloadAll(){
@@ -88,28 +65,28 @@ public class ActivitySettings extends ActivityMain {
             return;
         }
 
-        SettingsHelper.setBoolean("downloadAlltales", true);
-        SettingsHelper.setBoolean("downloadFavoritetales", true);
+        SettingsHelper.setBoolean("downloadAllTales", true);
+        SettingsHelper.setBoolean("downloadFavoriteTales", true);
         download();
         setColorsAndState();
     }
 
     private void doDownloadFavorite(){
-        SettingsHelper.setBoolean("downloadFavoritetales", true);
+        SettingsHelper.setBoolean("downloadFavoriteTales", true);
         download();
         setColorsAndState();
     }
 
     private void doCleanup(boolean includeFavorite){
-        for (TrackEntry track : new tales().gettales()) {
-            if (includeFavorite || !track.isFavorite){
-                track.deleteFile();
+        for (Tale tale : new Tales().getTales()) {
+            if (includeFavorite || !tale.isFavorite){
+                tale.deleteFile();
             }
         }
 
-        SettingsHelper.setBoolean(includeFavorite ? "downloadFavoritetales" : "downloadAlltales", false);
-        if (!includeFavorite && new tales().gettales(true).size() == 0){
-            SettingsHelper.setBoolean("downloadFavoritetales", false);
+        SettingsHelper.setBoolean(includeFavorite ? "downloadFavoriteTales" : "downloadAllTales", false);
+        if (!includeFavorite && new Tales().getTales(true).size() == 0){
+            SettingsHelper.setBoolean("downloadFavoriteTales", false);
         }
 
         setColorsAndState();
@@ -122,7 +99,7 @@ public class ActivitySettings extends ActivityMain {
         new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
-            .setMessage(isChecked ? getString(R.string.downloadAlltalesQuestion, required) : getString(R.string.clearAlltalesQuestion))
+            .setMessage(isChecked ? getString(R.string.downloadAllTalesQuestion, required) : getString(R.string.clearAllTalesQuestion))
             .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadAll(); else doCleanup(false);})
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
             .setOnDismissListener(dialog -> setColorsAndState())
@@ -133,7 +110,7 @@ public class ActivitySettings extends ActivityMain {
         new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.icon_classic)
             .setTitle(isChecked ? R.string.download : R.string.clear)
-            .setMessage(isChecked ? R.string.downloadFavoritetalesQuestion : R.string.clearFavoritetalesQuestion)
+            .setMessage(isChecked ? R.string.downloadFavoriteTalesQuestion : R.string.clearFavoriteTalesQuestion)
             .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadFavorite(); else doCleanup(true);})
             .setNegativeButton(R.string.no, (dialog, which) -> setColorsAndState())
             .setOnDismissListener(dialog -> setColorsAndState())
@@ -148,8 +125,8 @@ public class ActivitySettings extends ActivityMain {
     private void setColorsAndState() {
         boolean isShowOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
-        boolean isDownloadAlltales = SettingsHelper.getBoolean("downloadAlltales");
-        boolean isDownloadFavoritetales = SettingsHelper.getBoolean("downloadFavoritetales");
+        boolean isDownloadAlltales = SettingsHelper.getBoolean("downloadAllTales");
+        boolean isDownloadFavoritetales = SettingsHelper.getBoolean("downloadFavoriteTales");
 
         int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int primary = ContextCompat.getColor(this, R.color.colorPrimary);
@@ -165,43 +142,23 @@ public class ActivitySettings extends ActivityMain {
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
 
-        downloadAlltales.setOnCheckedChangeListener(null);
-        downloadAlltales.setTextColor(isDownloadAlltales ? primaryDark : primary);
-        downloadAlltales.setChecked(isDownloadAlltales);
-        downloadAlltales.setOnCheckedChangeListener(onDownloadAllSelect);
-        downloadAlltales.setText(getString(R.string.downloadAlltales) + (isDownloadAlltales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : freeSpace));
+        downloadAllTales.setOnCheckedChangeListener(null);
+        downloadAllTales.setTextColor(isDownloadAlltales ? primaryDark : primary);
+        downloadAllTales.setChecked(isDownloadAlltales);
+        downloadAllTales.setOnCheckedChangeListener(onDownloadAllSelect);
+        downloadAllTales.setText(getString(R.string.downloadAllTales) + (isDownloadAlltales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : freeSpace));
 
-        downloadFavoritetales.setEnabled(!isDownloadAlltales);
-        downloadFavoritetales.setOnCheckedChangeListener(null);
-        downloadFavoritetales.setTextColor(isDownloadFavoritetales ? primaryDark : primary);
-        downloadFavoritetales.setChecked(isDownloadAlltales || isDownloadFavoritetales);
-        downloadFavoritetales.setOnCheckedChangeListener(onDownloadFavoriteSelect);
-        downloadFavoritetales.setText(getString(R.string.downloadFavoritetales) + (!isDownloadAlltales && isDownloadFavoritetales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
+        downloadFavoriteTales.setEnabled(!isDownloadAlltales);
+        downloadFavoriteTales.setOnCheckedChangeListener(null);
+        downloadFavoriteTales.setTextColor(isDownloadFavoritetales ? primaryDark : primary);
+        downloadFavoriteTales.setChecked(isDownloadAlltales || isDownloadFavoritetales);
+        downloadFavoriteTales.setOnCheckedChangeListener(onDownloadFavoriteSelect);
+        downloadFavoriteTales.setText(getString(R.string.downloadFavoriteTales) + (!isDownloadAlltales && isDownloadFavoritetales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
     }
-
-    AdapterView.OnItemSelectedListener omLanguageSelect = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String code = ((Country) languages.getSelectedItem()).code;
-            String currentLanguage = LocaleManager.getLanguage();
-
-            SettingsHelper.setString("Language", code);
-            LocaleManager.setLanguage(ActivitySettings.this, code);
-
-            if (!code.equals(currentLanguage)){
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) { }
-    };
 
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
         @Override

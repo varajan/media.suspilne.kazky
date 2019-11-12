@@ -85,8 +85,8 @@ public class ActivityMain extends AppCompatActivity
                 setContentView(R.layout.activity_tales);
                 break;
 
-            case R.id.Readers_menu:
-                setContentView(R.layout.activity_Readers);
+            case R.id.readers_menu:
+                setContentView(R.layout.activity_readers);
                 break;
 
             case R.id.settings_menu:
@@ -149,7 +149,7 @@ public class ActivityMain extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if(currentView == R.id.settings_menu){
-            openActivity(Activitytales.class);
+            openActivity(ActivityTales.class);
         }
         else {
             showQuitDialog();
@@ -192,12 +192,12 @@ public class ActivityMain extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.tales_menu:
                 if (currentView != R.id.tales_menu) {
-                    openActivity(Activitytales.class);
+                    openActivity(ActivityTales.class);
                 }
                 break;
 
-            case R.id.Readers_menu:
-                if (currentView != R.id.Readers_menu) {
+            case R.id.readers_menu:
+                if (currentView != R.id.readers_menu) {
                     openActivity(ActivityReaders.class);
                 }
                 break;
@@ -244,7 +244,7 @@ public class ActivityMain extends AppCompatActivity
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoritetales") && !SettingsHelper.getBoolean("downloadAlltales");
-            TrackEntry[] download = new tales().gettales(onlyFavorite).toArray(new TrackEntry[0]);
+            Tale[] download = new Tales().getTales(onlyFavorite).toArray(new Tale[0]);
 
             new DownloadTask().execute(download);
         }
@@ -259,15 +259,15 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
-    protected void continueDownloadtales(){
+    protected void continueDownloadTales(){
         if (!SettingsHelper.getBoolean("downloadAlltales") && !SettingsHelper.getBoolean("downloadFavoritetales")) return;
         if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
 
         boolean allAreDownloaded = true;
         boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoritetales") && !SettingsHelper.getBoolean("downloadAlltales");
 
-        for (TrackEntry track : new tales().gettales()){
-            if ((!onlyFavorite || track.isFavorite) && !track.isDownloaded){
+        for (Tale tale : new Tales().getTales()){
+            if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded){
                 allAreDownloaded = false;
                 break;
             }
@@ -276,12 +276,12 @@ public class ActivityMain extends AppCompatActivity
         if (!allAreDownloaded) download();
     }
 
-    protected void suggestToDownloadFavoritetales(){
+    protected void suggestToDownloadFavoriteTales(){
         if (SettingsHelper.getBoolean("suggestToDownloadFavoritetales")) return;
         if (SettingsHelper.getBoolean("downloadAlltales") || SettingsHelper.getBoolean("downloadFavoritetales")) return;
         if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
 
-        int favorites = new tales().gettales(true).size();
+        int favorites = new Tales().getTales(true).size();
         if (favorites < 5) return;
 
         SettingsHelper.setBoolean("suggestToDownloadFavoritetales", true);

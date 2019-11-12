@@ -15,7 +15,7 @@ import java.net.URL;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
+public class DownloadTask extends AsyncTask<Tale, String, String> {
     private NotificationManager notificationManager;
     private PendingIntent openApplication;
 
@@ -114,17 +114,17 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
     }
 
     @Override
-    protected String doInBackground(TrackEntry... tales) {
+    protected String doInBackground(Tale... tales) {
         try {
             this.count = tales.length;
             this.current = 0;
 
-            for (TrackEntry track:tales) {
-                if (track.isDownloaded) publishProgress();
+            for (Tale tale:tales) {
+                if (tale.isDownloaded) publishProgress();
             }
 
-            for (TrackEntry track:tales) {
-                if (track.isDownloaded) continue;
+            for (Tale tale:tales) {
+                if (tale.isDownloaded) continue;
                 long freeSpace = SettingsHelper.freeSpace();
                 long required = 100 * 1024 * 1024;
 
@@ -133,9 +133,9 @@ public class DownloadTask extends AsyncTask<TrackEntry, String, String> {
                         R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
                 }
 
-                InputStream is = (InputStream) new URL(track.stream).getContent();
-                SettingsHelper.saveFile(track.fileName, IOUtils.toByteArray(is));
-                publishProgress(track.getAuthor() + ": " + track.getTitle());
+                InputStream is = (InputStream) new URL(tale.stream).getContent();
+                SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
+                publishProgress(tale.getAuthor() + ": " + tale.getTitle());
                 current++;
             }
         }catch (Exception e){

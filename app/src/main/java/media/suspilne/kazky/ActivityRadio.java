@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.widget.ImageView;
 
-public class ActivityRadio extends ActivityBase {
+public class ActivityRadio extends ActivityMain {
     private ImageView playPauseBtn;
 
     @Override
@@ -59,8 +59,7 @@ public class ActivityRadio extends ActivityBase {
             }else{
                 stopPlayerService();
 
-                if (HSettings.isNetworkAvailable()){
-
+                if (isNetworkAvailable()){
                     Intent intent = new Intent(this, PlayerService.class);
                     intent.putExtra("type", getString(R.string.radio));
 
@@ -72,7 +71,7 @@ public class ActivityRadio extends ActivityBase {
                     }
 
                     setPlayBtnIcon();
-                    resetQuitTimer();
+                    this.setQuiteTimeout();
                 }else{
                     showNoConnectionAlert();
               }
@@ -81,9 +80,11 @@ public class ActivityRadio extends ActivityBase {
     }
 
     private boolean isRadioPlaying(){
-        return isServiceRunning(PlayerService.class)
-                && HSettings.getString("StreamType").equals(getString(R.string.radio))
-                && !HSettings.getBoolean("playbackIsPaused");
+        return false;
+
+//        return isServiceRunning(PlayerService.class)
+//                && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
+//                && !SettingsHelper.getBoolean("playbackIsPaused");
     }
 
     private void showNoConnectionAlert(){
@@ -96,14 +97,14 @@ public class ActivityRadio extends ActivityBase {
     }
 
     private void setPlayBtnIcon(){
-        boolean isPaused = HSettings.getBoolean("playbackIsPaused");
+        boolean isPaused = SettingsHelper.getBoolean("playbackIsPaused");
         playPauseBtn.setImageResource(!isPaused && isRadioPlaying() ? R.mipmap.pause : R.mipmap.play);
     }
 
     private void registerReceiver(){
         try{
             IntentFilter filter = new IntentFilter();
-            filter.addAction(HSettings.application);
+            filter.addAction(SettingsHelper.application);
             this.registerReceiver(receiver, filter);
         }catch (Exception e){ /*nothing*/ }
     }
