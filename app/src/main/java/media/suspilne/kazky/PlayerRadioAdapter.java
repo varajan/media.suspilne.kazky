@@ -4,50 +4,45 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
-public class PlayerAdapter implements PlayerNotificationManager.MediaDescriptionAdapter{
+public class PlayerRadioAdapter implements PlayerNotificationManager.MediaDescriptionAdapter {
     private Context context;
 
-    public PlayerAdapter(Context context) {
+    public PlayerRadioAdapter(Context context){
         this.context = context;
-    }
-
-    private Tale track(){
-        return new Tales().getById(Tales.getNowPlaying());
     }
 
     @Override
     public String getCurrentContentTitle(Player player) {
-        return track().getTitle();
+        return "Радіо казок";
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        return track().getAuthor();
+        return "Радіо хвиля казок українською мовою";
     }
 
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-        Reader reader = new Reader((track().getAuthorId()));
-        Bitmap readerPhoto = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), reader.photo, 100, 100);
-        readerPhoto = ImageHelper.getCircularDrawable(readerPhoto);
-
-        return readerPhoto;
+        Drawable image = ContextCompat.getDrawable(context, R.mipmap.radio);
+        return ImageHelper.getBitmap(image);
     }
 
     @Nullable
     @Override
     public PendingIntent createCurrentContentIntent(Player player) {
-        Intent notificationIntent = new Intent(context, ActivityTales.class);
+        Intent notificationIntent = new Intent(context, ActivityRadio.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent opentalesIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-        return opentalesIntent;
+        return openTracksIntent;
     }
 }

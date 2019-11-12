@@ -80,11 +80,9 @@ public class ActivityRadio extends ActivityMain {
     }
 
     private boolean isRadioPlaying(){
-        return false;
-
-//        return isServiceRunning(PlayerService.class)
-//                && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
-//                && !SettingsHelper.getBoolean("playbackIsPaused");
+        return isServiceRunning(PlayerService.class)
+                && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
+                && !SettingsHelper.getBoolean("playbackIsPaused");
     }
 
     private void showNoConnectionAlert(){
