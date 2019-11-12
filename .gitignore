@@ -11,5 +11,6 @@
 /build
 /captures
 .externalNativeBuild
-release/*
+/.idea/*
+.idea/vcs.xml
 app/release/app.aab

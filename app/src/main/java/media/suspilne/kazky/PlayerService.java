@@ -1,9 +1,9 @@
 package media.suspilne.kazky;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,59 +11,79 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.taleselection.taleselectionArray;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
 
-public class PlayerService extends Service {
-    public static String NOTIFICATION_CHANNEL = HSettings.application;
-    public static int NOTIFICATION_ID = 2001;
-
+public class PlayerService extends IntentService {
     private ExoPlayer player;
-    private NotificationManager notificationManager;
     private PlayerNotificationManager playerNotificationManager;
+
+    public static String NOTIFICATION_CHANNEL = SettingsHelper.application;
+    public static int NOTIFICATION_ID = 21;
+
+    public PlayerService() {
+        super(NOTIFICATION_CHANNEL);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        // not implemented
+    }
+
+    @Override
+    public void onCreate(){
+        registerReceiver();
+
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerAdapter(this));
+
+        playerNotificationManager.setFastForwardIncrementMs(10_000_000);
+        playerNotificationManager.setRewindIncrementMs(10_000_000);
+        playerNotificationManager.setUseNavigationActions(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setSound(null, null);
+            notificationChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        String type = intent.getStringExtra("type");
-        HSettings.setString("StreamType", type);
-        registerReceiver();
-
-        if (type.equals(getString(R.string.radio))){
-            playRadio();
-            return START_NOT_STICKY;
-        }
-
-        if (type.equals(getString(R.string.tales))){
-            playTale(intent.getIntExtra("id", 0));
-            return START_NOT_STICKY;
-        }
+        TrackEntry track = new tales().getById(intent.getIntExtra("track.id", -1));
+        playTrack(track);
 
         return START_NOT_STICKY;
     }
 
-    private void playStream() { playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3", 0); }
-
     private void playStream(String stream, long position) {
+        releasePlayer();
+
         Uri uri = Uri.parse(stream);
-        player = newSimpleInstance(this);
+        player = ExoPlayerFactory.newSimpleInstance(this);
 
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
-                new DefaultDataSourceFactory(this,"exoplayer-codelab"))
-                .createMediaSource(uri);
+            new DefaultDataSourceFactory(this,"exoplayer-codelab")).createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
-        if (position > 0) player.seekTo(position);
-        HSettings.setBoolean("playbackIsPaused", false);
+        player.seekTo(position);
 
         playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
             @Override
@@ -83,24 +103,26 @@ public class PlayerService extends Service {
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
 
             @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+            public void ontalesChanged(TrackGroupArray trackGroups, taleselectionArray taleselections) {}
 
             @Override
             public void onLoadingChanged(boolean isLoading) {}
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                HSettings.setBoolean("playbackIsPaused", !playWhenReady);
-                sendMessage("SetPlayBtnIcon", HSettings.getInt("nowPlaying"));
+                tales.setPause(!playWhenReady);
+                sendMessage("SetPlayBtnIcon");
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
+                        tales.setNowPlaying(-1);
+                        tales.setLastPosition(player.getCurrentPosition());
                         stopSelf();
-                        sendMessage("SetPlayBtnIcon", -1);
+                        sendMessage("SetPlayBtnIcon");
                         break;
 
                     case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                        playTale(ActivityTales.getNext());
+                        playTrack(new tales().getNext());
                         break;
 
                     default:
@@ -117,11 +139,11 @@ public class PlayerService extends Service {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 stopSelf();
-                sendMessage("SourceIsNotAccessible", -1);
+                sendMessage("SourceIsNotAccessible");
             }
 
             @Override
-            public void onPositionDiscontinuity(int reason) {}
+            public void onPositionDiscontinuity(int reason) { }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
@@ -130,75 +152,64 @@ public class PlayerService extends Service {
             public void onSeekProcessed() {
                 long position = player.getCurrentPosition();
                 long duration = player.getContentDuration();
+                tales tales = new tales();
 
                 if (position < 0) {
-                    playTale(ActivityTales.getPrevious());
+                    playTrack(tales.getPrevious());
                 } else if(position > duration && duration > 0){
-                    playTale(ActivityTales.getNext());
+                    playTrack(tales.getNext());
                 }
             }
         });
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private void sendMessage(String code, int id){
-        Intent intent = new Intent();
-        intent.setAction(HSettings.application);
-        intent.putExtra("code", code);
-        intent.putExtra("id", id);
-        sendBroadcast(intent);
-    }
-
-    @Override
-    public void onCreate(){
-        registerReceiver();
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = notificationManager.getNotificationChannel(HSettings.application);
-
-            if (channel == null){
-                NotificationChannel notificationChannel = new NotificationChannel(HSettings.application, HSettings.application, NotificationManager.IMPORTANCE_DEFAULT);
-                notificationChannel.setSound(null, null);
-                notificationChannel.setShowBadge(false);
-
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
-        }
-    }
-
-    @Override
     public void onDestroy() {
-        notificationManager.cancel(NOTIFICATION_ID);
-        HSettings.setString("StreamType", "");
+        if (player != null) {
+            tales.setLastPosition(player.getCurrentPosition());
+        }
+
+        playerNotificationManager.setPlayer(null);
         releasePlayer();
         unregisterReceiver();
-        super.onDestroy();
     }
 
     private void releasePlayer(){
-        notificationManager.cancel(NOTIFICATION_ID);
-
         while (player != null){
-            ActivityTales.setPosition(player.getCurrentPosition());
             player.release();
             player = null;
         }
     }
 
+    private void sendMessage(String code){
+        Intent intent = new Intent();
+        intent.setAction(NOTIFICATION_CHANNEL);
+        intent.putExtra("code", code);
+        sendBroadcast(intent);
+    }
+
+    private void playTrack(TrackEntry track){
+        if (track.id != -1){
+            long position = track.id == tales.getLastPlaying() ? tales.getLastPosition() : 0;
+
+            SettingsHelper.setInt("tales.nowPlaying", track.id);
+            SettingsHelper.setInt("tales.lastPlaying", track.id);
+
+            playStream(track.stream, position);
+        } else {
+            SettingsHelper.setInt("tales.nowPlaying", -1);
+
+            playerNotificationManager.setPlayer(null);
+            releasePlayer();
+        }
+
+        sendMessage("SetPlayBtnIcon");
+    }
+
     private void registerReceiver(){
         try{
             IntentFilter filter = new IntentFilter();
-
-            filter.addAction(HSettings.application);
-            filter.addAction(HSettings.application + "previous");
-            filter.addAction(HSettings.application + "next");
-            filter.addAction(HSettings.application + "stop");
-
+            filter.addAction(NOTIFICATION_CHANNEL);
             this.registerReceiver(receiver, filter);
         }catch (Exception e){ /*nothing*/ }
     }
@@ -209,66 +220,15 @@ public class PlayerService extends Service {
         }catch (Exception e){ /*nothing*/ }
     }
 
-    private void playTale(int id){
-        if (id > 0){
-            releasePlayer();
-
-            String name = String.format("%02d.mp3", id);
-            String url = "https://kazky.suspilne.media/tales/songs/" + name;
-            String stream = HSettings.taleExists(id) ? this.getFilesDir() + "/" + name : url;
-            long position = id == ActivityTales.getLastPlaying() ? ActivityTales.getPosition() : 0;
-
-            if (!HSettings.taleExists(id) && !HSettings.isNetworkAvailable()){
-                sendMessage("SourceIsNotAccessible", -1);
-            }
-
-            playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this, id));
-            playerNotificationManager.setFastForwardIncrementMs(1_000_000);
-            playerNotificationManager.setRewindIncrementMs(1_000_000);
-            playerNotificationManager.setUseNavigationActions(false);
-
-            playStream(stream, position);
-        }
-
-        ActivityTales.setLastPlaying(id);
-        ActivityTales.setNowPlaying(id);
-        sendMessage("SetPlayBtnIcon", id);
-    }
-
-    private void playRadio(){
-        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerRadioAdapter(this));
-        playerNotificationManager.setFastForwardIncrementMs(0);
-        playerNotificationManager.setRewindIncrementMs(0);
-        playerNotificationManager.setUseNavigationActions(false);
-        playerNotificationManager.setStopAction(null);
-        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
-            @Override
-            public void onNotificationStarted(int notificationId, Notification notification) {
-                startForeground(notificationId, notification);
-            }
-
-            @Override
-            public void onNotificationCancelled(int notificationId) {
-                stopSelf();
-            }
-        });
-
-        if (!HSettings.isNetworkAvailable()){
-            sendMessage("SourceIsNotAccessible", -1);
-        }
-
-        playStream();
-        sendMessage("SetPlayBtnIcon", -1);
-    }
-
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getStringExtra("code")){
                 case "StopPlay":
-                    ActivityTales.setNowPlaying(-1);
-                    sendMessage("SetPlayBtnIcon", -1);
+                    tales.setNowPlaying(-1);
+                    tales.setLastPosition(player.getCurrentPosition());
                     stopSelf();
+                    sendMessage("SetPlayBtnIcon");
                     break;
             }
         }

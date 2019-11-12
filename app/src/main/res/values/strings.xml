@@ -1,31 +1,232 @@
 <resources>
-    <string name="app_name">Kazka</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">UA: Classic</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="trackUrl" translatable="false">https://classical.suspilne.media/songs/audio/%02d.mp3</string>
+	<string name="language_ua">Ukrainian (Українська)</string>
+    <string name="language_en">English</string>
+    <string name="language">Language:</string>
+    <string name="showOnlyFavorite">Show only favorite tracks</string>
+    <string name="nothingToShow">Nothing to show</string>
+    <string name="filterHint">Title or author</string>
+    <string name="tracks">All tracks</string>
+    <string name="composer_tracks">Tracks number: %d</string>
+    <string name="composers">Composers</string>
+    <string name="settings">Settings</string>
+    <string name="info">About</string>
     <string name="description">
-        Версія %s\n\n
-        [Радіо] - Цілодобове радіо, де звучать різноманітні казки з різних країн від Суспільного Мовлення.
-        Для його роботи потрібен Інтернет.\n\n
+        Version %s\n\n
 
-        [Казки] - Більше шістдесяти казок. Їх можна скачати на пристрій і вони будуть доступні і без Інтернета.
-        Збережені на пристрої казки позначені значком 💾\n\n
+        [All tracks] - 125 tracks of classical music from Public Broadcasting Company: listen, search by title or author, mark as "favorite".
+        Saved locally tracks are marked with 💾 sign.\n\n
 
-        [Налаштування] - Вмикайте казочки перед сном, а щоб радіо не грало всю ніч - скористайтесь "Таймером сну".\n\n
+        [Composers] - search composers by name, order by name or number of tracks, open all composer\'s tracks with one click.\n\n
+
+        [Settings] - select what tracks to download, set quit timer, others.\n\nAvailable
 		
-		[Екран блокування] - керуйте казками не розблоковуючи телефон: пауза, наступна чи попередня.
+		[Lock screen] - pause or resume, select next or previous track without unlocking the phone.\n
     </string>
+    <string name="prev">≪ Back</string>
+    <string name="next">Next ≫</string>
+    <string name="stop">Stop</string>
+    <string name="rate">Rate application</string>
+    <string name="exit">Quit</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirm_exit">Quit UA: Classical Music?</string>
+    <string name="x_minutes">%s minutes</string>
+    <string name="no_internet">No Internet!</string>
+    <string name="sleep_timeout">Stop playback timeout</string>
+    <string name="title">Title</string>
+    <string name="author">Author</string>
+    <string name="done">Done.</string>
+    <string name="download_completed">Tracks downloaded: %d</string>
+    <string name="an_error_occurred">An error occurred.</string>
+    <string name="not_enough_space">Download failed. It\'s %s of free space, while required at least %s</string>
+    <string name="downloading">Downloading tracks…</string>
+    <string name="download">Download</string>
+    <string name="clear">Delete</string>
+    <string name="continueDownload">Continue downloading?</string>
+    <string name="suggestToDownloadFavorite">You have %d favorite tracks. Would you like to download them locally so they will be available off-line?</string>
+    <string name="not_all_tracks">Not all tracks were downloaded.</string>
+    <string name="not_downloaded_favorite_tracks">Not all favorite tracks were downloaded.</string>
+    <string name="freeSpace">\nAvailable: %s of free space.</string>
+    <string name="usedSpace">\nUsed space: %s.</string>
+    <string name="downloadAllTracks">Download all tracks.</string>
+    <string name="downloadFavoriteTracks">Download favorite tracks.</string>
+    <string name="downloadAllTracksQuestion">Are you sure to download all tracks? It will take about %s of space.</string>
+    <string name="downloadFavoriteTracksQuestion">Are you sure to download only favorite tracks? Internet will be used to listen other tracks.</string>
+    <string name="clearAllTracksQuestion">Are you sure to delete downloaded tracks? Favorite tracks will remain saved on device.</string>
+    <string name="clearFavoriteTracksQuestion">Are you sure to delete downloaded favorite tracks? Internet will be used to listen the tracks.</string>
+    <string name="bach">Johann Sebastian Bach</string>
+    <string name="barber">Samuel Osborne Barber</string>
+    <string name="beethoven">Ludwig Van Beethoven</string>
+    <string name="bellini">Vincenzo Bellini</string>
+    <string name="bilash">Oleksandr Bilash</string>
+    <string name="bizet">Alexandre César Léopold Bizet</string>
+    <string name="boccherini">Luigi Boccherini</string>
+    <string name="borodin">Alexandr Borodin</string>
+    <string name="brahms">Johannes Brahms</string>
+    <string name="chaikovsky">Pyotr Tchaikovsky</string>
+    <string name="chopin">Frederic Chopin</string>
+    <string name="debussy">Claude Debussy</string>
+    <string name="donizetti">Gaetano Donizetti</string>
+    <string name="dukas">Paul Dukas</string>
+    <string name="elgar">Edward Elgar</string>
+    <string name="gounod">Charles Gounod</string>
+    <string name="grieg">Edvard Hagerup Grieg</string>
+    <string name="handel">George Frideric Handel</string>
+    <string name="haydn">Joseph Haydn</string>
+    <string name="leontovych">Mykola Leontovych</string>
+    <string name="list">Ferencz Liszt</string>
+    <string name="lysenko">Mykola Lysenko</string>
+    <string name="khachaturian">Aram Khachaturian</string>
+    <string name="mendelson">Felix Mendelssohn Bartholdy</string>
+    <string name="mozart">Wolfgang Amadeus Mozart</string>
+    <string name="musorgsky">Modest Mussorgsky</string>
+    <string name="offenbach">Jacques Offenbach</string>
+    <string name="orff">Carl Orff</string>
+    <string name="piazzolla">Astor Piazzolla</string>
+    <string name="ponchielli">Amilcare Ponchielli</string>
+    <string name="prokofiev">Sergei Prokofiev</string>
+    <string name="puccini">Giacomo Puccini</string>
+    <string name="rachmaninov">Sergey Rachmaninov</string>
+    <string name="ravel">Joseph Maurice Ravel</string>
+    <string name="rimsky_korsakov">Nikolai Andreyevich Rimsky-Korsakov</string>
+    <string name="rossini">Gioachino Antonio Rossini</string>
+    <string name="saint_saens">Camille Saint-Saëns</string>
+    <string name="shostakovich">Dmitri Shostakovich</string>
+    <string name="strauss_i">Johann Strauss (father)</string>
+    <string name="strauss_ii">Johann Strauss (son)</string>
+    <string name="strauss_eduard">Eduard Strauss</string>
+    <string name="verdi">Giuseppe Verdi</string>
+    <string name="vivaldi">Antonio Lucio Vivaldi</string>
+    <string name="wagner">Richard Wagner</string>
 
-    <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
-    <string name="save_tales_locally">Зберегти казки на пристрій (Казки будуть доступні без Інтернета)</string>
-    <string name="radio_description">Радіо хвиля авторських казок українською мовою для дітей</string>
-    <string name="download_tales_description">Це займе приблизно 350MB. Але потім казки можна слухати без Інтернета.</string>
-    <string name="radio">Radio</string>
-    <string name="tales">Tales</string>
-    <string name="index_json">https://kazky.suspilne.media/index.json</string>
-    <string name="taleReaders">Казки читають</string>
-    <string name="tales_count">Казок: %d</string>
-    <string name="filterHint">Ім\'я чи назва</string>
-    <string name="nothingToShow">Нічого не знайдено</string>
+    <string name="track_001">The Piano Concerto No. 2 in C minor, Op. 18, is a concerto for piano and orchestra, 1st part - Moderato</string>
+    <string name="track_002">Fourteen Songs, \"Vocalise\"</string>
+    <string name="track_003">Six moments musicaux: No. 3 Andante cantabile in B minor</string>
+    <string name="track_004">Morceaux de fantaisie, No. 2, Prélude in C-sharp minor</string>
+    <string name="track_005">Morceaux de fantaisie, No. 1, Élégie in E-flat minor</string>
+    <string name="track_006">The Piano Sonata No. 23 in F minor, Op. 57 (Appassionata), part 1: Allegro assai</string>
+    <string name="track_007">For Elise</string>
+    <string name="track_008">The Symphony No. 3 in E♭ major, Op. 55, (Heroic Symphony) - part 3: Scherzo: Allegro vivace</string>
+    <string name="track_009">The Piano Sonata No. 8 (Pathétique) in C minor, Op. 13, part 2: Adagio cantabile</string>
+    <string name="track_010">The Violin Concerto in D major, Op. 61, part 3: Rondo. Allegro (D major)</string>
+    <string name="track_011">The Piano Sonata No. 14 (Moonlight Sonata) in C♯ minor \"Quasi una fantasia\", Op. 27, No. 2, part 2: Allegretto</string>
+    <string name="track_012">The Piano Concerto No. 2 in B-flat major, Op. 19, part 3: Rondo Molto allegro</string>
+    <string name="track_013">Egmont, Op. 84</string>
+    <string name="track_014">\"Schöne Minka, ich muss scheiden!\" Aus den Liedern verschiedener Völker (Songs of Various Nations)</string>
+    <string name="track_015">The Symphony No. 5 in C minor, Op. 67, part 1</string>
+    <string name="track_016">Polonaise from the opera \"Eugene Onegin\"</string>
+    <string name="track_017">Waltz from the ballet \"Sleeping Beauty\"</string>
+    <string name="track_018">Flower Waltz from the Nutcracker ballet</string>
+    <string name="track_020">Waltz from the opera \"Eugene Onegin\"</string>
+    <string name="track_019">Romeo and Juliet</string>
+    <string name="track_021">Dance of small swans from the \"Swan Lake\" ballet</string>
+    <string name="track_022">Overture from Midsummer Night\'s Dream</string>
+    <string name="track_023">Wedding macrh from Midsummer Night\'s Dream</string>
+    <string name="track_024">O Fortune. Carmina Burana</string>
+    <string name="track_025">Toccata and Fugue in D minor</string>
+    <string name="track_026">Suite No. 3 in B minor, aria</string>
+    <string name="track_027">The Brandenburg Concertos No. 3 in G minor, part 1</string>
+    <string name="track_028">Afternoon of a Faun</string>
+    <string name="track_029">Bolero</string>
+    <string name="track_030">Polovtsian Dances from Prince Igor opera</string>
+    <string name="track_031">Tzigane for violin and piano</string>
+    <string name="track_032">The Barber of Seville, or The Useless Precaution, overture</string>
+    <string name="track_033">Opera William Tell, overture</string>
+    <string name="track_034">La gazza ladra opera, overture</string>
+    <string name="track_035">Opera The Italian Girl in Algiers, overture</string>
+    <string name="track_036">The Introduction and Rondo Capriccioso in A minor for violin and orchestra</string>
+    <string name="track_037">Opera The Flying Dutchman, overture</string>
+    <string name="track_038">Opera The Marriage of Figaro, overture</string>
+    <string name="track_039">The Radetzky March</string>
+    <string name="track_040">Tik-Tak-Polka</string>
+    <string name="track_041">Pizzicato</string>
+    <string name="track_042">Thunder and lightning</string>
+    <string name="track_043">The Blue Danube</string>
+    <string name="track_044">The Four Seasons, Concert No.1, Spring</string>
+    <string name="track_045">The Four Seasons, Concert No.2, Summer</string>
+    <string name="track_046">The Four Seasons, Concert No.3, Autumn</string>
+    <string name="track_047">The Four Seasons, Concert No.4, Winter</string>
+    <string name="track_048">Eine kleine Nachtmusik (Serenade No. 13 in G major), part 1 Allegro</string>
+    <string name="track_049">Eine kleine Nachtmusik (Serenade No. 13 in G major), part 4 Rondo</string>
+    <string name="track_050">The Magic Flute, overture</string>
+    <string name="track_051">Clarinet Quintet In A, K.581, part 2</string>
+    <string name="track_052">Ave Maria</string>
+    <string name="track_053">Libertango</string>
+    <string name="track_054">Adois Nonino</string>
+    <string name="track_055">Carmen, overture</string>
+    <string name="track_056">Carmen, habanera</string>
+    <string name="track_057">The Piano Concerto in A minor, Op. 16, part 1 (Allegro molto moderato)</string>
+    <string name="track_058">Peer Gynt, Suite No. 1, Morning Mood</string>
+    <string name="track_059">Peer Gynt, Suite No. 1, Anitra\'s Dance</string>
+    <string name="track_060">Peer Gynt, Suite No. 1, In the Hall of the Mountain King</string>
+    <string name="track_061">Gayane, Sabre Dance</string>
+    <string name="track_062">Orpheus in the Underworld, overture</string>
+    <string name="track_063">The Tales of Hoffmann, barcarole</string>
+    <string name="track_064">Meniute from the Quintet, essay 11 No.5</string>
+    <string name="track_065">"Opera La Gioconda, Clock Dance "</string>
+    <string name="track_066">The Suite bergamasque, Clair de lune</string>
+    <string name="track_067">Night on Bald Mountain</string>
+    <string name="track_068">The Sorcerer\'s Apprentice</string>
+    <string name="track_069">Adagio for Strings</string>
+    <string name="track_070">" The Tale of Tsar Saltan, Flight of the Bumblebee"</string>
+    <string name="track_071">Opera The Power of Fate, overture</string>
+    <string name="track_072">The Carnival of the Animals, The Swan</string>
+    <string name="track_073">Opera Lohengrin, Bridal Chorus</string>
+    <string name="track_074">Campanella</string>
+    <string name="track_075">Hungarian Dances, No. 1</string>
+    <string name="track_076">Hungarian Dances, No. 5</string>
+    <string name="track_077">Oratorio Messiah, Hallelujah</string>
+    <string name="track_078">Romeo and Juliet, Suite No. 2, Montagues and Capulets</string>
+    <string name="track_079">Romeo and Juliet, Suite No. 2, Juliet as a Young Girl</string>
+    <string name="track_080">Opera Tosca, Vissi d\'arte</string>
+
+    <string name="track_083">Opera La traviata, Let\'s drink from the joyful cups</string>
+
+    <string name="track_085">The Barber of Seville, Largo al factotum</string>
+    <string name="track_086">Opera Tosca, E lucevan le stelle</string>
+    <string name="track_087">Opera La boheme, Che gelida manina</string>
+    <string name="track_088">Opera Turandot, None shall sleep</string>
+    <string name="track_089">Opera La traviata, Alfred\'s Aria</string>
+    <string name="track_090">Opera Rigoletto, La donna è mobile</string>
+    <string name="track_091">Opera The Elixir of Love, A furtive tear romanza</string>
+    <string name="track_092">Opera Faust, Mephistopheles</string>
+    <string name="track_093">Piano Concerto No. 1 in E-flat major, part 1 Allegro maestoso</string>
+    <string name="track_094">Lento placido, Consolation</string>
+    <string name="track_095">Dreams of Love</string>
+    <string name="track_096">The Piano Concerto No. 1, part 3 Allegro molto</string>
+    <string name="track_097">The Tuba Concerto, part 3 Allegro</string>
+    <string name="track_098">Waltz in C♯ minor, Op. 64</string>
+    <string name="track_099">" Waltz in D♭ major, Minute Waltz"</string>
+    <string name="track_100">Waltz in A♭ major, L\'Adieu, Op. 69</string>
+    <string name="track_101">Fantaisie-Impromptu in C♯ minor, Op. 66</string>
+    <string name="track_102">Polonaise in A♭ major, Heroic or Drum, Op. 53</string>
+    <string name="track_103">Étude in C minor, Revolutionary, Op. 10</string>
+    <string name="track_104">Romance from the movie The Gadfly</string>
+    <string name="track_105">Waltz to Masquerade drama</string>
+    <string name="track_106">Opera Taras Bulba, overture</string>
+    <string name="track_107">The Seasons, March: Song of the Lark (G minor)</string>
+    <string name="track_108">The Seasons, April: Snowdrop (B-flat major)</string>
+    <string name="track_109">The Seasons, June: Barcarolle (G minor)</string>
+    <string name="track_110">The Seasons, November: Troika (E major)</string>
+    <string name="track_111">Pictures at an Exhibition, Promenade</string>
+    <string name="track_112">Pictures at an Exhibition, The Gnome</string>
+    <string name="track_113">Pictures at an Exhibition, The Hut on Hen\'s Legs (Baba Yaga)</string>
+    <string name="track_114">Pictures at an Exhibition, The Bogatyr Gates (In the Capital in Kyiv)</string>
+    <string name="track_115">Prayer for Ukraine</string>
+    <string name="track_116">Opera Norma, Norma\'s cavatina</string>
+
+    <string name="track_118">Zhuravka</string>
+    <string name="track_119">Shchedryk</string>
+    <string name="track_120">Little Dudka Player</string>
+    <string name="track_121">Pryalya</string>
+    <string name="track_122">The Roosters are Singing</string>
+    <string name="track_123">The ducks swim behind the field</string>
+    <string name="track_124">Enigma Variations</string>
+    <string name="track_125">Swan Lake, Spanish Dance</string>
 </resources>
