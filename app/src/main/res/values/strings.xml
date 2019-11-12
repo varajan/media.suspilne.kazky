@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">UA: Класика</string>
-    <string name="reader_tales">Кількість композицій: %d</string>
+    <string name="app_name">UA: Казки</string>
+    <string name="reader_tales">Кількість казок: %d</string>
     <string name="radio">Радіо</string>
-    <string name="tales">Всі композиції</string>
+    <string name="tales">Всі казки</string>
     <string name="settings">Налаштування</string>
-    <string name="readers">Композитори</string>
+    <string name="readers">Казки читають</string>
     <string name="info">Про програму</string>
     <string name="radio_description">Радіо хвиля авторських казок українською мовою для дітей</string>
     <string name="description">
