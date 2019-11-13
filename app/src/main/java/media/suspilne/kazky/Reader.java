@@ -53,6 +53,32 @@ class Reader{
         switch (name){
             case R.string.andrii_hlyvniuk: return R.mipmap.andrii_hlyvniuk;
             case R.string.marko_galanevych: return R.mipmap.marko_galanevych;
+            case R.string.alina_pash: return R.mipmap.alina_pash;
+            case R.string.alyona_alyona: return R.mipmap.alyona_alyona;
+            case R.string.vova_zi_lvova: return R.mipmap.vova_zi_lvova;
+            case R.string.evgen_klopotenko: return R.mipmap.evgen_klopotenko;
+            case R.string.evgen_maluha: return R.mipmap.evgen_maluha;
+            case R.string.anna_nikitina: return R.mipmap.anna_nikitina;
+            case R.string.vlad_fisun: return R.mipmap.vlad_fisun;
+            case R.string.dmytro_schebetiiuk: return R.mipmap.dmytro_schebetiiuk;
+            case R.string.katia_rogova: return R.mipmap.katia_rogova;
+            case R.string.michel_schur: return R.mipmap.michel_schur;
+            case R.string.mariana_golovko: return R.mipmap.mariana_golovko;
+            case R.string.marta_liubchyk: return R.mipmap.marta_liubchyk;
+            case R.string.marusia_ionova: return R.mipmap.marusia_ionova;
+            case R.string.oleksiy_dorychevsky: return R.mipmap.oleksiy_dorychevsky;
+            case R.string.pavlo_varenitsa: return R.mipmap.pavlo_varenitsa;
+            case R.string.roman_yasynovsky: return R.mipmap.roman_yasynovsky;
+            case R.string.ruslana_khazipova: return R.mipmap.ruslana_khazipova;
+            case R.string.sasha_koltsova: return R.mipmap.sasha_koltsova;
+            case R.string.sergii_zhadan: return R.mipmap.sergii_zhadan;
+            case R.string.sergii_kolos: return R.mipmap.sergii_kolos;
+            case R.string.solomia_melnyk: return R.mipmap.solomia_melnyk;
+            case R.string.stas_koroliov: return R.mipmap.stas_koroliov;
+            case R.string.timur_miroshnychenko: return R.mipmap.timur_miroshnychenko;
+            case R.string.hrystyna_soloviy: return R.mipmap.hrystyna_soloviy;
+            case R.string.julia_jurina: return R.mipmap.julia_jurina;
+            case R.string.jaroslav_ljudgin: return R.mipmap.jaroslav_ljudgin;
 
             default: return R.mipmap.logo;
         }
