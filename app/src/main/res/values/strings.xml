@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">UA: Казки</string>
-    <string name="reader_tales">Кількість казок: %d</string>
+    <string name="reader_description">%s\nКазок: %d</string>
     <string name="radio">Радіо</string>
     <string name="tales">Казки</string>
     <string name="settings">Налаштування</string>
@@ -63,7 +63,8 @@
     <string name="tale_002">Лис, Цап і мішок моркви</string>
     <string name="tale_003">Чому кенгуру стрибає</string>
 
-    <string name="reader_andrii_hlyvniuk">Андрій Хливнюк</string>
+    <string name="andrii_hlyvniuk">Андрій Хливнюк</string>
+    <string name="andrii_hlyvniuk_description">Вокаліст гурту «Бумбокс»</string>
 
 	<string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>

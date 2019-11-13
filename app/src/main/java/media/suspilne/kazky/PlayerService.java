@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -130,11 +129,18 @@ public class PlayerService extends IntentService {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                SettingsHelper.setBoolean("playbackIsPaused", !playWhenReady);
+                Tales.setPause(!playWhenReady);
+//
+//                SettingsHelper.setBoolean("playbackIsPaused", !playWhenReady);
                 sendMessage("SetPlayBtnIcon");
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
+//                        stopSelf();
+//                        sendMessage("SetPlayBtnIcon");
+
+                        Tales.setNowPlaying(-1);
+                        Tales.setLastPosition(player.getCurrentPosition());
                         stopSelf();
                         sendMessage("SetPlayBtnIcon");
                         break;
@@ -184,7 +190,6 @@ public class PlayerService extends IntentService {
         Intent intent = new Intent();
         intent.setAction(SettingsHelper.application);
         intent.putExtra("code", code);
-//        intent.putExtra("id", id);
         sendBroadcast(intent);
     }
 

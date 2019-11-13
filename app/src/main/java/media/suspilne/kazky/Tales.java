@@ -115,8 +115,8 @@ class Tales {
     }
 
     private List<Tale> items = new ArrayList<>(Arrays.asList(
-            new Tale(1, R.string.tale_001, R.string.reader_andrii_hlyvniuk),
-            new Tale(2, R.string.tale_002, R.string.reader_andrii_hlyvniuk),
-            new Tale(3, R.string.tale_002, R.string.reader_andrii_hlyvniuk)
+            new Tale(1, R.string.tale_001, R.string.andrii_hlyvniuk),
+            new Tale(2, R.string.tale_002, R.string.andrii_hlyvniuk),
+            new Tale(3, R.string.tale_003, R.string.andrii_hlyvniuk)
     ));
 }
