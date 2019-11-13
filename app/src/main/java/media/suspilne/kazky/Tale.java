@@ -37,10 +37,6 @@ public class Tale{
         this.fileName = fileName(id);
     }
 
-    int getAuthorId(){
-        return readerId;
-    }
-
     String getReader(){
         return ActivityTales.getActivity().getResources().getString(readerId);
     }
@@ -121,9 +117,6 @@ public class Tale{
             String file = String.format("%02d.jpg", id);
             Drawable image = SettingsHelper.fileExists(file) ? SettingsHelper.getImage(file) : ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
             Bitmap preview = ImageHelper.getBitmap(image);
-//            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Reader(readerId).photo, 100, 100);
-//            author = ImageHelper.getCircularDrawable(author);
-//            currentTale
             View taleView = getTrackView();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);

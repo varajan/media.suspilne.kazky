@@ -13,28 +13,30 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescriptionAdapter{
     private Context context;
-    private int id;
 
-    PlayerTaleAdapter(Context context, int id) {
+    PlayerTaleAdapter(Context context) {
         this.context = context;
-        this.id = id;
+    }
+
+    private Tale tale(){
+        return new Tales().getById(Tales.getNowPlaying());
     }
 
     @Override
     public String getCurrentContentTitle(Player player) {
-        return SettingsHelper.getString("title-" + id);
+        return tale().getTitle();
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        return SettingsHelper.getString("reader-" + id);
+        return tale().getReader();
     }
 
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-        String file = String.format("%02d.jpg", id);
+        String file = String.format("%02d.jpg", tale().id);
         Drawable image = SettingsHelper.fileExists(file) ? SettingsHelper.getImage(file) : ContextCompat.getDrawable(context, R.mipmap.logo);
 
         return ImageHelper.getBitmap(image);

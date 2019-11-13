@@ -100,7 +100,7 @@ public class PlayerService extends IntentService {
         if (position > 0) player.seekTo(position);
         SettingsHelper.setBoolean("playbackIsPaused", false);
 
-        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this, Tales.getNowPlaying()));
+        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this));
         playerNotificationManager.setFastForwardIncrementMs(10_000_000);
         playerNotificationManager.setRewindIncrementMs(10_000_000);
         playerNotificationManager.setUseNavigationActions(false);
