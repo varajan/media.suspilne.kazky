@@ -128,8 +128,8 @@ public class ActivitySettings extends ActivityMain {
         boolean isDownloadAlltales = SettingsHelper.getBoolean("downloadAllTales");
         boolean isDownloadFavoritetales = SettingsHelper.getBoolean("downloadFavoriteTales");
 
-        int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
-        int primary = ContextCompat.getColor(this, R.color.colorPrimary);
+        int primaryDark = ContextCompat.getColor(this, R.color.colorAccent);
+        int primary = ContextCompat.getColor(this, R.color.superLight);
         String usedSpace = getString(R.string.usedSpace, SettingsHelper.formattedSize(SettingsHelper.usedSpace()));
         String freeSpace = getString(R.string.freeSpace, SettingsHelper.formattedSize(SettingsHelper.freeSpace()));
         String minutes = SettingsHelper.getString("timeout", "5");
