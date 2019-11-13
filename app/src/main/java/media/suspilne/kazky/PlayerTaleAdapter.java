@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
@@ -33,7 +34,9 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-        Drawable image = SettingsHelper.getImage(String.format("%02d.jpg", id));
+        String file = String.format("%02d.jpg", id);
+        Drawable image = SettingsHelper.fileExists(file) ? SettingsHelper.getImage(file) : ContextCompat.getDrawable(context, R.mipmap.logo);
+
         return ImageHelper.getBitmap(image);
     }
 
