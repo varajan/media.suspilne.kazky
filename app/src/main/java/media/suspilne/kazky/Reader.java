@@ -34,12 +34,12 @@ class Reader{
     public void setViewDetails(Context context){
         try
         {
-            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), photo, 100, 100);
-            author = ImageHelper.getCircularDrawable(author);
+            Bitmap reader = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), photo, 100, 100);
+            reader = photo.equals(R.mipmap.logo) ? reader : ImageHelper.getCircularDrawable(reader);
             View readerView = getReaderView();
 
             readerView.findViewById(R.id.favorite).setVisibility(View.GONE);
-            ((ImageView)readerView.findViewById(R.id.photo)).setImageBitmap(author);
+            ((ImageView)readerView.findViewById(R.id.photo)).setImageBitmap(reader);
             ((TextView) readerView.findViewById(R.id.title)).setText(name);
             ((TextView) readerView.findViewById(R.id.reader)).setText(context.getString(R.string.reader_description, getDescription(), talesCount));
         }catch (Exception e){
@@ -52,9 +52,9 @@ class Reader{
     private int getPhoto(){
         switch (name){
             case R.string.andrii_hlyvniuk: return R.mipmap.andrii_hlyvniuk;
-//            case R.string.gounod: return R.mipmap.gounod;
+//            case R.string.marko_galanevych: return R.mipmap.marko_galanevych;
 
-            default: return 0;
+            default: return R.mipmap.logo;
         }
     }
 

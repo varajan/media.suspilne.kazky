@@ -22,6 +22,7 @@ public class Readers {
     }
 
     private ArrayList<Reader> items = new ArrayList<>(Arrays.asList(
-            new Reader(R.string.andrii_hlyvniuk, R.string.andrii_hlyvniuk_description)
+            new Reader(R.string.andrii_hlyvniuk, R.string.andrii_hlyvniuk_description),
+            new Reader(R.string.marko_galanevych, R.string.marko_galanevych_description)
     ));
 }

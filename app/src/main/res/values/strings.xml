@@ -62,11 +62,15 @@
     <string name="tale_001">Заєць хвалько</string>
     <string name="tale_002">Лис, Цап і мішок моркви</string>
     <string name="tale_003">Чому кенгуру стрибає</string>
+    <string name="tale_004">Бджола рятує гусці життя</string>
+    <string name="tale_005">Жаба боязкіша за зайця</string>
 
     <string name="andrii_hlyvniuk">Андрій Хливнюк</string>
     <string name="andrii_hlyvniuk_description">Вокаліст гурту «Бумбокс»</string>
+    <string name="marko_galanevych">Марко Галаневич</string>
+    <string name="marko_galanevych_description">Учасник гурту «Dakhabraha»</string>
 
-	<string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
+    <string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
