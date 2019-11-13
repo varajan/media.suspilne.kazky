@@ -52,7 +52,7 @@ class Reader{
     private int getPhoto(){
         switch (name){
             case R.string.andrii_hlyvniuk: return R.mipmap.andrii_hlyvniuk;
-//            case R.string.marko_galanevych: return R.mipmap.marko_galanevych;
+            case R.string.marko_galanevych: return R.mipmap.marko_galanevych;
 
             default: return R.mipmap.logo;
         }
