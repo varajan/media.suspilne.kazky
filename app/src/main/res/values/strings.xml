@@ -66,9 +66,9 @@
     <string name="tale_005">Жаба боязкіша за зайця</string>
 
     <string name="andrii_hlyvniuk">Андрій Хливнюк</string>
-    <string name="andrii_hlyvniuk_description">Вокаліст гурту «Бумбокс»</string>
+    <string name="andrii_hlyvniuk_description">Вокаліст гурту \'Бумбокс\'</string>
     <string name="marko_galanevych">Марко Галаневич</string>
-    <string name="marko_galanevych_description">Учасник гурту «Dakhabraha»</string>
+    <string name="marko_galanevych_description">Учасник гурту \'Dakhabraha\'</string>
     <string name="alina_pash">Alina Pash</string>
     <string name="alina_pash_description">Співачка</string>
     <string name="alyona_alyona">Alyona Alyona</string>
@@ -86,7 +86,7 @@
     <string name="dmytro_schebetiiuk">Дмитро Щебетюк</string>
     <string name="dmytro_schebetiiuk_description">Телеведучій, журналіст</string>
     <string name="katia_rogova">Катя Рогова</string>
-    <string name="katia_rogova_description">Співачка</string>
+    <string name="katia_rogova_description">Співачка INAIA</string>
     <string name="michel_schur">Майкл Щур</string>
     <string name="michel_schur_description">Телеведучій</string>
     <string name="mariana_golovko">Мар\'яна Головко</string>
@@ -94,7 +94,7 @@
     <string name="marta_liubchyk">Марта Любчик</string>
     <string name="marta_liubchyk_description">Співачка, гурт Правиця</string>
     <string name="marusia_ionova">Маруся Іонова</string>
-    <string name="marusia_ionova_description">Акторка, учасниця гурту \'Цешо\'</string>
+    <string name="marusia_ionova_description">Акторка, учасниця гурту \'ЦеШо\'</string>
     <string name="oleksiy_dorychevsky">Олексій Доричевський</string>
     <string name="oleksiy_dorychevsky_description">Актор</string>
     <string name="pavlo_varenitsa">Павло Варєніца</string>
@@ -112,13 +112,13 @@
     <string name="solomia_melnyk">Соломія Мельник</string>
     <string name="solomia_melnyk_description">Солістка гурту Dakh Daughters</string>
     <string name="stas_koroliov">Стас Корольов</string>
-    <string name="stas_koroliov_description">Учасник гурту \'Yuko\'</string>
+    <string name="stas_koroliov_description">Учасник гурту \'YUKO\'</string>
     <string name="timur_miroshnychenko">Тімур Мірошниченко</string>
     <string name="timur_miroshnychenko_description">Телеведучій</string>
     <string name="hrystyna_soloviy">Христина Соловій</string>
     <string name="hrystyna_soloviy_description">Співачка</string>
     <string name="julia_jurina">Юлія Юріна</string>
-    <string name="julia_jurina_description">Учасниця гурту \'Yuko\'</string>
+    <string name="julia_jurina_description">Учасниця гурту \'YUKO\'</string>
     <string name="jaroslav_ljudgin">Ярослав Людигін</string>
     <string name="jaroslav_ljudgin_description">Кінорежисер</string>
 
