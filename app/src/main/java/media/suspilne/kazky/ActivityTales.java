@@ -222,12 +222,13 @@ public class ActivityTales extends ActivityMain {
         registerReceiver();
     }
 
-    private void playTale(Tale Tale){
+    private void playTale(Tale tale){
         super.stopPlayerService();
 
-        if (Tale.id != -1){
+        if (tale.id != -1){
             Intent stream = new Intent(this, PlayerService.class);
-            stream.putExtra("Tale.id", Tale.id);
+            stream.putExtra("tale.id", tale.id);
+            stream.putExtra("type", getString(R.string.tales));
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(stream);
@@ -248,7 +249,7 @@ public class ActivityTales extends ActivityMain {
 
         for (Tale tale:Tales.getTales()){
             ImageView btn = list.findViewWithTag(tale.id).findViewById(R.id.play);
-            boolean isPlaying = !isPaused && Tale != null && tale.id == Tale.id;
+            boolean isPlaying = !isPaused && Tale != null && tale.id == tale.id;
 
             btn.setImageResource(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
             btn.setTag(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);

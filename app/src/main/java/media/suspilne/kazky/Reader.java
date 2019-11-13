@@ -15,7 +15,7 @@ class Reader{
     public Reader(int name){
         this.name = name;
         this.photo = getPhoto();
-        this.talesCount = gettalesCount();
+        this.talesCount = getTalesCount();
     }
 
     public String getName(){
@@ -53,7 +53,7 @@ class Reader{
         }
     }
 
-    private int gettalesCount(){
+    private int getTalesCount(){
         switch (name){
 //            case R.string.vivaldi: return 4;
 //            case R.string.wagner: return 2;

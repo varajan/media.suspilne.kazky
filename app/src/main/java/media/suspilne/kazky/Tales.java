@@ -47,12 +47,12 @@ class Tales {
         boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, filter));
 
         for (int i = tales.size() - 1; i >= 0; i--){
-            Tale track = tales.get(i);
+            Tale tale = tales.get(i);
 
-            if (track.id != nowPlaying && skip) { continue; }
-            if (track.id == nowPlaying) { skip = false; continue; }
+            if (tale.id != nowPlaying && skip) { continue; }
+            if (tale.id == nowPlaying) { skip = false; continue; }
 
-            return track;
+            return tale;
         }
 
         return tales.size() == 0 ? new Tale() : tales.get(tales.size() - 1);
@@ -64,20 +64,20 @@ class Tales {
         boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, filter));
 
         for (int i = 0; i < tales.size(); i++){
-            Tale track = tales.get(i);
+            Tale tale = tales.get(i);
 
-            if (track.id != nowPlaying && skip) { continue; }
-            if (track.id == nowPlaying) { skip = false; continue; }
+            if (tale.id != nowPlaying && skip) { continue; }
+            if (tale.id == nowPlaying) { skip = false; continue; }
 
-            return track;
+            return tale;
         }
 
         return tales.size() == 0 ? new Tale() : tales.get(0);
     }
 
     Tale getById(int id){
-        for (Tale track:getTales()) {
-            if (track.id == id) return track;
+        for (Tale tale:getTales()) {
+            if (tale.id == id) return tale;
         }
 
         return null;
@@ -86,9 +86,9 @@ class Tales {
     List<Tale> getTales(boolean onlyFavorite, String filter){
         List<Tale> result = new ArrayList<>();
 
-        for (Tale track:getTales()) {
-            if (track.shouldBeShown(onlyFavorite, filter)){
-                result.add(track);
+        for (Tale tale:getTales()) {
+            if (tale.shouldBeShown(onlyFavorite, filter)){
+                result.add(tale);
             }
         }
 
@@ -98,14 +98,14 @@ class Tales {
     List<Tale> getTales(boolean onlyFavorite){
         List<Tale> result = new ArrayList<>();
 
-        for (Tale track:items) {
-            if (!onlyFavorite || track.isFavorite) result.add(track);
+        for (Tale tale:items) {
+            if (!onlyFavorite || tale.isFavorite) result.add(tale);
         }
 
-        Collections.sort(result, (track1, track2)
-                -> track1.getAuthor().equals(track2.getAuthor())
-                ?  track1.getTitle().compareTo(track2.getTitle())
-                :  track1.getAuthor().compareTo(track2.getAuthor()));
+        Collections.sort(result, (tale1, tale2)
+                -> tale1.getAuthor().equals(tale2.getAuthor())
+                ?  tale1.getTitle().compareTo(tale2.getTitle())
+                :  tale1.getAuthor().compareTo(tale2.getAuthor()));
 
         return result;
     }
@@ -115,7 +115,8 @@ class Tales {
     }
 
     private List<Tale> items = new ArrayList<>(Arrays.asList(
-//            new Tale(124, R.string.track_124, R.string.elgar),
-//            new Tale(125, R.string.track_125, R.string.chaikovsky)
+            new Tale(1, R.string.tale_001, R.string.reader_andrii_hlyvniuk),
+            new Tale(2, R.string.tale_002, R.string.reader_andrii_hlyvniuk),
+            new Tale(3, R.string.tale_002, R.string.reader_andrii_hlyvniuk)
     ));
 }

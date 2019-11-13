@@ -3,9 +3,9 @@
     <string name="app_name">UA: Казки</string>
     <string name="reader_tales">Кількість казок: %d</string>
     <string name="radio">Радіо</string>
-    <string name="tales">Всі казки</string>
+    <string name="tales">Казки</string>
     <string name="settings">Налаштування</string>
-    <string name="readers">Казки читають</string>
+    <string name="readers">Казкарі</string>
     <string name="info">Про програму</string>
     <string name="radio_description">Радіо хвиля авторських казок українською мовою для дітей</string>
     <string name="description">
@@ -16,7 +16,7 @@
         [Казки] - Більше шістдесяти казок від Суспільного Мовлення: слухайте, шукайте по назві чи імені, відмічайте як "улюблені".
         Збережені на пристрої казки позначені значком 💾\n\n
 
-        [Казки читають] - Шукайте по імені, відсортуйте список за алфавітом або кількістю казок, відкрийте всі казки в один клік.\n\n
+        [Казкарі] - Шукайте по імені, відсортуйте список за алфавітом або кількістю казок, відкрийте всі казки в один клік.\n\n
 
         [Налаштування] - виберіть скачати всі казки чи тільки улюблені, встановіть таймер сну, тощо.\n\n
 		
@@ -35,10 +35,10 @@
     <string name="no_internet">Відсутній Інтернет!</string>
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
     <string name="title">Назва</string>
-    <string name="reader">Казку читає</string>
+    <string name="reader">Казкар</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки</string>
     <string name="nothingToShow">Нічого не знайдено</string>
-    <string name="filterHint">Назва чи ім\'я</string>
+    <string name="filterHint">Назва чи казкар</string>
     <string name="download_completed">Завантажено казок: %d</string>
     <string name="done">Готово.</string>
     <string name="an_error_occurred">Сталась помилка.</string>
@@ -48,8 +48,8 @@
     <string name="downloading">Завантаження композицій…</string>
     <string name="clear">Видалити</string>
     <string name="continueDownload">Продовжити завантаження?</string>
-    <string name="not_all_tracks">Не всі казки завантажено.</string>
-    <string name="not_downloaded_favorite_tracks">Не всі улюблені казки завантажено.</string>
+    <string name="not_all_tales">Не всі казки завантажено.</string>
+    <string name="not_downloaded_favorite_tales">Не всі улюблені казки завантажено.</string>
     <string name="freeSpace">\nДоступно: %s вільного місця.</string>
     <string name="usedSpace">\nВикористано: %s.</string>
     <string name="downloadAllTales">Зберігати всі казки на пристрої.</string>
@@ -58,8 +58,14 @@
     <string name="downloadFavoriteTalesQuestion">Зберігати тільки улюблені казки на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTalesQuestion">Видалити збережені казки? Улюблені казки залишаться на пристрої.</string>
     <string name="clearFavoriteTalesQuestion">Видалити збережені улюблені казки? Надалі для прослуховування буде потрібен Інтернет.</string>
-    
-	<string name="trackUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
+
+    <string name="tale_001">Заєць хвалько</string>
+    <string name="tale_002">Лис, Цап і мішок моркви</string>
+    <string name="tale_003">Чому кенгуру стрибає</string>
+
+    <string name="reader_andrii_hlyvniuk">Андрій Хливнюк</string>
+
+	<string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>

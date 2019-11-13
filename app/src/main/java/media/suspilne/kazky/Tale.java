@@ -56,8 +56,8 @@ public class Tale{
     }
 
     void resetFavorite(){
-        boolean downloadAll = SettingsHelper.getBoolean("downloadAlltales");
-        boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoritetales");
+        boolean downloadAll = SettingsHelper.getBoolean("downloadAllTales");
+        boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoriteTales");
 
         isFavorite = !isFavorite;
         SettingsHelper.setBoolean("isFavorite_" + id, isFavorite);
@@ -69,9 +69,9 @@ public class Tale{
     }
 
     private void setDownloadedIcon(){
-        View trackView = getTrackView();
+        View taleView = getTrackView();
 
-        if (trackView != null){
+        if (taleView != null){
             isDownloaded = isDownloaded(id);
             getTrackView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
         }
@@ -92,9 +92,9 @@ public class Tale{
             ScrollView scrollView = ActivityTales.getActivity().findViewById(R.id.scrollView);
             if (scrollView == null) return;
 
-            View track = getTrackView();
+            View tale = getTrackView();
 
-            if (track == null) return;
+            if (tale == null) return;
             scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
         }
         catch (Exception e){
@@ -103,13 +103,13 @@ public class Tale{
     }
 
     void hide(){
-        View track = getTrackView();
-        if (track != null) track.setVisibility(View.GONE);
+        View tale = getTrackView();
+        if (tale != null) tale.setVisibility(View.GONE);
     }
 
     void show(){
-        View track = getTrackView();
-        if (track != null) track.setVisibility(View.VISIBLE);
+        View tale = getTrackView();
+        if (tale != null) tale.setVisibility(View.VISIBLE);
     }
 
     void setViewDetails(){
@@ -117,32 +117,32 @@ public class Tale{
         {
             Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Reader(authorNameId).photo, 100, 100);
             author = ImageHelper.getCircularDrawable(author);
-            View trackView = getTrackView();
+            View taleView = getTrackView();
 
-            ((ImageView)trackView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
-            ((ImageView)trackView.findViewById(R.id.photo)).setImageBitmap(author);
-            ((TextView) trackView.findViewById(R.id.title)).setText(titleId);
-            ((TextView) trackView.findViewById(R.id.reader)).setText(authorNameId);
+            ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
+            ((ImageView)taleView.findViewById(R.id.photo)).setImageBitmap(author);
+            ((TextView) taleView.findViewById(R.id.title)).setText(titleId);
+            ((TextView) taleView.findViewById(R.id.reader)).setText(authorNameId);
             setDownloadedIcon();
         }catch (Exception e){
-            Kazky.logError("Failed to load track #" + id, false);
+            Kazky.logError("Failed to load tale #" + id, false);
             Kazky.logError(e.getMessage());
         }
     }
 
     @SuppressLint("DefaultLocale")
-    private String fileName(int track){
-        return String.format("%d.mp3", track);
+    private String fileName(int tale){
+        return String.format("%d.mp3", tale);
     }
 
-    private boolean isDownloaded(int track){
-        return ActivityMain.getActivity().getFileStreamPath(fileName(track)).exists();
+    private boolean isDownloaded(int tale){
+        return ActivityMain.getActivity().getFileStreamPath(fileName(tale)).exists();
     }
 
-    private String stream(int track){
-        return isDownloaded(track)
-            ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(track)
-            : ActivityTales.getActivity().getResources().getString(R.string.trackUrl, track);
+    private String stream(int tale){
+        return isDownloaded(tale)
+            ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(tale)
+            : ActivityTales.getActivity().getResources().getString(R.string.taleUrl, tale);
     }
 
     public void download(){
@@ -155,22 +155,22 @@ public class Tale{
     }
 
     static class DownloadTrack extends AsyncTask<Tale, Void, Void> {
-        private Tale track;
+        private Tale tale;
 
         @Override
         protected void onPostExecute(Void result) {
-            track.isDownloaded = true;
-            track.setDownloadedIcon();
+            tale.isDownloaded = true;
+            tale.setDownloadedIcon();
         }
 
         @Override
         protected Void doInBackground(Tale... tales) {
             try {
-                track = tales[0];
-                if (!track.isDownloaded)
+                tale = tales[0];
+                if (!tale.isDownloaded)
                 {
-                    InputStream is = (InputStream) new URL(track.stream).getContent();
-                    SettingsHelper.saveFile(track.fileName, IOUtils.toByteArray(is));
+                    InputStream is = (InputStream) new URL(tale.stream).getContent();
+                    SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
                 }
             }catch (Exception e){
                 e.printStackTrace();

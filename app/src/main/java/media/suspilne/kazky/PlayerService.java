@@ -100,6 +100,11 @@ public class PlayerService extends IntentService {
         if (position > 0) player.seekTo(position);
         SettingsHelper.setBoolean("playbackIsPaused", false);
 
+        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this, Tales.getNowPlaying()));
+        playerNotificationManager.setFastForwardIncrementMs(10_000_000);
+        playerNotificationManager.setRewindIncrementMs(10_000_000);
+        playerNotificationManager.setUseNavigationActions(false);
+
         playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
             @Override
             public void onNotificationStarted(int notificationId, Notification notification) {
@@ -118,7 +123,7 @@ public class PlayerService extends IntentService {
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
 
             @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+            public void onTracksChanged(TrackGroupArray taleGroups, TrackSelectionArray trackSelections) {}
 
             @Override
             public void onLoadingChanged(boolean isLoading) {}
@@ -205,12 +210,12 @@ public class PlayerService extends IntentService {
         if (tale.id != -1){
             long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
 
-            SettingsHelper.setInt("tales.nowPlaying", tale.id);
-            SettingsHelper.setInt("tales.lastPlaying", tale.id);
+            Tales.setNowPlaying(tale.id);
+            Tales.setLastPlaying(tale.id);
 
             playStream(tale.stream, position);
         } else {
-            SettingsHelper.setInt("tales.nowPlaying", -1);
+            Tales.setNowPlaying(-1);
 
             playerNotificationManager.setPlayer(null);
             releasePlayer();
@@ -242,12 +247,12 @@ public class PlayerService extends IntentService {
         if (tale.id != -1){
             long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
 
-            SettingsHelper.setInt("tale.nowPlaying", tale.id);
-            SettingsHelper.setInt("tale.lastPlaying", tale.id);
+            Tales.setNowPlaying(tale.id);
+            Tales.setLastPlaying(tale.id);
 
             playStream(tale.stream, position);
         } else {
-            SettingsHelper.setInt("tracks.nowPlaying", -1);
+            SettingsHelper.setInt("tales.nowPlaying", -1);
 
             playerNotificationManager.setPlayer(null);
             releasePlayer();

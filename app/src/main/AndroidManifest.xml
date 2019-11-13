@@ -53,7 +53,7 @@
 
         <service
             android:name=".PlayerService"
-            android:icon="@drawable/ic_track"
+            android:icon="@drawable/ic_tale"
             android:exported="false"/>
     </application>
 

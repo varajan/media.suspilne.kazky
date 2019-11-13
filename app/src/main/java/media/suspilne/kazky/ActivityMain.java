@@ -257,7 +257,7 @@ public class ActivityMain extends AppCompatActivity
         if (!this.isNetworkAvailable()){
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
-            boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoritetales") && !SettingsHelper.getBoolean("downloadAlltales");
+            boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
             Tale[] download = new Tales().getTales(onlyFavorite).toArray(new Tale[0]);
 
             new DownloadTask().execute(download);
@@ -274,11 +274,11 @@ public class ActivityMain extends AppCompatActivity
     }
 
     protected void continueDownloadTales(){
-        if (!SettingsHelper.getBoolean("downloadAlltales") && !SettingsHelper.getBoolean("downloadFavoritetales")) return;
+        if (!SettingsHelper.getBoolean("downloadAllTales") && !SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
 
         boolean allAreDownloaded = true;
-        boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoritetales") && !SettingsHelper.getBoolean("downloadAlltales");
+        boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
 
         for (Tale tale : new Tales().getTales()){
             if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded){
@@ -292,7 +292,7 @@ public class ActivityMain extends AppCompatActivity
 
     protected void suggestToDownloadFavoriteTales(){
         if (SettingsHelper.getBoolean("suggestToDownloadFavoritetales")) return;
-        if (SettingsHelper.getBoolean("downloadAlltales") || SettingsHelper.getBoolean("downloadFavoritetales")) return;
+        if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
 
         int favorites = new Tales().getTales(true).size();
@@ -304,7 +304,7 @@ public class ActivityMain extends AppCompatActivity
             .setIcon(R.mipmap.icon_classic)
             .setTitle(R.string.download)
             .setMessage(getString(R.string.suggestToDownloadFavorite, favorites))
-            .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoritetales", true); download();})
+            .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoriteTales", true); download();})
             .setNegativeButton(R.string.no, null)
             .show();
     }
