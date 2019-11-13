@@ -244,19 +244,19 @@ public class ActivityTales extends ActivityMain {
 
     private void setPlayBtnIcon(boolean scrollToTale){
         LinearLayout list = findViewById(R.id.talesList);
-        Tale Tale = Tales.getById(Tales.getNowPlaying());
+        Tale currentTale = Tales.getById(Tales.getNowPlaying());
         boolean isPaused = Tales.isPaused();
 
         for (Tale tale:Tales.getTales()){
             ImageView btn = list.findViewWithTag(tale.id).findViewById(R.id.play);
-            boolean isPlaying = !isPaused && Tale != null && tale.id == tale.id;
+            boolean isPlaying = !isPaused && currentTale != null && tale.id == currentTale.id;
 
             btn.setImageResource(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
             btn.setTag(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
         }
 
-        if (scrollToTale && Tale != null){
-            Tale.scrollIntoView();
+        if (scrollToTale && currentTale != null){
+            currentTale.scrollIntoView();
         }
     }
 

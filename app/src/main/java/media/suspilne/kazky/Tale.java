@@ -2,7 +2,10 @@ package media.suspilne.kazky;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -16,7 +19,7 @@ import java.net.URL;
 public class Tale{
     public int id;
     private int titleId;
-    private int authorNameId;
+    private int readerId;
     boolean isFavorite;
     boolean isDownloaded;
     String stream;
@@ -27,7 +30,7 @@ public class Tale{
     Tale(int id, int title, int name){
         this.id = id;
         this.titleId = title;
-        this.authorNameId = name;
+        this.readerId = name;
         this.isFavorite = SettingsHelper.getBoolean("isFavorite_" + id);
         this.isDownloaded = isDownloaded(this.id);
         this.stream = stream(id);
@@ -35,11 +38,11 @@ public class Tale{
     }
 
     int getAuthorId(){
-        return authorNameId;
+        return readerId;
     }
 
-    String getAuthor(){
-        return ActivityTales.getActivity().getResources().getString(authorNameId);
+    String getReader(){
+        return ActivityTales.getActivity().getResources().getString(readerId);
     }
 
     String getTitle(){
@@ -83,7 +86,7 @@ public class Tale{
 
     boolean matchesFilter(String filter){
         filter = filter.toLowerCase();
-        return getTitle().toLowerCase().contains(filter) || getAuthor().toLowerCase().contains(filter);
+        return getTitle().toLowerCase().contains(filter) || getReader().toLowerCase().contains(filter);
     }
 
     void scrollIntoView(){
@@ -115,14 +118,18 @@ public class Tale{
     void setViewDetails(){
         try
         {
-            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Reader(authorNameId).photo, 100, 100);
-            author = ImageHelper.getCircularDrawable(author);
+            String file = String.format("%02d.jpg", id);
+            Drawable image = SettingsHelper.fileExists(file) ? SettingsHelper.getImage(file) : ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
+            Bitmap preview = ImageHelper.getBitmap(image);
+//            Bitmap author = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), new Reader(readerId).photo, 100, 100);
+//            author = ImageHelper.getCircularDrawable(author);
+//            currentTale
             View taleView = getTrackView();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
-            ((ImageView)taleView.findViewById(R.id.photo)).setImageBitmap(author);
+            ((ImageView)taleView.findViewById(R.id.photo)).setImageBitmap(preview);
             ((TextView) taleView.findViewById(R.id.title)).setText(titleId);
-            ((TextView) taleView.findViewById(R.id.reader)).setText(authorNameId);
+            ((TextView) taleView.findViewById(R.id.reader)).setText(readerId);
             setDownloadedIcon();
         }catch (Exception e){
             Kazky.logError("Failed to load tale #" + id, false);

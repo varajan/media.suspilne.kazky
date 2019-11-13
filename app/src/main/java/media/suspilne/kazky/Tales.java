@@ -103,9 +103,9 @@ class Tales {
         }
 
         Collections.sort(result, (tale1, tale2)
-                -> tale1.getAuthor().equals(tale2.getAuthor())
+                -> tale1.getReader().equals(tale2.getReader())
                 ?  tale1.getTitle().compareTo(tale2.getTitle())
-                :  tale1.getAuthor().compareTo(tale2.getAuthor()));
+                :  tale1.getReader().compareTo(tale2.getReader()));
 
         return result;
     }
