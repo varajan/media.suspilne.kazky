@@ -31,7 +31,7 @@ public class Readers {
             new Reader(R.string.evgen_maluha, R.string.evgen_maluha_description),
             new Reader(R.string.anna_nikitina, R.string.anna_nikitina_description),
             new Reader(R.string.vlad_fisun, R.string.vlad_fisun_description),
-            new Reader(R.string.dmytro_schebetiiuk, R.string.dmytro_schebetiiuk_description),
+            new Reader(R.string.dmytro_schebetiuk, R.string.dmytro_schebetiuk_description),
             new Reader(R.string.katia_rogova, R.string.katia_rogova_description),
             new Reader(R.string.michel_schur, R.string.michel_schur_description),
             new Reader(R.string.mariana_golovko, R.string.mariana_golovko_description),
