@@ -19,7 +19,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     private NotificationManager notificationManager;
     private PendingIntent openApplication;
 
-    private Drawable image = ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.icon_classic);
+    private Drawable image = ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
     private int count;
     private int current;
     static int IN_PROGRESS = 22;

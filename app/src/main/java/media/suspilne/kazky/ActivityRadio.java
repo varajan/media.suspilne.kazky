@@ -82,7 +82,7 @@ public class ActivityRadio extends ActivityMain {
     private boolean isRadioPlaying(){
         return isServiceRunning(PlayerService.class)
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
-                && !SettingsHelper.getBoolean("playbackIsPaused");
+                && !Tales.isPaused();
     }
 
     private void showNoConnectionAlert(){
@@ -95,7 +95,7 @@ public class ActivityRadio extends ActivityMain {
     }
 
     private void setPlayBtnIcon(){
-        boolean isPaused = SettingsHelper.getBoolean("playbackIsPaused");
+        boolean isPaused = Tales.isPaused();
         playPauseBtn.setImageResource(!isPaused && isRadioPlaying() ? R.mipmap.pause : R.mipmap.play);
     }
 

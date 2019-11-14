@@ -20,7 +20,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:maxWidth="50dp"
-            app:srcCompat="@mipmap/icon_classic_round" />
+            app:srcCompat="@mipmap/logo" />
 
         <ImageView
             android:id="@+id/play"

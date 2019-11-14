@@ -78,16 +78,16 @@ public class PlayerService extends IntentService {
 
         if (type.equals(getString(R.string.tales))){
             Tale tale = new Tales().getById(intent.getIntExtra("tale.id", -1));
-            playTrack(tale);
+            playTale(tale);
             return START_NOT_STICKY;
         }
 
         return START_NOT_STICKY;
     }
 
-    private void playStream() { playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3", 0); }
-
     private void playStream(String stream, long position) {
+        releasePlayer();
+
         Uri uri = Uri.parse(stream);
         player = newSimpleInstance(this);
 
@@ -96,13 +96,8 @@ public class PlayerService extends IntentService {
                 .createMediaSource(uri);
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
-        if (position > 0) player.seekTo(position);
-        SettingsHelper.setBoolean("playbackIsPaused", false);
-
-        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this));
-        playerNotificationManager.setFastForwardIncrementMs(10_000_000);
-        playerNotificationManager.setRewindIncrementMs(10_000_000);
-        playerNotificationManager.setUseNavigationActions(false);
+        player.seekTo(position);
+        Tales.setPause(false);
 
         playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
             @Override
@@ -130,15 +125,10 @@ public class PlayerService extends IntentService {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 Tales.setPause(!playWhenReady);
-//
-//                SettingsHelper.setBoolean("playbackIsPaused", !playWhenReady);
                 sendMessage("SetPlayBtnIcon");
 
                 switch(playbackState) {
                     case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-//                        stopSelf();
-//                        sendMessage("SetPlayBtnIcon");
-
                         Tales.setNowPlaying(-1);
                         Tales.setLastPosition(player.getCurrentPosition());
                         stopSelf();
@@ -218,6 +208,11 @@ public class PlayerService extends IntentService {
             Tales.setNowPlaying(tale.id);
             Tales.setLastPlaying(tale.id);
 
+            playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this));
+            playerNotificationManager.setFastForwardIncrementMs(10_000_000);
+            playerNotificationManager.setRewindIncrementMs(10_000_000);
+            playerNotificationManager.setUseNavigationActions(false);
+
             playStream(tale.stream, position);
         } else {
             Tales.setNowPlaying(-1);
@@ -248,24 +243,6 @@ public class PlayerService extends IntentService {
         }catch (Exception e){ /*nothing*/ }
     }
 
-    private void playTrack(Tale tale){
-        if (tale.id != -1){
-            long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
-
-            Tales.setNowPlaying(tale.id);
-            Tales.setLastPlaying(tale.id);
-
-            playStream(tale.stream, position);
-        } else {
-            SettingsHelper.setInt("tales.nowPlaying", -1);
-
-            playerNotificationManager.setPlayer(null);
-            releasePlayer();
-        }
-
-        sendMessage("SetPlayBtnIcon");
-    }
-
     private void playRadio(){
         playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerRadioAdapter(this));
         playerNotificationManager.setFastForwardIncrementMs(0);
@@ -284,7 +261,7 @@ public class PlayerService extends IntentService {
             }
         });
 
-        playStream();
+        playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3", 0);
         sendMessage("SetPlayBtnIcon");
     }
 

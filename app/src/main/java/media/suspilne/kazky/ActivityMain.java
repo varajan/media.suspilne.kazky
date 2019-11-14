@@ -178,7 +178,7 @@ public class ActivityMain extends AppCompatActivity
 
     private void showQuitDialog(){
         new AlertDialog.Builder(this)
-            .setIcon(R.mipmap.icon_classic)
+            .setIcon(R.mipmap.logo)
             .setTitle(R.string.confirm_exit)
             .setPositiveButton(R.string.yes, (dialog, which) -> exit())
             .setNegativeButton(R.string.no, null)
@@ -278,7 +278,7 @@ public class ActivityMain extends AppCompatActivity
 
     public void showAlert(String title, String message){
         new AlertDialog.Builder(this)
-            .setIcon(R.mipmap.icon_classic)
+            .setIcon(R.mipmap.logo)
             .setTitle(title)
             .setMessage(message)
             .setNeutralButton(R.string.ok, null)
@@ -313,7 +313,7 @@ public class ActivityMain extends AppCompatActivity
         SettingsHelper.setBoolean("suggestToDownloadFavoritetales", true);
 
         new AlertDialog.Builder(ActivityMain.this)
-            .setIcon(R.mipmap.icon_classic)
+            .setIcon(R.mipmap.logo)
             .setTitle(R.string.download)
             .setMessage(getString(R.string.suggestToDownloadFavorite, favorites))
             .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoriteTales", true); download();})

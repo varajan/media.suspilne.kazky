@@ -97,7 +97,7 @@ public class ActivitySettings extends ActivityMain {
         String required = SettingsHelper.formattedSize(totalRequiredSpace - usedSpace);
 
         new AlertDialog.Builder(ActivitySettings.this)
-            .setIcon(R.mipmap.icon_classic)
+            .setIcon(R.mipmap.logo)
             .setTitle(isChecked ? R.string.download : R.string.clear)
             .setMessage(isChecked ? getString(R.string.downloadAllTalesQuestion, required) : getString(R.string.clearAllTalesQuestion))
             .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadAll(); else doCleanup(false);})
@@ -108,7 +108,7 @@ public class ActivitySettings extends ActivityMain {
 
     private CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) ->
         new AlertDialog.Builder(ActivitySettings.this)
-            .setIcon(R.mipmap.icon_classic)
+            .setIcon(R.mipmap.logo)
             .setTitle(isChecked ? R.string.download : R.string.clear)
             .setMessage(isChecked ? R.string.downloadFavoriteTalesQuestion : R.string.clearFavoriteTalesQuestion)
             .setPositiveButton(isChecked ? R.string.download : R.string.clear, (dialog, which) -> {if (isChecked) doDownloadFavorite(); else doCleanup(true);})
