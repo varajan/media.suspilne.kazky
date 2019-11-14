@@ -6,14 +6,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
@@ -24,7 +20,7 @@ public class ActivitySettings extends ActivityMain {
     private SeekBar timeout;
     private TextView timeoutText;
     private int step = 5;
-    private long totalRequiredSpace = 1400 * 1024 * 1024;
+    private long totalRequiredSpace = Integer.parseInt(ActivityMain.getActivity().getResources().getString(R.string.requiredSpace)) * 1024 * 1024;
     private long hundred_kb  = 100 * 1024;
 
     @Override
@@ -125,8 +121,8 @@ public class ActivitySettings extends ActivityMain {
     private void setColorsAndState() {
         boolean isShowOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
-        boolean isDownloadAlltales = SettingsHelper.getBoolean("downloadAllTales");
-        boolean isDownloadFavoritetales = SettingsHelper.getBoolean("downloadFavoriteTales");
+        boolean isDownloadAllTales = SettingsHelper.getBoolean("downloadAllTales");
+        boolean isDownloadFavoriteTales = SettingsHelper.getBoolean("downloadFavoriteTales");
 
         int primaryDark = ContextCompat.getColor(this, R.color.colorAccent);
         int primary = ContextCompat.getColor(this, R.color.superLight);
@@ -143,17 +139,17 @@ public class ActivitySettings extends ActivityMain {
         timeout.setEnabled(isAutoQuit);
 
         downloadAllTales.setOnCheckedChangeListener(null);
-        downloadAllTales.setTextColor(isDownloadAlltales ? primaryDark : primary);
-        downloadAllTales.setChecked(isDownloadAlltales);
+        downloadAllTales.setTextColor(isDownloadAllTales ? primaryDark : primary);
+        downloadAllTales.setChecked(isDownloadAllTales);
         downloadAllTales.setOnCheckedChangeListener(onDownloadAllSelect);
-        downloadAllTales.setText(getString(R.string.downloadAllTales) + (isDownloadAlltales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : freeSpace));
+        downloadAllTales.setText(getString(R.string.downloadAllTales) + (isDownloadAllTales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : freeSpace));
 
-        downloadFavoriteTales.setEnabled(!isDownloadAlltales);
+        downloadFavoriteTales.setEnabled(!isDownloadAllTales);
         downloadFavoriteTales.setOnCheckedChangeListener(null);
-        downloadFavoriteTales.setTextColor(isDownloadFavoritetales ? primaryDark : primary);
-        downloadFavoriteTales.setChecked(isDownloadAlltales || isDownloadFavoritetales);
+        downloadFavoriteTales.setTextColor(isDownloadFavoriteTales ? primaryDark : primary);
+        downloadFavoriteTales.setChecked(isDownloadAllTales || isDownloadFavoriteTales);
         downloadFavoriteTales.setOnCheckedChangeListener(onDownloadFavoriteSelect);
-        downloadFavoriteTales.setText(getString(R.string.downloadFavoriteTales) + (!isDownloadAlltales && isDownloadFavoritetales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
+        downloadFavoriteTales.setText(getString(R.string.downloadFavoriteTales) + (!isDownloadAllTales && isDownloadFavoriteTales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);

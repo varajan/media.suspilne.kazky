@@ -140,7 +140,7 @@ public class ActivityTales extends ActivityMain {
     }
 
     private void filterTales(){
-        SettingsHelper.setString("TalesFilter", Tales.filter);
+        SettingsHelper.setString("talesFilter", Tales.filter);
         favoriteIcon.setImageResource(Tales.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
         activityTitle.setText(Tales.filter.equals("") ? getString(R.string.tales) : "\u2315 " + Tales.filter);
         View nothing = findViewById(R.id.nothingToShow);

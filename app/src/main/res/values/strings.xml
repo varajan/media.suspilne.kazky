@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="requiredSpace">470</string>
+    <string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
+    <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
     <string name="app_name">UA: Казки</string>
     <string name="reader_description">%s\nКазок: %d</string>
     <string name="radio">Радіо</string>
@@ -45,7 +51,7 @@
     <string name="not_enough_space">Завантаження неможливе. Доступно %s вільного місця, а необхідно мінімум %s</string>
     <string name="download">Завантажити</string>
     <string name="suggestToDownloadFavorite">У вас %d улюблених казок. Хочете завантажити їх на пристрій, і вони будуть доступні офф-лайн?</string>
-    <string name="downloading">Завантаження композицій…</string>
+    <string name="downloading">Завантаження казок…</string>
     <string name="clear">Видалити</string>
     <string name="continueDownload">Продовжити завантаження?</string>
     <string name="not_all_tales">Не всі казки завантажено.</string>
@@ -173,7 +179,7 @@
     <string name="andrii_hlyvniuk_description">Вокаліст гурту \'Бумбокс\'</string>
     <string name="marko_galanevych">Марко Галаневич</string>
     <string name="marko_galanevych_description">Учасник гурту \'Dakhabraha\'</string>
-    <string name="alina_pash">Alina Pash</string>
+    <string name="alina_pash">Аліна Паш</string>
     <string name="alina_pash_description">Співачка</string>
     <string name="alyona_alyona">Alyona Alyona</string>
     <string name="alyona_alyona_description">Хіп-хоп виконавиця</string>
@@ -225,11 +231,4 @@
     <string name="julia_jurina_description">Учасниця гурту \'YUKO\'</string>
     <string name="jaroslav_ljudgin">Ярослав Людигін</string>
     <string name="jaroslav_ljudgin_description">Кінорежисер</string>
-
-    <string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
-    <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_desc">Navigation header</string>
 </resources>
