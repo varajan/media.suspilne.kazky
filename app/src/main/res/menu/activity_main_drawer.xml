@@ -10,7 +10,7 @@
             android:title="@string/radio" />
         <item
             android:id="@+id/tales_menu"
-            android:icon="@drawable/ic_queue_music"
+            android:icon="@drawable/ic_tales_list"
             android:title="@string/tales" />
         <item
             android:id="@+id/readers_menu"
