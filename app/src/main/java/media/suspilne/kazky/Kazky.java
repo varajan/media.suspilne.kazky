@@ -12,7 +12,17 @@ public class Kazky extends Application {
     public void onCreate() {
         super.onCreate();
 
-        SharedPreferences.Editor editor = getSharedPreferences(SettingsHelper.application, 0).edit();
+        SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // upgrade from old version, previous setting name was 'talesDownload'
+        boolean talesDownload = sharedPreferences.getString("talesDownload", "false").toLowerCase().equals("true");
+        if (talesDownload){
+            editor.putString("talesDownload", String.valueOf(false));
+            editor.putString("downloadAllTales", String.valueOf(true));
+            editor.putString("downloadFavoriteTales", String.valueOf(true));
+        }
+
         editor.putString("tales.paused", String.valueOf(false));
         editor.putString("tales.lastPlaying", String.valueOf(-1));
         editor.putString("tales.nowPlaying", String.valueOf(-1));
