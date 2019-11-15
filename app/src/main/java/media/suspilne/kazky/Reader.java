@@ -20,6 +20,19 @@ class Reader{
         this.talesCount = getTalesCount();
     }
 
+    boolean matchesFilter(String filter){
+        filter = filter.toLowerCase();
+        return getName().toLowerCase().contains(filter) || getDescription().toLowerCase().contains(filter);
+    }
+
+    private View getView(){
+        return ActivityReaders.getActivity().findViewById(R.id.readersList).findViewWithTag(getName());
+    }
+
+    void hide(){ getView().setVisibility(View.GONE); }
+
+    void show(){ getView().setVisibility(View.VISIBLE); }
+
     public String getName(){
         return ActivityMain.getActivity().getResources().getString(name);
     }
@@ -85,12 +98,37 @@ class Reader{
     }
 
     private int getTalesCount(){
-        int result = 0;
+        switch (name){
+            case R.string.andrii_hlyvniuk: return 3;
+            case R.string.marko_galanevych: return 2;
+            case R.string.alina_pash: return 3;
+            case R.string.alyona_alyona: return 3;
+            case R.string.vova_zi_lvova: return 3;
+            case R.string.evgen_klopotenko: return 3;
+            case R.string.evgen_maluha: return 3;
+            case R.string.anna_nikitina: return 3;
+            case R.string.vlad_fisun: return 3;
+            case R.string.dmytro_schebetiuk: return 3;
+            case R.string.katia_rogova: return 3;
+            case R.string.michel_schur: return 2;
+            case R.string.mariana_golovko: return 3;
+            case R.string.marta_liubchyk: return 3;
+            case R.string.marusia_ionova: return 3;
+            case R.string.oleksiy_dorychevsky: return 3;
+            case R.string.pavlo_varenitsa: return 3;
+            case R.string.roman_yasynovsky: return 3;
+            case R.string.ruslana_khazipova: return 3;
+            case R.string.sasha_koltsova: return 3;
+            case R.string.sergii_zhadan: return 3;
+            case R.string.sergii_kolos: return 3;
+            case R.string.solomia_melnyk: return 4;
+            case R.string.stas_koroliov: return 3;
+            case R.string.timur_miroshnychenko: return 3;
+            case R.string.hrystyna_soloviy: return 3;
+            case R.string.julia_jurina: return 3;
+            case R.string.jaroslav_ljudgin: return 3;
 
-        for(Tale tale:new Tales().getTales()){
-            if (tale.getReader().equals(getName())) result++;
+            default: return 0;
         }
-
-        return result;
     }
 }

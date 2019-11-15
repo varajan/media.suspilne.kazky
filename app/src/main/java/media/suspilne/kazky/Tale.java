@@ -3,7 +3,6 @@ package media.suspilne.kazky;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -45,7 +44,7 @@ public class Tale{
         return ActivityTales.getActivity().getResources().getString(titleId);
     }
 
-    private View getTrackView(){
+    private View getTaleView(){
         try{
             return ActivityTales.getActivity().findViewById(R.id.talesList).findViewWithTag(id);
         }
@@ -61,18 +60,18 @@ public class Tale{
         isFavorite = !isFavorite;
         SettingsHelper.setBoolean("isFavorite_" + id, isFavorite);
 
-        ((ImageView)getTrackView().findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
+        ((ImageView)getTaleView().findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
 
         if ( isFavorite && downloadFavorite && !downloadAll) this.download();
         if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
     }
 
     private void setDownloadedIcon(){
-        View taleView = getTrackView();
+        View taleView = getTaleView();
 
         if (taleView != null){
             isDownloaded = isDownloaded(id);
-            getTrackView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
+            getTaleView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -91,10 +90,10 @@ public class Tale{
             ScrollView scrollView = ActivityTales.getActivity().findViewById(R.id.scrollView);
             if (scrollView == null) return;
 
-            View tale = getTrackView();
+            View tale = getTaleView();
 
             if (tale == null) return;
-            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTrackView().getY()), 300);
+            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTaleView().getY()), 300);
         }
         catch (Exception e){
             Kazky.logError(e.getMessage());
@@ -102,12 +101,12 @@ public class Tale{
     }
 
     void hide(){
-        View tale = getTrackView();
+        View tale = getTaleView();
         if (tale != null) tale.setVisibility(View.GONE);
     }
 
     void show(){
-        View tale = getTrackView();
+        View tale = getTaleView();
         if (tale != null) tale.setVisibility(View.VISIBLE);
     }
 
@@ -117,7 +116,7 @@ public class Tale{
             String file = String.format("%02d.jpg", id);
             Drawable image = SettingsHelper.fileExists(file) ? SettingsHelper.getImage(file) : ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
             Bitmap preview = ImageHelper.getBitmap(image);
-            View taleView = getTrackView();
+            View taleView = getTaleView();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
             ((ImageView)taleView.findViewById(R.id.photo)).setImageBitmap(preview);

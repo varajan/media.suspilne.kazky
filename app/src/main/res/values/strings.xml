@@ -44,7 +44,8 @@
     <string name="reader">Казкар</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки</string>
     <string name="nothingToShow">Нічого не знайдено</string>
-    <string name="filterHint">Назва чи казкар</string>
+    <string name="filterTalesHint">Назва чи казкар</string>
+    <string name="filterReadersHint">Казкар</string>
     <string name="download_completed">Завантажено казок: %d</string>
     <string name="done">Готово.</string>
     <string name="an_error_occurred">Сталась помилка.</string>

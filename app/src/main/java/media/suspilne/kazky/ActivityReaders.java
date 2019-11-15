@@ -122,23 +122,22 @@ public class ActivityReaders extends ActivityMain {
     }
 
     private void filterReaders(){
-        boolean anything = false;
         String filter = searchField.getText().toString();
+        View nothing = findViewById(R.id.nothingToShow);
+        int visibility = View.VISIBLE;
+
         activityTitle.setText(filter.equals("") ? getString(R.string.readers) : "\u2315 " + filter);
 
-        for (int i = 0; i < ReadersList.getChildCount(); i++){
-            View reader = ReadersList.getChildAt(i);
-            Object tag = reader.getTag();
-
-            if (tag == null) continue;
-
-            boolean visible = tag.toString().toLowerCase().contains(filter.toLowerCase());
-
-            anything = anything || visible;
-            reader.setVisibility(visible ? View.VISIBLE : View.GONE);
+        for (final Reader reader: new Readers().Readers) {
+            if (reader.matchesFilter(filter)){
+                reader.show();
+                visibility = View.GONE;
+            }else{
+                reader.hide();
+            }
         }
 
-        nothing.setVisibility(anything ? View.GONE : View.VISIBLE);
+        nothing.setVisibility(visibility);
     }
 
     private void showReaders(){
