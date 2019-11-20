@@ -36,10 +36,7 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-        String file = String.format("%02d.jpg", tale().id);
-        Drawable image = SettingsHelper.fileExists(file) ? SettingsHelper.getImage(file) : ContextCompat.getDrawable(context, R.mipmap.logo);
-
-        return ImageHelper.getBitmap(image);
+        return ImageHelper.getBitmapFromResource(context.getResources(), tale().image, 100, 75);
     }
 
     @Nullable

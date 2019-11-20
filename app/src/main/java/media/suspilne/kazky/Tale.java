@@ -19,7 +19,7 @@ public class Tale{
     public int id;
     private int titleId;
     private int readerId;
-    private int image;
+    public int image;
     boolean isFavorite;
     boolean isDownloaded;
     String stream;
@@ -74,6 +74,7 @@ public class Tale{
         if (taleView != null){
             isDownloaded = isDownloaded(id);
             getTaleView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
+            getTaleView().findViewById(R.id.downloaded_shadow).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -115,7 +116,7 @@ public class Tale{
     void setViewDetails(){
         try
         {
-            Bitmap preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image, 200, 200);
+            Bitmap preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image, 300, 230);
             View taleView = getTaleView();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);

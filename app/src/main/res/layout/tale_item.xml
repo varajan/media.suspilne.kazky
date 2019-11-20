@@ -36,6 +36,18 @@
             tools:scaleType="fitXY" />
 
         <ImageView
+            android:id="@+id/downloaded_shadow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="-2dp"
+            android:layout_marginTop="-2dp"
+            android:layout_alignEnd="@+id/preview"
+            android:layout_alignTop="@+id/preview"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_saved_shadow"
+            tools:scaleType="fitXY" />
+
+        <ImageView
             android:id="@+id/downloaded"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -83,10 +95,8 @@
             android:id="@+id/favoriteShadow"
             android:layout_width="44dp"
             android:layout_height="44dp"
-
             android:layout_marginStart="-2dp"
             android:layout_marginBottom="-2dp"
-
             android:layout_alignStart="@+id/preview"
             android:layout_alignBottom="@+id/preview"
             app:srcCompat="@drawable/ic_favorite_shadow" />

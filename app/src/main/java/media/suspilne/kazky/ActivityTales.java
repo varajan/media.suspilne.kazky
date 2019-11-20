@@ -237,7 +237,7 @@ public class ActivityTales extends ActivityMain {
         setPlayBtnIcon(false);
     }
 
-    private void setPlayBtnIcon(){ setPlayBtnIcon(true); }
+    private void setPlayBtnIcon(){ setPlayBtnIcon(false); }
 
     private void setPlayBtnIcon(boolean scrollToTale){
         LinearLayout list = findViewById(R.id.talesList);
