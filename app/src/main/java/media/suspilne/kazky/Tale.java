@@ -115,11 +115,11 @@ public class Tale{
     void setViewDetails(){
         try
         {
-            Bitmap preview = ImageHelper.getBitmap(ContextCompat.getDrawable(ActivityMain.getActivity(), image));
+//            Bitmap preview = ImageHelper.getBitmap(ContextCompat.getDrawable(ActivityMain.getActivity(), image));
             View taleView = getTaleView();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
-            ((ImageView)taleView.findViewById(R.id.photo)).setImageBitmap(preview);
+            ((ImageView)taleView.findViewById(R.id.photo)).setImageResource(image);
             ((TextView) taleView.findViewById(R.id.title)).setText(titleId);
             ((TextView) taleView.findViewById(R.id.reader)).setText(readerId);
             setDownloadedIcon();
