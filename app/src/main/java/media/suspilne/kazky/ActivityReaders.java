@@ -146,7 +146,7 @@ public class ActivityReaders extends ActivityMain {
         nothing.setVisibility(View.GONE);
 
         for (final Reader reader:new Readers().Readers) {
-            View readerView = LayoutInflater.from(this).inflate(R.layout.tale_item, ReadersList, false);
+            View readerView = LayoutInflater.from(this).inflate(R.layout.reader_item, ReadersList, false);
             readerView.setTag(reader.getName());
             ReadersList.addView(readerView);
             reader.setViewDetails(this);

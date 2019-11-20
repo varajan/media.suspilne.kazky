@@ -19,6 +19,7 @@ public class Tale{
     public int id;
     private int titleId;
     private int readerId;
+    private int image;
     boolean isFavorite;
     boolean isDownloaded;
     String stream;
@@ -26,10 +27,11 @@ public class Tale{
 
     Tale(){ id = -1; }
 
-    Tale(int id, int title, int name){
+    Tale(int id, int title, int name, int img){
         this.id = id;
         this.titleId = title;
         this.readerId = name;
+        this.image = img;
         this.isFavorite = SettingsHelper.getBoolean("isFavorite_" + id);
         this.isDownloaded = isDownloaded(this.id);
         this.stream = stream(id);
@@ -113,9 +115,7 @@ public class Tale{
     void setViewDetails(){
         try
         {
-            String file = String.format("%02d.jpg", id);
-            Drawable image = SettingsHelper.fileExists(file) ? SettingsHelper.getImage(file) : ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
-            Bitmap preview = ImageHelper.getBitmap(image);
+            Bitmap preview = ImageHelper.getBitmap(ContextCompat.getDrawable(ActivityMain.getActivity(), image));
             View taleView = getTaleView();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);

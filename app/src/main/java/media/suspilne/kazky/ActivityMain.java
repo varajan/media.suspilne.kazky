@@ -126,16 +126,6 @@ public class ActivityMain extends AppCompatActivity
         setTitle();
         setQuiteTimeout();
         showErrorMessage();
-        cacheImages();
-    }
-
-    private void cacheImages(){
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (Tale tale : new Tales().getTales()){
-            ids.add(tale.id);
-        }
-
-        new CacheImages().execute(ids.toArray(new Integer[0]));
     }
 
     @Override

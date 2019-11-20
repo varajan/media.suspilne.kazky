@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="fill_parent"
+<LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:layout_height="115dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_weight = "0"
         android:layout_height="wrap_content"
-        android:layout_width="140dp">
+        android:layout_width="wrap_content">
 
         <ImageView
             android:id="@+id/photo"
-            android:layout_width="230dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:maxWidth="50dp"
-            app:srcCompat="@mipmap/logo" />
+            android:layout_marginBottom="8dp"
+            app:srcCompat="@mipmap/t001" />
 
         <ImageView
             android:id="@+id/play"
@@ -41,12 +45,6 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_saved"
             tools:scaleType="fitXY" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_weight = "1"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
 
         <TextView
             app:fontFamily="@font/chalkboard"
@@ -57,7 +55,11 @@
             android:layout_marginTop="8dp"
             android:text="@string/title"
             android:textColor="@color/colorAccent"
-            android:textSize="6pt"
+            android:shadowColor="@color/superLight"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="1.6"
+            android:textSize="10pt"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,7 +71,11 @@
             android:layout_marginStart="8dp"
             android:text="@string/reader"
             android:textColor="@color/colorAccent"
-            android:textSize="6pt"
+            android:shadowColor="@color/superLight"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="2"
+            android:textSize="10pt"
             app:fontFamily="@font/chalkboard"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -77,10 +83,8 @@
             android:id="@+id/favorite"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="15dp"
+            android:layout_alignStart="@+id/photo"
+            android:layout_alignBottom="@+id/photo"
             app:srcCompat="@drawable/ic_favorite" />
     </RelativeLayout>
 
