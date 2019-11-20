@@ -115,8 +115,7 @@ public class Tale{
     void setViewDetails(){
         try
         {
-            Bitmap preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image, 100, 100);
-//            Bitmap preview = ImageHelper.getBitmap(ContextCompat.getDrawable(ActivityMain.getActivity(), image));
+            Bitmap preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image, 200, 200);
             View taleView = getTaleView();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);

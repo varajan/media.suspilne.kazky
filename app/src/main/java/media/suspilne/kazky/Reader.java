@@ -51,7 +51,6 @@ class Reader{
             reader = photo.equals(R.mipmap.logo) ? reader : ImageHelper.getCircularDrawable(reader);
             View readerView = getReaderView();
 
-            readerView.findViewById(R.id.favorite).setVisibility(View.GONE);
             ((ImageView)readerView.findViewById(R.id.photo)).setImageBitmap(reader);
             ((TextView) readerView.findViewById(R.id.reader)).setText(name);
             ((TextView) readerView.findViewById(R.id.description)).setText(context.getString(R.string.reader_description, getDescription(), talesCount));

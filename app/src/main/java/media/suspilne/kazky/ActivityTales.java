@@ -95,10 +95,10 @@ public class ActivityTales extends ActivityMain {
             filterTales();
         });
 
-        searchField.setText(Tales.filter);
+        searchField.setText(Tales.getFilter());
         searchField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Tales.filter = v.getText().toString();
+                Tales.setFilter(v.getText().toString());
                 returnToReaders = false;
 
                 hideSearch();
@@ -115,7 +115,7 @@ public class ActivityTales extends ActivityMain {
 
             if (viewWidth - buttonWidth <= actionX){
                 searchField.setText("");
-                Tales.filter = "";
+                Tales.setFilter("");
                 returnToReaders = false;
 
                 hideSearch();
@@ -130,7 +130,7 @@ public class ActivityTales extends ActivityMain {
     @Override
     public boolean onKeyDown(int keycode, KeyEvent event){
         if (searchField.getVisibility() == View.VISIBLE && (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK)){
-            Tales.filter = searchField.getText().toString();
+            Tales.setFilter(searchField.getText().toString());
             hideSearch();
             filterTales();
             return false;
@@ -140,14 +140,13 @@ public class ActivityTales extends ActivityMain {
     }
 
     private void filterTales(){
-        SettingsHelper.setString("talesFilter", Tales.filter);
         favoriteIcon.setImageResource(Tales.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
-        activityTitle.setText(Tales.filter.equals("") ? getString(R.string.tales) : "\u2315 " + Tales.filter);
+        activityTitle.setText(Tales.getFilter().equals("") ? getString(R.string.tales) : "\u2315 " + Tales.getFilter());
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
 
         for (final Tale tale:Tales.getTales()) {
-            if (Tales.showOnlyFavorite && !tale.isFavorite || !tale.matchesFilter(Tales.filter)){
+            if (Tales.showOnlyFavorite && !tale.isFavorite || !tale.matchesFilter(Tales.getFilter())){
                 tale.hide();
             }else{
                 tale.show();
@@ -160,12 +159,12 @@ public class ActivityTales extends ActivityMain {
 
     private void showTales(){
         for (final Tale tale:Tales.getTales()) {
-            View TaleView = LayoutInflater.from(this).inflate(R.layout.tale_item, TalesList, false);
-            TaleView.setTag(tale.id);
-            TalesList.addView(TaleView);
+            View taleView = LayoutInflater.from(this).inflate(R.layout.tale_item, TalesList, false);
+            taleView.setTag(tale.id);
+            TalesList.addView(taleView);
             tale.setViewDetails();
 
-            final ImageView playBtn = TaleView.findViewById(R.id.play);
+            final ImageView playBtn = taleView.findViewById(R.id.play);
             playBtn.setTag(R.mipmap.tale_play);
             playBtn.setOnClickListener(v -> {
                 if (playBtn.getTag().equals(R.mipmap.tale_pause)){
@@ -184,7 +183,7 @@ public class ActivityTales extends ActivityMain {
                 }
             });
 
-            TaleView.findViewById(R.id.favorite).setOnClickListener(v -> { tale.resetFavorite(); filterTales(); });
+            taleView.findViewById(R.id.favorite).setOnClickListener(v -> { tale.resetFavorite(); filterTales(); });
         }
 
         setPlayBtnIcon();
@@ -206,12 +205,10 @@ public class ActivityTales extends ActivityMain {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String filter = intent.getStringExtra("filter");
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
 
         TalesList = findViewById(R.id.talesList);
         Tales = new Tales();
-        Tales.filter = filter == null ? "" : filter;
 
         addSearchField();
         showTales();

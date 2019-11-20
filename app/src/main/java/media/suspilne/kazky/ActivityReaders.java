@@ -77,8 +77,9 @@ public class ActivityReaders extends ActivityMain {
     private View.OnClickListener onPlayClick = view -> {
         Intent intent = new Intent(this, ActivityTales.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra("filter", view.getTag().toString());
         intent.putExtra("returnToReaders", true);
+
+        Tales.setFilter(view.getTag().toString());
         startActivityForResult(intent, 0);
     };
 
@@ -150,9 +151,6 @@ public class ActivityReaders extends ActivityMain {
             readerView.setTag(reader.getName());
             ReadersList.addView(readerView);
             reader.setViewDetails(this);
-
-            ImageView talesButton = readerView.findViewById(R.id.play);
-            talesButton.setVisibility(View.GONE);
             readerView.setOnClickListener(onPlayClick);
         }
     }
