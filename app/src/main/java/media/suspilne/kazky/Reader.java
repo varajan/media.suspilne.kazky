@@ -53,8 +53,8 @@ class Reader{
 
             readerView.findViewById(R.id.favorite).setVisibility(View.GONE);
             ((ImageView)readerView.findViewById(R.id.photo)).setImageBitmap(reader);
-            ((TextView) readerView.findViewById(R.id.title)).setText(name);
-            ((TextView) readerView.findViewById(R.id.reader)).setText(context.getString(R.string.reader_description, getDescription(), talesCount));
+            ((TextView) readerView.findViewById(R.id.reader)).setText(name);
+            ((TextView) readerView.findViewById(R.id.description)).setText(context.getString(R.string.reader_description, getDescription(), talesCount));
         }catch (Exception e){
             Log.e(SettingsHelper.application, e.getMessage());
             Log.e(SettingsHelper.application, e.getStackTrace().toString());
