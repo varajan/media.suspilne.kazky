@@ -59,8 +59,14 @@ public class ImageHelper {
         return canvasBitmap;
     }
 
-    public static Bitmap getBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
+    public static Bitmap getBitmapFromResource(Resources res, int resId) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
 
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    public static Bitmap getBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
