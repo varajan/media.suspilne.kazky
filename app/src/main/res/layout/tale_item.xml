@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_weight = "0"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
+        android:layout_width="match_parent">
 
         <ImageView
             android:id="@+id/preview"
@@ -58,8 +58,9 @@
             tools:scaleType="fitXY" />
 
         <TextView
-            app:fontFamily="@font/chalkboard"
             android:id="@+id/title"
+            android:layout_alignStart="@+id/preview"
+            android:layout_alignEnd="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -72,10 +73,13 @@
             android:shadowRadius="1.6"
             android:textSize="10pt"
             android:textStyle="bold"
+            app:fontFamily="@font/chalkboard"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reader"
+            android:layout_alignStart="@+id/preview"
+            android:layout_alignEnd="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
