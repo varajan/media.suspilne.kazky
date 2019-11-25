@@ -20,13 +20,14 @@ public class ActivitySettings extends ActivityMain {
     private SeekBar timeout;
     private TextView timeoutText;
     private int step = 5;
-    private long totalRequiredSpace = Integer.parseInt(ActivityMain.getActivity().getResources().getString(R.string.requiredSpace)) * 1024 * 1024;
+    private long totalRequiredSpace;
     private long hundred_kb  = 100 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.settings_menu;
         super.onCreate(savedInstanceState);
+        totalRequiredSpace = Integer.parseInt(getResources().getString(R.string.requiredSpace)) * 1024 * 1024;
 
         downloadAllTales = this.findViewById(R.id.downloadAllTales);
         downloadFavoriteTales = this.findViewById(R.id.downloadFavoriteTales);
