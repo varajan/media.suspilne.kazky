@@ -2,9 +2,7 @@ package media.suspilne.kazky;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -116,11 +114,19 @@ public class Tale{
     void setViewDetails(){
         try
         {
-            Bitmap preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image);
+            Bitmap preview = null;
             View taleView = getTaleView();
 
+            try {
+                preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image);
+            }
+            catch(OutOfMemoryError outOfMemoryError){
+                Kazky.logError("Failed to load tale #" + id + " preview image", false);
+                Kazky.logError(outOfMemoryError.getMessage());
+            }
+
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
-            ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
+            if (preview != null) ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
             ((TextView) taleView.findViewById(R.id.title)).setText(titleId);
             ((TextView) taleView.findViewById(R.id.reader)).setText(readerId);
             setDownloadedIcon();

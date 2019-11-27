@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class ActivityTales extends ActivityMain {
-    private Tales Tales;
+    private Tales tales;
     private ImageView favoriteIcon;
     private ImageView searchIcon;
     private EditText searchField;
@@ -89,9 +89,7 @@ public class ActivityTales extends ActivityMain {
         searchIcon.setOnClickListener(search);
 
         favoriteIcon.setOnClickListener(v -> {
-            Tales.showOnlyFavorite = !Tales.showOnlyFavorite;
-            SettingsHelper.setBoolean("showOnlyFavorite", Tales.showOnlyFavorite);
-
+            Tales.setShowOnlyFavorite(!Tales.getShowOnlyFavorite());
             filterTales();
         });
 
@@ -140,13 +138,13 @@ public class ActivityTales extends ActivityMain {
     }
 
     private void filterTales(){
-        favoriteIcon.setImageResource(Tales.showOnlyFavorite ? R.drawable.ic_favorite : R.drawable.ic_all);
+        favoriteIcon.setImageResource(Tales.getShowOnlyFavorite() ? R.drawable.ic_favorite : R.drawable.ic_all);
         activityTitle.setText(Tales.getFilter().equals("") ? getString(R.string.tales) : "\u2315 " + Tales.getFilter());
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
 
-        for (final Tale tale:Tales.getTales()) {
-            if (Tales.showOnlyFavorite && !tale.isFavorite || !tale.matchesFilter(Tales.getFilter())){
+        for (final Tale tale:tales.getTales()) {
+            if (Tales.getShowOnlyFavorite() && !tale.isFavorite || !tale.matchesFilter(Tales.getFilter())){
                 tale.hide();
             }else{
                 tale.show();
@@ -158,7 +156,7 @@ public class ActivityTales extends ActivityMain {
     }
 
     private void showTales(){
-        for (final Tale tale:Tales.getTales()) {
+        for (final Tale tale:tales.getTales()) {
             View taleView = LayoutInflater.from(this).inflate(R.layout.tale_item, TalesList, false);
             taleView.setTag(tale.id);
             TalesList.addView(taleView);
@@ -208,7 +206,7 @@ public class ActivityTales extends ActivityMain {
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
 
         TalesList = findViewById(R.id.talesList);
-        Tales = new Tales();
+        tales = new Tales();
 
         addSearchField();
         showTales();
@@ -241,10 +239,10 @@ public class ActivityTales extends ActivityMain {
 
     private void setPlayBtnIcon(boolean scrollToTale){
         LinearLayout list = findViewById(R.id.talesList);
-        Tale currentTale = Tales.getById(Tales.getNowPlaying());
+        Tale currentTale = tales.getById(Tales.getNowPlaying());
         boolean isPaused = Tales.isPaused();
 
-        for (Tale tale:Tales.getTales()){
+        for (Tale tale:tales.getTales()){
             ImageView btn = list.findViewWithTag(tale.id).findViewById(R.id.play);
             boolean isPlaying = !isPaused && currentTale != null && tale.id == currentTale.id;
 

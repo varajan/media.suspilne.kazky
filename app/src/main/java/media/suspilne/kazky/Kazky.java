@@ -4,9 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Kazky extends Application {
     @Override
     public void onCreate() {
@@ -14,14 +11,6 @@ public class Kazky extends Application {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        // upgrade from old version, previous setting name was 'talesDownload'
-        boolean talesDownload = sharedPreferences.getString("talesDownload", "false").toLowerCase().equals("true");
-        if (talesDownload){
-            editor.putString("talesDownload", String.valueOf(false));
-            editor.putString("downloadAllTales", String.valueOf(true));
-            editor.putString("downloadFavoriteTales", String.valueOf(true));
-        }
 
         editor.putString("tales.paused", String.valueOf(false));
         editor.putString("tales.lastPlaying", String.valueOf(-1));

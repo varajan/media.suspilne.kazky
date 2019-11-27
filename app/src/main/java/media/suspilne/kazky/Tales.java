@@ -6,7 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 class Tales {
-    boolean showOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
+    public static boolean getShowOnlyFavorite() { return SettingsHelper.getBoolean("showOnlyFavorite"); }
+    public static void setShowOnlyFavorite(boolean value) { SettingsHelper.setBoolean("showOnlyFavorite", value); }
 
     public static String getFilter(){ return SettingsHelper.getString("talesFilter"); }
     public static void setFilter(String filter){ SettingsHelper.setString("talesFilter", filter); }
@@ -45,8 +46,8 @@ class Tales {
 
     Tale getPrevious(){
         int nowPlaying = getNowPlaying();
-        List<Tale> tales = getTales(showOnlyFavorite, getFilter());
-        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, getFilter()));
+        List<Tale> tales = getTales(getShowOnlyFavorite(), getFilter());
+        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(getShowOnlyFavorite(), getFilter()));
 
         for (int i = tales.size() - 1; i >= 0; i--){
             Tale tale = tales.get(i);
@@ -62,8 +63,8 @@ class Tales {
 
     Tale getNext(){
         int nowPlaying = getNowPlaying();
-        List<Tale> tales = getTales(showOnlyFavorite, getFilter());
-        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(showOnlyFavorite, getFilter()));
+        List<Tale> tales = getTales(getShowOnlyFavorite(), getFilter());
+        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(getShowOnlyFavorite(), getFilter()));
 
         for (int i = 0; i < tales.size(); i++){
             Tale tale = tales.get(i);
