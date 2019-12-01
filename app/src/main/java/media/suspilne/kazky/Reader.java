@@ -91,6 +91,7 @@ class Reader{
             case R.string.hrystyna_soloviy: return R.mipmap.hrystyna_soloviy;
             case R.string.julia_jurina: return R.mipmap.julia_jurina;
             case R.string.jaroslav_ljudgin: return R.mipmap.jaroslav_ljudgin;
+            case R.string.ivan_marunych: return R.mipmap.ivan_marunych;
 
             default: return R.mipmap.logo;
         }
@@ -109,9 +110,9 @@ class Reader{
             case R.string.vlad_fisun: return 3;
             case R.string.dmytro_schebetiuk: return 3;
             case R.string.katia_rogova: return 3;
-            case R.string.michel_schur: return 2;
+            case R.string.ivan_marunych: return 3;
             case R.string.mariana_golovko: return 3;
-            case R.string.marta_liubchyk: return 3;
+            case R.string.michel_schur: return 2;
             case R.string.marusia_ionova: return 3;
             case R.string.oleksiy_dorychevsky: return 3;
             case R.string.pavlo_varenitsa: return 3;

@@ -208,10 +208,10 @@ class Tales {
 
             new Tale(81, R.string.tale_081, R.string.katia_rogova, R.drawable.t081),
             new Tale(82, R.string.tale_082, R.string.katia_rogova, R.drawable.t082),
-            new Tale(83, R.string.tale_083, R.string.katia_rogova, R.drawable.t083)
-//            new Tale(84, R.string.tale_084, R.string., R.drawable.t084),
-//            new Tale(85, R.string.tale_085, R.string., R.drawable.t085),
-//            new Tale(86, R.string.tale_086, R.string., R.drawable.t086),
+            new Tale(83, R.string.tale_083, R.string.katia_rogova, R.drawable.t083),
+            new Tale(84, R.string.tale_084, R.string.ivan_marunych, R.drawable.t084),
+            new Tale(85, R.string.tale_085, R.string.ivan_marunych, R.drawable.t085),
+            new Tale(86, R.string.tale_086, R.string.ivan_marunych, R.drawable.t086)
 //            new Tale(87, R.string.tale_087, R.string., R.drawable.t087),
 //            new Tale(88, R.string.tale_088, R.string., R.drawable.t088),
 //            new Tale(89, R.string.tale_089, R.string., R.drawable.t089),

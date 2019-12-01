@@ -157,9 +157,9 @@
     <string name="tale_081">Полохлива душа</string>
     <string name="tale_082">Чому в ластівки хвостик, мов ріжки</string>
     <string name="tale_083">Вразливий шустик</string>
-    <string name="tale_084"></string>
-    <string name="tale_085"></string>
-    <string name="tale_086"></string>
+    <string name="tale_084">Пензлик маляна</string>
+    <string name="tale_085">Кінь, що літати вмів</string>
+    <string name="tale_086">Лісовики</string>
     <string name="tale_087"></string>
     <string name="tale_088"></string>
     <string name="tale_089"></string>
@@ -196,6 +196,8 @@
     <string name="vlad_fisun_description">Діджей Dj Buro</string>
     <string name="dmytro_schebetiuk">Дмитро Щебетюк</string>
     <string name="dmytro_schebetiuk_description">Телеведучій, журналіст</string>
+    <string name="ivan_marunych">Іван Марунич</string>
+    <string name="ivan_marunych_description">Співак</string>
     <string name="katia_rogova">Катя Рогова</string>
     <string name="katia_rogova_description">Співачка INAIA</string>
     <string name="michel_schur">Майкл Щур</string>
