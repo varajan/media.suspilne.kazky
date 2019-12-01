@@ -113,6 +113,7 @@ class Reader{
             case R.string.ivan_marunych: return 3;
             case R.string.mariana_golovko: return 3;
             case R.string.michel_schur: return 2;
+            case R.string.marta_liubchyk: return 3;
             case R.string.marusia_ionova: return 3;
             case R.string.oleksiy_dorychevsky: return 3;
             case R.string.pavlo_varenitsa: return 3;
