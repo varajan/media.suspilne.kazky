@@ -22,19 +22,34 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
 
     @Override
     public String getCurrentContentTitle(Player player) {
-        return tale().getTitle();
+        try {
+            return tale().getTitle();
+        }
+        catch (Exception e) {
+            return context.getResources().getString(R.string.title);
+        }
     }
 
     @Nullable
     @Override
     public String getCurrentContentText(Player player) {
-        return tale().getReader();
+        try {
+            return tale().getReader();
+        }
+        catch (Exception e) {
+            return context.getResources().getString(R.string.reader);
+        }
     }
 
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-        return ImageHelper.getBitmapFromResource(context.getResources(), tale().image, 100, 75);
+        try {
+            return ImageHelper.getBitmapFromResource(context.getResources(), tale().image, 100, 75);
+        }
+        catch (Exception e) {
+            return ImageHelper.getBitmapFromResource(context.getResources(), R.drawable.t001, 100, 75);
+        }
     }
 
     @Nullable
