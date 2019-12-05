@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,8 +22,15 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -125,6 +133,7 @@ public class ActivityMain extends AppCompatActivity
         setTitle();
         setQuiteTimeout();
         showErrorMessage();
+        checkForUpdates();
     }
 
     @Override
@@ -309,4 +318,52 @@ public class ActivityMain extends AppCompatActivity
             .setNegativeButton(R.string.no, null)
             .show();
     }
+
+    private void checkForUpdates(){
+        try {
+            String latestVersion = new VersionChecker().execute().get();
+            String currentVersion = SettingsHelper.getVersionName();
+            String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
+
+                if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ){
+                SettingsHelper.setString("LatestVersion", latestVersion);
+
+                new AlertDialog.Builder(this)
+                        .setIcon(R.mipmap.logo)
+                        .setTitle(R.string.newVersion)
+                        .setPositiveButton(R.string.update, (dialog, which) -> rateApp())
+                        .setNegativeButton(R.string.cancel, null)
+                        .setOnDismissListener(null)
+                        .show();
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class VersionChecker extends AsyncTask<String, String, String> {
+        String newVersion;
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
+                        .timeout(30000)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                        .referrer("http://www.google.com")
+                        .get()
+                        .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)")
+                        .first()
+                        .ownText();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return newVersion;
+        }
+    }
 }
+

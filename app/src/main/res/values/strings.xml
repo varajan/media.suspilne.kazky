@@ -65,6 +65,9 @@
     <string name="downloadFavoriteTalesQuestion">Зберігати тільки улюблені казки на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTalesQuestion">Видалити збережені казки? Улюблені казки залишаться на пристрої.</string>
     <string name="clearFavoriteTalesQuestion">Видалити збережені улюблені казки? Надалі для прослуховування буде потрібен Інтернет.</string>
+    <string name="newVersion">Є нова версія!</string>
+    <string name="update">Оновити</string>
+    <string name="cancel">Скасувати</string>
 
     <string name="tale_001">Заєць хвалько</string>
     <string name="tale_002">Лис, цап і мішок моркви</string>
