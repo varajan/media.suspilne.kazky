@@ -133,6 +133,7 @@ public class ActivityMain extends AppCompatActivity
         setTitle();
         setQuiteTimeout();
         showErrorMessage();
+        updateTalesCountPerReader();
         checkForUpdates();
     }
 
@@ -301,14 +302,14 @@ public class ActivityMain extends AppCompatActivity
     }
 
     protected void suggestToDownloadFavoriteTales(){
-        if (SettingsHelper.getBoolean("suggestToDownloadFavoritetales")) return;
+        if (SettingsHelper.getBoolean("suggestToDownloadFavoriteTales")) return;
         if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
 
         int favorites = new Tales().getTales(true).size();
         if (favorites < 5) return;
 
-        SettingsHelper.setBoolean("suggestToDownloadFavoritetales", true);
+        SettingsHelper.setBoolean("suggestToDownloadFavoriteTales", true);
 
         new AlertDialog.Builder(ActivityMain.this)
             .setIcon(R.mipmap.logo)
@@ -319,14 +320,33 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
+    private void updateTalesCountPerReader(){
+        if (SettingsHelper.getBoolean("tales.count.updated")) return;
+
+        for (Reader reader: new Readers().Readers) {
+            int count = 0;
+
+            for (Tale tale : new Tales().getTales()) {
+                if (tale.getReader().equals(reader.getName())) count++;
+            }
+
+            SettingsHelper.setInt(reader.getName(), count);
+        }
+
+        SettingsHelper.setBoolean("tales.count.updated", true);
+    }
+
     private void checkForUpdates(){
+        if (!SettingsHelper.getBoolean("checkForUpdates")) return;
+
         try {
             String latestVersion = new VersionChecker().execute().get();
             String currentVersion = SettingsHelper.getVersionName();
             String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
 
                 if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ){
-                SettingsHelper.setString("LatestVersion", latestVersion);
+                    SettingsHelper.setString("LatestVersion", latestVersion);
+                    SettingsHelper.setBoolean("checkForUpdates", false);
 
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)

@@ -98,38 +98,6 @@ class Reader{
     }
 
     private int getTalesCount(){
-        switch (name){
-            case R.string.andrii_hlyvniuk: return 3;
-            case R.string.marko_galanevych: return 2;
-            case R.string.alina_pash: return 3;
-            case R.string.alyona_alyona: return 3;
-            case R.string.vova_zi_lvova: return 3;
-            case R.string.evgen_klopotenko: return 3;
-            case R.string.evgen_maluha: return 3;
-            case R.string.anna_nikitina: return 3;
-            case R.string.vlad_fisun: return 3;
-            case R.string.dmytro_schebetiuk: return 3;
-            case R.string.katia_rogova: return 3;
-            case R.string.ivan_marunych: return 3;
-            case R.string.mariana_golovko: return 3;
-            case R.string.michel_schur: return 2;
-            case R.string.marta_liubchyk: return 3;
-            case R.string.marusia_ionova: return 3;
-            case R.string.oleksiy_dorychevsky: return 3;
-            case R.string.pavlo_varenitsa: return 3;
-            case R.string.roman_yasynovsky: return 3;
-            case R.string.ruslana_khazipova: return 3;
-            case R.string.sasha_koltsova: return 3;
-            case R.string.sergii_zhadan: return 3;
-            case R.string.sergii_kolos: return 3;
-            case R.string.solomia_melnyk: return 4;
-            case R.string.stas_koroliov: return 3;
-            case R.string.timur_miroshnychenko: return 3;
-            case R.string.hrystyna_soloviy: return 3;
-            case R.string.julia_jurina: return 3;
-            case R.string.jaroslav_ljudgin: return 3;
-
-            default: return 0;
-        }
+        return SettingsHelper.getInt(getName(), 0);
     }
 }

@@ -6,8 +6,8 @@ android {
         applicationId "media.suspilne.kazky"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 54
-        versionName "4.1.86"
+        versionCode 55
+        versionName "4.2.86"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

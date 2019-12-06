@@ -12,6 +12,8 @@ public class Kazky extends Application {
         SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putString("checkForUpdates", String.valueOf(true));
+        editor.putString("tales.count.updated", String.valueOf(false));
         editor.putString("tales.paused", String.valueOf(false));
         editor.putString("tales.lastPlaying", String.valueOf(-1));
         editor.putString("tales.nowPlaying", String.valueOf(-1));
