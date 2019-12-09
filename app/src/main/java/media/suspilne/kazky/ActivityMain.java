@@ -341,6 +341,7 @@ public class ActivityMain extends AppCompatActivity
 
         try {
             String latestVersion = new VersionChecker().execute().get();
+            String whatsNew = new WhatsNewChecker().execute().get();
             String currentVersion = SettingsHelper.getVersionName();
             String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
 
@@ -350,7 +351,8 @@ public class ActivityMain extends AppCompatActivity
 
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
-                        .setTitle(R.string.newVersion)
+                        .setTitle(getString(R.string.newVersion, latestVersion))
+                        .setMessage(whatsNew)
                         .setPositiveButton(R.string.update, (dialog, which) -> rateApp())
                         .setNegativeButton(R.string.cancel, null)
                         .setOnDismissListener(null)
@@ -383,6 +385,31 @@ public class ActivityMain extends AppCompatActivity
             }
 
             return newVersion;
+        }
+    }
+
+    public class WhatsNewChecker extends AsyncTask<String, String, String> {
+        String whatsNew;
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                whatsNew = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
+                        .timeout(30000)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                        .referrer("http://www.google.com")
+                        .get()
+                        .select("div[itemprop='description'] span")
+                        .last()
+                        .text()
+                        .replace(". ", ".\n• ")
+                        .trim();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return "• " + whatsNew;
         }
     }
 }
