@@ -21,16 +21,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -336,8 +330,17 @@ public class ActivityMain extends AppCompatActivity
         SettingsHelper.setBoolean("tales.count.updated", true);
     }
 
+    private void update(){
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/apps")));
+        } catch (ActivityNotFoundException e) {
+            rateApp();
+        }
+    }
+
     private void checkForUpdates(){
         if (!SettingsHelper.getBoolean("checkForUpdates")) return;
+        if (!this.isNetworkAvailable()) return;
 
         try {
             String latestVersion = new VersionChecker().execute().get();
@@ -345,7 +348,7 @@ public class ActivityMain extends AppCompatActivity
             String currentVersion = SettingsHelper.getVersionName();
             String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
 
-                if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ){
+            if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ){
                     SettingsHelper.setString("LatestVersion", latestVersion);
                     SettingsHelper.setBoolean("checkForUpdates", false);
 
@@ -353,14 +356,12 @@ public class ActivityMain extends AppCompatActivity
                         .setIcon(R.mipmap.logo)
                         .setTitle(getString(R.string.newVersion, latestVersion))
                         .setMessage(whatsNew)
-                        .setPositiveButton(R.string.update, (dialog, which) -> rateApp())
+                        .setPositiveButton(R.string.update, (dialog, which) -> update())
                         .setNegativeButton(R.string.cancel, null)
                         .setOnDismissListener(null)
                         .show();
             }
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
