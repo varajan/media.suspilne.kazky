@@ -17,6 +17,7 @@ public class ActivitySettings extends ActivityMain {
     private Switch downloadFavoriteTales;
     private Switch showOnlyFavorite;
     private Switch autoQuit;
+    private Switch volumeControl;
     private SeekBar timeout;
     private TextView timeoutText;
     private int step = 5;
@@ -33,6 +34,7 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTales = this.findViewById(R.id.downloadFavoriteTales);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
+        volumeControl = this.findViewById(R.id.volumeControl);
         timeout = this.findViewById(R.id.timeout);
         timeoutText = this.findViewById(R.id.timeoutText);
 
@@ -40,6 +42,7 @@ public class ActivitySettings extends ActivityMain {
 
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
+        volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
     }
 
@@ -124,6 +127,7 @@ public class ActivitySettings extends ActivityMain {
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         boolean isDownloadAllTales = SettingsHelper.getBoolean("downloadAllTales");
         boolean isDownloadFavoriteTales = SettingsHelper.getBoolean("downloadFavoriteTales");
+        boolean isVolumeControl = SettingsHelper.getBoolean("volumeControl");
 
         int primaryDark = ContextCompat.getColor(this, R.color.colorAccent);
         int primary = ContextCompat.getColor(this, R.color.superLight);
@@ -138,6 +142,8 @@ public class ActivitySettings extends ActivityMain {
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
+        volumeControl.setEnabled(isAutoQuit);
+        volumeControl.setChecked(isAutoQuit && isVolumeControl);
 
         downloadAllTales.setOnCheckedChangeListener(null);
         downloadAllTales.setTextColor(isDownloadAllTales ? primaryDark : primary);
@@ -155,6 +161,7 @@ public class ActivitySettings extends ActivityMain {
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
         autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
         timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
+        volumeControl.setTextColor(isAutoQuit && isVolumeControl ? primaryDark : primary);
     }
 
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {

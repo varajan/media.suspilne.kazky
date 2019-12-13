@@ -19,7 +19,7 @@
         [Радіо] - Цілодобове радіо, де звучать різноманітні казки з різних країн від Суспільного Мовлення.
         Для його роботи потрібен Інтернет.\n\n
 
-        [Казки] - Більше вісімдесяти казок від Суспільного Мовлення: слухайте, шукайте по назві чи імені казкаря, позначайте як "улюблені".
+        [Казки] - Майже сто казок від Суспільного Мовлення: слухайте, шукайте по назві чи імені казкаря, позначайте як "улюблені".
         Збережені на пристрої казки позначені значком 💾\n\n
 
         [Казкарі] - Шукайте по імені, відсортуйте список за алфавітом або кількістю казок, відкрийте всі казки в один клік.\n\n
@@ -39,7 +39,9 @@
     <string name="confirm_exit">Вийти з UA: Казки?</string>
     <string name="x_minutes">%s хвилин</string>
     <string name="no_internet">Відсутній Інтернет!</string>
+    <string name="radio_error">Проблеми на сервері або відсутній Інтернет!\n\nПеревірте Інтернет, спробуйте пізніше або послухайте казки.</string>
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
+    <string name="volume_timeout">Поступово зменшувати гучність</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки</string>
@@ -163,60 +165,79 @@
     <string name="tale_084">Пензлик маляна</string>
     <string name="tale_085">Кінь, що літати вмів</string>
     <string name="tale_086">Лісовики</string>
-    <string name="tale_087"></string>
-    <string name="tale_088"></string>
-    <string name="tale_089"></string>
-    <string name="tale_090"></string>
+    <string name="tale_087">Звідки взялися місяць та зорі на небі</string>
+    <string name="tale_088">Кмітлива дівчина</string>
+    <string name="tale_089">Три брати і жаба</string>
+    <string name="tale_090">Кентен і муха</string>
 
-    <string name="tale_091"></string>
-    <string name="tale_092"></string>
-    <string name="tale_093"></string>
-    <string name="tale_094"></string>
-    <string name="tale_095"></string>
-    <string name="tale_096"></string>
-    <string name="tale_097"></string>
+    <string name="tale_091">І на силу знайдеться сила</string>
+    <string name="tale_092">Який гук такий відгук</string>
+    <string name="tale_093">Замок на скелі</string>
+    <string name="tale_094">Поросяче життя</string>
+    <string name="tale_095">Умілі руки</string>
+    <string name="tale_096">Материнська любов</string>
+    <string name="tale_097">Задавака</string>
     <string name="tale_098"></string>
     <string name="tale_099"></string>
     <string name="tale_100"></string>
 
+    <string name="tale_101"></string>
+    <string name="tale_102"></string>
+    <string name="tale_103"></string>
+    <string name="tale_104"></string>
+    <string name="tale_105"></string>
+    <string name="tale_106"></string>
+    <string name="tale_107"></string>
+    <string name="tale_108"></string>
+    <string name="tale_109"></string>
+    <string name="tale_110"></string>
+
     <string name="andrii_hlyvniuk">Андрій Хливнюк</string>
     <string name="andrii_hlyvniuk_description">Вокаліст гурту \'Бумбокс\'</string>
-    <string name="marko_galanevych">Марко Галаневич</string>
-    <string name="marko_galanevych_description">Учасник гурту \'Dakhabraha\'</string>
     <string name="alina_pash">Аліна Паш</string>
     <string name="alina_pash_description">Співачка</string>
     <string name="alyona_alyona">Alyona Alyona</string>
     <string name="alyona_alyona_description">Хіп-хоп виконавиця</string>
-    <string name="vova_zi_lvova">Vova zi Lvova</string>
-    <string name="vova_zi_lvova_description">Хіп-хоп виконавець</string>
     <string name="evgen_klopotenko">Євген Клопотенко</string>
     <string name="evgen_klopotenko_description">Ресторатор</string>
     <string name="evgen_maluha">Євген Малуха</string>
     <string name="evgen_maluha_description">Актор театру, кіно та дубляжу</string>
     <string name="anna_nikitina">Анна Нікітіна</string>
     <string name="anna_nikitina_description">Солістка гурту Dakh Daughters</string>
-    <string name="vlad_fisun">Влад Фісут</string>
-    <string name="vlad_fisun_description">Діджей Dj Buro</string>
     <string name="dmytro_schebetiuk">Дмитро Щебетюк</string>
     <string name="dmytro_schebetiuk_description">Телеведучій, журналіст</string>
     <string name="ivan_marunych">Іван Марунич</string>
     <string name="ivan_marunych_description">Співак</string>
+    <string name="julia_jurina">Юлія Юріна</string>
+    <string name="julia_jurina_description">Учасниця гурту \'YUKO\'</string>
+    <string name="jaroslav_ljudgin">Ярослав Людигін</string>
+    <string name="jaroslav_ljudgin_description">Кінорежисер</string>
+    <string name="jamala">Jamala</string>
+    <string name="jamala_description">Співачка</string>
     <string name="katia_rogova">Катя Рогова</string>
     <string name="katia_rogova_description">Співачка INAIA</string>
     <string name="michel_schur">Майкл Щур</string>
     <string name="michel_schur_description">Телеведучій</string>
     <string name="mariana_golovko">Мар\'яна Головко</string>
     <string name="mariana_golovko_description">Співачка, акторка</string>
+    <string name="marko_galanevych">Марко Галаневич</string>
+    <string name="marko_galanevych_description">Учасник гурту \'Dakhabraha\'</string>
     <string name="marta_liubchyk">Марта Любчик</string>
     <string name="marta_liubchyk_description">Співачка, гурт Правиця</string>
     <string name="marusia_ionova">Маруся Іонова</string>
     <string name="marusia_ionova_description">Акторка, учасниця гурту \'ЦеШо\'</string>
+    <string name="nata_smirnova">Ната Смірнова</string>
+    <string name="nata_smirnova_description">Співачка, учасниця гурту \'PUR:PUR\'</string>
+    <string name="oleg_moskalenko">Олег Москаленко</string>
+    <string name="oleg_moskalenko_description">Актор</string>
     <string name="oleksiy_dorychevsky">Олексій Доричевський</string>
     <string name="oleksiy_dorychevsky_description">Актор</string>
     <string name="pavlo_varenitsa">Павло Варєніца</string>
     <string name="pavlo_varenitsa_description">Фронтмет гурту \'Epolets\'</string>
     <string name="roman_yasynovsky">Роман Ясиновський</string>
     <string name="roman_yasynovsky_description">Актор</string>
+    <string name="rosava">Росава</string>
+    <string name="rosava_description">Співачка</string>
     <string name="ruslana_khazipova">Руслана Хазіпова</string>
     <string name="ruslana_khazipova_description">Солістка гурту Dakh Daughters</string>
     <string name="sasha_koltsova">Саша Кольцова</string>
@@ -233,8 +254,8 @@
     <string name="timur_miroshnychenko_description">Телеведучій</string>
     <string name="hrystyna_soloviy">Христина Соловій</string>
     <string name="hrystyna_soloviy_description">Співачка</string>
-    <string name="julia_jurina">Юлія Юріна</string>
-    <string name="julia_jurina_description">Учасниця гурту \'YUKO\'</string>
-    <string name="jaroslav_ljudgin">Ярослав Людигін</string>
-    <string name="jaroslav_ljudgin_description">Кінорежисер</string>
+    <string name="vlad_fisun">Влад Фісут</string>
+    <string name="vlad_fisun_description">Діджей Dj Buro</string>
+    <string name="vova_zi_lvova">Vova zi Lvova</string>
+    <string name="vova_zi_lvova_description">Хіп-хоп виконавець</string>
 </resources>

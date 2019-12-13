@@ -56,6 +56,8 @@ public class ActivityRadio extends ActivityMain {
             if (isRadioPlaying()){
                 stopPlayerService();
                 setPlayBtnIcon();
+                stopVolumeTimer();
+                restoreVolume();
             }else{
                 stopPlayerService();
 
@@ -72,9 +74,12 @@ public class ActivityRadio extends ActivityMain {
 
                     setPlayBtnIcon();
                     this.setQuiteTimeout();
+                    this.setVolumeTimer();
                 }else{
                     showNoConnectionAlert();
-              }
+                    stopVolumeTimer();
+                    restoreVolume();
+                }
             }
         });
     }
@@ -88,8 +93,8 @@ public class ActivityRadio extends ActivityMain {
     private void showNoConnectionAlert(){
         new AlertDialog.Builder(ActivityRadio.this)
             .setIcon(R.mipmap.logo)
-            .setTitle("Відсутній Інтернет!")
-            .setMessage("Щоб схухати радіо потрібно підключення до Інтернета.")
+            .setTitle(R.string.an_error_occurred)
+            .setMessage(R.string.radio_error)
             .setPositiveButton("OK", null)
             .show();
     }

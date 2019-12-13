@@ -211,11 +211,22 @@ class Tales {
             new Tale(83, R.string.tale_083, R.string.katia_rogova, R.drawable.t083),
             new Tale(84, R.string.tale_084, R.string.ivan_marunych, R.drawable.t084),
             new Tale(85, R.string.tale_085, R.string.ivan_marunych, R.drawable.t085),
-            new Tale(86, R.string.tale_086, R.string.ivan_marunych, R.drawable.t086)
-//            new Tale(87, R.string.tale_087, R.string., R.drawable.t087),
-//            new Tale(88, R.string.tale_088, R.string., R.drawable.t088),
-//            new Tale(89, R.string.tale_089, R.string., R.drawable.t089),
-//            new Tale(90, R.string.tale_090, R.string., R.drawable.t090),
+            new Tale(86, R.string.tale_086, R.string.ivan_marunych, R.drawable.t086),
+            new Tale(87, R.string.tale_087, R.string.nata_smirnova, R.drawable.t087),
+            new Tale(88, R.string.tale_088, R.string.nata_smirnova, R.drawable.t088),
+            new Tale(89, R.string.tale_089, R.string.nata_smirnova, R.drawable.t089),
+            new Tale(90, R.string.tale_090, R.string.oleg_moskalenko, R.drawable.t090),
+
+            new Tale(91, R.string.tale_091, R.string.oleg_moskalenko, R.drawable.t091),
+            new Tale(92, R.string.tale_092, R.string.oleg_moskalenko, R.drawable.t092),
+            new Tale(93, R.string.tale_093, R.string.rosava, R.drawable.t093),
+            new Tale(94, R.string.tale_094, R.string.rosava, R.drawable.t094),
+            new Tale(95, R.string.tale_095, R.string.rosava, R.drawable.t095),
+            new Tale(96, R.string.tale_096, R.string.jamala, R.drawable.t096),
+            new Tale(97, R.string.tale_097, R.string.jamala, R.drawable.t097)
+//            new Tale(98, R.string.tale_098, R.string., R.drawable.t098),
+//            new Tale(99, R.string.tale_099, R.string., R.drawable.t099),
+//            new Tale(90, R.string.tale_100, R.string., R.drawable.t100),
 
 //            new Tale(1, R.string.tale_01, R.string., R.drawable.t01),
 //            new Tale(2, R.string.tale_02, R.string., R.drawable.t02),

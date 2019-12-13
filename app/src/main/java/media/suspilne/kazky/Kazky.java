@@ -9,6 +9,8 @@ public class Kazky extends Application {
     public void onCreate() {
         super.onCreate();
 
+        new MediaVolume(this).saveLevel();
+
         SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 

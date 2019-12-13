@@ -31,6 +31,7 @@ public class ActivityMain extends AppCompatActivity
 
     private NotificationManager notificationManager;
     private Timer quitTimer;
+    private Timer volumeTimer;
 
     protected NavigationView navigation;
     protected TextView activityTitle;
@@ -38,6 +39,36 @@ public class ActivityMain extends AppCompatActivity
 
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
+
+    protected void restoreVolume(){
+        new MediaVolume().restoreLevel();
+    }
+
+    protected void stopVolumeTimer(){
+        if (volumeTimer != null) { volumeTimer.cancel(); volumeTimer = null; }
+    }
+
+    protected void setVolumeTimer(){
+        MediaVolume volume =  new MediaVolume();
+
+        stopVolumeTimer();
+
+        if (!SettingsHelper.getBoolean("volumeControl")) return;
+
+        int level = volume.getLevel();
+        int quitTimeout = SettingsHelper.getInt("timeout");
+
+        level = level == 0 ? volume.getMaxLevel()/2 : level;
+        quitTimeout = quitTimeout == 0 ? 5 : quitTimeout;
+
+        int timeout = quitTimeout * 60 / level;
+
+        volume.saveLevel();
+        volume.setLevel(level);
+
+        volumeTimer = new Timer();
+        volumeTimer.schedule(new adjustVolume(), timeout*1000, timeout*1000);
+    }
 
     protected void setQuiteTimeout(){
         if (SettingsHelper.getBoolean("autoQuit")) {
@@ -59,6 +90,16 @@ public class ActivityMain extends AppCompatActivity
             intent.setAction(SettingsHelper.application);
             intent.putExtra("code", "StopPlay");
             sendBroadcast(intent);
+        }
+    }
+
+    class adjustVolume extends TimerTask {
+        @Override
+        public void run() {
+            MediaVolume mediaVolume = new MediaVolume();
+            int level = mediaVolume.getLevel() - 1;
+
+            mediaVolume.setLevel(level > 0 ? level : 0);
         }
     }
 
