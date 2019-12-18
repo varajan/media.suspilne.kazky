@@ -181,10 +181,11 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void showErrorMessage(){
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         String errorMessage = SettingsHelper.getString("errorMessage");
 
         if (!errorMessage.isEmpty()){
+            notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
             showAlert(getString(R.string.an_error_occurred), errorMessage);
             notificationManager.cancel(DownloadTask.WITH_ERROR);
             SettingsHelper.setString("errorMessage", "");
@@ -403,6 +404,7 @@ public class ActivityMain extends AppCompatActivity
                         .show();
             }
         } catch (Exception e) {
+            SettingsHelper.setBoolean("checkForUpdates", false);
             e.printStackTrace();
         }
     }

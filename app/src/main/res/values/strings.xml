@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="requiredSpace">470</string>
+    <string name="requiredSpace">500</string>
     <string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
