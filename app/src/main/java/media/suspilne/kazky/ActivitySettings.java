@@ -2,10 +2,10 @@ package media.suspilne.kazky;
 
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;

@@ -7,8 +7,9 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AlertDialog;
 
 public class ActivityRadio extends ActivityMain {
     private ImageView playPauseBtn;
