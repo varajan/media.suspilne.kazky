@@ -124,11 +124,19 @@ public class Tale{
                 Kazky.logError("Failed to load tale #" + id + " preview image", false);
                 Kazky.logError(outOfMemoryError.getMessage());
             }
+            TextView title = taleView.findViewById(R.id.title);
+            TextView reader = taleView.findViewById(R.id.reader);
+            int color = SettingsHelper.getColor();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
             if (preview != null) ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
-            ((TextView) taleView.findViewById(R.id.title)).setText(titleId);
-            ((TextView) taleView.findViewById(R.id.reader)).setText(readerId);
+
+            title.setText(titleId);
+            title.setTextColor(color);
+
+            reader.setText(readerId);
+            reader.setTextColor(color);
+
             setDownloadedIcon();
         }catch (Exception e){
             Kazky.logError("Failed to load tale #" + id, false);

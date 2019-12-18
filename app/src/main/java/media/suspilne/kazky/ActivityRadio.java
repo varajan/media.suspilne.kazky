@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -50,6 +51,9 @@ public class ActivityRadio extends ActivityMain {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         ((ImageView) findViewById(R.id.onlinePlayer)).setImageResource(R.mipmap.online_player);
+        TextView infoText = findViewById(R.id.textView);
+
+        infoText.setTextColor( SettingsHelper.getColor() );
 
         playPauseBtn = findViewById(R.id.playPause);
         playPauseBtn.setImageResource(R.mipmap.play);

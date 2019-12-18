@@ -9,6 +9,9 @@ public class ActivityInfo extends ActivityMain {
         currentView = R.id.info_menu;
         super.onCreate(savedInstanceState);
 
-        ((TextView)findViewById(R.id.infoText)).setText(getString(R.string.description, SettingsHelper.getVersionName()));
+        TextView infoText = findViewById(R.id.infoText);
+
+        infoText.setText( getString(R.string.description, SettingsHelper.getVersionName()) );
+        infoText.setTextColor( SettingsHelper.getColor() );
     }
 }

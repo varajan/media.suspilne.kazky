@@ -61,6 +61,7 @@
     <string name="not_downloaded_favorite_tales">Не всі улюблені казки завантажено.</string>
     <string name="freeSpace">\nДоступно: %s вільного місця.</string>
     <string name="usedSpace">\nВикористано: %s.</string>
+    <string name="fontColor">Змінити колір тексту</string>
     <string name="downloadAllTales">Зберігати всі казки на пристрої.</string>
     <string name="downloadFavoriteTales">Зберігати улюблені казки на пристрої.</string>
     <string name="downloadAllTalesQuestion">Зберігти всі казки на пристрої? Для цього потрібно приблизно %s вільного місця.</string>

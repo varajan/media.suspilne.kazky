@@ -47,13 +47,21 @@ class Reader{
     public void setViewDetails(Context context){
         try
         {
-            Bitmap reader = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), photo, 100, 100);
-            reader = photo.equals(R.mipmap.logo) ? reader : ImageHelper.getCircularDrawable(reader);
-            View readerView = getReaderView();
+            Bitmap photo = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), this.photo, 100, 100);
+            photo = this.photo.equals(R.mipmap.logo) ? photo : ImageHelper.getCircularDrawable(photo);
+            int color = SettingsHelper.getColor();
 
-            ((ImageView)readerView.findViewById(R.id.photo)).setImageBitmap(reader);
-            ((TextView) readerView.findViewById(R.id.reader)).setText(name);
-            ((TextView) readerView.findViewById(R.id.description)).setText(context.getString(R.string.reader_description, getDescription(), talesCount));
+            View readerView = getReaderView();
+            TextView reader = readerView.findViewById(R.id.reader);
+            TextView description = readerView.findViewById(R.id.description);
+
+            ((ImageView)readerView.findViewById(R.id.photo)).setImageBitmap(photo);
+
+            reader.setText(name);
+            reader.setTextColor(color);
+
+            description.setText(context.getString(R.string.reader_description, getDescription(), talesCount));
+            description.setTextColor(color);
         }catch (Exception e){
             Log.e(SettingsHelper.application, e.getMessage());
             Log.e(SettingsHelper.application, e.getStackTrace().toString());

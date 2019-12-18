@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
@@ -11,15 +10,13 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.OnColorSelectedListener;
-import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
+    private Switch fontColor;
     private Switch downloadAllTales;
     private Switch downloadFavoriteTales;
     private Switch showOnlyFavorite;
@@ -37,6 +34,7 @@ public class ActivitySettings extends ActivityMain {
         super.onCreate(savedInstanceState);
         totalRequiredSpace = Integer.parseInt(getResources().getString(R.string.requiredSpace)) * 1024 * 1024;
 
+        fontColor = this.findViewById(R.id.fontColor);
         downloadAllTales = this.findViewById(R.id.downloadAllTales);
         downloadFavoriteTales = this.findViewById(R.id.downloadFavoriteTales);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
@@ -47,24 +45,42 @@ public class ActivitySettings extends ActivityMain {
 
         setColorsAndState();
 
+        fontColor.setOnCheckedChangeListener((buttonView, isChecked) -> updateColor(isChecked));
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
         volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
-
-//        pickColor(R.color.white);
     }
 
-    void pickColor(int currentColor){
+    void updateColor(boolean isChecked){
+        if (isChecked){
+            SettingsHelper.setBoolean("use.font.color", true);
+            pickColor();
+        } else{
+            SettingsHelper.setBoolean("use.font.color", false);
+            setColorsAndState();
+        }
+    }
+
+    void pickColor(){
         ColorPickerDialogBuilder
             .with(this)
             .setTitle("Choose color")
-            .initialColor(currentColor)
+            .initialColor( SettingsHelper.getCustomColor() )
             .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
             .density(15)
-            .setOnColorSelectedListener(selectedColor -> { Toast.makeText(getActivity(), "onColorSelected: 0x" + Integer.toHexString(selectedColor), Toast.LENGTH_LONG).show(); })
-            .setPositiveButton("ok", (dialog, selectedColor, allColors) -> { /* update color*/ })
-            .setNegativeButton("cancel", (dialog, which) -> {})
+
+            .setPositiveButton(R.string.ok, (dialog, selectedColor, allColors) ->
+            {
+                SettingsHelper.setColor(selectedColor);
+                setColorsAndState();
+            })
+
+            .setNegativeButton(R.string.cancel, (dialog, which) ->
+            {
+                SettingsHelper.setBoolean("use.font.color", false);
+                setColorsAndState();
+            })
             .build()
             .show();
     }
@@ -151,9 +167,10 @@ public class ActivitySettings extends ActivityMain {
         boolean isDownloadAllTales = SettingsHelper.getBoolean("downloadAllTales");
         boolean isDownloadFavoriteTales = SettingsHelper.getBoolean("downloadFavoriteTales");
         boolean isVolumeControl = SettingsHelper.getBoolean("volumeControl");
+        boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
 
-        int primaryDark = ContextCompat.getColor(this, R.color.colorAccent);
-        int primary = ContextCompat.getColor(this, R.color.superLight);
+        int activeColor   = SettingsHelper.getColor();
+        int inactiveColor = ContextCompat.getColor(this, R.color.gray);
         String usedSpace = getString(R.string.usedSpace, SettingsHelper.formattedSize(SettingsHelper.usedSpace()));
         String freeSpace = getString(R.string.freeSpace, SettingsHelper.formattedSize(SettingsHelper.freeSpace()));
         String minutes = SettingsHelper.getString("timeout", "5");
@@ -168,23 +185,26 @@ public class ActivitySettings extends ActivityMain {
         volumeControl.setEnabled(isAutoQuit);
         volumeControl.setChecked(isAutoQuit && isVolumeControl);
 
+        fontColor.setChecked(isFontColorOverridden);
+        fontColor.setTextColor(isFontColorOverridden ? activeColor : inactiveColor);
+
         downloadAllTales.setOnCheckedChangeListener(null);
-        downloadAllTales.setTextColor(isDownloadAllTales ? primaryDark : primary);
+        downloadAllTales.setTextColor(isDownloadAllTales ? activeColor : inactiveColor);
         downloadAllTales.setChecked(isDownloadAllTales);
         downloadAllTales.setOnCheckedChangeListener(onDownloadAllSelect);
         downloadAllTales.setText(getString(R.string.downloadAllTales) + (isDownloadAllTales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : freeSpace));
 
         downloadFavoriteTales.setEnabled(!isDownloadAllTales);
         downloadFavoriteTales.setOnCheckedChangeListener(null);
-        downloadFavoriteTales.setTextColor(isDownloadFavoriteTales ? primaryDark : primary);
+        downloadFavoriteTales.setTextColor(isDownloadFavoriteTales ? activeColor : inactiveColor);
         downloadFavoriteTales.setChecked(isDownloadAllTales || isDownloadFavoriteTales);
         downloadFavoriteTales.setOnCheckedChangeListener(onDownloadFavoriteSelect);
         downloadFavoriteTales.setText(getString(R.string.downloadFavoriteTales) + (!isDownloadAllTales && isDownloadFavoriteTales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
 
-        showOnlyFavorite.setTextColor(isShowOnlyFavorite ? primaryDark : primary);
-        autoQuit.setTextColor(isAutoQuit ? primaryDark : primary);
-        timeoutText.setTextColor(isAutoQuit ? primaryDark : primary);
-        volumeControl.setTextColor(isAutoQuit && isVolumeControl ? primaryDark : primary);
+        showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
+        autoQuit.setTextColor(isAutoQuit ? activeColor : inactiveColor);
+        timeoutText.setTextColor(isAutoQuit ? activeColor : inactiveColor);
+        volumeControl.setTextColor(isAutoQuit && isVolumeControl ? activeColor : inactiveColor);
     }
 
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {

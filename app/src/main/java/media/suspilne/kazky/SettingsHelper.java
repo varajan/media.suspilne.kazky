@@ -10,6 +10,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
+
+import androidx.core.content.ContextCompat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +23,17 @@ import java.util.Map;
 
 public class SettingsHelper {
     static String application = "media.suspilne.kazky";
+
+    public static void setColor(int color) { setInt("tales.text.color", color); }
+
+    public static int getColor() { return getColor(false); }
+    public static int getCustomColor() { return getColor(true); }
+
+    private static int getColor(boolean custom) {
+        return getBoolean("use.font.color") || custom
+                ? getInt("tales.text.color", ContextCompat.getColor(ActivityMain.getActivity(), R.color.white))
+                : ContextCompat.getColor(ActivityMain.getActivity(), R.color.white);
+    }
 
     static String getString(String setting){
         return getString(setting, "");

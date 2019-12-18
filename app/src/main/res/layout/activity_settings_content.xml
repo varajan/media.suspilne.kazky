@@ -19,12 +19,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
             android:id="@+id/list"
             app:layout_constraintTop_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/fontColor"
+                android:fontFamily="@font/chalkboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/fontColor"
+                android:textSize="16sp"
+                tools:typeface="serif"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Switch
                 android:id="@+id/downloadAllTales"
