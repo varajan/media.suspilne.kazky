@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "media.suspilne.kazky"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 60
         versionName "4.3.97"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,16 +26,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.9.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.9.1'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.1'
     implementation 'com.google.android.exoplayer:extension-mediasession:2.8.0'
-    implementation 'com.google.android.gms:play-services-safetynet:15.0.1'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'org.jsoup:jsoup:1.10.1'
-
-    //implementation 'androidx.appbarlayout:appbarlayout:1.0.0'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
 }

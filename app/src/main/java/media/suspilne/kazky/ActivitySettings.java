@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
@@ -10,6 +11,12 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
@@ -44,6 +51,22 @@ public class ActivitySettings extends ActivityMain {
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
         volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
+
+//        pickColor(R.color.white);
+    }
+
+    void pickColor(int currentColor){
+        ColorPickerDialogBuilder
+            .with(this)
+            .setTitle("Choose color")
+            .initialColor(currentColor)
+            .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+            .density(15)
+            .setOnColorSelectedListener(selectedColor -> { Toast.makeText(getActivity(), "onColorSelected: 0x" + Integer.toHexString(selectedColor), Toast.LENGTH_LONG).show(); })
+            .setPositiveButton("ok", (dialog, selectedColor, allColors) -> { /* update color*/ })
+            .setNegativeButton("cancel", (dialog, which) -> {})
+            .build()
+            .show();
     }
 
     void setSwitch(String title, boolean isChecked){
