@@ -16,7 +16,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -72,7 +71,7 @@ public class ActivityMain extends AppCompatActivity
         volume.setLevel(level);
 
         volumeTimer = new Timer();
-        volumeTimer.schedule(new adjustVolume(), timeout*1000, timeout*1000);
+        volumeTimer.schedule(new adjustVolume(), 2*timeout*1000, 2*timeout*1000);
     }
 
     protected void setQuiteTimeout(){
@@ -462,4 +461,3 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 }
-
