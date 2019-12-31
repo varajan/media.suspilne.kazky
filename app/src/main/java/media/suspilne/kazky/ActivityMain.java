@@ -71,7 +71,7 @@ public class ActivityMain extends AppCompatActivity
         volume.setLevel(level);
 
         volumeTimer = new Timer();
-        volumeTimer.schedule(new adjustVolume(), 2*timeout*1000, 2*timeout*1000);
+        volumeTimer.schedule(new adjustVolume(), 2*timeout*1000, timeout*1000);
     }
 
     protected void setQuiteTimeout(){
@@ -207,8 +207,6 @@ public class ActivityMain extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(currentView == R.id.settings_menu){
-            openActivity(ActivityTales.class);
         }
         else {
             showQuitDialog();
@@ -421,7 +419,7 @@ public class ActivityMain extends AppCompatActivity
 
             try {
                 newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
-                        .timeout(30000)
+                        .timeout(15000)
                         .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                         .referrer("http://www.google.com")
                         .get()
@@ -444,7 +442,7 @@ public class ActivityMain extends AppCompatActivity
 
             try {
                 whatsNew = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
-                        .timeout(30000)
+                        .timeout(15000)
                         .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                         .referrer("http://www.google.com")
                         .get()

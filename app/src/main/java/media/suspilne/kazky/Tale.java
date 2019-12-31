@@ -94,7 +94,11 @@ public class Tale{
             View tale = getTaleView();
 
             if (tale == null) return;
-            scrollView.postDelayed(() -> scrollView.scrollTo(0, (int)getTaleView().getY()), 300);
+
+            int x = 0;
+            int y = (int)getTaleView().getY();
+
+            scrollView.postDelayed(() -> scrollView.scrollTo(x, y), 300);
         }
         catch (Exception e){
             Kazky.logError(e.getMessage());
