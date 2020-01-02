@@ -19,7 +19,7 @@
         [Радіо] - Цілодобове радіо, де звучать різноманітні казки з різних країн від Суспільного Мовлення.
         Для його роботи потрібен Інтернет.\n\n
 
-        [Казки] - Майже сто казок від Суспільного Мовлення: слухайте, шукайте по назві чи імені казкаря, позначайте як "улюблені".
+        [Казки] - більше сотні казок від Суспільного Мовлення: слухайте, шукайте по назві чи імені казкаря, позначайте як "улюблені".
         Збережені на пристрої казки позначені значком 💾\n\n
 
         [Казкарі] - Шукайте по імені, відсортуйте список за алфавітом або кількістю казок, відкрийте всі казки в один клік.\n\n
@@ -178,21 +178,45 @@
     <string name="tale_095">Умілі руки</string>
     <string name="tale_096">Материнська любов</string>
     <string name="tale_097">Задавака</string>
-    <string name="tale_098"></string>
-    <string name="tale_099"></string>
-    <string name="tale_100"></string>
+    <string name="tale_098">Золота колиска</string>
+    <string name="tale_099">Віслюк-мудрагель</string>
+    <string name="tale_100">Виноградар і змія</string>
 
-    <string name="tale_101"></string>
-    <string name="tale_102"></string>
-    <string name="tale_103"></string>
-    <string name="tale_104"></string>
-    <string name="tale_105"></string>
-    <string name="tale_106"></string>
-    <string name="tale_107"></string>
-    <string name="tale_108"></string>
-    <string name="tale_109"></string>
-    <string name="tale_110"></string>
+    <string name="tale_101">Золота прядочка</string>
+    <string name="tale_102">Синя свита навиворіт пошита</string>
+    <string name="tale_103">Зароблений карбованець</string>
+    <string name="tale_104">Як лікувати лінь</string>
+    <string name="tale_105">Як пес вовка в чоботи взув</string>
+    <string name="tale_106">Кінь і віл</string>
+    <string name="tale_107">Сто золотих монет</string>
+    <string name="tale_108">Ром і водяник</string>
+    <string name="tale_109">Наймит, кухар і пан</string>
+    <string name="tale_110">Сім лозин</string>
 
+    <string name="tale_111">Подарунки чаклуна</string>
+    <string name="tale_112">Пані Метелиця</string>
+    <string name="tale_113">Круглий камінь</string>
+    <string name="tale_114">Балакір і хазяїн</string>
+    <string name="tale_115"></string>
+    <string name="tale_116"></string>
+    <string name="tale_117"></string>
+    <string name="tale_118"></string>
+    <string name="tale_119"></string>
+    <string name="tale_120"></string>
+
+    <string name="tale_121"></string>
+    <string name="tale_122"></string>
+    <string name="tale_123"></string>
+    <string name="tale_124"></string>
+    <string name="tale_125"></string>
+    <string name="tale_126"></string>
+    <string name="tale_127"></string>
+    <string name="tale_128"></string>
+    <string name="tale_129"></string>
+    <string name="tale_130"></string>
+
+    <string name="anastasiia_gudyma">Анастасія Гудима</string>
+    <string name="anastasiia_gudyma_description">Керівниця Координаційного центру національних меншин ПАТ НСТУ</string>
     <string name="andrii_hlyvniuk">Андрій Хливнюк</string>
     <string name="andrii_hlyvniuk_description">Вокаліст гурту \'Бумбокс\'</string>
     <string name="alina_pash">Аліна Паш</string>
@@ -205,10 +229,14 @@
     <string name="evgen_maluha_description">Актор театру, кіно та дубляжу</string>
     <string name="anna_nikitina">Анна Нікітіна</string>
     <string name="anna_nikitina_description">Солістка гурту Dakh Daughters</string>
+    <string name="dmytro_horkin">Дмитро Хоркін</string>
+    <string name="dmytro_horkin_description">Радіоведучий</string>
     <string name="dmytro_schebetiuk">Дмитро Щебетюк</string>
     <string name="dmytro_schebetiuk_description">Телеведучій, журналіст</string>
     <string name="ivan_marunych">Іван Марунич</string>
     <string name="ivan_marunych_description">Співак</string>
+    <string name="inna_grebeniuk">Інна Гребенюк</string>
+    <string name="inna_grebeniuk_description">Членкиня правління ПАТ НСТУ</string>
     <string name="julia_jurina">Юлія Юріна</string>
     <string name="julia_jurina_description">Учасниця гурту \'YUKO\'</string>
     <string name="jaroslav_ljudgin">Ярослав Людигін</string>
@@ -233,6 +261,8 @@
     <string name="oleg_moskalenko_description">Актор</string>
     <string name="oleksiy_dorychevsky">Олексій Доричевський</string>
     <string name="oleksiy_dorychevsky_description">Актор</string>
+    <string name="olga_shurova">Оля Шурова</string>
+    <string name="olga_shurova_description">Учасниця гурту Pianoboy</string>
     <string name="pavlo_varenitsa">Павло Варєніца</string>
     <string name="pavlo_varenitsa_description">Фронтмет гурту \'Epolets\'</string>
     <string name="roman_yasynovsky">Роман Ясиновський</string>
@@ -247,6 +277,8 @@
     <string name="sergii_zhadan_description">Поет і письменник</string>
     <string name="sergii_kolos">Сергій Колос</string>
     <string name="sergii_kolos_description">Фронтмен гурту Фіолет</string>
+    <string name="sergii_tanchynets">Сергій Танчинець</string>
+    <string name="sergii_tanchynets_description">Гурт Без Обмежень</string>
     <string name="solomia_melnyk">Соломія Мельник</string>
     <string name="solomia_melnyk_description">Солістка гурту Dakh Daughters</string>
     <string name="stas_koroliov">Стас Корольов</string>

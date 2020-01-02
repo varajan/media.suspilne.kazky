@@ -22,6 +22,7 @@ public class Readers {
     }
 
     private ArrayList<Reader> items = new ArrayList<>(Arrays.asList(
+            new Reader(R.string.anastasiia_gudyma, R.string.anastasiia_gudyma_description),
             new Reader(R.string.andrii_hlyvniuk, R.string.andrii_hlyvniuk_description),
             new Reader(R.string.marko_galanevych, R.string.marko_galanevych_description),
             new Reader(R.string.alina_pash, R.string.alina_pash_description),
@@ -32,6 +33,8 @@ public class Readers {
             new Reader(R.string.anna_nikitina, R.string.anna_nikitina_description),
             new Reader(R.string.vlad_fisun, R.string.vlad_fisun_description),
             new Reader(R.string.dmytro_schebetiuk, R.string.dmytro_schebetiuk_description),
+            new Reader(R.string.dmytro_horkin, R.string.dmytro_horkin_description),
+            new Reader(R.string.inna_grebeniuk, R.string.inna_grebeniuk_description),
             new Reader(R.string.katia_rogova, R.string.katia_rogova_description),
             new Reader(R.string.michel_schur, R.string.michel_schur_description),
             new Reader(R.string.mariana_golovko, R.string.mariana_golovko_description),
@@ -53,7 +56,9 @@ public class Readers {
             new Reader(R.string.ivan_marunych, R.string.ivan_marunych_description),
             new Reader(R.string.nata_smirnova, R.string.nata_smirnova_description),
             new Reader(R.string.oleg_moskalenko, R.string.oleg_moskalenko_description),
+            new Reader(R.string.olga_shurova, R.string.olga_shurova_description),
             new Reader(R.string.rosava, R.string.rosava_description),
+            new Reader(R.string.sergii_tanchynets, R.string.sergii_tanchynets_description),
             new Reader(R.string.jamala, R.string.jamala_description)
     ));
 }
