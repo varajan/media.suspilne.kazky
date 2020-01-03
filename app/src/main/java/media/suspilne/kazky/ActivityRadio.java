@@ -61,8 +61,7 @@ public class ActivityRadio extends ActivityMain {
             if (isRadioPlaying()){
                 stopPlayerService();
                 setPlayBtnIcon();
-                stopVolumeTimer();
-                restoreVolume();
+                stopVolumeReduceTimer();
             }else{
                 stopPlayerService();
 
@@ -78,12 +77,11 @@ public class ActivityRadio extends ActivityMain {
                     }
 
                     setPlayBtnIcon();
-                    this.setQuiteTimeout();
-                    this.setVolumeTimer();
+                    this.setQuitTimeout();
+                    this.setVolumeReduceTimer();
                 }else{
                     showNoConnectionAlert();
-                    stopVolumeTimer();
-                    restoreVolume();
+                    stopVolumeReduceTimer();
                 }
             }
         });

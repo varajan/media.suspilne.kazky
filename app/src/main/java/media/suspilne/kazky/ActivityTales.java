@@ -57,8 +57,8 @@ public class ActivityTales extends ActivityMain {
 
         if (Tales.getNowPlaying() > 0){
             setPlayBtnIcon();
-            super.setQuiteTimeout();
-            this.setVolumeTimer();
+            super.setQuitTimeout();
+            this.setVolumeReduceTimer();
         }
     }
 
@@ -174,12 +174,11 @@ public class ActivityTales extends ActivityMain {
                     super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.tale_play);
                     playBtn.setTag(R.mipmap.tale_play);
-                    stopVolumeTimer();
-                    restoreVolume();
+                    stopVolumeReduceTimer();
                 }else{
                     playTale(tale);
-                    this.setQuiteTimeout();
-                    this.setVolumeTimer();
+                    this.setQuitTimeout();
+                    this.setVolumeReduceTimer();
 
                     playBtn.setImageResource(R.mipmap.tale_pause);
                     playBtn.setTag(R.mipmap.tale_pause);

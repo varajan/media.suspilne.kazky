@@ -35,7 +35,7 @@ public class ActivityMain extends AppCompatActivity
 
     private NotificationManager notificationManager;
     private Timer quitTimer;
-    private Timer volumeTimer;
+    private Timer volumeReduceTimer;
 
     protected NavigationView navigation;
     protected TextView activityTitle;
@@ -44,37 +44,19 @@ public class ActivityMain extends AppCompatActivity
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
 
-    protected void restoreVolume(){
-        new MediaVolume().restoreLevel();
+    protected void stopVolumeReduceTimer(){
+        if (volumeReduceTimer != null) { volumeReduceTimer.cancel(); volumeReduceTimer = null; }
     }
 
-    protected void stopVolumeTimer(){
-        if (volumeTimer != null) { volumeTimer.cancel(); volumeTimer = null; }
-    }
-
-    protected void setVolumeTimer(){
-        MediaVolume volume =  new MediaVolume();
-
-        stopVolumeTimer();
-
+    protected void setVolumeReduceTimer(){
+        stopVolumeReduceTimer();
         if (!SettingsHelper.getBoolean("volumeControl")) return;
 
-        int level = volume.getLevel();
-        int quitTimeout = SettingsHelper.getInt("timeout");
-
-        level = level == 0 ? volume.getMaxLevel()/2 : level;
-        quitTimeout = quitTimeout == 0 ? 5 : quitTimeout;
-
-        int timeout = quitTimeout * 60 / level;
-
-        volume.saveLevel();
-        volume.setLevel(level);
-
-        volumeTimer = new Timer();
-        volumeTimer.schedule(new adjustVolume(), 2*timeout*1000, timeout*1000);
+        volumeReduceTimer = new Timer();
+        volumeReduceTimer.schedule(new reduceVolume(), 60*1000, 2*60*1000);
     }
 
-    protected void setQuiteTimeout(){
+    protected void setQuitTimeout(){
         if (SettingsHelper.getBoolean("autoQuit")) {
             if (quitTimer != null) quitTimer.cancel();
             int timeout = SettingsHelper.getInt("timeout");
@@ -90,6 +72,8 @@ public class ActivityMain extends AppCompatActivity
     class stopPlaybackOnTimeout extends TimerTask {
         @Override
         public void run() {
+            stopVolumeReduceTimer();
+
             Intent intent = new Intent();
             intent.setAction(SettingsHelper.application);
             intent.putExtra("code", "StopPlay");
@@ -97,13 +81,14 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    class adjustVolume extends TimerTask {
+    class reduceVolume extends TimerTask {
         @Override
-        public void run() {
-            MediaVolume mediaVolume = new MediaVolume();
-            int level = mediaVolume.getLevel() - 1;
+        public void run(){
+            MediaVolume media = new MediaVolume();
 
-            mediaVolume.setLevel(level > 0 ? level : 0);
+            media.setLevel(media.getLevel() - 1);
+
+            if (media.getLevel() == 0) stopVolumeReduceTimer();
         }
     }
 
@@ -170,7 +155,7 @@ public class ActivityMain extends AppCompatActivity
         navigation.setCheckedItem(currentView);
 
         setTitle();
-        setQuiteTimeout();
+        setQuitTimeout();
         showErrorMessage();
         updateTalesCountPerReader();
         checkForUpdates();
@@ -198,6 +183,7 @@ public class ActivityMain extends AppCompatActivity
 
     private void exit(){
         moveTaskToBack(true);
+        stopVolumeReduceTimer();
         stopPlayerService();
         System.exit(1);
     }
