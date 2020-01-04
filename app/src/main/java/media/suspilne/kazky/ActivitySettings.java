@@ -88,6 +88,11 @@ public class ActivitySettings extends ActivityMain {
     void setSwitch(String title, boolean isChecked){
         SettingsHelper.setBoolean(title, isChecked);
         setColorsAndState();
+
+        if(title.equals("autoQuit") || title.equals("volumeControl")){
+            resetQuitTimeout();
+            resetVolumeReduceTimer();
+        }
     }
 
     private void doDownloadAll(){
@@ -214,6 +219,9 @@ public class ActivitySettings extends ActivityMain {
             String minutes = SettingsHelper.getString("timeout", "0");
 
             timeoutText.setText(getString(R.string.x_minutes, minutes));
+
+            resetQuitTimeout();
+            resetVolumeReduceTimer();
         }
 
         @Override

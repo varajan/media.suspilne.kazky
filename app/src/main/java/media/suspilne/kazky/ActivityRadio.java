@@ -18,7 +18,6 @@ public class ActivityRadio extends ActivityMain {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        unregisterReceiver();
     }
 
     @Override
@@ -61,7 +60,7 @@ public class ActivityRadio extends ActivityMain {
             if (isRadioPlaying()){
                 stopPlayerService();
                 setPlayBtnIcon();
-                stopVolumeReduceTimer();
+                resetVolumeReduceTimer();
             }else{
                 stopPlayerService();
 
@@ -77,20 +76,14 @@ public class ActivityRadio extends ActivityMain {
                     }
 
                     setPlayBtnIcon();
-                    this.setQuitTimeout();
-                    this.setVolumeReduceTimer();
+                    this.resetQuitTimeout();
+                    this.resetVolumeReduceTimer();
                 }else{
                     showNoConnectionAlert();
-                    stopVolumeReduceTimer();
+                    resetVolumeReduceTimer();
                 }
             }
         });
-    }
-
-    private boolean isRadioPlaying(){
-        return isServiceRunning(PlayerService.class)
-                && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
-                && !Tales.isPaused();
     }
 
     private void showNoConnectionAlert(){
@@ -105,6 +98,7 @@ public class ActivityRadio extends ActivityMain {
     private void setPlayBtnIcon(){
         boolean isPaused = Tales.isPaused();
         playPauseBtn.setImageResource(!isPaused && isRadioPlaying() ? R.mipmap.pause : R.mipmap.play);
+        resetVolumeReduceTimer();
     }
 
     private void registerReceiver(){

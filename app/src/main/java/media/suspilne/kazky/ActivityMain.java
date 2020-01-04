@@ -44,28 +44,34 @@ public class ActivityMain extends AppCompatActivity
     private static Activity activity;
     public static Activity getActivity(){ return activity; }
 
-    protected void stopVolumeReduceTimer(){
+    private void stopVolumeReduceTimer(){
         if (volumeReduceTimer != null) { volumeReduceTimer.cancel(); volumeReduceTimer = null; }
     }
 
-    protected void setVolumeReduceTimer(){
-        stopVolumeReduceTimer();
-        if (!SettingsHelper.getBoolean("volumeControl")) return;
-
-        volumeReduceTimer = new Timer();
-        volumeReduceTimer.schedule(new reduceVolume(), 60*1000, 2*60*1000);
+    private void stopQuitTimer(){
+        if (quitTimer != null) quitTimer.cancel();
     }
 
-    protected void setQuitTimeout(){
+    protected void resetVolumeReduceTimer(){
+        stopVolumeReduceTimer();
+        if (!SettingsHelper.getBoolean("volumeControl")) return;
+        if (!isTalePlaying() && !isRadioPlaying()) return;
+
+        volumeReduceTimer = new Timer();
+        volumeReduceTimer.schedule(new reduceVolume(), 90*1000, 90*1000);
+    }
+
+    protected void resetQuitTimeout(){
         if (SettingsHelper.getBoolean("autoQuit")) {
-            if (quitTimer != null) quitTimer.cancel();
+            stopQuitTimer();
+
             int timeout = SettingsHelper.getInt("timeout");
             timeout = timeout==0 ? 5 : timeout;
 
             quitTimer = new Timer();
             quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60 * 1000);
         } else {
-            if (quitTimer != null) quitTimer.cancel();
+            stopQuitTimer();
         }
     }
 
@@ -87,9 +93,22 @@ public class ActivityMain extends AppCompatActivity
             MediaVolume media = new MediaVolume();
 
             media.setLevel(media.getLevel() - 1);
+            resetVolumeReduceTimer();
 
             if (media.getLevel() == 0) stopVolumeReduceTimer();
         }
+    }
+
+    protected boolean isTalePlaying(){
+        return isServiceRunning(PlayerService.class)
+                && SettingsHelper.getString("StreamType").equals(getString(R.string.tales))
+                && !Tales.isPaused();
+    }
+
+    protected boolean isRadioPlaying(){
+        return isServiceRunning(PlayerService.class)
+                && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
+                && !Tales.isPaused();
     }
 
     protected boolean isServiceRunning(Class<?> serviceClass) {
@@ -155,7 +174,7 @@ public class ActivityMain extends AppCompatActivity
         navigation.setCheckedItem(currentView);
 
         setTitle();
-        setQuitTimeout();
+        resetQuitTimeout();
         showErrorMessage();
         updateTalesCountPerReader();
         checkForUpdates();

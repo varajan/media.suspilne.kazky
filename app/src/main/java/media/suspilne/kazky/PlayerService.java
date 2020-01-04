@@ -139,6 +139,10 @@ public class PlayerService extends IntentService {
                         playTale(new Tales().getNext());
                         break;
 
+                    case ExoPlayer.DISCONTINUITY_REASON_AD_INSERTION:
+                        sendMessage("SetPlayBtnIcon");
+                        break;
+
                     default:
                         break;
                 }
@@ -247,8 +251,8 @@ public class PlayerService extends IntentService {
         playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerRadioAdapter(this));
         playerNotificationManager.setFastForwardIncrementMs(0);
         playerNotificationManager.setRewindIncrementMs(0);
-        playerNotificationManager.setUseNavigationActions(false);
         playerNotificationManager.setStopAction(null);
+        playerNotificationManager.setUseNavigationActions(false);
         playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
             @Override
             public void onNotificationStarted(int notificationId, Notification notification) {

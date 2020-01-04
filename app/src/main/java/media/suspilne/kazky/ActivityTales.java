@@ -31,7 +31,6 @@ public class ActivityTales extends ActivityMain {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        unregisterReceiver();
 
         outState.putBoolean("returnToReaders", returnToReaders);
     }
@@ -57,8 +56,8 @@ public class ActivityTales extends ActivityMain {
 
         if (Tales.getNowPlaying() > 0){
             setPlayBtnIcon();
-            super.setQuitTimeout();
-            this.setVolumeReduceTimer();
+            super.resetQuitTimeout();
+            this.resetVolumeReduceTimer();
         }
     }
 
@@ -174,11 +173,11 @@ public class ActivityTales extends ActivityMain {
                     super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.tale_play);
                     playBtn.setTag(R.mipmap.tale_play);
-                    stopVolumeReduceTimer();
+                    resetVolumeReduceTimer();
                 }else{
                     playTale(tale);
-                    this.setQuitTimeout();
-                    this.setVolumeReduceTimer();
+                    this.resetQuitTimeout();
+                    this.resetVolumeReduceTimer();
 
                     playBtn.setImageResource(R.mipmap.tale_pause);
                     playBtn.setTag(R.mipmap.tale_pause);
@@ -257,6 +256,8 @@ public class ActivityTales extends ActivityMain {
         if (scrollToTale && currentTale != null){
             currentTale.scrollIntoView();
         }
+
+        resetVolumeReduceTimer();
     }
 
     @Override
