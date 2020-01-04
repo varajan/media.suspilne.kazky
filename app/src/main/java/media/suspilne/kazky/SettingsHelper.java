@@ -48,9 +48,14 @@ public class SettingsHelper {
     }
 
     static void setString(String setting, String value){
-        SharedPreferences.Editor editor = ActivityMain.getActivity().getSharedPreferences(application, 0).edit();
-        editor.putString(setting, value);
-        editor.apply();
+        try{
+            SharedPreferences.Editor editor = ActivityMain.getActivity().getSharedPreferences(application, 0).edit();
+            editor.putString(setting, value);
+            editor.apply();
+        }
+        catch (Exception e){
+            /*nothing*/
+        }
     }
 
     public static ArrayList<String> getAllSettings(String setting){

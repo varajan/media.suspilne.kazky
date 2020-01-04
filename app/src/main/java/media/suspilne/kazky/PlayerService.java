@@ -193,7 +193,7 @@ public class PlayerService extends IntentService {
             Tales.setLastPosition(player.getCurrentPosition());
         }
 
-        playerNotificationManager.setPlayer(null);
+        if (playerNotificationManager != null) playerNotificationManager.setPlayer(null);
         releasePlayer();
         unregisterReceiver();
     }
