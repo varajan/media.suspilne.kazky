@@ -41,7 +41,9 @@
     <string name="no_internet">Відсутній Інтернет!</string>
     <string name="radio_error">Проблеми на сервері або відсутній Інтернет!\n\nПеревірте Інтернет, спробуйте пізніше або послухайте казки.</string>
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
+    <string name="sleep_timeout_text">Зупинити відтворення через %s хв.</string>
     <string name="volume_timeout">Поступово зменшувати гучність</string>
+    <string name="volume_timeout_text">Зменшувати гучність кожні %s хв.</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки</string>

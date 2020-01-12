@@ -57,8 +57,11 @@ public class ActivityMain extends AppCompatActivity
         if (!SettingsHelper.getBoolean("volumeControl")) return;
         if (!isTalePlaying() && !isRadioPlaying()) return;
 
+        int timeout = SettingsHelper.getInt("volumeMinutes");
+        timeout = timeout==0 ? 2 : timeout;
+
         volumeReduceTimer = new Timer();
-        volumeReduceTimer.schedule(new reduceVolume(), 90*1000, 90*1000);
+        volumeReduceTimer.schedule(new reduceVolume(), timeout*60*1000, timeout*60*1000);
     }
 
     protected void resetQuitTimeout(){
@@ -302,8 +305,14 @@ public class ActivityMain extends AppCompatActivity
             goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 
             startActivity(goToMarket);
-        } catch (ActivityNotFoundException e) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        } catch (ActivityNotFoundException anfe) {
+            try{
+                anfe.printStackTrace();
+
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

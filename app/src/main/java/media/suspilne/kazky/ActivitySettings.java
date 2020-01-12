@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
@@ -23,7 +22,7 @@ public class ActivitySettings extends ActivityMain {
     private Switch autoQuit;
     private Switch volumeControl;
     private SeekBar timeout;
-    private TextView timeoutText;
+    private SeekBar volumeTimeout;
     private int step = 5;
     private long totalRequiredSpace;
     private long hundred_kb  = 100 * 1024;
@@ -39,9 +38,9 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTales = this.findViewById(R.id.downloadFavoriteTales);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         autoQuit = this.findViewById(R.id.autoQuit);
-        volumeControl = this.findViewById(R.id.volumeControl);
         timeout = this.findViewById(R.id.timeout);
-        timeoutText = this.findViewById(R.id.timeoutText);
+        volumeControl = this.findViewById(R.id.volumeControl);
+        volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
 
         setColorsAndState();
 
@@ -50,6 +49,7 @@ public class ActivitySettings extends ActivityMain {
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
         volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
+        volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
     }
 
     void updateColor(boolean isChecked){
@@ -178,17 +178,18 @@ public class ActivitySettings extends ActivityMain {
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
         String usedSpace = getString(R.string.usedSpace, SettingsHelper.formattedSize(SettingsHelper.usedSpace()));
         String freeSpace = getString(R.string.freeSpace, SettingsHelper.formattedSize(SettingsHelper.freeSpace()));
-        String minutes = SettingsHelper.getString("timeout", "5");
+        String quitMinutes = SettingsHelper.getString("timeout", "5");
+        String volumeMinutes = SettingsHelper.getString("volumeMinutes", "2");
 
-        timeoutText.setText(getString(R.string.x_minutes, minutes));
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
+        volumeTimeout.setProgress(SettingsHelper.getInt("volumeMinutes", 2));
 
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
-        volumeControl.setEnabled(isAutoQuit);
-        volumeControl.setChecked(isAutoQuit && isVolumeControl);
+        volumeControl.setChecked(isVolumeControl);
+        volumeTimeout.setEnabled(isVolumeControl);
 
         fontColor.setChecked(isFontColorOverridden);
         fontColor.setTextColor(isFontColorOverridden ? activeColor : inactiveColor);
@@ -207,29 +208,46 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTales.setText(getString(R.string.downloadFavoriteTales) + (!isDownloadAllTales && isDownloadFavoriteTales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
 
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
+
         autoQuit.setTextColor(isAutoQuit ? activeColor : inactiveColor);
-        timeoutText.setTextColor(isAutoQuit ? activeColor : inactiveColor);
-        volumeControl.setTextColor(isAutoQuit && isVolumeControl ? activeColor : inactiveColor);
+        autoQuit.setText(isAutoQuit ? getString(R.string.sleep_timeout_text, quitMinutes) : getString(R.string.sleep_timeout));
+
+        volumeControl.setTextColor(isVolumeControl ? activeColor : inactiveColor);
+        volumeControl.setText(isVolumeControl ? getString(R.string.volume_timeout_text, volumeMinutes) : getString(R.string.volume_timeout));
     }
 
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
-            String minutes = SettingsHelper.getString("timeout", "0");
+            String quitMinutes = SettingsHelper.getString("timeout", "1");
 
-            timeoutText.setText(getString(R.string.x_minutes, minutes));
+            autoQuit.setText(getString(R.string.sleep_timeout_text, quitMinutes));
 
             resetQuitTimeout();
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+    };
+
+    SeekBar.OnSeekBarChangeListener onVolumeTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            SettingsHelper.setInt("volumeMinutes", seekBar.getProgress());
+
+            volumeControl.setText(getString(R.string.volume_timeout_text, Integer.toString(seekBar.getProgress())));
+
             resetVolumeReduceTimer();
         }
 
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
+        public void onStartTrackingTouch(SeekBar seekBar) {}
 
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-        }
+        public void onStopTrackingTouch(SeekBar seekBar) {}
     };
 }
