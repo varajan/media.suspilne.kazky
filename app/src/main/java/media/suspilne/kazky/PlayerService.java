@@ -251,7 +251,6 @@ public class PlayerService extends IntentService {
         playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerRadioAdapter(this));
         playerNotificationManager.setFastForwardIncrementMs(0);
         playerNotificationManager.setRewindIncrementMs(0);
-        playerNotificationManager.setStopAction(null);
         playerNotificationManager.setUseNavigationActions(false);
         playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
             @Override
