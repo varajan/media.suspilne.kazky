@@ -58,7 +58,7 @@ public class ActivityMain extends AppCompatActivity
         if (!isTalePlaying() && !isRadioPlaying()) return;
 
         int timeout = SettingsHelper.getInt("volumeMinutes");
-        timeout = timeout==0 ? 2 : timeout;
+        timeout = timeout==0 ? 5 : timeout;
 
         volumeReduceTimer = new Timer();
         volumeReduceTimer.schedule(new reduceVolume(), timeout*60*1000, timeout*60*1000);
@@ -98,7 +98,10 @@ public class ActivityMain extends AppCompatActivity
             media.setLevel(media.getLevel() - 1);
             resetVolumeReduceTimer();
 
-            if (media.getLevel() == 0) stopVolumeReduceTimer();
+            if (media.getLevel() == 0){
+                stopVolumeReduceTimer();
+                stopPlayerService();
+            }
         }
     }
 

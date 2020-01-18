@@ -179,10 +179,10 @@ public class ActivitySettings extends ActivityMain {
         String usedSpace = getString(R.string.usedSpace, SettingsHelper.formattedSize(SettingsHelper.usedSpace()));
         String freeSpace = getString(R.string.freeSpace, SettingsHelper.formattedSize(SettingsHelper.freeSpace()));
         String quitMinutes = SettingsHelper.getString("timeout", "5");
-        String volumeMinutes = SettingsHelper.getString("volumeMinutes", "2");
+        String volumeMinutes = SettingsHelper.getString("volumeMinutes", "5");
 
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
-        volumeTimeout.setProgress(SettingsHelper.getInt("volumeMinutes", 2));
+        volumeTimeout.setProgress(SettingsHelper.getInt("volumeMinutes", 5));
 
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
         autoQuit.setChecked(isAutoQuit);
@@ -220,9 +220,8 @@ public class ActivitySettings extends ActivityMain {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
-            String quitMinutes = SettingsHelper.getString("timeout", "1");
 
-            autoQuit.setText(getString(R.string.sleep_timeout_text, quitMinutes));
+            autoQuit.setText(getString(R.string.sleep_timeout_text, Integer.toString(seekBar.getProgress())));
 
             resetQuitTimeout();
         }
