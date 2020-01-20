@@ -221,7 +221,7 @@ public class ActivitySettings extends ActivityMain {
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
 
-            autoQuit.setText(getString(R.string.sleep_timeout_text, Integer.toString(seekBar.getProgress())));
+            autoQuit.setText(getString(R.string.sleep_timeout_text, Integer.toString(seekBar.getProgress() * step )));
 
             resetQuitTimeout();
         }

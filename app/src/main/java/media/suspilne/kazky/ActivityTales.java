@@ -173,11 +173,11 @@ public class ActivityTales extends ActivityMain {
                     super.stopPlayerService();
                     playBtn.setImageResource(R.mipmap.tale_play);
                     playBtn.setTag(R.mipmap.tale_play);
-                    resetVolumeReduceTimer();
+                    super.resetVolumeReduceTimer();
                 }else{
                     playTale(tale);
-                    this.resetQuitTimeout();
-                    this.resetVolumeReduceTimer();
+                    super.resetQuitTimeout();
+                    super.resetVolumeReduceTimer();
 
                     playBtn.setImageResource(R.mipmap.tale_pause);
                     playBtn.setTag(R.mipmap.tale_pause);
@@ -256,8 +256,6 @@ public class ActivityTales extends ActivityMain {
         if (scrollToTale && currentTale != null){
             currentTale.scrollIntoView();
         }
-
-        resetVolumeReduceTimer();
     }
 
     @Override

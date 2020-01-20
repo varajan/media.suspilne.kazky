@@ -101,6 +101,12 @@ public class ActivityMain extends AppCompatActivity
             if (media.getLevel() == 0){
                 stopVolumeReduceTimer();
                 stopPlayerService();
+
+                Tales.setNowPlaying(-1);
+                Intent intent = new Intent();
+                intent.setAction(SettingsHelper.application);
+                intent.putExtra("code", "SetPlayBtnIcon");
+                sendBroadcast(intent);
             }
         }
     }
