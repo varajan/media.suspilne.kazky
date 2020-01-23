@@ -82,6 +82,7 @@ class Reader{
             case R.string.vlad_fisun: return R.mipmap.vlad_fisun;
             case R.string.dmytro_schebetiuk: return R.mipmap.dmytro_schebetiiuk;
             case R.string.katia_rogova: return R.mipmap.katia_rogova;
+            case R.string.kateryna_ofliyan: return R.mipmap.kateryna_ofliyan;
             case R.string.michel_schur: return R.mipmap.michel_schur;
             case R.string.mariana_golovko: return R.mipmap.mariana_golovko;
             case R.string.marta_liubchyk: return R.mipmap.marta_liubchyk;

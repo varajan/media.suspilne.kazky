@@ -199,9 +199,9 @@
     <string name="tale_112">Пані Метелиця</string>
     <string name="tale_113">Круглий камінь</string>
     <string name="tale_114">Балакір і хазяїн</string>
-    <string name="tale_115"></string>
-    <string name="tale_116"></string>
-    <string name="tale_117"></string>
+    <string name="tale_115">Вовк і лисиця</string>
+    <string name="tale_116">Чарівне джерело</string>
+    <string name="tale_117">Хто найстарший</string>
     <string name="tale_118"></string>
     <string name="tale_119"></string>
     <string name="tale_120"></string>
@@ -247,6 +247,8 @@
     <string name="jamala_description">Співачка</string>
     <string name="katia_rogova">Катя Рогова</string>
     <string name="katia_rogova_description">Співачка INAIA</string>
+    <string name="kateryna_ofliyan">Катерина Офліян</string>
+    <string name="kateryna_ofliyan_description">Співачка, гурт Ofliyan</string>
     <string name="michel_schur">Майкл Щур</string>
     <string name="michel_schur_description">Телеведучій</string>
     <string name="mariana_golovko">Мар\'яна Головко</string>
