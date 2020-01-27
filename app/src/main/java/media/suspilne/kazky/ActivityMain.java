@@ -332,6 +332,7 @@ public class ActivityMain extends AppCompatActivity
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
             Tale[] download = new Tales().getTales(onlyFavorite).toArray(new Tale[0]);
 
+            SettingsHelper.setBoolean("checkForUpdates", false);
             new DownloadTask().execute(download);
         }
     }
