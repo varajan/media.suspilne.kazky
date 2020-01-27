@@ -1,12 +1,18 @@
 package media.suspilne.kazky;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
@@ -21,6 +27,7 @@ public class ActivitySettings extends ActivityMain {
     private Switch showOnlyFavorite;
     private Switch autoQuit;
     private Switch volumeControl;
+    private Switch parentLock;
     private SeekBar timeout;
     private SeekBar volumeTimeout;
     private int step = 5;
@@ -41,6 +48,7 @@ public class ActivitySettings extends ActivityMain {
         timeout = this.findViewById(R.id.timeout);
         volumeControl = this.findViewById(R.id.volumeControl);
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
+        parentLock = this.findViewById(R.id.parentLock);
 
         setColorsAndState();
 
@@ -48,8 +56,53 @@ public class ActivitySettings extends ActivityMain {
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
         volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
+        parentLock.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("parentLock", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
+
+        if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
+    }
+
+    int random(int min, int max) {
+        return min + (int) (Math.random() * (max - min));
+    }
+    String questionAndAnswer(){
+        int a = random(5, 10);
+        int b = random(5, 10);
+        int c = random(10, 30) - random(10, 20);
+        int x = a*b+c;
+
+        return c < 0
+                ? "" + a + "x" + b + "" + c + "?:" + x
+                : "" + a + "x" + b + "+" + c + "?:" + x;
+    }
+
+    void checkAccess(){
+        if (!SettingsHelper.getBoolean("isParent")) { finish(); }
+    }
+
+    void applyParentLock(){
+        SettingsHelper.setBoolean("isParent", false);
+
+        String questionAndAnswer = questionAndAnswer();
+        String question = questionAndAnswer.split(":")[0];
+        String answer = questionAndAnswer.split(":")[1];
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setRawInputType(Configuration.KEYBOARD_12KEY);
+
+        AlertDialog alert = new AlertDialog.Builder(ActivitySettings.this)
+            .setIcon(R.mipmap.logo)
+            .setTitle(question)
+            .setView(input)
+                .setPositiveButton(R.string.ok, (dialog, which) -> { SettingsHelper.setBoolean("isParent", input.getText().toString().equals(answer)); checkAccess(); })
+                .setNegativeButton(R.string.prev, (dialog, which) -> checkAccess())
+                .setOnDismissListener(dialog -> checkAccess() )
+            .create();
+
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alert.show();
     }
 
     void updateColor(boolean isChecked){
@@ -173,6 +226,7 @@ public class ActivitySettings extends ActivityMain {
         boolean isDownloadFavoriteTales = SettingsHelper.getBoolean("downloadFavoriteTales");
         boolean isVolumeControl = SettingsHelper.getBoolean("volumeControl");
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
+        boolean isParentLock = SettingsHelper.getBoolean("parentLock");
 
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
@@ -214,6 +268,9 @@ public class ActivitySettings extends ActivityMain {
 
         volumeControl.setTextColor(isVolumeControl ? activeColor : inactiveColor);
         volumeControl.setText(isVolumeControl ? getString(R.string.volume_timeout_text, volumeMinutes) : getString(R.string.volume_timeout));
+
+        parentLock.setTextColor(isParentLock ? activeColor : inactiveColor);
+        parentLock.setChecked(isParentLock);
     }
 
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
