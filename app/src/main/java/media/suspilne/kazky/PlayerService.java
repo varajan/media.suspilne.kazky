@@ -97,6 +97,7 @@ public class PlayerService extends IntentService {
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
         player.seekTo(position);
+
         Tales.setPause(false);
 
         playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
@@ -141,6 +142,7 @@ public class PlayerService extends IntentService {
 
                     case ExoPlayer.DISCONTINUITY_REASON_AD_INSERTION:
                         sendMessage("SetPlayBtnIcon");
+                        Tales.setDuration(Tales.getNowPlaying(), player.getDuration());
                         break;
 
                     default:

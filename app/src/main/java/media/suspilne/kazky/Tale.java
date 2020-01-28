@@ -115,6 +115,20 @@ public class Tale{
         if (tale != null) tale.setVisibility(View.VISIBLE);
     }
 
+    void setDuration(){
+        try{
+            View taleView = getTaleView();
+            TextView duration = taleView.findViewById(R.id.duration);
+            int color = SettingsHelper.getColor();
+
+            duration.setText(Tales.getDuration(id));
+            duration.setTextColor(color);
+        }catch (Exception e){
+            Kazky.logError("Failed to set duration. Tale #" + id, false);
+            Kazky.logError(e.getMessage());
+        }
+    }
+
     void setViewDetails(){
         try
         {
@@ -130,6 +144,7 @@ public class Tale{
             }
             TextView title = taleView.findViewById(R.id.title);
             TextView reader = taleView.findViewById(R.id.reader);
+
             int color = SettingsHelper.getColor();
 
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
@@ -141,6 +156,7 @@ public class Tale{
             reader.setText(readerId);
             reader.setTextColor(color);
 
+            setDuration();
             setDownloadedIcon();
         }catch (Exception e){
             Kazky.logError("Failed to load tale #" + id, false);

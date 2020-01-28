@@ -24,6 +24,19 @@ class Tales {
         SettingsHelper.setInt("tales.lastPlaying", value);
     }
 
+    public static String getDuration(int taleId){
+        return SettingsHelper.getString("duration" + taleId);
+    }
+
+    public static void setDuration(int taleId, long duration){
+        if (getDuration(taleId).length() == 0)
+        {
+            int minutes = (int)duration/1000/60;
+            int seconds = (int)duration/1000%60;
+            SettingsHelper.setString("duration" + taleId, String.format("%02d:%02d", minutes, seconds));
+        }
+    }
+
     public static int getLastPlaying(){
         return SettingsHelper.getInt("tales.lastPlaying");
     }

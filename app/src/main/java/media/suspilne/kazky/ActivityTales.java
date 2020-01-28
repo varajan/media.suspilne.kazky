@@ -251,6 +251,7 @@ public class ActivityTales extends ActivityMain {
 
             btn.setImageResource(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
             btn.setTag(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
+            tale.setDuration();
         }
 
         if (scrollToTale && currentTale != null){

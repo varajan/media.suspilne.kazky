@@ -27,8 +27,8 @@
 
         <ImageView
             android:id="@+id/play"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_alignEnd="@+id/preview"
             android:layout_alignBottom="@+id/preview"
             android:layout_marginEnd="0dp"
@@ -94,7 +94,6 @@
             app:fontFamily="@font/chalkboard"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
-
         <ImageView
             android:id="@+id/favoriteShadow"
             android:layout_width="44dp"
@@ -112,6 +111,25 @@
             android:layout_alignStart="@+id/preview"
             android:layout_alignBottom="@+id/preview"
             app:srcCompat="@drawable/ic_favorite" />
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/favorite"
+            android:layout_marginStart="55dp"
+            android:layout_marginBottom="2dp"
+            android:shadowColor="@color/black"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            app:fontFamily="@font/chalkboard"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </RelativeLayout>
 
 </LinearLayout>
