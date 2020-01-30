@@ -142,7 +142,6 @@ public class PlayerService extends IntentService {
 
                     case ExoPlayer.DISCONTINUITY_REASON_AD_INSERTION:
                         sendMessage("SetPlayBtnIcon");
-                        Tales.setDuration(Tales.getNowPlaying(), player.getDuration());
                         break;
 
                     default:

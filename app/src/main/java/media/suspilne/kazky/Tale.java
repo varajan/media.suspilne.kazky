@@ -22,11 +22,13 @@ public class Tale{
     boolean isDownloaded;
     String stream;
     String fileName;
+    String duration;
 
     Tale(){ id = -1; }
 
-    Tale(int id, int title, int name, int img){
+    Tale(int id, String duration, int title, int name, int img){
         this.id = id;
+        this.duration = duration;
         this.titleId = title;
         this.readerId = name;
         this.image = img;
@@ -115,20 +117,6 @@ public class Tale{
         if (tale != null) tale.setVisibility(View.VISIBLE);
     }
 
-    void setDuration(){
-        try{
-            View taleView = getTaleView();
-            TextView duration = taleView.findViewById(R.id.duration);
-            int color = SettingsHelper.getColor();
-
-            duration.setText(Tales.getDuration(id));
-            duration.setTextColor(color);
-        }catch (Exception e){
-            Kazky.logError("Failed to set duration. Tale #" + id, false);
-            Kazky.logError(e.getMessage());
-        }
-    }
-
     void setViewDetails(){
         try
         {
@@ -144,6 +132,7 @@ public class Tale{
             }
             TextView title = taleView.findViewById(R.id.title);
             TextView reader = taleView.findViewById(R.id.reader);
+            TextView duration = taleView.findViewById(R.id.duration);
 
             int color = SettingsHelper.getColor();
 
@@ -156,7 +145,9 @@ public class Tale{
             reader.setText(readerId);
             reader.setTextColor(color);
 
-            setDuration();
+            duration.setText(this.duration);
+            duration.setTextColor(color);
+
             setDownloadedIcon();
         }catch (Exception e){
             Kazky.logError("Failed to load tale #" + id, false);
