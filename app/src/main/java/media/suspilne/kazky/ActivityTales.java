@@ -157,8 +157,10 @@ public class ActivityTales extends ActivityMain {
     }
 
     private void showTales(){
+        boolean showBigImages = SettingsHelper.getBoolean("showBigImages");
+
         for (final Tale tale:tales.getTales()) {
-            View taleView = LayoutInflater.from(this).inflate(R.layout.tale_item, TalesList, false);
+            View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, TalesList, false);
             taleView.setTag(tale.id);
             TalesList.addView(taleView);
             tale.setViewDetails();
