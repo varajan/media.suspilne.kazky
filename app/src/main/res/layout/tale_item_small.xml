@@ -32,6 +32,18 @@
             tools:scaleType="fitXY" />
 
         <ImageView
+            android:id="@+id/downloaded_shadow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignEnd="@+id/preview"
+            android:layout_alignTop="@+id/preview"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="-20dp"
+            app:srcCompat="@drawable/ic_saved"
+            tools:scaleType="fitXY" />
+
+        <ImageView
             android:id="@+id/downloaded"
             android:layout_width="20dp"
             android:layout_height="20dp"

@@ -152,6 +152,8 @@ public class Tale{
         }catch (Exception e){
             Kazky.logError("Failed to load tale #" + id, false);
             Kazky.logError(e.getMessage());
+
+            SettingsHelper.setBoolean("showBigImages", false);
         }
     }
 

@@ -28,6 +28,7 @@ public class ActivitySettings extends ActivityMain {
     private Switch autoQuit;
     private Switch volumeControl;
     private Switch parentLock;
+    private Switch showBigImages;
     private SeekBar timeout;
     private SeekBar volumeTimeout;
     private int step = 5;
@@ -48,6 +49,7 @@ public class ActivitySettings extends ActivityMain {
         timeout = this.findViewById(R.id.timeout);
         volumeControl = this.findViewById(R.id.volumeControl);
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
+        showBigImages = this.findViewById(R.id.showBigImages);
         parentLock = this.findViewById(R.id.parentLock);
 
         setColorsAndState();
@@ -56,6 +58,7 @@ public class ActivitySettings extends ActivityMain {
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
         volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
+        showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
         parentLock.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("parentLock", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
@@ -227,6 +230,7 @@ public class ActivitySettings extends ActivityMain {
         boolean isVolumeControl = SettingsHelper.getBoolean("volumeControl");
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
+        boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
 
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
@@ -268,6 +272,9 @@ public class ActivitySettings extends ActivityMain {
 
         volumeControl.setTextColor(isVolumeControl ? activeColor : inactiveColor);
         volumeControl.setText(isVolumeControl ? getString(R.string.volume_timeout_text, volumeMinutes) : getString(R.string.volume_timeout));
+
+        showBigImages.setTextColor(isShowBigImages ? activeColor : inactiveColor);
+        showBigImages.setChecked(isShowBigImages);
 
         parentLock.setTextColor(isParentLock ? activeColor : inactiveColor);
         parentLock.setChecked(isParentLock);

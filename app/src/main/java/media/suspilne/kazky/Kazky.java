@@ -9,8 +9,6 @@ public class Kazky extends Application {
     public void onCreate() {
         super.onCreate();
 
-        new MediaVolume(this).saveLevel();
-
         SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -19,8 +17,10 @@ public class Kazky extends Application {
         editor.putString("tales.paused", String.valueOf(false));
         editor.putString("tales.lastPlaying", String.valueOf(-1));
         editor.putString("tales.nowPlaying", String.valueOf(-1));
+        editor.putString("showBigImages", sharedPreferences.getString("showBigImages", "true"));
         editor.putString("talesFilter", "");
         editor.putString("errorMessage", "");
+
         editor.apply();
     }
 
