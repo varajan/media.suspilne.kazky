@@ -18,6 +18,8 @@ public class Kazky extends Application {
         editor.putString("tales.lastPlaying", String.valueOf(-1));
         editor.putString("tales.nowPlaying", String.valueOf(-1));
         editor.putString("showBigImages", sharedPreferences.getString("showBigImages", "true"));
+        editor.putString("sortAsc", sharedPreferences.getString("sortAsc", "true"));
+        editor.putString("groupByReader", sharedPreferences.getString("groupByReader", "true"));
         editor.putString("talesFilter", "");
         editor.putString("errorMessage", "");
 

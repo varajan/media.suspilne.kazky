@@ -28,19 +28,6 @@
             android:orientation="vertical">
 
             <Switch
-                android:id="@+id/fontColor"
-                android:fontFamily="@font/chalkboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/fontColor"
-                android:textSize="16sp"
-                tools:typeface="serif"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Switch
                 android:id="@+id/downloadAllTales"
                 android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
@@ -67,6 +54,55 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Switch
+                android:id="@+id/parentLock"
+                android:fontFamily="@font/chalkboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/parentLock"
+                android:textSize="16sp"
+                tools:typeface="serif"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
+
+            <Switch
+                android:id="@+id/fontColor"
+                android:fontFamily="@font/chalkboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/fontColor"
+                android:textSize="16sp"
+                tools:typeface="serif"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="-5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Switch
+                android:id="@+id/showBigImages"
+                android:fontFamily="@font/chalkboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/showBigImages"
+                android:textSize="16sp"
+                tools:typeface="serif"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
+
+            <Switch
                 android:id="@+id/showOnlyFavorite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,6 +115,56 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
                 tools:typeface="serif" />
+
+            <Switch
+                android:id="@+id/sortAsc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
+                android:text="@string/sortAsc"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
+                tools:typeface="serif" />
+
+            <Switch
+                android:id="@+id/groupByReader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
+                android:text="@string/groupByReader"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
+                tools:typeface="serif" />
+
+            <Switch
+                android:id="@+id/shuffle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
+                android:text="@string/shuffle"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
+                tools:typeface="serif" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="-5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Switch
                 android:id="@+id/autoQuit"
@@ -133,34 +219,6 @@
                 android:progress="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/autoQuit" />
-
-            <Switch
-                android:id="@+id/showBigImages"
-                android:fontFamily="@font/chalkboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/showBigImages"
-                android:textSize="16sp"
-                tools:typeface="serif"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
-
-            <Switch
-                android:id="@+id/parentLock"
-                android:fontFamily="@font/chalkboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/parentLock"
-                android:textSize="16sp"
-                tools:typeface="serif"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
 
         </LinearLayout>
     </ScrollView>

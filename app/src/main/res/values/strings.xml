@@ -46,7 +46,7 @@
     <string name="volume_timeout_text">Зменшувати гучність кожні %s хв.</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
-    <string name="showOnlyFavorite">Відображати лише улюблені казки</string>
+    <string name="showOnlyFavorite">Відображати лише улюблені казки.\n(Відмічені "зірочкою")</string>
     <string name="nothingToShow">Нічого не знайдено</string>
     <string name="filterTalesHint">Назва чи казкар</string>
     <string name="filterReadersHint">Казкар</string>
@@ -75,6 +75,9 @@
     <string name="parentLock">Захистити Налаштування від дітей.</string>
     <string name="update">Оновити</string>
     <string name="cancel">Скасувати</string>
+    <string name="sortAsc">Сортувати казки за назвою</string>
+    <string name="groupByReader">Групувати казки за казкарем</string>
+    <string name="shuffle">Перемішати казки</string>
 
     <string name="tale_001">Заєць хвалько</string>
     <string name="tale_002">Лис, цап і мішок моркви</string>

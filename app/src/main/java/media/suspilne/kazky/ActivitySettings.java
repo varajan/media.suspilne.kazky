@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -10,7 +9,6 @@ import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -24,11 +22,16 @@ public class ActivitySettings extends ActivityMain {
     private Switch fontColor;
     private Switch downloadAllTales;
     private Switch downloadFavoriteTales;
-    private Switch showOnlyFavorite;
     private Switch autoQuit;
     private Switch volumeControl;
     private Switch parentLock;
+
     private Switch showBigImages;
+    private Switch showOnlyFavorite;
+    private Switch sortAsc;
+    private Switch groupByReader;
+    private Switch shuffle;
+
     private SeekBar timeout;
     private SeekBar volumeTimeout;
     private int step = 5;
@@ -44,24 +47,32 @@ public class ActivitySettings extends ActivityMain {
         fontColor = this.findViewById(R.id.fontColor);
         downloadAllTales = this.findViewById(R.id.downloadAllTales);
         downloadFavoriteTales = this.findViewById(R.id.downloadFavoriteTales);
-        showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
+        parentLock = this.findViewById(R.id.parentLock);
         autoQuit = this.findViewById(R.id.autoQuit);
         timeout = this.findViewById(R.id.timeout);
         volumeControl = this.findViewById(R.id.volumeControl);
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
+
         showBigImages = this.findViewById(R.id.showBigImages);
-        parentLock = this.findViewById(R.id.parentLock);
+        showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
+        sortAsc = this.findViewById(R.id.sortAsc);
+        groupByReader = this.findViewById(R.id.groupByReader);
+        shuffle = this.findViewById(R.id.shuffle);
 
         setColorsAndState();
 
         fontColor.setOnCheckedChangeListener((buttonView, isChecked) -> updateColor(isChecked));
-        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
         volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
-        showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
         parentLock.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("parentLock", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
+
+        showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
+        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
+        sortAsc.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("sortAsc", isChecked));
+        groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
+        shuffle.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("shuffle", isChecked));
 
         if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
     }
@@ -143,11 +154,32 @@ public class ActivitySettings extends ActivityMain {
 
     void setSwitch(String title, boolean isChecked){
         SettingsHelper.setBoolean(title, isChecked);
+        setSortAndOrderSwitchStates(title, isChecked);
         setColorsAndState();
 
         if(title.equals("autoQuit") || title.equals("volumeControl")){
             resetQuitTimeout();
             resetVolumeReduceTimer();
+        }
+    }
+
+    private void setSortAndOrderSwitchStates(String title, boolean isChecked){
+        if (title.equals("shuffle") && isChecked){
+            SettingsHelper.setBoolean("sortAsc", false);
+            SettingsHelper.setBoolean("groupByReader", false);
+        }
+
+        if (title.equals("shuffle") && !isChecked){
+            SettingsHelper.setBoolean("sortAsc", true);
+            SettingsHelper.setBoolean("groupByReader", true);
+        }
+
+        if (title.equals("sortAsc") && isChecked){
+            SettingsHelper.setBoolean("shuffle", false);
+        }
+
+        if (title.equals("sortAsc") && !isChecked){
+            SettingsHelper.setBoolean("shuffle", true);
         }
     }
 
@@ -231,6 +263,9 @@ public class ActivitySettings extends ActivityMain {
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
         boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
+        boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
+        boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
+        boolean isShuffle = SettingsHelper.getBoolean("shuffle");
 
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
@@ -242,7 +277,6 @@ public class ActivitySettings extends ActivityMain {
         timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
         volumeTimeout.setProgress(SettingsHelper.getInt("volumeMinutes", 5));
 
-        showOnlyFavorite.setChecked(isShowOnlyFavorite);
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
@@ -265,16 +299,27 @@ public class ActivitySettings extends ActivityMain {
         downloadFavoriteTales.setOnCheckedChangeListener(onDownloadFavoriteSelect);
         downloadFavoriteTales.setText(getString(R.string.downloadFavoriteTales) + (!isDownloadAllTales && isDownloadFavoriteTales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : ""));
 
-        showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
-
         autoQuit.setTextColor(isAutoQuit ? activeColor : inactiveColor);
         autoQuit.setText(isAutoQuit ? getString(R.string.sleep_timeout_text, quitMinutes) : getString(R.string.sleep_timeout));
 
         volumeControl.setTextColor(isVolumeControl ? activeColor : inactiveColor);
         volumeControl.setText(isVolumeControl ? getString(R.string.volume_timeout_text, volumeMinutes) : getString(R.string.volume_timeout));
 
-        showBigImages.setTextColor(isShowBigImages ? activeColor : inactiveColor);
+        showOnlyFavorite.setChecked(isShowOnlyFavorite);
+        showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
+
         showBigImages.setChecked(isShowBigImages);
+        showBigImages.setTextColor(isShowBigImages ? activeColor : inactiveColor);
+
+        sortAsc.setChecked(isSortAsc);
+        sortAsc.setTextColor(isSortAsc ? activeColor : inactiveColor);
+
+        groupByReader.setChecked(isGroupByReader);
+        groupByReader.setTextColor(isGroupByReader ? activeColor : inactiveColor);
+        groupByReader.setEnabled(!isShuffle);
+
+        shuffle.setChecked(isShuffle);
+        shuffle.setTextColor(isShuffle ? activeColor : inactiveColor);
 
         parentLock.setTextColor(isParentLock ? activeColor : inactiveColor);
         parentLock.setChecked(isParentLock);

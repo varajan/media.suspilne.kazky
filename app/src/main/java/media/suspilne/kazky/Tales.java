@@ -3,6 +3,7 @@ package media.suspilne.kazky;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 class Tales {
@@ -86,6 +87,16 @@ class Tales {
         return null;
     }
 
+    List<Integer> ttt(){
+        List<Integer> result = new ArrayList<Integer>();
+
+        for(Tale t:getTales(true)){
+            result.add(t.id);
+        }
+
+        return null;
+    }
+
     List<Tale> getTales(boolean onlyFavorite, String filter){
         List<Tale> result = new ArrayList<>();
 
@@ -96,6 +107,14 @@ class Tales {
         }
 
         return result;
+    }
+
+
+
+    List<Tale> shuffle(List<Tale> tales){
+        Collections.shuffle(tales);
+
+        return tales;
     }
 
     List<Tale> getTales(boolean onlyFavorite){
