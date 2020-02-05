@@ -330,7 +330,7 @@ public class ActivityMain extends AppCompatActivity
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
-            Tale[] download = new Tales().getTales(onlyFavorite).toArray(new Tale[0]);
+            Tale[] download = new Tales().getTalesList(onlyFavorite).toArray(new Tale[0]);
 
             SettingsHelper.setBoolean("checkForUpdates", false);
             new DownloadTask().execute(download);
@@ -353,7 +353,7 @@ public class ActivityMain extends AppCompatActivity
         boolean allAreDownloaded = true;
         boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
 
-        for (Tale tale : new Tales().getTales()){
+        for (Tale tale : new Tales().getTalesList()){
             if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded){
                 allAreDownloaded = false;
                 break;
@@ -368,7 +368,7 @@ public class ActivityMain extends AppCompatActivity
         if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
 
-        int favorites = new Tales().getTales(true).size();
+        int favorites = new Tales().getTalesList(true).size();
         if (favorites < 5) return;
 
         SettingsHelper.setBoolean("suggestToDownloadFavoriteTales", true);
@@ -388,7 +388,7 @@ public class ActivityMain extends AppCompatActivity
         for (Reader reader: new Readers().Readers) {
             int count = 0;
 
-            for (Tale tale : new Tales().getTales()) {
+            for (Tale tale : new Tales().getTalesList()) {
                 if (tale.getReader().equals(reader.getName())) count++;
             }
 

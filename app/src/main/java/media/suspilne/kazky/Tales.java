@@ -1,10 +1,13 @@
 package media.suspilne.kazky;
 
+import android.util.Log;
+
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 class Tales {
     public static boolean getShowOnlyFavorite() { return SettingsHelper.getBoolean("showOnlyFavorite"); }
@@ -46,97 +49,108 @@ class Tales {
     }
 
     Tale getPrevious(){
+        boolean skip = true;
         int nowPlaying = getNowPlaying();
-        List<Tale> tales = getTales(getShowOnlyFavorite(), getFilter());
-        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(getShowOnlyFavorite(), getFilter()));
+        List<String> ids = Arrays.asList( SettingsHelper.getString("filteredTalesList").split(";") );
+        Collections.reverse(ids);
 
-        for (int i = tales.size() - 1; i >= 0; i--){
-            Tale tale = tales.get(i);
+        for(String id:ids){
+            int taleId = Integer.parseInt(id);
 
-            if (tale.id != nowPlaying && skip) { continue; }
-            if (tale.id == nowPlaying) { skip = false; continue; }
+            if (taleId != nowPlaying && skip) continue;
+            if (taleId == nowPlaying) {skip = false; continue;}
 
-            return tale;
+            return getById(taleId);
         }
 
-        return tales.size() == 0 ? new Tale() : tales.get(tales.size() - 1);
+        return ids.size() == 0 ? new Tale() : getById(Integer.parseInt(ids.get(0)));
     }
 
     Tale getNext(){
+        boolean skip = true;
         int nowPlaying = getNowPlaying();
-        List<Tale> tales = getTales(getShowOnlyFavorite(), getFilter());
-        boolean skip = (nowPlaying > 0 && getById(nowPlaying).shouldBeShown(getShowOnlyFavorite(), getFilter()));
+        String[] ids = SettingsHelper.getString("filteredTalesList").split(";");
 
-        for (int i = 0; i < tales.size(); i++){
-            Tale tale = tales.get(i);
+        for(String id:ids){
+            int taleId = Integer.parseInt(id);
 
-            if (tale.id != nowPlaying && skip) { continue; }
-            if (tale.id == nowPlaying) { skip = false; continue; }
+            if (taleId != nowPlaying && skip) continue;
+            if (taleId == nowPlaying) {skip = false; continue;}
 
-            return tale;
+            return getById(taleId);
         }
 
-        return tales.size() == 0 ? new Tale() : tales.get(0);
+        return ids.length == 0 ? new Tale() : getById(Integer.parseInt(ids[0]));
     }
 
+    Tale getById(String id) { return getById(Integer.parseInt(id)); }
+
     Tale getById(int id){
-        for (Tale tale:getTales()) {
+        for (Tale tale:items) {
             if (tale.id == id) return tale;
         }
 
         return null;
     }
 
-    List<Integer> ttt(){
-        List<Integer> result = new ArrayList<Integer>();
+    int compare(String arg1, String arg2) {
+        Collator collator = Collator.getInstance(new Locale("uk", "UA"));
+        collator.setStrength(Collator.PRIMARY);
 
-        for(Tale t:getTales(true)){
-            result.add(t.id);
-        }
-
-        return null;
+        return collator.compare(arg1, arg2);
     }
 
-    List<Tale> getTales(boolean onlyFavorite, String filter){
+    public void setTalesList(){
+        boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
+        boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
+        String list = "";
+        List<Tale> result = new ArrayList<>(items);
+
+        if (!isSortAsc){ Collections.shuffle(result); }
+        if (isSortAsc && !isGroupByReader){ Collections.sort(result, (tale1, tale2) -> compare(tale1.getTitle(), tale2.getTitle())); }
+        if (isSortAsc && isGroupByReader){
+            Collections.sort(result, (tale1, tale2)
+                    -> tale1.getReader().equals(tale2.getReader())
+                    ?  compare(tale1.getTitle(), tale2.getTitle())
+                    :  compare(tale1.getReader(), tale2.getReader()));
+        }
+
+        for (Tale tale:result) { list += tale.id + ";"; }
+
+        SettingsHelper.setString("talesList", list);
+    }
+
+    public List<Tale> getTalesList(boolean favoriteOnly){
         List<Tale> result = new ArrayList<>();
 
-        for (Tale tale:getTales()) {
-            if (tale.shouldBeShown(onlyFavorite, filter)){
-                result.add(tale);
-            }
+        for (Tale tale: getTalesList()) {
+            if (!favoriteOnly || tale.isFavorite) result.add(tale);
         }
 
         return result;
     }
 
-
-
-    List<Tale> shuffle(List<Tale> tales){
-        Collections.shuffle(tales);
-
-        return tales;
-    }
-
-    List<Tale> getTales(boolean onlyFavorite){
+    public List<Tale> getTalesList(){
         List<Tale> result = new ArrayList<>();
 
-        for (Tale tale:items) {
-            if (!onlyFavorite || tale.isFavorite) result.add(tale);
-        }
+        if (SettingsHelper.getString("talesList", "").length() == 0) setTalesList();
 
-        Collections.sort(result, (tale1, tale2)
-                -> tale1.getReader().equals(tale2.getReader())
-                ?  tale1.getTitle().compareTo(tale2.getTitle())
-                :  tale1.getReader().compareTo(tale2.getReader()));
+        for(String id:SettingsHelper.getString("talesList").split(";")){
+            result.add(getById(Integer.parseInt(id)));
+        }
 
         return result;
     }
 
-    List<Tale> getTales(){
-        return getTales(false);
+    int getFavoriteCount(){
+        int result = 0;
+
+        for(Tale tale:items) if (tale.isFavorite) result++;
+
+        return result;
     }
 
-    private List<Tale> items = new ArrayList<>(Arrays.asList(
+    public List<Tale> items = new ArrayList<>(Arrays.asList(
             new Tale(1,  "02:04", R.string.tale_001, R.string.andrii_hlyvniuk,      SettingsHelper.getBoolean("showBigImages") ? R.drawable.t001 : R.drawable.t001_min),
             new Tale(2,  "02:28", R.string.tale_002, R.string.andrii_hlyvniuk,      SettingsHelper.getBoolean("showBigImages") ? R.drawable.t002 : R.drawable.t002_min),
             new Tale(3,  "02:10", R.string.tale_003, R.string.andrii_hlyvniuk,      SettingsHelper.getBoolean("showBigImages") ? R.drawable.t003 : R.drawable.t003_min),

@@ -46,7 +46,7 @@
     <string name="volume_timeout_text">Зменшувати гучність кожні %s хв.</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
-    <string name="showOnlyFavorite">Відображати лише улюблені казки.\n(Відмічені "зірочкою")</string>
+    <string name="showOnlyFavorite">Відображати лише улюблені казки (Відмічені \"зірочкою\")</string>
     <string name="nothingToShow">Нічого не знайдено</string>
     <string name="filterTalesHint">Назва чи казкар</string>
     <string name="filterReadersHint">Казкар</string>
@@ -61,22 +61,21 @@
     <string name="continueDownload">Продовжити завантаження?</string>
     <string name="not_all_tales">Не всі казки завантажено.</string>
     <string name="not_downloaded_favorite_tales">Не всі улюблені казки завантажено.</string>
-    <string name="freeSpace">\nДоступно: %s вільного місця.</string>
-    <string name="usedSpace">\nВикористано: %s.</string>
+    <string name="freeSpace">\n(Доступно: %s вільного місця)</string>
+    <string name="usedSpace">\n(Використано: %s)</string>
     <string name="fontColor">Змінити колір тексту</string>
-    <string name="downloadAllTales">Зберігати всі казки на пристрої.</string>
-    <string name="downloadFavoriteTales">Зберігати улюблені казки на пристрої.</string>
+    <string name="downloadAllTales">Зберігати всі казки на пристрої</string>
+    <string name="downloadFavoriteTales">Зберігати улюблені казки на пристрої</string>
     <string name="downloadAllTalesQuestion">Зберігти всі казки на пристрої? Для цього потрібно приблизно %s вільного місця.</string>
     <string name="downloadFavoriteTalesQuestion">Зберігати тільки улюблені казки на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTalesQuestion">Видалити збережені казки? Улюблені казки залишаться на пристрої.</string>
     <string name="clearFavoriteTalesQuestion">Видалити збережені улюблені казки? Надалі для прослуховування буде потрібен Інтернет.</string>
     <string name="newVersion">Доступна нова версія %s!</string>
-    <string name="showBigImages">Великі зображення для Казок. (Впливає на швидкість роботи)</string>
-    <string name="parentLock">Захистити Налаштування від дітей.</string>
+    <string name="showBigImages">Великі зображення для Казок\n(Впливає на швидкість роботи)</string>
+    <string name="parentLock">Захистити Налаштування від дітей</string>
     <string name="update">Оновити</string>
     <string name="cancel">Скасувати</string>
     <string name="sortAsc">Сортувати казки за назвою</string>
-    <string name="groupByReader">Групувати казки за казкарем</string>
     <string name="shuffle">Перемішати казки</string>
 
     <string name="tale_001">Заєць хвалько</string>
