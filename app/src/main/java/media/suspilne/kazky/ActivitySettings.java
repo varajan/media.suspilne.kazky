@@ -29,6 +29,7 @@ public class ActivitySettings extends ActivityMain {
     private Switch showBigImages;
     private Switch showOnlyFavorite;
     private Switch sortAsc;
+    private Switch groupByReader;
     private Switch shuffle;
 
     private SeekBar timeout;
@@ -55,6 +56,7 @@ public class ActivitySettings extends ActivityMain {
         showBigImages = this.findViewById(R.id.showBigImages);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         sortAsc = this.findViewById(R.id.sortAsc);
+        groupByReader = this.findViewById(R.id.groupByReader);
         shuffle = this.findViewById(R.id.shuffle);
 
         setColorsAndState();
@@ -69,6 +71,7 @@ public class ActivitySettings extends ActivityMain {
         showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         sortAsc.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("sortAsc", isChecked));
+        groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
         shuffle.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("shuffle", isChecked));
 
         if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
@@ -161,9 +164,24 @@ public class ActivitySettings extends ActivityMain {
     }
 
     public static void setSorting(String title, boolean isChecked){
-        if (!title.equals("shuffle") && !title.equals("sortAsc")) return;
+        if (!title.equals("shuffle") && !title.equals("sortAsc") && !title.equals("groupByReader")) return;
 
-        SettingsHelper.setBoolean(title.equals("shuffle") ? "sortAsc" : "shuffle", !isChecked);
+        if (title.equals("shuffle") && isChecked){
+            SettingsHelper.setBoolean("sortAsc", false);
+            SettingsHelper.setBoolean("groupByReader", false);
+        }
+
+        if (title.equals("shuffle") && !isChecked){
+            SettingsHelper.setBoolean("sortAsc", true);
+        }
+
+        if (title.equals("sortAsc") && isChecked){
+            SettingsHelper.setBoolean("shuffle", false);
+        }
+
+        if (title.equals("sortAsc") && !isChecked){
+            SettingsHelper.setBoolean("shuffle", true);
+        }
 
         new Tales().setTalesList();
     }
@@ -298,6 +316,10 @@ public class ActivitySettings extends ActivityMain {
 
         sortAsc.setChecked(isSortAsc);
         sortAsc.setTextColor(isSortAsc ? activeColor : inactiveColor);
+
+        groupByReader.setChecked(isGroupByReader);
+        groupByReader.setTextColor(isGroupByReader ? activeColor : inactiveColor);
+        groupByReader.setEnabled(!isShuffle);
 
         shuffle.setChecked(isShuffle);
         shuffle.setTextColor(isShuffle ? activeColor : inactiveColor);

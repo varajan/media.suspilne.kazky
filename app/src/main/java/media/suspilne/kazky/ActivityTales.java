@@ -23,7 +23,6 @@ import android.widget.Toast;
 public class ActivityTales extends ActivityMain {
     private Tales tales;
     private ImageView favoriteIcon;
-    private ImageView orderIcon;
     private ImageView searchIcon;
     private EditText searchField;
     private LinearLayout TalesList;
@@ -84,7 +83,6 @@ public class ActivityTales extends ActivityMain {
     @SuppressLint("ClickableViewAccessibility")
     private void addSearchField() {
         favoriteIcon = findViewById(R.id.showFavorite);
-        orderIcon = findViewById(R.id.orderIcon);
         searchIcon = findViewById(R.id.searchIcon);
         searchField = findViewById(R.id.searchField);
 
@@ -94,13 +92,6 @@ public class ActivityTales extends ActivityMain {
         favoriteIcon.setOnClickListener(v -> {
             Tales.setShowOnlyFavorite(!Tales.getShowOnlyFavorite());
             filterTales();
-        });
-
-        orderIcon.setOnClickListener(v -> {
-            // change option
-            // reorder tales
-            // 
-            //
         });
 
         searchField.setText(Tales.getFilter());
