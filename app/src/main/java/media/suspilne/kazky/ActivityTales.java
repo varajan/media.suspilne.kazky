@@ -91,6 +91,9 @@ public class ActivityTales extends ActivityMain {
 
         favoriteIcon.setOnClickListener(v -> {
             Tales.setShowOnlyFavorite(!Tales.getShowOnlyFavorite());
+            Toast.makeText(getActivity(),
+                    Tales.getShowOnlyFavorite() ? R.string.showOnlyFavoriteOn : R.string.showOnlyFavoriteOff,
+                    Toast.LENGTH_SHORT).show();
             filterTales();
         });
 
@@ -189,7 +192,13 @@ public class ActivityTales extends ActivityMain {
                 }
             });
 
-            taleView.findViewById(R.id.favorite).setOnClickListener(v -> { tale.resetFavorite(); filterTales(); });
+            taleView.findViewById(R.id.favorite).setOnClickListener(v -> {
+                tale.resetFavorite();
+                Toast.makeText(getActivity(),
+                        tale.isFavorite ? getString(R.string.addedToFavorites, tale.getTitle()) : getString(R.string.removedFromFavorites, tale.getTitle()),
+                        Toast.LENGTH_SHORT).show();
+                filterTales();
+            });
         }
 
         setPlayBtnIcon();

@@ -47,6 +47,10 @@
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки (Відмічені \"зірочкою\")</string>
+    <string name="showOnlyFavoriteOn">Улюблені казки</string>
+    <string name="showOnlyFavoriteOff">Усі казки</string>
+    <string name="addedToFavorites">\'%s\' додано до списку \'Улюблені\'</string>
+    <string name="removedFromFavorites">\'%s\' видалено зі списку \'Улюблені\'</string>
     <string name="nothingToShow">Нічого не знайдено</string>
     <string name="filterTalesHint">Назва чи казкар</string>
     <string name="filterReadersHint">Казкар</string>
@@ -164,7 +168,7 @@
     <string name="tale_076">Хвалькувата муха</string>
     <string name="tale_077">Вівчар Василько і золоті гори</string>
     <string name="tale_078">Чому тигр такий злий на кота</string>
-    <string name="tale_079">Як Жжек ходив щастя шукати</string>
+    <string name="tale_079">Як Джек ходив щастя шукати</string>
     <string name="tale_080">Як жаби подорожували</string>
 
     <string name="tale_081">Полохлива душа</string>

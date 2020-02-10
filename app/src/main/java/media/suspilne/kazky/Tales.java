@@ -1,7 +1,5 @@
 package media.suspilne.kazky;
 
-import android.util.Log;
-
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +61,7 @@ class Tales {
             return getById(taleId);
         }
 
-        return ids.size() == 0 ? new Tale() : getById(Integer.parseInt(ids.get(0)));
+        return ids.size() == 0 ? new Tale() : getById(ids.get(0));
     }
 
     Tale getNext(){
@@ -80,7 +78,7 @@ class Tales {
             return getById(taleId);
         }
 
-        return ids.length == 0 ? new Tale() : getById(Integer.parseInt(ids[0]));
+        return ids.length == 0 ? new Tale() : getById(ids[0]);
     }
 
     Tale getById(String id) { return getById(Integer.parseInt(id)); }
@@ -103,7 +101,7 @@ class Tales {
     public void setTalesList(){
         boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
         boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
-        String list = "";
+        StringBuilder list = new StringBuilder();
         List<Tale> result = new ArrayList<>(items);
 
         if (!isSortAsc){ Collections.shuffle(result); }
@@ -115,9 +113,9 @@ class Tales {
                     :  compare(tale1.getReader(), tale2.getReader()));
         }
 
-        for (Tale tale:result) { list += tale.id + ";"; }
+        for (Tale tale:result) { list.append(tale.id).append(";"); }
 
-        SettingsHelper.setString("talesList", list);
+        SettingsHelper.setString("talesList", list.toString());
     }
 
     public List<Tale> getTalesList(boolean favoriteOnly){
@@ -136,7 +134,7 @@ class Tales {
         if (SettingsHelper.getString("talesList", "").length() == 0) setTalesList();
 
         for(String id:SettingsHelper.getString("talesList").split(";")){
-            result.add(getById(Integer.parseInt(id)));
+            result.add(getById(id));
         }
 
         return result;

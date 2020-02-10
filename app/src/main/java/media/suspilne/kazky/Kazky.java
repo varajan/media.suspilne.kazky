@@ -19,6 +19,7 @@ public class Kazky extends Application {
         editor.putString("tales.nowPlaying", String.valueOf(-1));
         editor.putString("sortAsc", sharedPreferences.getString("sortAsc", "true"));
         editor.putString("talesFilter", "");
+        editor.putString("talesList", "");
         editor.putString("errorMessage", "");
 
         editor.apply();
