@@ -67,7 +67,7 @@ class Tales {
     Tale getNext(){
         boolean skip = true;
         int nowPlaying = getNowPlaying();
-        String[] ids = SettingsHelper.getString("filteredTalesList").split(";");
+        List<String> ids = ListHelper.removeBlank(SettingsHelper.getString("filteredTalesList").split(";"));
 
         for(String id:ids){
             int taleId = Integer.parseInt(id);
@@ -78,10 +78,12 @@ class Tales {
             return getById(taleId);
         }
 
-        return ids.length == 0 ? new Tale() : getById(ids[0]);
+        return ids.size() == 0 ? new Tale() : getById(ids.get(0));
     }
 
-    Tale getById(String id) { return getById(Integer.parseInt(id)); }
+    Tale getById(String id) {
+        return getById(Integer.parseInt(id));
+    }
 
     Tale getById(int id){
         for (Tale tale:items) {
