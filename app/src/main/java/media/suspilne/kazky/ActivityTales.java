@@ -196,7 +196,7 @@ public class ActivityTales extends ActivityMain {
                 tale.resetFavorite();
                 Toast.makeText(getActivity(),
                         tale.isFavorite ? getString(R.string.addedToFavorites, tale.getTitle()) : getString(R.string.removedFromFavorites, tale.getTitle()),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
                 filterTales();
             });
         }

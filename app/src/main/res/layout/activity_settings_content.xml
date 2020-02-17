@@ -84,7 +84,7 @@
                 android:id="@+id/progressBar1"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp" />
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="-5dp" />
 
@@ -164,7 +164,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="-5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp" />
 
             <Switch
                 android:id="@+id/autoQuit"
@@ -219,6 +219,14 @@
                 android:progress="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/autoQuit" />
+
+            <ProgressBar
+                android:id="@+id/progressBar3"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="-5dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
         </LinearLayout>
     </ScrollView>

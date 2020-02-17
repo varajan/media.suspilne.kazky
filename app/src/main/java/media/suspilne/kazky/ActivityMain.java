@@ -49,7 +49,7 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void stopQuitTimer(){
-        if (quitTimer != null) quitTimer.cancel();
+        if (quitTimer != null) { quitTimer.cancel(); quitTimer = null; }
     }
 
     protected void resetVolumeReduceTimer(){
@@ -58,10 +58,10 @@ public class ActivityMain extends AppCompatActivity
         if (!isTalePlaying() && !isRadioPlaying()) return;
 
         int timeout = SettingsHelper.getInt("volumeMinutes");
-        timeout = timeout==0 ? 5 : timeout;
+        timeout = timeout == 0 ? 5 : timeout;
 
         volumeReduceTimer = new Timer();
-        volumeReduceTimer.schedule(new reduceVolume(), timeout*60*1000, timeout*60*1000);
+        volumeReduceTimer.schedule(new reduceVolume(), timeout * 60 * 1000);
     }
 
     protected void resetQuitTimeout(){
@@ -95,10 +95,11 @@ public class ActivityMain extends AppCompatActivity
         public void run(){
             MediaVolume media = new MediaVolume();
 
-            media.setLevel(media.getLevel() - 1);
-            resetVolumeReduceTimer();
-
-            if (media.getLevel() == 0){
+            if (media.getLevel() > 1) {
+                media.setLevel(media.getLevel() - 1);
+                resetVolumeReduceTimer();
+            }else{
+                media.setLevel(media.getMaxLevel() / 2);
                 stopVolumeReduceTimer();
                 stopPlayerService();
 
