@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -133,11 +134,24 @@ public class ActivityMain extends AppCompatActivity
         }
         return false;
     }
-    protected boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+    protected boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected() && isNetworkSpeedOk();
+    }
+
+    private boolean isNetworkSpeedOk() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager != null
+                ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
+                : null;
+
+        int downSpeed = networkCapabilities != null ? networkCapabilities.getLinkDownstreamBandwidthKbps() : 0;
+        int upSpeed   = networkCapabilities != null ? networkCapabilities.getLinkUpstreamBandwidthKbps() : 0;
+        int limit = 20_000;
+
+        return downSpeed > limit && upSpeed > limit;
     }
 
     @Override
