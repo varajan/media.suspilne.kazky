@@ -53,7 +53,7 @@ public class Readers {
             new Reader(R.string.timur_miroshnychenko, R.string.timur_miroshnychenko_description),
             new Reader(R.string.hrystyna_soloviy, R.string.hrystyna_soloviy_description),
             new Reader(R.string.julia_jurina, R.string.julia_jurina_description),
-            new Reader(R.string.jaroslav_ljudgin, R.string.jaroslav_ljudgin_description),
+            new Reader(R.string.jaroslav_lodygin, R.string.jaroslav_lodygin_description),
             new Reader(R.string.ivan_marunych, R.string.ivan_marunych_description),
             new Reader(R.string.nata_smirnova, R.string.nata_smirnova_description),
             new Reader(R.string.oleg_moskalenko, R.string.oleg_moskalenko_description),
