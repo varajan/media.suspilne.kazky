@@ -207,7 +207,7 @@ public class PlayerService extends IntentService {
     }
 
     private void playTale(Tale tale){
-        if (tale.id != -1){
+        if (tale.id != -1 && !SettingsHelper.getBoolean(("stopPlaybackOnTimeout"))){
             long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
 
             Tales.setNowPlaying(tale.id);

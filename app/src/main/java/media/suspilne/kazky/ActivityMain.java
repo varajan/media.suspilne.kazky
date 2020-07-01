@@ -46,11 +46,20 @@ public class ActivityMain extends AppCompatActivity
     public static Activity getActivity(){ return activity; }
 
     private void stopVolumeReduceTimer(){
-        if (volumeReduceTimer != null) { volumeReduceTimer.cancel(); volumeReduceTimer = null; }
+        if (volumeReduceTimer != null) {
+            volumeReduceTimer.cancel();
+            volumeReduceTimer = null;
+        }
     }
 
     private void stopQuitTimer(){
-        if (quitTimer != null) { quitTimer.cancel(); quitTimer = null; }
+        if (quitTimer != null) {
+            quitTimer.cancel();
+            quitTimer = null;
+        }
+
+
+        SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
     }
 
     protected void resetVolumeReduceTimer(){
@@ -84,10 +93,15 @@ public class ActivityMain extends AppCompatActivity
         public void run() {
             stopVolumeReduceTimer();
 
-            Intent intent = new Intent();
-            intent.setAction(SettingsHelper.application);
-            intent.putExtra("code", "StopPlay");
-            sendBroadcast(intent);
+            if (isRadioPlaying()){
+                Intent intent = new Intent();
+                intent.setAction(SettingsHelper.application);
+                intent.putExtra("code", "StopPlay");
+                sendBroadcast(intent);
+            }
+            else{
+                SettingsHelper.setBoolean("stopPlaybackOnTimeout", true);
+            }
         }
     }
 
@@ -138,6 +152,7 @@ public class ActivityMain extends AppCompatActivity
     protected boolean isNetworkAvailable(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
         return activeNetworkInfo != null && activeNetworkInfo.isConnected() && isNetworkSpeedOk();
     }
 
@@ -149,9 +164,8 @@ public class ActivityMain extends AppCompatActivity
 
         int downSpeed = networkCapabilities != null ? networkCapabilities.getLinkDownstreamBandwidthKbps() : 0;
         int upSpeed   = networkCapabilities != null ? networkCapabilities.getLinkUpstreamBandwidthKbps() : 0;
-        int limit = 20_000;
 
-        return downSpeed > limit && upSpeed > limit;
+        return downSpeed > 20_000 && upSpeed > 10_000;
     }
 
     @Override
