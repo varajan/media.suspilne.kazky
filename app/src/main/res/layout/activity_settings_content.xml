@@ -10,97 +10,98 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:id="@+id/list"
-            app:layout_constraintTop_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="parent">
 
             <Switch
                 android:id="@+id/downloadAllTales"
-                android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
                 android:text="@string/downloadAllTales"
                 android:textSize="16sp"
-                tools:typeface="serif"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:typeface="serif" />
 
             <Switch
                 android:id="@+id/downloadFavoriteTales"
-                android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
                 android:text="@string/downloadFavoriteTales"
                 android:textSize="16sp"
-                tools:typeface="serif"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:typeface="serif" />
 
             <Switch
                 android:id="@+id/parentLock"
-                android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
                 android:text="@string/parentLock"
                 android:textSize="16sp"
-                tools:typeface="serif"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                tools:typeface="serif" />
 
             <Switch
                 android:id="@+id/fontColor"
-                android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
                 android:text="@string/fontColor"
                 android:textSize="16sp"
-                tools:typeface="serif"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:typeface="serif" />
 
             <ProgressBar
                 android:id="@+id/progressBar1"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="30dp" />
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="-5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="-5dp" />
 
             <Switch
                 android:id="@+id/showBigImages"
-                android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
                 android:text="@string/showBigImages"
                 android:textSize="16sp"
-                tools:typeface="serif"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                tools:typeface="serif" />
 
             <Switch
                 android:id="@+id/showOnlyFavorite"
@@ -161,32 +162,32 @@
             <ProgressBar
                 android:id="@+id/progressBar2"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="-5dp"
                 android:layout_width="match_parent"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="-5dp" />
 
             <Switch
                 android:id="@+id/autoQuit"
-                android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
                 android:text="@string/sleep_timeout"
                 android:textSize="16sp"
-                tools:typeface="serif"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                tools:typeface="serif" />
 
             <SeekBar
                 android:id="@+id/timeout"
                 android:layout_width="match_parent"
                 android:layout_height="18dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:max="36"
                 android:min="1"
                 android:progress="6"
@@ -195,25 +196,25 @@
 
             <Switch
                 android:id="@+id/volumeControl"
-                android:fontFamily="@font/chalkboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
                 android:text="@string/volume_timeout"
                 android:textSize="16sp"
-                tools:typeface="serif"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite" />
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                tools:typeface="serif" />
 
             <SeekBar
                 android:id="@+id/volumeControlTimeout"
                 android:layout_width="match_parent"
                 android:layout_height="18dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:max="15"
                 android:min="2"
                 android:progress="1"
@@ -223,10 +224,10 @@
             <ProgressBar
                 android:id="@+id/progressBar3"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="-5dp"
                 android:layout_width="match_parent"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="-5dp" />
 
         </LinearLayout>
     </ScrollView>

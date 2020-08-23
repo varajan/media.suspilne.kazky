@@ -58,7 +58,6 @@ public class ActivityMain extends AppCompatActivity
             quitTimer = null;
         }
 
-
         SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
     }
 

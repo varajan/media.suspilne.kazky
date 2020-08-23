@@ -15,6 +15,7 @@ import java.net.URL;
 
 public class Tale{
     public int id;
+    public int introTime;
     private int titleId;
     private int readerId;
     public int image;
@@ -26,8 +27,9 @@ public class Tale{
 
     Tale(){ id = -1; }
 
-    Tale(int id, String duration, int title, int name, int img){
+    Tale(int id, String duration, int intro, int title, int name, int img){
         this.id = id;
+        this.introTime = intro;
         this.duration = duration;
         this.titleId = title;
         this.readerId = name;
