@@ -31,6 +31,7 @@ public class ActivitySettings extends ActivityMain {
     private Switch sortAsc;
     private Switch groupByReader;
     private Switch shuffle;
+    private Switch skipIntro;
 
     private SeekBar timeout;
     private SeekBar volumeTimeout;
@@ -58,6 +59,7 @@ public class ActivitySettings extends ActivityMain {
         sortAsc = this.findViewById(R.id.sortAsc);
         groupByReader = this.findViewById(R.id.groupByReader);
         shuffle = this.findViewById(R.id.shuffle);
+        skipIntro = this.findViewById(R.id.skipIntro);
 
         setColorsAndState();
 
@@ -73,6 +75,7 @@ public class ActivitySettings extends ActivityMain {
         sortAsc.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("sortAsc", isChecked));
         groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
         shuffle.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("shuffle", isChecked));
+        skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
 
         if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
     }
@@ -269,6 +272,7 @@ public class ActivitySettings extends ActivityMain {
         boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
         boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
         boolean isShuffle = SettingsHelper.getBoolean("shuffle");
+        boolean isSkipIntro = SettingsHelper.getBoolean("skipIntro");
 
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
@@ -323,6 +327,9 @@ public class ActivitySettings extends ActivityMain {
 
         shuffle.setChecked(isShuffle);
         shuffle.setTextColor(isShuffle ? activeColor : inactiveColor);
+
+        skipIntro.setChecked(isSkipIntro);
+        skipIntro.setTextColor(isSkipIntro ? activeColor : inactiveColor);
 
         parentLock.setTextColor(isParentLock ? activeColor : inactiveColor);
         parentLock.setChecked(isParentLock);

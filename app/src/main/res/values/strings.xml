@@ -82,6 +82,7 @@
     <string name="cancel">Скасувати</string>
     <string name="sortAsc">Сортувати казки за назвою</string>
     <string name="shuffle">Перемішати казки</string>
+    <string name="skipIntro">Пропускати мелодію перед казкою</string>
 
     <string name="tale_001">Заєць хвалько</string>
     <string name="tale_002">Лис, цап і мішок моркви</string>
