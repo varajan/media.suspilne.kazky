@@ -178,6 +178,7 @@ public class ActivityMain extends AppCompatActivity
 
         switch (currentView){
             case R.id.tales_menu:
+            case R.id.coloring_menu:
                 setContentView(R.layout.activity_tales);
                 break;
 
@@ -313,6 +314,12 @@ public class ActivityMain extends AppCompatActivity
             case R.id.settings_menu:
                 if (currentView != R.id.settings_menu) {
                     openActivity(ActivitySettings.class);
+                }
+                break;
+
+            case R.id.coloring_menu:
+                if (currentView != R.id.coloring_menu) {
+                    openActivity(ActivityColorings.class);
                 }
                 break;
 

@@ -3,6 +3,7 @@
     <string name="requiredSpace">600</string>
     <string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
+    <string name="coloringUrl">https://kazky.suspilne.media/img/rozmalyovky/pdf/%02d.pdf</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -11,6 +12,7 @@
     <string name="radio">Радіо</string>
     <string name="tales">Казки</string>
     <string name="settings">Налаштування</string>
+    <string name="coloring">Розмальовки</string>
     <string name="readers">Казкарі</string>
     <string name="info">Про програму</string>
     <string name="radio_description">Радіо хвиля авторських казок українською мовою для дітей</string>
@@ -44,6 +46,7 @@
     <string name="sleep_timeout_text">Зупинити відтворення через %s хв.</string>
     <string name="volume_timeout">Поступово зменшувати гучність</string>
     <string name="volume_timeout_text">Зменшувати гучність кожні %s хв.</string>
+    <string name="coloring_download">Розмальовку збережено в папку Downloads</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки (Відмічені \"зірочкою\")</string>

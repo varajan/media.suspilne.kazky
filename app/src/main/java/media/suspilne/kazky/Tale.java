@@ -16,6 +16,7 @@ import java.net.URL;
 public class Tale{
     public int id;
     public int introTime;
+    public int coloring;
     private int titleId;
     private int readerId;
     public int image;
@@ -27,9 +28,10 @@ public class Tale{
 
     Tale(){ id = -1; }
 
-    Tale(int id, String duration, int intro, int title, int name, int img){
+    Tale(int id, String duration, int intro, int coloring, int title, int name, int img){
         this.id = id;
         this.introTime = intro;
+        this.coloring = coloring;
         this.duration = duration;
         this.titleId = title;
         this.readerId = name;
@@ -151,6 +153,46 @@ public class Tale{
             duration.setTextColor(color);
 
             setDownloadedIcon();
+        }catch (Exception e){
+            Kazky.logError("Failed to load tale #" + id, false);
+            Kazky.logError(e.getMessage());
+
+            SettingsHelper.setBoolean("showBigImages", false);
+        }
+    }
+
+    void setColoringDetails(boolean showBigImages){
+        try
+        {
+            Bitmap preview = null;
+            View taleView = getTaleView();
+
+            try {
+                preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image);
+            }
+            catch(OutOfMemoryError outOfMemoryError){
+                Kazky.logError("Failed to load tale #" + id + " preview image", false);
+                Kazky.logError(outOfMemoryError.getMessage());
+            }
+            TextView title = taleView.findViewById(R.id.title);
+            TextView reader = taleView.findViewById(R.id.reader);
+            TextView duration = taleView.findViewById(R.id.duration);
+
+            int color = SettingsHelper.getColor();
+
+            if (preview != null) ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
+
+            title.setText(titleId);
+            title.setTextColor(color);
+
+            reader.setText(readerId);
+            reader.setTextColor(color);
+
+            duration.setText("");
+
+            if (showBigImages) ((ImageView)taleView.findViewById(R.id.favoriteShadow)).setVisibility(View.INVISIBLE);
+            ((ImageView)taleView.findViewById(R.id.favorite)).setVisibility(View.INVISIBLE);
+            ((ImageView)taleView.findViewById(R.id.play)).setImageResource(R.mipmap.download);
         }catch (Exception e){
             Kazky.logError("Failed to load tale #" + id, false);
             Kazky.logError(e.getMessage());

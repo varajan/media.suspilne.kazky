@@ -17,6 +17,10 @@
             android:icon="@drawable/readers"
             android:title="@string/readers" />
         <item
+            android:id="@+id/coloring_menu"
+            android:icon="@drawable/ic_coloring"
+            android:title="@string/coloring" />
+        <item
             android:id="@+id/settings_menu"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings" />
