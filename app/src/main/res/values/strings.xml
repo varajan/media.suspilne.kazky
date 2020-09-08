@@ -46,7 +46,8 @@
     <string name="sleep_timeout_text">Зупинити відтворення через %s хв.</string>
     <string name="volume_timeout">Поступово зменшувати гучність</string>
     <string name="volume_timeout_text">Зменшувати гучність кожні %s хв.</string>
-    <string name="coloring_download">Розмальовку збережено в папку Downloads</string>
+    <string name="coloring_download">Розмальовку буде збережено в папку Downloads</string>
+    <string name="no_write_permission">Програма не має дозволу для збереження файлів.</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки (Відмічені \"зірочкою\")</string>
