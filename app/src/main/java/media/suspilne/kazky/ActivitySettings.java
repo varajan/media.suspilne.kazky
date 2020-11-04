@@ -8,9 +8,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
@@ -28,9 +31,8 @@ public class ActivitySettings extends ActivityMain {
 
     private Switch showBigImages;
     private Switch showOnlyFavorite;
-    private Switch sortAsc;
+    private RadioGroup sorting;
     private Switch groupByReader;
-    private Switch shuffle;
     private Switch skipIntro;
 
     private SeekBar timeout;
@@ -56,12 +58,12 @@ public class ActivitySettings extends ActivityMain {
 
         showBigImages = this.findViewById(R.id.showBigImages);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
-        sortAsc = this.findViewById(R.id.sortAsc);
+        sorting = this.findViewById(R.id.sorting);
         groupByReader = this.findViewById(R.id.groupByReader);
-        shuffle = this.findViewById(R.id.shuffle);
         skipIntro = this.findViewById(R.id.skipIntro);
 
         setColorsAndState();
+        setSorting();
 
         fontColor.setOnCheckedChangeListener((buttonView, isChecked) -> updateColor(isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
@@ -72,9 +74,7 @@ public class ActivitySettings extends ActivityMain {
 
         showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
-        sortAsc.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("sortAsc", isChecked));
         groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
-        shuffle.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("shuffle", isChecked));
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
 
         if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
@@ -155,9 +155,8 @@ public class ActivitySettings extends ActivityMain {
             .show();
     }
 
-    void setSwitch(String title, boolean isChecked){
+    private void setSwitch(String title, boolean isChecked){
         SettingsHelper.setBoolean(title, isChecked);
-        setSorting(title, isChecked);
         setColorsAndState();
 
         if(title.equals("autoQuit") || title.equals("volumeControl")){
@@ -166,26 +165,30 @@ public class ActivitySettings extends ActivityMain {
         }
     }
 
-    public static void setSorting(String title, boolean isChecked){
-        if (!title.equals("shuffle") && !title.equals("sortAsc") && !title.equals("groupByReader")) return;
+    private void setSorting() {
+        switch (sorting.getCheckedRadioButtonId()){
+            case R.id.shuffle:
+                SettingsHelper.setString("sorting", "shuffle");
+                groupByReader.setVisibility(View.GONE);
+                break;
 
-        if (title.equals("shuffle") && isChecked){
-            SettingsHelper.setBoolean("sortAsc", false);
-            SettingsHelper.setBoolean("groupByReader", false);
+            case R.id.sortAsc:
+                SettingsHelper.setString("sorting", "sortAsc");
+                groupByReader.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.sort19:
+                SettingsHelper.setString("sorting", "sort19");
+                groupByReader.setVisibility(View.GONE);
+                break;
+
+            case R.id.sort91:
+                SettingsHelper.setString("sorting", "sort91");
+                groupByReader.setVisibility(View.GONE);
+                break;
         }
 
-        if (title.equals("shuffle") && !isChecked){
-            SettingsHelper.setBoolean("sortAsc", true);
-        }
-
-        if (title.equals("sortAsc") && isChecked){
-            SettingsHelper.setBoolean("shuffle", false);
-        }
-
-        if (title.equals("sortAsc") && !isChecked){
-            SettingsHelper.setBoolean("shuffle", true);
-        }
-
+        setColorsAndState();
         new Tales().setTalesList();
     }
 
@@ -269,7 +272,6 @@ public class ActivitySettings extends ActivityMain {
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
         boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
-        boolean isSortAsc = SettingsHelper.getBoolean("sortAsc");
         boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
         boolean isShuffle = SettingsHelper.getBoolean("shuffle");
         boolean isSkipIntro = SettingsHelper.getBoolean("skipIntro");
@@ -318,21 +320,53 @@ public class ActivitySettings extends ActivityMain {
         showBigImages.setChecked(isShowBigImages);
         showBigImages.setTextColor(isShowBigImages ? activeColor : inactiveColor);
 
-        sortAsc.setChecked(isSortAsc);
-        sortAsc.setTextColor(isSortAsc ? activeColor : inactiveColor);
-
         groupByReader.setChecked(isGroupByReader);
         groupByReader.setTextColor(isGroupByReader ? activeColor : inactiveColor);
         groupByReader.setEnabled(!isShuffle);
-
-        shuffle.setChecked(isShuffle);
-        shuffle.setTextColor(isShuffle ? activeColor : inactiveColor);
 
         skipIntro.setChecked(isSkipIntro);
         skipIntro.setTextColor(isSkipIntro ? activeColor : inactiveColor);
 
         parentLock.setTextColor(isParentLock ? activeColor : inactiveColor);
         parentLock.setChecked(isParentLock);
+
+        setSortingState();
+    }
+
+    private void setSortingState(){
+        int activeColor   = SettingsHelper.getColor();
+        int inactiveColor = ContextCompat.getColor(this, R.color.gray);
+
+        ((RadioButton)findViewById(R.id.shuffle)).setTextColor(inactiveColor);
+        ((RadioButton)findViewById(R.id.sortAsc)).setTextColor(inactiveColor);
+        ((RadioButton)findViewById(R.id.sort19)).setTextColor(inactiveColor);
+        ((RadioButton)findViewById(R.id.sort91)).setTextColor(inactiveColor);
+
+        sorting.setOnCheckedChangeListener(null);
+
+        switch (SettingsHelper.getString("sorting")){
+            case "sort19":
+                ((RadioButton)findViewById(R.id.sort19)).setTextColor(activeColor);
+                sorting.check(R.id.sort19);
+                break;
+
+            case "sort91":
+                ((RadioButton)findViewById(R.id.sort91)).setTextColor(activeColor);
+                sorting.check(R.id.sort91);
+                break;
+
+            case "sortAsc":
+                ((RadioButton)findViewById(R.id.sortAsc)).setTextColor(activeColor);
+                sorting.check(R.id.sortAsc);
+                break;
+
+            default:
+                ((RadioButton)findViewById(R.id.shuffle)).setTextColor(activeColor);
+                sorting.check(R.id.shuffle);
+                break;
+        }
+
+        sorting.setOnCheckedChangeListener((x, y) -> setSorting());
     }
 
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
