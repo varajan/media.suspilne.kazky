@@ -130,7 +130,7 @@ public class ActivityReaders extends ActivityMain {
         activityTitle.setText(filter.equals("") ? getString(R.string.readers) : "\u2315 " + filter);
 
         for (final Reader reader: new Readers().Readers) {
-            if (reader.matchesFilter(filter)){
+            if (reader.talesCount > 0 && reader.matchesFilter(filter)){
                 reader.show();
                 visibility = View.GONE;
             }else{

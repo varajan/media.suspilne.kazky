@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -53,21 +54,30 @@ public class ActivityColorings extends ActivityMain {
                     return;
                 }
 
-                Toast.makeText(getActivity(), R.string.coloring_download, Toast.LENGTH_LONG).show();
-
                 String url = ActivityColorings.getActivity().getResources().getString(R.string.coloringUrl, tale.coloring);
 
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "kazka.pdf");
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.allowScanningByMediaScanner();
-                DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                manager.enqueue(request);
+                new AlertDialog.Builder(this)
+                        .setIcon(R.mipmap.logo)
+                        .setTitle(R.string.coloring_download_ask)
+                        .setPositiveButton(R.string.yes, (dialog, which) -> download(url))
+                        .setNegativeButton(R.string.no, null)
+                        .show();
             });
         }
 
         findViewById(R.id.nothingToShow).setVisibility(View.GONE);
         findViewById(R.id.searchIcon).setVisibility(View.GONE);
         findViewById(R.id.showFavorite).setVisibility(View.GONE);
+    }
+
+    private void download(String url){
+        Toast.makeText(getActivity(), R.string.coloring_download, Toast.LENGTH_LONG).show();
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "kazka.pdf");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.allowScanningByMediaScanner();
+        DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        manager.enqueue(request);
     }
 }

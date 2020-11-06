@@ -18,6 +18,8 @@ public class Kazky extends Application {
         editor.putString("tales.lastPlaying", String.valueOf(-1));
         editor.putString("tales.nowPlaying", String.valueOf(-1));
         editor.putString("stopPlaybackOnTimeout", String.valueOf(false));
+        editor.putString("showKidsTales", sharedPreferences.getString("showKidsTales", "true"));
+        editor.putString("showBabiesTales", sharedPreferences.getString("showBabiesTales", "true"));
         editor.putString("sortAsc", sharedPreferences.getString("sortAsc", "true"));
         editor.putString("skipIntro", sharedPreferences.getString("skipIntro", "true"));
         editor.putString("talesFilter", "");

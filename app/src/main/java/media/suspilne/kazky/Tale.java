@@ -16,6 +16,7 @@ import java.net.URL;
 public class Tale{
     public int id;
     public int introTime;
+    public TaleAge age;
     public int coloring;
     private int titleId;
     private int readerId;
@@ -28,8 +29,9 @@ public class Tale{
 
     Tale(){ id = -1; }
 
-    Tale(int id, String duration, int intro, int coloring, int title, int name, int img){
+    Tale(int id, TaleAge age, String duration, int intro, int coloring, int title, int name, int img){
         this.id = id;
+        this.age = age;
         this.introTime = intro;
         this.coloring = coloring;
         this.duration = duration;
@@ -70,6 +72,7 @@ public class Tale{
 
         if ( isFavorite && downloadFavorite && !downloadAll) this.download();
         if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
+        if (!isFavorite && Tales.getShowOnlyFavorite()) Tales.setTalesCountUpdated(false);
     }
 
     private void setDownloadedIcon(){
@@ -82,8 +85,10 @@ public class Tale{
         }
     }
 
-    boolean shouldBeShown(boolean showOnlyFavorite, String filter){
-        return (!showOnlyFavorite || isFavorite) && matchesFilter(filter);
+    boolean shouldBeShown(boolean showOnlyFavorite, boolean showForKids, boolean showForBabies, String filter){
+        return matchesFilter(filter)
+                && (!showOnlyFavorite || isFavorite)
+                && ((showForBabies && age == TaleAge.FOR_BABIES) || (showForKids && age == TaleAge.FOR_KIDS) || age == TaleAge.FOR_BOTH);
     }
 
     boolean matchesFilter(String filter){

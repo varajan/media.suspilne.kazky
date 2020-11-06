@@ -28,6 +28,17 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="parent">
 
+            <TextView
+                android:id="@+id/basicSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/basicSettings"
+                android:fontFamily="@font/chalkboard"
+                android:textColor="@color/white"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:textSize="16sp" />
+
             <Switch
                 android:id="@+id/downloadAllTales"
                 android:layout_width="match_parent"
@@ -85,22 +96,48 @@
                 android:id="@+id/progressBar1"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="30dp" />
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="-5dp" />
+                android:layout_height="30dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="-5dp" />
+
+
+            <TextView
+                android:id="@+id/talesView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/talesView"
+                android:fontFamily="@font/chalkboard"
+                android:textColor="@color/white"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:textSize="16sp" />
 
             <Switch
-                android:id="@+id/showBigImages"
+                android:id="@+id/showBabiesTales"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/chalkboard"
-                android:text="@string/showBigImages"
+                android:text="@string/showBabiesTales"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
+                tools:typeface="serif" />
+
+            <Switch
+                android:id="@+id/showKidsTales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
+                android:text="@string/showKidsTales"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
                 tools:typeface="serif" />
 
             <Switch
@@ -118,21 +155,21 @@
                 tools:typeface="serif" />
 
             <Switch
-                android:id="@+id/skipIntro"
+                android:id="@+id/showBigImages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/chalkboard"
-                android:text="@string/skipIntro"
+                android:text="@string/showBigImages"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
+                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
                 tools:typeface="serif" />
 
             <ProgressBar
-                android:id="@+id/progressBar4"
+                android:id="@+id/progressBar2"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -143,7 +180,6 @@
                 android:id="@+id/editTextTextPersonName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:text="@string/sorting"
                 android:fontFamily="@font/chalkboard"
                 android:textColor="@color/white"
@@ -213,12 +249,37 @@
                 tools:typeface="serif" />
 
             <ProgressBar
-                android:id="@+id/progressBar2"
+                android:id="@+id/progressBar3"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="-5dp" />
+
+            <TextView
+                android:id="@+id/playback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/playback"
+                android:fontFamily="@font/chalkboard"
+                android:textColor="@color/white"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:textSize="16sp" />
+
+            <Switch
+                android:id="@+id/skipIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/chalkboard"
+                android:text="@string/skipIntro"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
+                tools:typeface="serif" />
 
             <Switch
                 android:id="@+id/autoQuit"
@@ -275,7 +336,7 @@
                 app:layout_constraintTop_toBottomOf="@id/autoQuit" />
 
             <ProgressBar
-                android:id="@+id/progressBar3"
+                android:id="@+id/progressBar4"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"

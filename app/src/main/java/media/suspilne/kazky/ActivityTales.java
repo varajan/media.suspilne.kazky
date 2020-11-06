@@ -148,13 +148,18 @@ public class ActivityTales extends ActivityMain {
         int visibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+        boolean showForKids = Tales.getShowForKids();
+        boolean showForBabies = Tales.getShowForBabies();
+        String filter = Tales.getFilter();
+
         for (final Tale tale:tales.getTalesList()) {
-            if (Tales.getShowOnlyFavorite() && !tale.isFavorite || !tale.matchesFilter(Tales.getFilter())){
-                tale.hide();
-            }else{
+            if (tale.shouldBeShown(showOnlyFavorite, showForKids, showForBabies, filter)){
                 tale.show();
                 visibility = View.GONE;
                 list.append(tale.id).append(";");
+            }else{
+                tale.hide();
             }
         }
 
@@ -221,9 +226,10 @@ public class ActivityTales extends ActivityMain {
 
         Intent intent = getIntent();
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
-
         TalesList = findViewById(R.id.talesList);
         tales = new Tales();
+
+        if (!returnToReaders) {Tales.setFilter("");}
 
         addSearchField();
         showTales();

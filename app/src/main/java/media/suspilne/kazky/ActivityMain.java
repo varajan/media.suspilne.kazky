@@ -418,19 +418,30 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void updateTalesCountPerReader(){
-        if (SettingsHelper.getBoolean("tales.count.updated")) return;
+        boolean talesCountUpdated = Tales.getTalesCountUpdated();
+
+        if (Tales.getTalesCountUpdated()) return;
+
+        boolean showBabyTales = Tales.getShowForBabies();
+        boolean showKidsTales = Tales.getShowForKids();
+        boolean showFavorite = Tales.getShowOnlyFavorite();
 
         for (Reader reader: new Readers().Readers) {
             int count = 0;
 
             for (Tale tale : new Tales().getTalesList()) {
-                if (tale.getReader().equals(reader.getName())) count++;
+                if (!tale.getReader().equals(reader.getName()))         continue;
+                if (showFavorite && !tale.isFavorite)                   continue;
+                if (!showBabyTales && tale.age == TaleAge.FOR_BABIES)   continue;
+                if (!showKidsTales && tale.age == TaleAge.FOR_KIDS)     continue;
+
+                count++;
             }
 
             SettingsHelper.setInt(reader.getName(), count);
         }
 
-        SettingsHelper.setBoolean("tales.count.updated", true);
+        Tales.setTalesCountUpdated(true);
     }
 
     private void update(){

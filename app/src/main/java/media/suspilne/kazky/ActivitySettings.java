@@ -20,6 +20,9 @@ import android.widget.Switch;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
     private Switch fontColor;
@@ -30,6 +33,8 @@ public class ActivitySettings extends ActivityMain {
     private Switch parentLock;
 
     private Switch showBigImages;
+    private Switch showBabiesTales;
+    private Switch showKidsTales;
     private Switch showOnlyFavorite;
     private RadioGroup sorting;
     private Switch groupByReader;
@@ -56,6 +61,8 @@ public class ActivitySettings extends ActivityMain {
         volumeControl = this.findViewById(R.id.volumeControl);
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
 
+        showBabiesTales = this.findViewById(R.id.showBabiesTales);
+        showKidsTales = this.findViewById(R.id.showKidsTales);
         showBigImages = this.findViewById(R.id.showBigImages);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         sorting = this.findViewById(R.id.sorting);
@@ -73,6 +80,8 @@ public class ActivitySettings extends ActivityMain {
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
 
         showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
+        showBabiesTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBabiesTales", isChecked));
+        showKidsTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showKidsTales", isChecked));
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
@@ -156,7 +165,16 @@ public class ActivitySettings extends ActivityMain {
     }
 
     private void setSwitch(String title, boolean isChecked){
+        List<String> filterOptions = Arrays.asList("showBabiesTales", "showKidsTales", "showOnlyFavorite");
+        if (filterOptions.contains(title)) { Tales.setTalesCountUpdated(false);}
+
         SettingsHelper.setBoolean(title, isChecked);
+
+        if (!Tales.getShowForBabies() && !Tales.getShowForKids() ){
+            Tales.setShowForBabies(true);
+            Tales.setShowForKids(true);
+        }
+
         setColorsAndState();
 
         if(title.equals("autoQuit") || title.equals("volumeControl")){
@@ -271,6 +289,8 @@ public class ActivitySettings extends ActivityMain {
         boolean isVolumeControl = SettingsHelper.getBoolean("volumeControl");
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
+        boolean isShowKidsTales = SettingsHelper.getBoolean("showKidsTales");
+        boolean isShowBabiesTales = SettingsHelper.getBoolean("showBabiesTales");
         boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
         boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
         boolean isShuffle = SettingsHelper.getBoolean("shuffle");
@@ -316,6 +336,12 @@ public class ActivitySettings extends ActivityMain {
 
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
+
+        showKidsTales.setChecked(isShowKidsTales);
+        showKidsTales.setTextColor(isShowKidsTales ? activeColor : inactiveColor);
+
+        showBabiesTales.setChecked(isShowBabiesTales);
+        showBabiesTales.setTextColor(isShowBabiesTales ? activeColor : inactiveColor);
 
         showBigImages.setChecked(isShowBigImages);
         showBigImages.setTextColor(isShowBigImages ? activeColor : inactiveColor);
