@@ -137,6 +137,7 @@ public class PlayerService extends IntentService {
                         break;
 
                     case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
+                        Tales.setLastPosition(0);
                         playTale(new Tales().getNext());
                         break;
 

@@ -169,6 +169,7 @@ public class ActivitySettings extends ActivityMain {
         if (filterOptions.contains(title)) { Tales.setTalesCountUpdated(false);}
 
         SettingsHelper.setBoolean(title, isChecked);
+        if (title.equals("groupByReader")) new Tales().setTalesList();
 
         if (!Tales.getShowForBabies() && !Tales.getShowForKids() ){
             Tales.setShowForBabies(true);
