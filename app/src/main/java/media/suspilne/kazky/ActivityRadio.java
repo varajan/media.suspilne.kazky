@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -78,6 +79,8 @@ public class ActivityRadio extends ActivityMain {
                     setPlayBtnIcon();
                     this.resetQuitTimeout();
                     this.resetVolumeReduceTimer();
+
+                    Toast.makeText(this, R.string.no_radio, Toast.LENGTH_LONG).show();
                 }else{
                     showNoConnectionAlert();
                     resetVolumeReduceTimer();

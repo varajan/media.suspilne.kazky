@@ -94,6 +94,7 @@ public class PlayerService extends IntentService {
         MediaSource mediaSource = new ExtractorMediaSource.Factory(
                 new DefaultDataSourceFactory(this,"exoplayer-codelab"))
                 .createMediaSource(uri);
+
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
         player.seekTo(position);

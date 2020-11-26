@@ -418,8 +418,6 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void updateTalesCountPerReader(){
-        boolean talesCountUpdated = Tales.getTalesCountUpdated();
-
         if (Tales.getTalesCountUpdated()) return;
 
         boolean showBabyTales = Tales.getShowForBabies();
