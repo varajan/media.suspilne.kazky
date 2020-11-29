@@ -65,35 +65,40 @@ public class ActivityRadio extends ActivityMain {
             }else{
                 stopPlayerService();
 
-                if (isNetworkAvailable()){
-                    Intent intent = new Intent(this, PlayerService.class);
-                    intent.putExtra("type", getString(R.string.radio));
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(intent);
-                    }
-                    else {
-                        startService(intent);
-                    }
-
-                    setPlayBtnIcon();
-                    this.resetQuitTimeout();
-                    this.resetVolumeReduceTimer();
-
-                    Toast.makeText(this, R.string.no_radio, Toast.LENGTH_LONG).show();
-                }else{
-                    showNoConnectionAlert();
+                if (!isNetworkAvailable()){
+                    showAlert(R.string.radio_error);
                     resetVolumeReduceTimer();
+                    return;
                 }
+
+                if (!isRadioAvailable()){
+                    showAlert(R.string.no_radio);
+                    resetVolumeReduceTimer();
+                    return;
+                }
+
+                Intent intent = new Intent(this, PlayerService.class);
+                intent.putExtra("type", getString(R.string.radio));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent);
+                }
+                else {
+                    startService(intent);
+                }
+
+                setPlayBtnIcon();
+                this.resetQuitTimeout();
+                this.resetVolumeReduceTimer();
             }
         });
     }
 
-    private void showNoConnectionAlert(){
+    private void showAlert(int message){
         new AlertDialog.Builder(ActivityRadio.this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.an_error_occurred)
-            .setMessage(R.string.radio_error)
+            .setMessage(message)
             .setPositiveButton("OK", null)
             .show();
     }
@@ -125,7 +130,7 @@ public class ActivityRadio extends ActivityMain {
                 case "SourceIsNotAccessible":
                     stopPlayerService();
                     setPlayBtnIcon();
-                    showNoConnectionAlert();
+                    showAlert(R.string.radio_error);
                     break;
 
                 case "SetPlayBtnIcon":

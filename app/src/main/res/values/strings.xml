@@ -41,7 +41,7 @@
     <string name="confirm_exit">Вийти з UA: Казки?</string>
     <string name="x_minutes">%s хвилин</string>
     <string name="no_internet">Відсутній Інтернет!</string>
-    <string name="no_radio">Нажаль на сервері проблеми і радіо може не працювати. Проте є розділ "Казки"!</string>
+    <string name="no_radio">Нажаль на сервері проблеми і радіо не працює. Скористайтесь розділом "Казки"!</string>
     <string name="radio_error">Проблеми на сервері або відсутній Інтернет!\n\nПеревірте Інтернет, спробуйте пізніше або послухайте збережені казки.</string>
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
     <string name="sleep_timeout_text">Зупинити відтворення через %s хв.</string>

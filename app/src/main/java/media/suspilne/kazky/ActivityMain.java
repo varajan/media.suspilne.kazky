@@ -148,6 +148,11 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
+    protected boolean isRadioAvailable(){
+        return false;
+        // 
+    }
+
     protected boolean isNetworkAvailable(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
