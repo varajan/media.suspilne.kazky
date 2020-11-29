@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,13 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jsoup.Jsoup;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -148,10 +155,34 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
-    protected boolean isRadioAvailable(){
-        return false;
-        // 
+    protected void setIsRadioAvailable(){
+        if (!SettingsHelper.getBoolean("checkForRadio")) return;
+
+        new Thread(() -> {
+            ArrayList<String> settings = new ArrayList<>();
+
+            try {
+                String url = "https://raw.githubusercontent.com/varajan/media.suspilne.kazky/master/app/src/main/res/settings";
+                HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setConnectTimeout(15000);
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                String str;
+                while ((str = in.readLine()) != null) {
+                    settings.add(str);
+                }
+                in.close();
+            } catch (Exception e) {
+                Log.d("MyTag",e.toString());
+            }
+
+            SettingsHelper.setBoolean("radioIsAvailable", settings.contains("radioIsAvailable:true"));
+            SettingsHelper.setBoolean("checkForRadio", false);
+        }).start();
     }
+
+    protected boolean isRadioAvailable(){ return SettingsHelper.getBoolean("radioIsAvailable"); }
 
     protected boolean isNetworkAvailable(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

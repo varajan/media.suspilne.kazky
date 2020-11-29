@@ -47,6 +47,7 @@ public class ActivityRadio extends ActivityMain {
         currentView = R.id.radio_menu;
         super.onCreate(savedInstanceState);
         registerReceiver();
+        setIsRadioAvailable();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
