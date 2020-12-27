@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -73,7 +73,7 @@ public class ActivityRadio extends ActivityMain {
                 }
 
                 if (!isRadioAvailable()){
-                    showAlert(R.string.no_radio);
+                    showAlert(R.string.no_radio_text, "https://www.facebook.com/suspilne.news/");
                     resetVolumeReduceTimer();
                     return;
                 }
@@ -97,11 +97,21 @@ public class ActivityRadio extends ActivityMain {
 
     private void showAlert(int message){
         new AlertDialog.Builder(ActivityRadio.this)
-            .setIcon(R.mipmap.logo)
-            .setTitle(R.string.an_error_occurred)
-            .setMessage(message)
-            .setPositiveButton("OK", null)
-            .show();
+                .setIcon(R.mipmap.logo)
+                .setTitle(R.string.an_error_occurred)
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
+    private void showAlert(int message, String url){
+        new AlertDialog.Builder(ActivityRadio.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle(R.string.no_radio_header)
+                .setMessage(message)
+                .setPositiveButton(R.string.write, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))))
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void setPlayBtnIcon(){
