@@ -60,6 +60,7 @@
     <string name="showOnlyFavoriteOff">Усі казки</string>
     <string name="addedToFavorites">\'%s\' додано до списку \'Улюблені\'</string>
     <string name="removedFromFavorites">\'%s\' видалено зі списку \'Улюблені\'</string>
+    <string name="nothing">Нічого не знайдено.</string>
     <string name="nothingToShow">Нічого не знайдено. Перевірте фільтри у налаштуваннях.</string>
     <string name="filterTalesHint">Назва чи казкар</string>
     <string name="filterReadersHint">Казкар</string>
