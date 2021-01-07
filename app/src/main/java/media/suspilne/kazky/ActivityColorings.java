@@ -54,12 +54,12 @@ public class ActivityColorings extends ActivityMain {
                     return;
                 }
 
-                String url = ActivityColorings.getActivity().getResources().getString(R.string.coloringUrl, tale.coloring);
+                String url = ActivityColorings.getActivity().getResources().getString(R.string.coloringUrl, tale.id);
 
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.coloring_download_ask)
-                        .setPositiveButton(R.string.yes, (dialog, which) -> download(url))
+                        .setPositiveButton(R.string.yes, (dialog, which) -> download(url, tale.getTitle() + ".jpg"))
                         .setNegativeButton(R.string.no, null)
                         .show();
             });
@@ -70,11 +70,11 @@ public class ActivityColorings extends ActivityMain {
         findViewById(R.id.showFavorite).setVisibility(View.GONE);
     }
 
-    private void download(String url){
+    private void download(String url, String fileName){
         Toast.makeText(getActivity(), R.string.coloring_download, Toast.LENGTH_LONG).show();
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "kazka.pdf");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.allowScanningByMediaScanner();
         DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);

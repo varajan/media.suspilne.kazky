@@ -3,7 +3,7 @@
     <string name="requiredSpace">600</string>
     <string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
-    <string name="coloringUrl">https://kazky.suspilne.media/img/rozmalyovky/pdf/%02d.pdf</string>
+    <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/app/src/main/res/colorings/%03d.jpg</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
