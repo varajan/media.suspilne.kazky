@@ -177,7 +177,7 @@ public class ActivityMain extends AppCompatActivity
                 Log.d("MyTag",e.toString());
             }
 
-            SettingsHelper.setBoolean("radioIsAvailable", settings.contains("radioIsAvailable:true"));
+            SettingsHelper.setBoolean("radioIsAvailable", !settings.contains("radioIsAvailable:false"));
             SettingsHelper.setBoolean("checkForRadio", false);
         }).start();
     }
@@ -491,6 +491,8 @@ public class ActivityMain extends AppCompatActivity
         if (!this.isNetworkAvailable()) return;
 
         try {
+            SettingsHelper.setBoolean("checkForUpdates", false);
+
             String latestVersion = new VersionChecker().execute().get();
             String whatsNew = new WhatsNewChecker().execute().get();
             String currentVersion = SettingsHelper.getVersionName();
@@ -498,7 +500,6 @@ public class ActivityMain extends AppCompatActivity
 
             if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ){
                     SettingsHelper.setString("LatestVersion", latestVersion);
-                    SettingsHelper.setBoolean("checkForUpdates", false);
 
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
