@@ -47,7 +47,6 @@ public class ActivityRadio extends ActivityMain {
         currentView = R.id.radio_menu;
         super.onCreate(savedInstanceState);
         registerReceiver();
-        setIsRadioAvailable();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -72,7 +71,7 @@ public class ActivityRadio extends ActivityMain {
                     return;
                 }
 
-                if (!isRadioAvailable()){
+                if (!SettingsHelper.getBoolean("radioIsAvailable")){
                     showAlert(R.string.no_radio_text, "https://www.facebook.com/suspilne.news/");
                     resetVolumeReduceTimer();
                     return;

@@ -13,7 +13,7 @@ public class Kazky extends Application {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString("checkForUpdates", String.valueOf(true));
-        editor.putString("checkForRadio", String.valueOf(true));
+        editor.putString("readSettingsFromGit", String.valueOf(true));
         editor.putString("tales.count.updated", String.valueOf(false));
         editor.putString("tales.paused", String.valueOf(false));
         editor.putString("tales.lastPlaying", String.valueOf(-1));

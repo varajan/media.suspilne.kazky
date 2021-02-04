@@ -64,6 +64,8 @@ class Tales {
         return SettingsHelper.getBoolean("tales.paused");
     }
 
+    public static boolean playTalesFromGit(){ return SettingsHelper.getBoolean("playTalesFromGit"); }
+
     Tale getPrevious(){
         boolean skip = true;
         int nowPlaying = getNowPlaying();
