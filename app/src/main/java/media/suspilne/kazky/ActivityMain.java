@@ -174,7 +174,7 @@ public class ActivityMain extends AppCompatActivity
                 }
                 in.close();
             } catch (Exception e) {
-                Log.d("MyTag",e.toString());
+                e.printStackTrace();
             }
 
             SettingsHelper.setBoolean("radioIsAvailable", settings.contains("radioIsAvailable:true") || settings.isEmpty());
@@ -191,6 +191,10 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private boolean isNetworkSpeedOk() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+            return true;
+        }
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager != null
                 ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
