@@ -155,8 +155,8 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
-    protected void setIsRadioAvailable(){
-        if (!SettingsHelper.getBoolean("checkForRadio")) return;
+    private void readSettingsFromGit(){
+        if (!SettingsHelper.getBoolean("readSettingsFromGit")) return;
 
         new Thread(() -> {
             ArrayList<String> settings = new ArrayList<>();
@@ -174,15 +174,14 @@ public class ActivityMain extends AppCompatActivity
                 }
                 in.close();
             } catch (Exception e) {
-                Log.d("MyTag",e.toString());
+                e.printStackTrace();
             }
 
-            SettingsHelper.setBoolean("radioIsAvailable", !settings.contains("radioIsAvailable:false"));
-            SettingsHelper.setBoolean("checkForRadio", false);
+            SettingsHelper.setBoolean("radioIsAvailable", settings.contains("radioIsAvailable:true") || settings.isEmpty());
+            SettingsHelper.setBoolean("playTalesFromGit", settings.contains("talesFromGit:true"));
+            SettingsHelper.setBoolean("readSettingsFromGit", false);
         }).start();
     }
-
-    protected boolean isRadioAvailable(){ return SettingsHelper.getBoolean("radioIsAvailable"); }
 
     protected boolean isNetworkAvailable(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -192,6 +191,10 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private boolean isNetworkSpeedOk() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+            return true;
+        }
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager != null
                 ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())

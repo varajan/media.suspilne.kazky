@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="requiredSpace">600</string>
-    <string name="talePicture">https://kazky.suspilne.media/tales/img/%02d-min.jpg</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
-    <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/app/src/main/res/colorings/%03d.jpg</string>
+    <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
+    <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -25,6 +25,8 @@
         Збережені на пристрої казки позначені значком 💾\n\n
 
         [Казкарі] - Шукайте по імені, відсортуйте список за алфавітом або кількістю казок, відкрийте всі казки в один клік.\n\n
+
+        [Розмальовки] - Чорнобілі контурні картинки усіх казок - завнтажуйте і роздрукуйте.\n\n
 
         [Налаштування] - виберіть скачати всі казки чи тільки улюблені, встановіть таймер сну тощо.\n\n
 		
