@@ -214,6 +214,7 @@ public class ActivityMain extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActivityMain.activity = this;
+        readSettingsFromGit();
 
         switch (currentView){
             case R.id.tales_menu:
