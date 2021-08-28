@@ -72,7 +72,7 @@ public class ActivityRadio extends ActivityMain {
                 }
 
                 if (!SettingsHelper.getBoolean("radioIsAvailable")){
-                    showAlert(R.string.no_radio_text, "https://www.facebook.com/suspilne.news/");
+                    showAlert(R.string.no_radio_text, "https://www.facebook.com/suspilne.news/", "suspilne.media");
                     resetVolumeReduceTimer();
                     return;
                 }
@@ -103,14 +103,31 @@ public class ActivityRadio extends ActivityMain {
                 .show();
     }
 
-    private void showAlert(int message, String url){
+    private void showAlert(int message, String url, String account){
         new AlertDialog.Builder(ActivityRadio.this)
                 .setIcon(R.mipmap.logo)
                 .setTitle(R.string.no_radio_header)
                 .setMessage(message)
-                .setPositiveButton(R.string.write, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))))
-                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.writeFB, (dialog, which) ->openFaceBookPage(url))
+                .setNegativeButton(R.string.writeInsta, (dialog, which) ->openInstagramAccount(account))
+                .setNeutralButton(R.string.cancel, null)
                 .show();
+    }
+
+    private void openFaceBookPage(String url){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SettingsHelper.getFacebookPageURL(url))));
+    }
+
+    private void openInstagramAccount(String account){
+        Uri uri = Uri.parse("http://instagram.com/_u/" + account);
+        Intent insta = new Intent(Intent.ACTION_VIEW, uri);
+        insta.setPackage("com.instagram.android");
+
+        if (SettingsHelper.isIntentAvailable(insta)){
+            startActivity(insta);
+        } else{
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
     }
 
     private void setPlayBtnIcon(){

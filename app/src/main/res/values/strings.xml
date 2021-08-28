@@ -44,7 +44,7 @@
     <string name="x_minutes">%s хвилин</string>
     <string name="no_internet">Відсутній Інтернет!</string>
     <string name="no_radio_header">На жаль, Суспільне вимкнуло Радіо.</string>
-    <string name="no_radio_text">Якщо ви хочете допомогти відновити роботу радіо, то напишіть їм, що радіо за адресою \"https://kazky.suspilne.media\" мовчить.\n\nТакож ви можете скористатись розділом "Казки".</string>
+    <string name="no_radio_text">Якщо ви хочете допомогти відновити роботу радіо, то напишіть їм, що радіо Казки мовчить.\n\nТакож ви можете скористатись розділом "Казки".</string>
     <string name="radio_error">Проблеми на сервері або відсутній Інтернет!\n\nПеревірте Інтернет, спробуйте пізніше або послухайте збережені казки.</string>
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
     <string name="sleep_timeout_text">Зупинити відтворення через %s хв.</string>
@@ -92,7 +92,8 @@
     <string name="parentLock">Захистити Налаштування від дітей</string>
     <string name="update">Оновити</string>
     <string name="cancel">Скасувати</string>
-    <string name="write">Написати</string>
+    <string name="writeFB">Написати у FaceBook</string>
+    <string name="writeInsta">Написати у Instagram</string>
     <string name="playback">Відтворення:</string>
     <string name="basicSettings">Загальні налаштування:</string>
     <string name="sorting">Сортування казок:</string>
