@@ -1,8 +1,10 @@
 package media.suspilne.kazky;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class SettingsHelper {
@@ -189,5 +192,22 @@ public class SettingsHelper {
         } catch (PackageManager.NameNotFoundException e) {
             return "1.0.0";
         }
+    }
+
+    public static String getFacebookPageURL(String url) {
+        PackageManager packageManager = ActivityMain.getActivity().getPackageManager();
+        try {
+            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+            String fb = (versionCode >= 3002850) ? "fb://facewebmodal/f?href=" : "fb://page/";
+            return fb + url;
+        } catch (PackageManager.NameNotFoundException e) {
+            return url;
+        }
+    }
+
+    public static boolean isIntentAvailable(Intent intent) {
+        final PackageManager packageManager = ActivityMain.getActivity().getPackageManager();
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 }
