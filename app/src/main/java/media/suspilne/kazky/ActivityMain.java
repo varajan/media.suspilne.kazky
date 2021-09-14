@@ -20,7 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -373,6 +372,10 @@ public class ActivityMain extends AppCompatActivity
                 rateApp();
                 break;
 
+            case R.id.fb_page:
+                openFaceBookPage(getResources().getString(R.string.facebook_page));
+                break;
+
             case R.id.exit_menu:
                 showQuitDialog();
                 break;
@@ -380,6 +383,22 @@ public class ActivityMain extends AppCompatActivity
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    protected void openFaceBookPage(String url){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SettingsHelper.getFacebookPageURL(url))));
+    }
+
+    protected void openInstagramAccount(String account){
+        Uri uri = Uri.parse("http://instagram.com/_u/" + account);
+        Intent insta = new Intent(Intent.ACTION_VIEW, uri);
+        insta.setPackage("com.instagram.android");
+
+        if (SettingsHelper.isIntentAvailable(insta)){
+            startActivity(insta);
+        } else{
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
     }
 
     private void rateApp(){

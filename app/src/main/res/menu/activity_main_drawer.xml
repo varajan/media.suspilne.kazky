@@ -33,6 +33,10 @@
             android:icon="@drawable/ic_notfavorite"
             android:title="@string/rate" />
         <item
+            android:id="@+id/fb_page"
+            android:icon="@mipmap/fb"
+            android:title="@string/fb_page" />
+        <item
             android:id="@+id/exit_menu"
             android:icon="@drawable/ic_exit"
             android:title="@string/exit" />

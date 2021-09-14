@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -108,26 +107,10 @@ public class ActivityRadio extends ActivityMain {
                 .setIcon(R.mipmap.logo)
                 .setTitle(R.string.no_radio_header)
                 .setMessage(message)
-                .setPositiveButton(R.string.writeFB, (dialog, which) ->openFaceBookPage(url))
-                .setNegativeButton(R.string.writeInsta, (dialog, which) ->openInstagramAccount(account))
+                .setPositiveButton(R.string.writeFB, (dialog, which) -> openFaceBookPage(url))
+                .setNegativeButton(R.string.writeInsta, (dialog, which) -> openInstagramAccount(account))
                 .setNeutralButton(R.string.cancel, null)
                 .show();
-    }
-
-    private void openFaceBookPage(String url){
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SettingsHelper.getFacebookPageURL(url))));
-    }
-
-    private void openInstagramAccount(String account){
-        Uri uri = Uri.parse("http://instagram.com/_u/" + account);
-        Intent insta = new Intent(Intent.ACTION_VIEW, uri);
-        insta.setPackage("com.instagram.android");
-
-        if (SettingsHelper.isIntentAvailable(insta)){
-            startActivity(insta);
-        } else{
-            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }
     }
 
     private void setPlayBtnIcon(){
