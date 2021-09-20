@@ -71,7 +71,7 @@ public class ActivityRadio extends ActivityMain {
                 }
 
                 if (!SettingsHelper.getBoolean("radioIsAvailable")){
-                    showAlert(R.string.no_radio_text, "https://www.facebook.com/suspilne.news/", "suspilne.media");
+                    showAlert(R.string.no_radio_text, "https://www.facebook.com/148182332275963/", "suspilne.media");
                     resetVolumeReduceTimer();
                     return;
                 }

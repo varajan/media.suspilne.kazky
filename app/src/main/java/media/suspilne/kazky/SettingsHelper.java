@@ -195,18 +195,14 @@ public class SettingsHelper {
     }
 
     public static String getFacebookPageURL(String url) {
-        return url;
-
-        // BUG 41: Open FB page in FB app
-
-//        PackageManager packageManager = ActivityMain.getActivity().getPackageManager();
-//        try {
-//            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
-//            String fb = (versionCode >= 3002850) ? "fb://facewebmodal/f?href=" : "fb://page/";
-//            return fb + url;
-//        } catch (PackageManager.NameNotFoundException e) {
-//            return url;
-//        }
+        PackageManager packageManager = ActivityMain.getActivity().getPackageManager();
+        try {
+            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+            String fb = (versionCode >= 3002850) ? "fb://facewebmodal/f?href=" : "fb://page/";
+            return fb + url;
+        } catch (PackageManager.NameNotFoundException e) {
+            return url;
+        }
     }
 
     public static boolean isIntentAvailable(Intent intent) {
