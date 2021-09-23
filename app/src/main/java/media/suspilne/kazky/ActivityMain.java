@@ -402,11 +402,19 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void rateApp(){
+        if (BuildConfig.HuaweiAppGalery){
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.HuaweiAppGaleryLink)));
+            }catch (Exception ex){
+                /* nothing */
+            }
+            return;
+        }
+
         try {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
             goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-
             startActivity(goToMarket);
         } catch (ActivityNotFoundException anfe) {
             try{
@@ -510,7 +518,7 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void checkForUpdates(){
-        if (!SettingsHelper.getBoolean("checkForUpdates")) return;
+        if (BuildConfig.HuaweiAppGalery || !SettingsHelper.getBoolean("checkForUpdates")) return;
         if (!this.isNetworkAvailable()) return;
 
         try {

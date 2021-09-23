@@ -6,12 +6,19 @@ android {
         applicationId "media.suspilne.kazky"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 113
-        versionName "4.117.29"
+        versionCode 114
+        versionName "4.117.30"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug{
+            buildConfigField "Boolean", "HuaweiAppGalery", "true"
+            buildConfigField "String", "HuaweiAppGaleryLink", "\"https://appgallery.huawei.com/#/app/C104747889\""
+        }
         release {
+            buildConfigField "Boolean", "HuaweiAppGalery", "true"
+            buildConfigField "String", "HuaweiAppGaleryLink", "\"https://appgallery.huawei.com/#/app/C104747889\""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
