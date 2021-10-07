@@ -60,6 +60,7 @@ public class Readers {
             new Reader(R.string.olga_shurova, R.string.olga_shurova_description),
             new Reader(R.string.rosava, R.string.rosava_description),
             new Reader(R.string.sergii_tanchynets, R.string.sergii_tanchynets_description),
-            new Reader(R.string.jamala, R.string.jamala_description)
+            new Reader(R.string.jamala, R.string.jamala_description),
+            new Reader(R.string.ira_bova, R.string.ira_bova_description)
     ));
 }

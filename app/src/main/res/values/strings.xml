@@ -234,7 +234,7 @@
     <string name="tale_115">Вовк і лисиця</string>
     <string name="tale_116">Чарівне джерело</string>
     <string name="tale_117">Хто найстарший</string>
-    <string name="tale_118"></string>
+    <string name="tale_118">Хаппі та її суперсила</string>
     <string name="tale_119"></string>
     <string name="tale_120"></string>
 
@@ -327,4 +327,6 @@
     <string name="vlad_fisun_description">Діджей Dj Buro</string>
     <string name="vova_zi_lvova">Vova zi Lvova</string>
     <string name="vova_zi_lvova_description">Хіп-хоп виконавець</string>
+    <string name="ira_bova">Іра Бова</string>
+    <string name="ira_bova_description">Дитяча письменниця</string>
 </resources>

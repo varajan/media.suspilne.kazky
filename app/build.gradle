@@ -6,17 +6,17 @@ android {
         applicationId "media.suspilne.kazky"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 114
-        versionName "4.117.30"
+        versionCode 115
+        versionName "4.118.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         debug{
-            buildConfigField "Boolean", "HuaweiAppGalery", "true"
+            buildConfigField "Boolean", "HuaweiAppGalery", "false"
             buildConfigField "String", "HuaweiAppGaleryLink", "\"https://appgallery.huawei.com/#/app/C104747889\""
         }
         release {
-            buildConfigField "Boolean", "HuaweiAppGalery", "true"
+            buildConfigField "Boolean", "HuaweiAppGalery", "false"
             buildConfigField "String", "HuaweiAppGaleryLink", "\"https://appgallery.huawei.com/#/app/C104747889\""
 
             minifyEnabled false
