@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="requiredSpace">600</string>
+    <string name="requiredSpace">660</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
     <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
     <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
