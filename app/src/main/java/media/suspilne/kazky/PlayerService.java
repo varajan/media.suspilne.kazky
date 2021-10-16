@@ -15,20 +15,15 @@ import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 public class PlayerService extends IntentService {
     private ExoPlayer player;
-    private NotificationManager notificationManager;
     private PlayerNotificationManager playerNotificationManager;
 
     public static String NOTIFICATION_CHANNEL = SettingsHelper.application;
@@ -51,7 +46,7 @@ public class PlayerService extends IntentService {
     @Override
     public void onCreate(){
         registerReceiver();
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
@@ -121,14 +116,9 @@ public class PlayerService extends IntentService {
             public void onPlaybackStateChanged(@Player.State int playbackState) {
                 sendMessage("SetPlayBtnIcon");
 
-                switch(playbackState) {
-                    case ExoPlayer.STATE_ENDED:
-                        Tales.setLastPosition(0);
-                        playTale(new Tales().getNext());
-                        break;
-
-                    default:
-                        break;
+                if (playbackState == ExoPlayer.STATE_ENDED) {
+                    Tales.setLastPosition(0);
+                    playTale(new Tales().getNext());
                 }
             }
 
