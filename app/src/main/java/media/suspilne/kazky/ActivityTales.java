@@ -312,6 +312,7 @@ public class ActivityTales extends ActivityMain {
         public void onReceive(Context context, Intent intent) {
         switch (intent.getStringExtra("code")){
             case "SourceIsNotAccessible":
+                Tales.setPause(true);
                 setPlayBtnIcon();
                 Toast.makeText(ActivityTales.this, R.string.no_internet, Toast.LENGTH_LONG).show();
                 break;

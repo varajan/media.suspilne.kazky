@@ -13,17 +13,18 @@ import android.os.Build;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import static com.google.android.exoplayer2.ExoPlayerFactory.newSimpleInstance;
 
 public class PlayerService extends IntentService {
     private ExoPlayer player;
@@ -89,9 +90,9 @@ public class PlayerService extends IntentService {
         releasePlayer();
 
         Uri uri = Uri.parse(stream);
-        player = newSimpleInstance(this);
+        player = new SimpleExoPlayer.Builder(ActivityMain.getActivity()).build();
 
-        MediaSource mediaSource = new ExtractorMediaSource.Factory(
+        MediaSource mediaSource = new ProgressiveMediaSource.Factory(
                 new DefaultDataSourceFactory(this,"exoplayer-codelab"))
                 .createMediaSource(uri);
 
@@ -101,49 +102,29 @@ public class PlayerService extends IntentService {
 
         Tales.setPause(false);
 
-        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
-            @Override
-            public void onNotificationStarted(int notificationId, Notification notification) {
-                startForeground(notificationId, notification);
-            }
-
-            @Override
-            public void onNotificationCancelled(int notificationId) {
-                stopSelf();
-            }
-        });
         playerNotificationManager.setPlayer(player);
 
-        player.addListener(new ExoPlayer.EventListener() {
+        player.addListener(new Player.Listener() {
             @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {}
+            public void onPlayerError(PlaybackException error) {
+                stopSelf();
+                sendMessage("SourceIsNotAccessible");
+            }
 
             @Override
-            public void onTracksChanged(TrackGroupArray taleGroups, TrackSelectionArray trackSelections) {}
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {}
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
                 Tales.setPause(!playWhenReady);
+                sendMessage("SetPlayBtnIcon");
+            }
+
+            @Override
+            public void onPlaybackStateChanged(@Player.State int playbackState) {
                 sendMessage("SetPlayBtnIcon");
 
                 switch(playbackState) {
-                    case ExoPlayer.DISCONTINUITY_REASON_SEEK:
-                        Tales.setNowPlaying(-1);
-                        Tales.setLastPosition(player.getCurrentPosition());
-                        stopSelf();
-                        sendMessage("SetPlayBtnIcon");
-                        break;
-
-                    case ExoPlayer.DISCONTINUITY_REASON_INTERNAL:
+                    case ExoPlayer.STATE_ENDED:
                         Tales.setLastPosition(0);
                         playTale(new Tales().getNext());
-                        break;
-
-                    case ExoPlayer.DISCONTINUITY_REASON_AD_INSERTION:
-                        sendMessage("SetPlayBtnIcon");
                         break;
 
                     default:
@@ -152,32 +133,13 @@ public class PlayerService extends IntentService {
             }
 
             @Override
-            public void onRepeatModeChanged(int repeatMode) {}
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {}
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-                stopSelf();
-                sendMessage("SourceIsNotAccessible");
-            }
-
-            @Override
-            public void onPositionDiscontinuity(int reason) {}
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
-
-            @Override
-            public void onSeekProcessed() {
-                long position = player.getCurrentPosition();
-                long duration = player.getContentDuration();
-
-                if (position < 0) {
-                    playTale(new Tales().getPrevious());
-                } else if(position > duration && duration > 0){
-                    playTale(new Tales().getNext());
+            public void onPositionDiscontinuity(Player.PositionInfo oldPosition, Player.PositionInfo newPosition, int reason) {
+                if (reason == Player.DISCONTINUITY_REASON_SEEK) {
+                    if (oldPosition.positionMs > newPosition.positionMs) {
+                        playTale(new Tales().getPrevious());
+                    } else {
+                        playTale(new Tales().getNext());
+                    }
                 }
             }
         });
@@ -216,10 +178,36 @@ public class PlayerService extends IntentService {
             Tales.setNowPlaying(tale.id);
             Tales.setLastPlaying(tale.id);
 
-            playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerTaleAdapter(this));
-            playerNotificationManager.setFastForwardIncrementMs(10_000_000);
-            playerNotificationManager.setRewindIncrementMs(10_000_000);
-            playerNotificationManager.setUseNavigationActions(false);
+            PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
+                @Override
+                public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
+                    startForeground(notificationId, notification);
+                }
+
+                @Override
+                public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
+                    stopSelf();
+                }
+            };
+
+            playerNotificationManager = new PlayerNotificationManager
+                    .Builder(this, NOTIFICATION_ID, NOTIFICATION_CHANNEL)
+                    .setNotificationListener(listener)
+                    .setMediaDescriptionAdapter(new PlayerTaleAdapter(this))
+                    .setStopActionIconResourceId(R.drawable.exo_notification_stop)
+                    .build();
+
+            playerNotificationManager.setUseStopAction(true);
+
+            playerNotificationManager.setUseFastForwardAction(true);
+            playerNotificationManager.setUseRewindAction     (true);
+            playerNotificationManager.setUseNextAction       (false);
+            playerNotificationManager.setUsePreviousAction   (false);
+
+            playerNotificationManager.setUseFastForwardActionInCompactView(true);
+            playerNotificationManager.setUseRewindActionInCompactView     (true);
+            playerNotificationManager.setUseNextActionInCompactView       (false);
+            playerNotificationManager.setUsePreviousActionInCompactView   (false);
 
             playStream(tale.stream, position);
         } else {
@@ -252,21 +240,25 @@ public class PlayerService extends IntentService {
     }
 
     private void playRadio(){
-        playerNotificationManager = new PlayerNotificationManager(this, NOTIFICATION_CHANNEL, NOTIFICATION_ID, new PlayerRadioAdapter(this));
-        playerNotificationManager.setFastForwardIncrementMs(0);
-        playerNotificationManager.setRewindIncrementMs(0);
-        playerNotificationManager.setUseNavigationActions(false);
-        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
+        PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
             @Override
-            public void onNotificationStarted(int notificationId, Notification notification) {
+            public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
                 startForeground(notificationId, notification);
             }
 
             @Override
-            public void onNotificationCancelled(int notificationId) {
+            public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
                 stopSelf();
             }
-        });
+        };
+
+        playerNotificationManager = new PlayerNotificationManager
+                .Builder(this, NOTIFICATION_ID, NOTIFICATION_CHANNEL)
+                .setNotificationListener(listener)
+                .setMediaDescriptionAdapter(new PlayerRadioAdapter(this))
+                .setStopActionIconResourceId(R.drawable.exo_notification_stop)
+                .build();
+        playerNotificationManager.setUseStopAction(true);
 
         playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3", 0);
         sendMessage("SetPlayBtnIcon");
