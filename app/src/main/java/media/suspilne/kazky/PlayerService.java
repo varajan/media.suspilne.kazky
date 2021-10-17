@@ -11,9 +11,12 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -63,7 +66,7 @@ public class PlayerService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        String type = intent.getStringExtra("type");
+        String type = intent != null ? intent.getStringExtra("type") : "null";
         SettingsHelper.setString("StreamType", type);
         registerReceiver();
 
@@ -73,7 +76,8 @@ public class PlayerService extends IntentService {
         }
 
         if (type.equals(getString(R.string.tales))){
-            Tale tale = new Tales().getById(intent.getIntExtra("tale.id", -1));
+            int taleId = intent != null ? intent.getIntExtra("tale.id", -1) : -1;
+            Tale tale = new Tales().getById(taleId);
             playTale(tale);
             return START_NOT_STICKY;
         }
@@ -89,9 +93,10 @@ public class PlayerService extends IntentService {
 
         MediaSource mediaSource = new ProgressiveMediaSource.Factory(
                 new DefaultDataSourceFactory(this,"exoplayer-codelab"))
-                .createMediaSource(uri);
+                .createMediaSource(MediaItem.fromUri(uri));
 
-        player.prepare(mediaSource, true, false);
+        player.setMediaSource(mediaSource);
+        player.prepare();
         player.setPlayWhenReady(true);
         player.seekTo(position);
 
@@ -101,7 +106,7 @@ public class PlayerService extends IntentService {
 
         player.addListener(new Player.Listener() {
             @Override
-            public void onPlayerError(PlaybackException error) {
+            public void onPlayerError(@NonNull PlaybackException error) {
                 stopSelf();
                 sendMessage("SourceIsNotAccessible");
             }
@@ -123,7 +128,10 @@ public class PlayerService extends IntentService {
             }
 
             @Override
-            public void onPositionDiscontinuity(Player.PositionInfo oldPosition, Player.PositionInfo newPosition, int reason) {
+            public void onPositionDiscontinuity(
+                    @NonNull Player.PositionInfo oldPosition,
+                    @NonNull Player.PositionInfo newPosition,
+                    int reason) {
                 if (reason == Player.DISCONTINUITY_REASON_SEEK) {
                     if (oldPosition.positionMs > newPosition.positionMs) {
                         playTale(new Tales().getPrevious());
@@ -257,12 +265,10 @@ public class PlayerService extends IntentService {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getStringExtra("code")){
-                case "StopPlay":
-                    Tales.setNowPlaying(-1);
-                    sendMessage("SetPlayBtnIcon");
-                    stopSelf();
-                    break;
+            if ("StopPlay".equals(intent.getStringExtra("code"))) {
+                Tales.setNowPlaying(-1);
+                sendMessage("SetPlayBtnIcon");
+                stopSelf();
             }
         }
     };
