@@ -64,14 +64,14 @@ public class ActivityRadio extends ActivityMain {
             }else{
                 stopPlayerService();
 
-                if (!isNetworkAvailable()){
+                if (isNetworkUnavailable()){
                     showAlert(R.string.radio_error);
                     resetVolumeReduceTimer();
                     return;
                 }
 
                 if (!SettingsHelper.getBoolean("radioIsAvailable")){
-                    showAlert(R.string.no_radio_text, "https://www.facebook.com/148182332275963/", "suspilne.media");
+                    showAlert(R.string.no_radio_text, "https://www.facebook.com/148182332275963/");
                     resetVolumeReduceTimer();
                     return;
                 }
@@ -102,13 +102,13 @@ public class ActivityRadio extends ActivityMain {
                 .show();
     }
 
-    private void showAlert(int message, String url, String account){
+    private void showAlert(int message, String url){
         new AlertDialog.Builder(ActivityRadio.this)
                 .setIcon(R.mipmap.logo)
                 .setTitle(R.string.no_radio_header)
                 .setMessage(message)
                 .setPositiveButton(R.string.writeFB, (dialog, which) -> openFaceBookPage(url))
-                .setNegativeButton(R.string.writeInsta, (dialog, which) -> openInstagramAccount(account))
+                .setNegativeButton(R.string.writeInsta, (dialog, which) -> openInstagramAccount())
                 .setNeutralButton(R.string.cancel, null)
                 .show();
     }

@@ -19,11 +19,7 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 public class PlayerService extends IntentService {
     private ExoPlayer player;
@@ -58,7 +54,6 @@ public class PlayerService extends IntentService {
                 NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
                 notificationChannel.setSound(null, null);
                 notificationChannel.setShowBadge(false);
-
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }
@@ -88,14 +83,10 @@ public class PlayerService extends IntentService {
     private void playStream(String stream, long position) {
         releasePlayer();
 
-        Uri uri = Uri.parse(stream);
-        player = new SimpleExoPlayer.Builder(ActivityMain.getActivity()).build();
+        MediaItem mediaItem = MediaItem.fromUri(Uri.parse(stream));
 
-        MediaSource mediaSource = new ProgressiveMediaSource.Factory(
-                new DefaultDataSourceFactory(this,"exoplayer-codelab"))
-                .createMediaSource(MediaItem.fromUri(uri));
-
-        player.setMediaSource(mediaSource);
+        player = new ExoPlayer.Builder(ActivityMain.getActivity()).build();
+        player.setMediaItem(mediaItem);
         player.prepare();
         player.setPlayWhenReady(true);
         player.seekTo(position);
@@ -120,6 +111,11 @@ public class PlayerService extends IntentService {
             @Override
             public void onPlaybackStateChanged(@Player.State int playbackState) {
                 sendMessage("SetPlayBtnIcon");
+
+                if (playbackState == ExoPlayer.STATE_IDLE) {
+                    Tales.setNowPlaying(-1);
+                    Tales.setPause(true);
+                }
 
                 if (playbackState == ExoPlayer.STATE_ENDED) {
                     Tales.setLastPosition(0);

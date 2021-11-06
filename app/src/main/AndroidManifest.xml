@@ -26,6 +26,7 @@
 
         <activity
             android:name=".ActivityTales"
+            android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -62,9 +63,6 @@
             android:name=".PlayerService"
             android:icon="@drawable/ic_tale"
             android:exported="false"/>
-
-        <receiver android:name=".ActivityRadio" android:exported="true" />
-        <receiver android:name=".ActivityTales" android:exported="true" />
     </application>
 
 </manifest>

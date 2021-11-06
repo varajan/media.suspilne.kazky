@@ -133,21 +133,21 @@ public class ActivityMain extends AppCompatActivity
     }
 
     protected boolean isTalePlaying(){
-        return isServiceRunning(PlayerService.class)
+        return isServiceRunning()
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.tales))
                 && !Tales.isPaused();
     }
 
     protected boolean isRadioPlaying(){
-        return isServiceRunning(PlayerService.class)
+        return isServiceRunning()
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
                 && !Tales.isPaused();
     }
 
-    protected boolean isServiceRunning(Class<?> serviceClass) {
+    protected boolean isServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
+            if (PlayerService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }
@@ -182,11 +182,11 @@ public class ActivityMain extends AppCompatActivity
         }).start();
     }
 
-    protected boolean isNetworkAvailable(){
+    protected boolean isNetworkUnavailable(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected() && isNetworkSpeedOk();
+        return activeNetworkInfo == null || !activeNetworkInfo.isConnected() || !isNetworkSpeedOk();
     }
 
     private boolean isNetworkSpeedOk() {
@@ -389,8 +389,8 @@ public class ActivityMain extends AppCompatActivity
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SettingsHelper.getFacebookPageURL(url))));
     }
 
-    protected void openInstagramAccount(String account){
-        Uri uri = Uri.parse("http://instagram.com/_u/" + account);
+    protected void openInstagramAccount(){
+        Uri uri = Uri.parse("http://instagram.com/_u/" + "suspilne.media");
         Intent insta = new Intent(Intent.ACTION_VIEW, uri);
         insta.setPackage("com.instagram.android");
 
@@ -416,9 +416,9 @@ public class ActivityMain extends AppCompatActivity
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
             goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             startActivity(goToMarket);
-        } catch (ActivityNotFoundException anfe) {
+        } catch (ActivityNotFoundException a) {
             try{
-                anfe.printStackTrace();
+                a.printStackTrace();
 
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
             }catch (Exception e){
@@ -428,7 +428,7 @@ public class ActivityMain extends AppCompatActivity
     }
 
     void download(){
-        if (!this.isNetworkAvailable()){
+        if (this.isNetworkUnavailable()){
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
@@ -450,7 +450,7 @@ public class ActivityMain extends AppCompatActivity
 
     protected void continueDownloadTales(){
         if (!SettingsHelper.getBoolean("downloadAllTales") && !SettingsHelper.getBoolean("downloadFavoriteTales")) return;
-        if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
+        if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
         boolean allAreDownloaded = true;
         boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
@@ -468,7 +468,7 @@ public class ActivityMain extends AppCompatActivity
     protected void suggestToDownloadFavoriteTales(){
         if (SettingsHelper.getBoolean("suggestToDownloadFavoriteTales")) return;
         if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
-        if (SettingsHelper.freeSpace() < 150 || !isNetworkAvailable()) return;
+        if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
         int favorites = new Tales().getTalesList(true).size();
         if (favorites < 5) return;
@@ -519,7 +519,7 @@ public class ActivityMain extends AppCompatActivity
 
     private void checkForUpdates(){
         if (BuildConfig.HuaweiAppGalery || !SettingsHelper.getBoolean("checkForUpdates")) return;
-        if (!this.isNetworkAvailable()) return;
+        if (this.isNetworkUnavailable()) return;
 
         try {
             SettingsHelper.setBoolean("checkForUpdates", false);
@@ -547,7 +547,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    public class VersionChecker extends AsyncTask<String, String, String> {
+    public static class VersionChecker extends AsyncTask<String, String, String> {
         String newVersion;
 
         @Override
@@ -570,7 +570,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    public class WhatsNewChecker extends AsyncTask<String, String, String> {
+    public static class WhatsNewChecker extends AsyncTask<String, String, String> {
         String whatsNew;
 
         @Override

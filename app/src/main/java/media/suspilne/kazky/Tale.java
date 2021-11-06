@@ -30,7 +30,7 @@ public class Tale{
     Tale(){ id = -1; }
 
     Tale(int id, TaleAge age, String duration, int intro, int coloring, int title, int name, int img){
-        Boolean showClock = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M;
+        boolean showClock = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M;
 
         this.id = id;
         this.age = age;

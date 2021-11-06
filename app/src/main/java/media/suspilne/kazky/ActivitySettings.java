@@ -2,10 +2,6 @@ package media.suspilne.kazky;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -17,13 +13,15 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.util.Arrays;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class ActivitySettings extends ActivityMain {
     private Switch fontColor;
     private Switch downloadAllTales;
@@ -42,15 +40,14 @@ public class ActivitySettings extends ActivityMain {
 
     private SeekBar timeout;
     private SeekBar volumeTimeout;
-    private int step = 5;
+    private final int step = 5;
     private long totalRequiredSpace;
-    private long hundred_kb  = 100 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.settings_menu;
         super.onCreate(savedInstanceState);
-        totalRequiredSpace = Integer.parseInt(getResources().getString(R.string.requiredSpace)) * 1024 * 1024;
+        totalRequiredSpace = (long) Integer.parseInt(getResources().getString(R.string.requiredSpace)) * 1024 * 1024;
 
         fontColor = this.findViewById(R.id.fontColor);
         downloadAllTales = this.findViewById(R.id.downloadAllTales);
@@ -252,7 +249,7 @@ public class ActivitySettings extends ActivityMain {
         setColorsAndState();
     }
 
-    private CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
+    private final CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
         long usedSpace = SettingsHelper.usedSpace();
         String required = SettingsHelper.formattedSize(totalRequiredSpace - usedSpace);
 
@@ -266,7 +263,7 @@ public class ActivitySettings extends ActivityMain {
             .show();
     };
 
-    private CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) ->
+    private final CompoundButton.OnCheckedChangeListener onDownloadFavoriteSelect = (buttonView, isChecked) ->
         new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.logo)
             .setTitle(isChecked ? R.string.download : R.string.clear)
@@ -320,6 +317,7 @@ public class ActivitySettings extends ActivityMain {
         downloadAllTales.setTextColor(isDownloadAllTales ? activeColor : inactiveColor);
         downloadAllTales.setChecked(isDownloadAllTales);
         downloadAllTales.setOnCheckedChangeListener(onDownloadAllSelect);
+        long hundred_kb = 100 * 1024;
         downloadAllTales.setText(getString(R.string.downloadAllTales) + (isDownloadAllTales && SettingsHelper.usedSpace() > hundred_kb ? usedSpace : freeSpace));
 
         downloadFavoriteTales.setEnabled(!isDownloadAllTales);

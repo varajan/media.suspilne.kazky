@@ -5,24 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
 
 import androidx.core.content.ContextCompat;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SettingsHelper {
     static String application = "media.suspilne.kazky";
@@ -61,21 +53,8 @@ public class SettingsHelper {
         }
     }
 
-    public static ArrayList<String> getAllSettings(String setting){
-        ArrayList<String> result = new ArrayList<>();
-
-        Map<String, ?> allEntries = ActivityMain.getActivity().getSharedPreferences(application, 0).getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            if (entry.getKey().contains(setting)) {
-                result.add(entry.getKey());
-            }
-        }
-
-        return result;
-    }
-
     public static boolean getBoolean(String setting){
-        return getString(setting).toLowerCase().equals("true");
+        return getString(setting).equalsIgnoreCase("true");
     }
 
     public static void setBoolean(String setting, boolean value){
@@ -107,28 +86,6 @@ public class SettingsHelper {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public static int pxToDp(int px) {
-        DisplayMetrics displayMetrics = ActivityMain.getActivity().getResources().getDisplayMetrics();
-        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    public static Boolean fileExists(String name){
-        return ActivityMain.getActivity().getFileStreamPath(name).exists();
-    }
-
-    public static void saveImage(String name, Drawable drawable){
-        try {
-            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-
-            saveFile( name, bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void saveFile(String name, byte[] bytes){
         try {
             FileOutputStream outputStream;
@@ -141,24 +98,13 @@ public class SettingsHelper {
         }
     }
 
-    public static Drawable getImage(String name){
-        try {
-            FileInputStream stream = ActivityMain.getActivity().openFileInput(name);
-            Bitmap bitmap = BitmapFactory.decodeStream(stream);
-            stream.close();
-
-            return new BitmapDrawable(bitmap);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public static long folderSize(File directory) {
+        File[] files = directory.listFiles();
+
+        if (files == null) return 0;
+
         long length = 0;
-        for (File file : directory.listFiles()) {
+        for (File file : files) {
             if (file.isFile())
                 length += file.length();
             else

@@ -86,7 +86,7 @@ public class ActivityColorings extends ActivityMain {
             tale.setColoringDetails(showBigImages);
 
             taleView.findViewById(R.id.play).setOnClickListener(v -> {
-                if (!this.isNetworkAvailable()) {
+                if (this.isNetworkUnavailable()) {
                     Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -116,7 +116,7 @@ public class ActivityColorings extends ActivityMain {
                 .hideSoftInputFromWindow(searchField.getWindowToken(), 0);
     }
 
-    private View.OnClickListener search = v -> {
+    private final View.OnClickListener search = v -> {
         searchIcon.setVisibility(View.GONE);
         searchField.setVisibility(View.VISIBLE);
         searchField.requestFocus();

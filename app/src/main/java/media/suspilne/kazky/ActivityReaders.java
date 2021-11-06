@@ -48,7 +48,7 @@ public class ActivityReaders extends ActivityMain {
         filterReaders();
     }
 
-    private TextView.OnEditorActionListener onSearchKey = (view, actionId, event) -> {
+    private final TextView.OnEditorActionListener onSearchKey = (view, actionId, event) -> {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             hideSearch();
             filterReaders();
@@ -58,7 +58,7 @@ public class ActivityReaders extends ActivityMain {
     };
 
     @SuppressLint("ClickableViewAccessibility")
-    private View.OnTouchListener onClearIconClick = (view, event) -> {
+    private final View.OnTouchListener onClearIconClick = (view, event) -> {
         int actionX = (int) event.getX();
         int viewWidth = view.getWidth();
         int buttonWidth = SettingsHelper.dpToPx(50);
@@ -74,7 +74,7 @@ public class ActivityReaders extends ActivityMain {
         return false;
     };
 
-    private View.OnClickListener onPlayClick = view -> {
+    private final View.OnClickListener onPlayClick = view -> {
         Intent intent = new Intent(this, ActivityTales.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("returnToReaders", true);
@@ -83,14 +83,14 @@ public class ActivityReaders extends ActivityMain {
         startActivityForResult(intent, 0);
     };
 
-    private View.OnClickListener onSortClick = view -> {
+    private final View.OnClickListener onSortClick = view -> {
         SettingsHelper.setBoolean("isAscSorted", !SettingsHelper.getBoolean("isAscSorted"));
 
         showReaders();
         filterReaders();
     };
 
-    private View.OnClickListener onSearchClick = view -> showSearch();
+    private final View.OnClickListener onSearchClick = view -> showSearch();
 
     private void showSearch(){
         searchIcon.setVisibility(View.GONE);
