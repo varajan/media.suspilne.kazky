@@ -54,7 +54,12 @@ public class SettingsHelper {
     }
 
     public static boolean getBoolean(String setting){
-        return getString(setting).equalsIgnoreCase("true");
+        try{
+            return getString(setting).equalsIgnoreCase("true");
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     public static void setBoolean(String setting, boolean value){
