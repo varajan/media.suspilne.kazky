@@ -15,10 +15,12 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 public class PlayerService extends IntentService {
@@ -84,10 +86,15 @@ public class PlayerService extends IntentService {
         releasePlayer();
 
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(stream));
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(C.USAGE_MEDIA)
+                .setContentType(C.CONTENT_TYPE_SPEECH)
+                .build();
 
         player = new ExoPlayer.Builder(ActivityMain.getActivity()).build();
         player.setMediaItem(mediaItem);
         player.prepare();
+        player.setAudioAttributes(audioAttributes, true);
         player.setPlayWhenReady(true);
         player.seekTo(position);
 
