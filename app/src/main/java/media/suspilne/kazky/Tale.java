@@ -41,9 +41,9 @@ public class Tale{
         this.readerId = name;
         this.image = img;
         this.isFavorite = SettingsHelper.getBoolean("isFavorite_" + id);
-        this.isDownloaded = isDownloaded(this.id);
-        this.stream = stream(id);
-        this.fileName = fileName(id);
+        this.isDownloaded = id > 0 && isDownloaded(this.id);
+        this.stream = id > 0 ? stream(id) : null;
+        this.fileName = id > 0 ? fileName(id) : null;
     }
 
     String getReader(){

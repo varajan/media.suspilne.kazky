@@ -64,7 +64,7 @@ public class ActivityRadio extends ActivityMain {
             }else{
                 stopPlayerService();
 
-                if (isNetworkUnavailable()){
+                if (SettingsHelper.getBoolean("radioIsOff") || isNetworkUnavailable()){
                     showAlert(R.string.radio_error);
                     resetVolumeReduceTimer();
                     return;

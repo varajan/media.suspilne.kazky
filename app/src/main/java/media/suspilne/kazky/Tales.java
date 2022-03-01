@@ -188,7 +188,7 @@ class Tales {
     }
 
     public List<Tale> items = new ArrayList<>(Arrays.asList(
-            new Tale(1,  TaleAge.FOR_BABIES,	"02:04", 7200, 1, R.string.tale_001, R.string.andrii_hlyvniuk,     SettingsHelper.getBoolean("showBigImages") ? R.drawable.t001 : R.drawable.t001_min),
+            new Tale(1,  TaleAge.FOR_BABIES,	    "02:04", 7200, 1, R.string.tale_001, R.string.andrii_hlyvniuk,     SettingsHelper.getBoolean("showBigImages") ? R.drawable.t001 : R.drawable.t001_min),
             new Tale(2,  TaleAge.FOR_BOTH, 		"02:28", 7200, 1, R.string.tale_002, R.string.andrii_hlyvniuk,     SettingsHelper.getBoolean("showBigImages") ? R.drawable.t002 : R.drawable.t002_min),
             new Tale(3,  TaleAge.FOR_KIDS, 		"02:10", 8200, 1, R.string.tale_003, R.string.andrii_hlyvniuk,      SettingsHelper.getBoolean("showBigImages") ? R.drawable.t003 : R.drawable.t003_min),
             new Tale(4,  TaleAge.FOR_BABIES, 	"01:11", 7500, 1, R.string.tale_004, R.string.marko_galanevych,     SettingsHelper.getBoolean("showBigImages") ? R.drawable.t004 : R.drawable.t004_min),

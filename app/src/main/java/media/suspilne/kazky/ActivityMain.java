@@ -176,6 +176,7 @@ public class ActivityMain extends AppCompatActivity
                 e.printStackTrace();
             }
 
+            SettingsHelper.setBoolean("radioIsOff", settings.contains("radioIsOff:true") || settings.isEmpty());
             SettingsHelper.setBoolean("radioIsAvailable", settings.contains("radioIsAvailable:true") || settings.isEmpty());
             SettingsHelper.setBoolean("playTalesFromGit", settings.contains("talesFromGit:true"));
             SettingsHelper.setBoolean("readSettingsFromGit", false);

@@ -41,8 +41,8 @@ public class PlayerRadioAdapter implements PlayerNotificationManager.MediaDescri
     public PendingIntent createCurrentContentIntent(Player player) {
         Intent notificationIntent = new Intent(context, ActivityRadio.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openTracksIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        int flag = android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.R ? 0 :PendingIntent.FLAG_IMMUTABLE;
 
-        return openTracksIntent;
+        return PendingIntent.getActivity(context, 0, notificationIntent, flag);
     }
 }
