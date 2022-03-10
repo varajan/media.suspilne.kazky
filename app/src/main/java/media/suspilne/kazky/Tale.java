@@ -214,7 +214,11 @@ public class Tale{
     }
 
     private boolean isDownloaded(int tale){
-        return ActivityMain.getActivity().getFileStreamPath(fileName(tale)).exists();
+        try{
+            return ActivityMain.getActivity().getFileStreamPath(fileName(tale)).exists();
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     private String stream(int tale){

@@ -76,7 +76,7 @@ public class ActivityMain extends AppCompatActivity
         timeout = timeout == 0 ? 5 : timeout;
 
         volumeReduceTimer = new Timer();
-        volumeReduceTimer.schedule(new reduceVolume(), timeout * 60 * 1000);
+        volumeReduceTimer.schedule(new reduceVolume(), timeout * 60_000L);
     }
 
     protected void resetQuitTimeout(){
@@ -87,7 +87,7 @@ public class ActivityMain extends AppCompatActivity
             timeout = timeout==0 ? 5 : timeout;
 
             quitTimer = new Timer();
-            quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60 * 1000);
+            quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60_000L);
         } else {
             stopQuitTimer();
         }
@@ -163,7 +163,7 @@ public class ActivityMain extends AppCompatActivity
             try {
                 String url = "https://raw.githubusercontent.com/varajan/media.suspilne.kazky/master/app/src/main/res/settings";
                 HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-                conn.setConnectTimeout(15000);
+                conn.setConnectTimeout(SettingsHelper.timeout);
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -556,7 +556,7 @@ public class ActivityMain extends AppCompatActivity
 
             try {
                 newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
-                        .timeout(15000)
+                        .timeout(SettingsHelper.timeout)
                         .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                         .referrer("http://www.google.com")
                         .get()
@@ -579,7 +579,7 @@ public class ActivityMain extends AppCompatActivity
 
             try {
                 whatsNew = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
-                        .timeout(15000)
+                        .timeout(SettingsHelper.timeout)
                         .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                         .referrer("http://www.google.com")
                         .get()

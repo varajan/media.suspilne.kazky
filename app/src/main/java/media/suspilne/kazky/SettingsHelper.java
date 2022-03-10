@@ -18,6 +18,7 @@ import java.util.List;
 
 public class SettingsHelper {
     static String application = "media.suspilne.kazky";
+    static public int timeout = 10_000;
 
     public static void setColor(int color) { setInt("tales.text.color", color); }
 
