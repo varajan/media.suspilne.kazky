@@ -10,7 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,10 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.jsoup.Jsoup;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -180,7 +176,19 @@ public class ActivityMain extends AppCompatActivity
             SettingsHelper.setBoolean("radioIsAvailable", settings.contains("radioIsAvailable:true") || settings.isEmpty());
             SettingsHelper.setBoolean("playTalesFromGit", settings.contains("talesFromGit:true"));
             SettingsHelper.setBoolean("readSettingsFromGit", false);
+            SettingsHelper.setString("version", getSettingsValue(settings, "version", SettingsHelper.getVersionName()));
+            SettingsHelper.setString("whatsNew", getSettingsValue(settings,"whatsNew", "Щось дуже корисне."));
         }).start();
+    }
+
+    private String getSettingsValue(ArrayList<String> settings, String key, String defaultValue){
+        for (String setting:settings) {
+            if (setting.contains(key)){
+                return setting.substring(key.length() + 1);
+            }
+        }
+
+        return defaultValue;
     }
 
     protected boolean isNetworkUnavailable(){
@@ -525,8 +533,8 @@ public class ActivityMain extends AppCompatActivity
         try {
             SettingsHelper.setBoolean("checkForUpdates", false);
 
-            String latestVersion = new VersionChecker().execute().get();
-            String whatsNew = new WhatsNewChecker().execute().get();
+            String latestVersion = SettingsHelper.getString("version");
+            String whatsNew = "• " + SettingsHelper.getString("whatsNew").replace(". ", ".\n• ");
             String currentVersion = SettingsHelper.getVersionName();
             String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
 
@@ -545,54 +553,6 @@ public class ActivityMain extends AppCompatActivity
         } catch (Exception e) {
             SettingsHelper.setBoolean("checkForUpdates", false);
             e.printStackTrace();
-        }
-    }
-
-    public static class VersionChecker extends AsyncTask<String, String, String> {
-        String newVersion;
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
-                        .timeout(SettingsHelper.timeout)
-                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-                        .referrer("http://www.google.com")
-                        .get()
-                        .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)")
-                        .first()
-                        .ownText();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return newVersion;
-        }
-    }
-
-    public static class WhatsNewChecker extends AsyncTask<String, String, String> {
-        String whatsNew;
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                whatsNew = Jsoup.connect("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en")
-                        .timeout(SettingsHelper.timeout)
-                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-                        .referrer("http://www.google.com")
-                        .get()
-                        .select("div[itemprop='description'] span")
-                        .last()
-                        .text()
-                        .replace(". ", ".\n• ")
-                        .trim();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return "• " + whatsNew;
         }
     }
 }
