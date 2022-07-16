@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
@@ -16,9 +17,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -211,7 +215,7 @@ public class ActivityMain extends AppCompatActivity
         int downSpeed = networkCapabilities != null ? networkCapabilities.getLinkDownstreamBandwidthKbps() : 0;
         int upSpeed   = networkCapabilities != null ? networkCapabilities.getLinkUpstreamBandwidthKbps() : 0;
 
-        return downSpeed > 20_000 && upSpeed > 10_000;
+        return downSpeed > 20_000 && upSpeed > 2_000;
     }
 
     @Override
@@ -554,5 +558,33 @@ public class ActivityMain extends AppCompatActivity
             SettingsHelper.setBoolean("checkForUpdates", false);
             e.printStackTrace();
         }
+    }
+
+    protected boolean hasPermission(String permission){
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    protected void requestPermission(String permission, int error){
+        if (hasPermission(permission)) return;
+
+        boolean shouldShowRequest = ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission);
+
+        if (shouldShowRequest) {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
+        } else {
+            new AlertDialog.Builder(this)
+                    .setIcon(R.mipmap.logo)
+                    .setTitle(error)
+                    .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
+                    .show();
+        }
+    }
+
+    private void openAndroidSettings(){
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }

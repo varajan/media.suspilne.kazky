@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,8 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class ActivityColorings extends ActivityMain {
     private LinearLayout TalesList;
@@ -49,10 +46,7 @@ public class ActivityColorings extends ActivityMain {
         addSearchField();
         showTales();
         filterTales();
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
-        }
+        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.no_write_permission);
     }
 
     private void filterTales() {
@@ -91,8 +85,8 @@ public class ActivityColorings extends ActivityMain {
                     return;
                 }
 
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), R.string.no_write_permission, Toast.LENGTH_LONG).show();
+                if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.no_write_permission);
                     return;
                 }
 
