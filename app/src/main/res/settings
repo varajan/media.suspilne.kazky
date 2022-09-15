@@ -1,5 +1,5 @@
-radioIsOff:true
-radioIsAvailable:false
+radioIsOff:false
+radioIsAvailable:true
 talesFromGit:true
 version:4.118.6
 whatsNew:Виправлено випадкове аварійне завершення програми.
