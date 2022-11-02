@@ -151,10 +151,11 @@ public class ActivityTales extends ActivityMain {
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
         boolean showForKids = Tales.getShowForKids();
         boolean showForBabies = Tales.getShowForBabies();
+        boolean showLullabies = Tales.getShowLullabies();
         String filter = Tales.getFilter();
 
         for (final Tale tale:tales.getTalesList()) {
-            if (tale.shouldBeShown(showOnlyFavorite, showForKids, showForBabies, filter)){
+            if (tale.shouldBeShown(showOnlyFavorite, showForKids, showForBabies, showLullabies, filter)){
                 tale.show();
                 visibility = View.GONE;
                 list.append(tale.id).append(";");
