@@ -112,6 +112,8 @@ class Reader{
             case R.string.sergii_tanchynets: return R.mipmap.sergii_tanchynets;
             case R.string.ira_bova: return R.mipmap.ira_bova;
             case R.string.nina_matvienko: return R.mipmap.nina_matvienko;
+            case R.string.olga_tokar: return R.mipmap.olga_tokar;
+            case R.string.vitaliy_bilonozhko: return R.mipmap.vitaliy_bilonozhko;
 
             default: return R.mipmap.logo;
         }

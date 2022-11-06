@@ -503,15 +503,18 @@ public class ActivityMain extends AppCompatActivity
         boolean showBabyTales = Tales.getShowForBabies();
         boolean showKidsTales = Tales.getShowForKids();
         boolean showFavorite = Tales.getShowOnlyFavorite();
+        boolean showLullabies = Tales.getShowLullabies();
 
         for (Reader reader: new Readers().Readers) {
             int count = 0;
 
             for (Tale tale : new Tales().getTalesList()) {
-                if (!tale.getReader().equals(reader.getName()))         continue;
-                if (showFavorite && !tale.isFavorite)                   continue;
-                if (!showBabyTales && tale.age == TaleAge.FOR_BABIES)   continue;
-                if (!showKidsTales && tale.age == TaleAge.FOR_KIDS)     continue;
+                if (!tale.getReader().equals(reader.getName()))                         continue;
+                if (showFavorite && !tale.isFavorite)                                   continue;
+                if (!showBabyTales && tale.age == TaleAge.FOR_BABIES)                   continue;
+                if (!showKidsTales && tale.age == TaleAge.FOR_KIDS)                     continue;
+                if (!showLullabies && tale.age == TaleAge.LULLABIES)                    continue;
+                if (!showKidsTales && !showBabyTales && tale.age == TaleAge.FOR_BOTH)   continue;
 
                 count++;
             }
