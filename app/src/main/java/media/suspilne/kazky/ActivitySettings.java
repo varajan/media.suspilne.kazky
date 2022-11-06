@@ -33,6 +33,7 @@ public class ActivitySettings extends ActivityMain {
     private Switch showBigImages;
     private Switch showBabiesTales;
     private Switch showKidsTales;
+    private Switch showLullabies;
     private Switch showOnlyFavorite;
     private RadioGroup sorting;
     private Switch groupByReader;
@@ -61,6 +62,7 @@ public class ActivitySettings extends ActivityMain {
         showBabiesTales = this.findViewById(R.id.showBabiesTales);
         showKidsTales = this.findViewById(R.id.showKidsTales);
         showBigImages = this.findViewById(R.id.showBigImages);
+        showLullabies = this.findViewById(R.id.showLullabies);
         showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         sorting = this.findViewById(R.id.sorting);
         groupByReader = this.findViewById(R.id.groupByReader);
@@ -79,6 +81,7 @@ public class ActivitySettings extends ActivityMain {
         showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
         showBabiesTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBabiesTales", isChecked));
         showKidsTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showKidsTales", isChecked));
+        showLullabies.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showLullabies", isChecked));
         showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
@@ -162,15 +165,16 @@ public class ActivitySettings extends ActivityMain {
     }
 
     private void setSwitch(String title, boolean isChecked){
-        List<String> filterOptions = Arrays.asList("showBabiesTales", "showKidsTales", "showOnlyFavorite");
-        if (filterOptions.contains(title)) { Tales.setTalesCountUpdated(false);}
+        List<String> filterOptions = Arrays.asList("showBabiesTales", "showKidsTales", "showLullabies", "showOnlyFavorite");
+        if (filterOptions.contains(title)) { Tales.setTalesCountUpdated(false); }
 
         SettingsHelper.setBoolean(title, isChecked);
         if (title.equals("groupByReader")) new Tales().setTalesList();
 
-        if (!Tales.getShowForBabies() && !Tales.getShowForKids() ){
+        if (!Tales.getShowForBabies() && !Tales.getShowForKids() && !Tales.getShowLullabies()){
             Tales.setShowForBabies(true);
             Tales.setShowForKids(true);
+            Tales.setShowLullabies(true);
         }
 
         setColorsAndState();
@@ -289,6 +293,7 @@ public class ActivitySettings extends ActivityMain {
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
         boolean isShowKidsTales = SettingsHelper.getBoolean("showKidsTales");
         boolean isShowBabiesTales = SettingsHelper.getBoolean("showBabiesTales");
+        boolean isShowLullabies = SettingsHelper.getBoolean("showLullabies");
         boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
         boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
         boolean isShuffle = SettingsHelper.getBoolean("shuffle");
@@ -335,6 +340,9 @@ public class ActivitySettings extends ActivityMain {
 
         showOnlyFavorite.setChecked(isShowOnlyFavorite);
         showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
+
+        showLullabies.setChecked(isShowLullabies);
+        showLullabies.setTextColor(isShowLullabies ? activeColor : inactiveColor);
 
         showKidsTales.setChecked(isShowKidsTales);
         showKidsTales.setTextColor(isShowKidsTales ? activeColor : inactiveColor);

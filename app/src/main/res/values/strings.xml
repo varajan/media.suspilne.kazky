@@ -60,6 +60,7 @@
     <string name="reader">Казкар</string>
     <string name="showBabiesTales">Відображати казки для дошкільнят</string>
     <string name="showKidsTales">Відображати казки для молодшого шкільного віку</string>
+    <string name="showLullabies">Відображати колискові</string>
     <string name="showOnlyFavorite">Відображати лише улюблені казки (Відмічені ⭐)</string>
     <string name="showOnlyFavoriteOn">Улюблені казки</string>
     <string name="showOnlyFavoriteOff">Усі казки</string>
@@ -236,11 +237,11 @@
     <string name="tale_116">Чарівне джерело</string>
     <string name="tale_117">Хто найстарший</string>
     <string name="tale_118">Хаппі та її суперсила</string>
-    <string name="tale_119"></string>
-    <string name="tale_120"></string>
+    <string name="tale_119">Котику сіренький</string>
+    <string name="tale_120">Сонько-дрімко</string>
 
-    <string name="tale_121"></string>
-    <string name="tale_122"></string>
+    <string name="tale_121">Вечiрня пiсня</string>
+    <string name="tale_122">Тепле сонечко сідає</string>
     <string name="tale_123"></string>
     <string name="tale_124"></string>
     <string name="tale_125"></string>
@@ -330,4 +331,10 @@
     <string name="vova_zi_lvova_description">Хіп-хоп виконавець</string>
     <string name="ira_bova">Іра Бова</string>
     <string name="ira_bova_description">Дитяча письменниця</string>
+    <string name="nina_matvienko">Ніна Матвієнко</string>
+    <string name="nina_matvienko_description">Українська співачка та акторка, народна артистка України</string>
+    <string name="olga_tokar">Ольга Токар</string>
+    <string name="olga_tokar_description">Аранжувальниця та хормайстриня</string>
+    <string name="vitaliy_bilonozhko">Віталій Білоножко</string>
+    <string name="vitaliy_bilonozhko_description">Засновник Міжнародного фестивалю родинної творчості \'Мелодія двох сердець\'</string>
 </resources>

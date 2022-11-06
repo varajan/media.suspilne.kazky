@@ -87,10 +87,18 @@ public class Tale{
         }
     }
 
-    boolean shouldBeShown(boolean showOnlyFavorite, boolean showForKids, boolean showForBabies, String filter){
+    boolean shouldBeShown(boolean showOnlyFavorite, boolean showForKids, boolean showForBabies, boolean showLullabies, String filter){
         return matchesFilter(filter)
                 && (!showOnlyFavorite || isFavorite)
-                && ((showForBabies && age == TaleAge.FOR_BABIES) || (showForKids && age == TaleAge.FOR_KIDS) || age == TaleAge.FOR_BOTH);
+                && shouldBeShown(showForKids, showForBabies, showLullabies);
+    }
+
+    boolean shouldBeShown(boolean showForKids, boolean showForBabies, boolean showLullabies){
+        boolean x1 = (age == TaleAge.FOR_KIDS || age == TaleAge.FOR_BOTH) && showForKids;
+        boolean x2 = (age == TaleAge.FOR_BABIES || age == TaleAge.FOR_BOTH) && showForBabies;
+        boolean x3 = age == TaleAge.LULLABIES && showLullabies;
+
+        return x1 || x2 || x3;
     }
 
     boolean matchesFilter(String filter){

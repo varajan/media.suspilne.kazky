@@ -11,6 +11,12 @@ class Tales {
     public static boolean getTalesCountUpdated(){ return SettingsHelper.getBoolean("tales.count.updated"); }
     public static void setTalesCountUpdated(boolean value){SettingsHelper.setBoolean("tales.count.updated", value);}
 
+    public static boolean getShowLullabies() { return SettingsHelper.getBoolean("showLullabies"); }
+    public static void setShowLullabies(boolean value) {
+        SettingsHelper.setBoolean("showLullabies", value);
+        setTalesCountUpdated(false);
+    }
+
     public static boolean getShowForBabies() { return SettingsHelper.getBoolean("showBabiesTales"); }
     public static void setShowForBabies(boolean value) {
         SettingsHelper.setBoolean("showBabiesTales", value);
@@ -316,12 +322,12 @@ class Tales {
             new Tale(115, TaleAge.FOR_BOTH, 	"04:55", 7800, 1, R.string.tale_115, R.string.kateryna_ofliyan,    SettingsHelper.getBoolean("showBigImages") ? R.drawable.t115 : R.drawable.t115_min),
             new Tale(116, TaleAge.FOR_KIDS, 	"05:52", 6000, 1, R.string.tale_116, R.string.kateryna_ofliyan,    SettingsHelper.getBoolean("showBigImages") ? R.drawable.t116 : R.drawable.t116_min),
             new Tale(117, TaleAge.FOR_BOTH, 	"03:16", 7400, 1, R.string.tale_117, R.string.kateryna_ofliyan,    SettingsHelper.getBoolean("showBigImages") ? R.drawable.t117 : R.drawable.t117_min),
-            new Tale(118, TaleAge.FOR_KIDS, 	"17:56", 0, 1, R.string.tale_118, R.string.ira_bova, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t118 : R.drawable.t118_min)
-//            new Tale(9, TaleAge.FOR_BABIES, 	"00:00", 5000, 0, R.string.tale_119, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t119 : R.drawable.t1199_min),
-//            new Tale(0, TaleAge.FOR_BABIES, 	"00:00", 5000, 0, R.string.tale_120, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t120 : R.drawable.t1200_min),
+            new Tale(118, TaleAge.FOR_KIDS, 	"17:56", 0, 1, R.string.tale_118, R.string.ira_bova, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t118 : R.drawable.t118_min),
+            new Tale(119, TaleAge.LULLABIES, 	"03:13", 0, 0, R.string.tale_119, R.string.nina_matvienko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t119 : R.drawable.t119_min),
+            new Tale(120, TaleAge.LULLABIES, 	"02:22", 0, 0, R.string.tale_120, R.string.olga_tokar, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t120 : R.drawable.t120_min),
 
-//            new Tale(1, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_1, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t1_min),
-//            new Tale(2, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_2, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t2_min),
+            new Tale(121, TaleAge.LULLABIES, "04:14", 0, 0, R.string.tale_121, R.string.olga_tokar, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t121 : R.drawable.t121_min),
+            new Tale(122, TaleAge.LULLABIES, "02:35", 0, 0, R.string.tale_122, R.string.vitaliy_bilonozhko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t122 : R.drawable.t122_min)
 //            new Tale(3, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_3, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t3_min),
 //            new Tale(4, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_4, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t4_min),
 //            new Tale(5, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_5, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t5_min),
