@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -189,6 +190,11 @@ public class ActivityTales extends ActivityMain {
                     playBtn.setTag(R.mipmap.tale_play);
                     super.resetVolumeReduceTimer();
                 }else{
+                    if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
+                        requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions);
+                        return;
+                    }
+
                     playTale(tale);
                     super.resetQuitTimeout();
                     super.resetVolumeReduceTimer();
@@ -239,6 +245,7 @@ public class ActivityTales extends ActivityMain {
         continueDownloadTales();
         suggestToDownloadFavoriteTales();
         registerReceiver();
+        requestPermission(Manifest.permission.POST_NOTIFICATIONS);
     }
 
     private void playTale(Tale tale){

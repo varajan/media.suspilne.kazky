@@ -567,21 +567,18 @@ public class ActivityMain extends AppCompatActivity
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
+    protected void requestPermission(String permission){
+        ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
+    }
     protected void requestPermission(String permission, int error){
         if (hasPermission(permission)) return;
 
-        boolean shouldShowRequest = ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission);
-
-        if (shouldShowRequest) {
-            ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
-        } else {
-            new AlertDialog.Builder(this)
-                    .setIcon(R.mipmap.logo)
-                    .setTitle(error)
-                    .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
-                    .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
-                    .show();
-        }
+        new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.logo)
+                .setTitle(error)
+                .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
+                .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
+                .show();
     }
 
     private void openAndroidSettings(){

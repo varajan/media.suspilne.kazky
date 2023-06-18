@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,8 +47,8 @@ public class ActivityRadio extends ActivityMain {
         currentView = R.id.radio_menu;
         super.onCreate(savedInstanceState);
         registerReceiver();
-
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        requestPermission(Manifest.permission.POST_NOTIFICATIONS);
 
         ((ImageView) findViewById(R.id.onlinePlayer)).setImageResource(R.mipmap.online_player);
         TextView infoText = findViewById(R.id.textView);
@@ -73,6 +74,11 @@ public class ActivityRadio extends ActivityMain {
                 if (!SettingsHelper.getBoolean("radioIsAvailable")){
                     showAlert(R.string.no_radio_text, "https://www.facebook.com/148182332275963/");
                     resetVolumeReduceTimer();
+                    return;
+                }
+
+                if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
+                    requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions);
                     return;
                 }
 

@@ -46,7 +46,7 @@ public class ActivityColorings extends ActivityMain {
         addSearchField();
         showTales();
         filterTales();
-        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.no_write_permission);
+        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     private void filterTales() {

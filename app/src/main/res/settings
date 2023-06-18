@@ -1,5 +1,5 @@
 radioIsOff:false
 radioIsAvailable:true
 talesFromGit:true
-version:4.122.1
-whatsNew:Додано чотири колискові
+version:4.122.2
+whatsNew:Виправлено проблему з мініплеєром на Андроід 13
