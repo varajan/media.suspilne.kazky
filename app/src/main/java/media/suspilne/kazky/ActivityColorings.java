@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.KeyEvent;
@@ -85,7 +86,8 @@ public class ActivityColorings extends ActivityMain {
                     return;
                 }
 
-                if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                    && !hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.no_write_permission);
                     return;
                 }

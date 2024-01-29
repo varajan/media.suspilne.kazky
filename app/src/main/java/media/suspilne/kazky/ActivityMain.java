@@ -415,15 +415,6 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void rateApp(){
-        if (BuildConfig.HuaweiAppGalery){
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.HuaweiAppGaleryLink)));
-            }catch (Exception ex){
-                /* nothing */
-            }
-            return;
-        }
-
         try {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -534,7 +525,7 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private void checkForUpdates(){
-        if (BuildConfig.HuaweiAppGalery || !SettingsHelper.getBoolean("checkForUpdates")) return;
+        if (!SettingsHelper.getBoolean("checkForUpdates")) return;
         if (this.isNetworkUnavailable()) return;
 
         try {
@@ -570,6 +561,7 @@ public class ActivityMain extends AppCompatActivity
     protected void requestPermission(String permission){
         ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
     }
+
     protected void requestPermission(String permission, int error){
         if (hasPermission(permission)) return;
 
