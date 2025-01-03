@@ -50,16 +50,13 @@ public class PlayerService extends IntentService {
     public void onCreate(){
         registerReceiver();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
-
-            if (channel == null){
-                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-                notificationChannel.setSound(null, null);
-                notificationChannel.setShowBadge(false);
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
+        if (channel == null){
+            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setSound(null, null);
+            notificationChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
     }
 
@@ -184,11 +181,7 @@ public class PlayerService extends IntentService {
             PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
                 @Override
                 public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
-                    } else {
-                        startForeground(notificationId, notification);
-                    }
+                    startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
                 }
 
                 @Override
@@ -250,11 +243,7 @@ public class PlayerService extends IntentService {
         PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
             @Override
             public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
-                } else {
-                    startForeground(notificationId, notification);
-                }
+                startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
             }
 
             @Override

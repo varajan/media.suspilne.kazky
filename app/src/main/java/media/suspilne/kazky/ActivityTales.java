@@ -236,7 +236,7 @@ public class ActivityTales extends ActivityMain {
         TalesList = findViewById(R.id.talesList);
         tales = new Tales();
 
-        if (!returnToReaders) {Tales.setFilter("");}
+        if (!returnToReaders) { Tales.setFilter(""); }
 
         addSearchField();
         showTales();
@@ -245,7 +245,6 @@ public class ActivityTales extends ActivityMain {
         continueDownloadTales();
         suggestToDownloadFavoriteTales();
         registerReceiver();
-        requestPermission(Manifest.permission.POST_NOTIFICATIONS);
     }
 
     private void playTale(Tale tale){
@@ -255,12 +254,7 @@ public class ActivityTales extends ActivityMain {
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("tale.id", tale.id);
             stream.putExtra("type", getString(R.string.tales));
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(stream);
-            } else {
-                startService(stream);
-            }
+            startForegroundService(stream);
         }
 
         setPlayBtnIcon(false);

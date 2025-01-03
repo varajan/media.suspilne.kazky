@@ -48,7 +48,6 @@ public class ActivityRadio extends ActivityMain {
         super.onCreate(savedInstanceState);
         registerReceiver();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        requestPermission(Manifest.permission.POST_NOTIFICATIONS);
 
         ((ImageView) findViewById(R.id.onlinePlayer)).setImageResource(R.mipmap.online_player);
         TextView infoText = findViewById(R.id.textView);
@@ -85,13 +84,7 @@ public class ActivityRadio extends ActivityMain {
                 Intent intent = new Intent(this, PlayerService.class);
                 intent.putExtra("type", getString(R.string.radio));
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(intent);
-                }
-                else {
-                    startService(intent);
-                }
-
+                startForegroundService(intent);
                 setPlayBtnIcon();
                 this.resetQuitTimeout();
                 this.resetVolumeReduceTimer();

@@ -19,7 +19,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     private NotificationManager notificationManager;
     private PendingIntent openApplication;
 
-    private Drawable image = ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
+    private final Drawable image = ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
     private int count;
     private int current;
     static int IN_PROGRESS = 22;
@@ -84,13 +84,11 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
         cancelAllNotifications();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setSound(null, null);
-            notificationChannel.setShowBadge(false);
+        NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.setSound(null, null);
+        notificationChannel.setShowBadge(false);
 
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
+        notificationManager.createNotificationChannel(notificationChannel);
 
         Intent notificationIntent = new Intent(ActivityMain.getActivity(), ActivityMain.getActivity().getClass());
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
