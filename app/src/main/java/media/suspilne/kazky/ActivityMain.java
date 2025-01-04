@@ -555,12 +555,13 @@ public class ActivityMain extends AppCompatActivity
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    protected void requestPermission(String permission, int error){
+    protected void requestPermission(String permission, int title, int error){
         if (hasPermission(permission)) return;
 
         new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.logo)
-                .setTitle(error)
+                .setTitle(title)
+                .setMessage(error)
                 .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
                 .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
                 .show();

@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -77,8 +77,7 @@ public class ActivityRadio extends ActivityMain {
                 }
 
                 if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
-                    requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions);
-                    return;
+                    Toast.makeText(getActivity(), R.string.no_post_notifications_permissions, Toast.LENGTH_LONG).show();
                 }
 
                 Intent intent = new Intent(this, PlayerService.class);

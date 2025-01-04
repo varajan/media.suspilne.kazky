@@ -191,8 +191,7 @@ public class ActivityTales extends ActivityMain {
                     super.resetVolumeReduceTimer();
                 }else{
                     if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
-                        requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions);
-                        return;
+                        Toast.makeText(getActivity(), R.string.no_post_notifications_permissions, Toast.LENGTH_LONG).show();
                     }
 
                     playTale(tale);

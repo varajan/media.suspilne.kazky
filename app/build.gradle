@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     defaultConfig {
         applicationId "media.suspilne.kazky"
-        minSdkVersion 29
+        minSdkVersion 34
         compileSdk 35
         versionCode 130
         versionName "4.122.4"
