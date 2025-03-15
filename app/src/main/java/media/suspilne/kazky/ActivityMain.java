@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -17,7 +18,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -203,10 +203,6 @@ public class ActivityMain extends AppCompatActivity
     }
 
     private boolean isNetworkSpeedOk() {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
-            return true;
-        }
-
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager != null
                 ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
@@ -300,6 +296,7 @@ public class ActivityMain extends AppCompatActivity
         System.exit(1);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -558,16 +555,13 @@ public class ActivityMain extends AppCompatActivity
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    protected void requestPermission(String permission){
-        ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
-    }
-
-    protected void requestPermission(String permission, int error){
+    protected void requestPermission(String permission, int title, int error){
         if (hasPermission(permission)) return;
 
         new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.logo)
-                .setTitle(error)
+                .setTitle(title)
+                .setMessage(error)
                 .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
                 .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
                 .show();

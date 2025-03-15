@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -191,8 +190,7 @@ public class ActivityTales extends ActivityMain {
                     super.resetVolumeReduceTimer();
                 }else{
                     if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
-                        requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions);
-                        return;
+                        Toast.makeText(getActivity(), R.string.no_post_notifications_permissions, Toast.LENGTH_LONG).show();
                     }
 
                     playTale(tale);
@@ -236,7 +234,7 @@ public class ActivityTales extends ActivityMain {
         TalesList = findViewById(R.id.talesList);
         tales = new Tales();
 
-        if (!returnToReaders) {Tales.setFilter("");}
+        if (!returnToReaders) { Tales.setFilter(""); }
 
         addSearchField();
         showTales();
@@ -245,7 +243,6 @@ public class ActivityTales extends ActivityMain {
         continueDownloadTales();
         suggestToDownloadFavoriteTales();
         registerReceiver();
-        requestPermission(Manifest.permission.POST_NOTIFICATIONS);
     }
 
     private void playTale(Tale tale){
@@ -255,12 +252,7 @@ public class ActivityTales extends ActivityMain {
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("tale.id", tale.id);
             stream.putExtra("type", getString(R.string.tales));
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(stream);
-            } else {
-                startService(stream);
-            }
+            startForegroundService(stream);
         }
 
         setPlayBtnIcon(false);
@@ -297,7 +289,7 @@ public class ActivityTales extends ActivityMain {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
-            this.registerReceiver(receiver, filter);
+            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
         }catch (Exception e){
             // nothing
         }

@@ -1,11 +1,9 @@
 package media.suspilne.kazky;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.KeyEvent;
@@ -19,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 
 public class ActivityColorings extends ActivityMain {
@@ -47,11 +44,10 @@ public class ActivityColorings extends ActivityMain {
         addSearchField();
         showTales();
         filterTales();
-        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     private void filterTales() {
-        activityTitle.setText(Tales.getFilter().equals("") ? getString(R.string.coloring) : "\u2315 " + Tales.getFilter());
+        activityTitle.setText(Tales.getFilter().isEmpty() ? getString(R.string.coloring) : "⌕ " + Tales.getFilter());
         TextView nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
         String filter = searchField.getText().toString();
@@ -86,14 +82,7 @@ public class ActivityColorings extends ActivityMain {
                     return;
                 }
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-                    && !hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.no_write_permission);
-                    return;
-                }
-
                 String url = ActivityColorings.getActivity().getResources().getString(R.string.coloringUrl, tale.id);
-
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.coloring_download_ask)
@@ -176,11 +165,11 @@ public class ActivityColorings extends ActivityMain {
 
         try{
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+            DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.allowScanningByMediaScanner();
-
-            ((DownloadManager) getSystemService(DOWNLOAD_SERVICE)).enqueue(request);
+            downloadManager.enqueue(request);
         } catch (Exception ex){
             Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_LONG).show();
         }

@@ -1,5 +1,6 @@
 package media.suspilne.kazky;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -87,6 +88,10 @@ public class ActivitySettings extends ActivityMain {
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
 
         if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
+
+        if (!hasPermission(android.Manifest.permission.POST_NOTIFICATIONS)) {
+            requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
+        }
     }
 
     int random(int min, int max) {

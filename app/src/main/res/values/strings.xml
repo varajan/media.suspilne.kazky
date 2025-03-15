@@ -55,7 +55,9 @@
     <string name="coloring_download_ask">Зберегти розмальовку в папку Downloads?</string>
     <string name="coloring_download">Розмальовку буде збережено в папку Downloads</string>
     <string name="no_write_permission">Програма не має дозволу для збереження файлів.</string>
-    <string name="no_post_notifications_permissions">Програма не має дозволу показувати повідомлення.</string>
+    <string name="no_post_notifications_permissions">Програма не має дозволу показувати повідомлення, а віддтак і мініплейер.</string>
+    <string name="no_post_notifications_permissions_title">Мініплейер недоступний</string>
+    <string name="no_post_notifications_permissions_error">Програма не має дозволу показувати повідомлення.</string>
     <string name="grant_permissions">Відкрити системні налаштування?</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>

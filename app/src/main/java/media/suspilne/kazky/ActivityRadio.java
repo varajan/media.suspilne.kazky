@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -48,7 +48,6 @@ public class ActivityRadio extends ActivityMain {
         super.onCreate(savedInstanceState);
         registerReceiver();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        requestPermission(Manifest.permission.POST_NOTIFICATIONS);
 
         ((ImageView) findViewById(R.id.onlinePlayer)).setImageResource(R.mipmap.online_player);
         TextView infoText = findViewById(R.id.textView);
@@ -78,20 +77,13 @@ public class ActivityRadio extends ActivityMain {
                 }
 
                 if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
-                    requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions);
-                    return;
+                    Toast.makeText(getActivity(), R.string.no_post_notifications_permissions, Toast.LENGTH_LONG).show();
                 }
 
                 Intent intent = new Intent(this, PlayerService.class);
                 intent.putExtra("type", getString(R.string.radio));
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(intent);
-                }
-                else {
-                    startService(intent);
-                }
-
+                startForegroundService(intent);
                 setPlayBtnIcon();
                 this.resetQuitTimeout();
                 this.resetVolumeReduceTimer();
@@ -129,7 +121,7 @@ public class ActivityRadio extends ActivityMain {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
-            this.registerReceiver(receiver, filter);
+            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
         }catch (Exception e){ /*nothing*/ }
     }
 
