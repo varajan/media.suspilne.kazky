@@ -121,7 +121,7 @@ public class ActivityRadio extends ActivityMain {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
-            this.registerReceiver(receiver, filter);
+            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
         }catch (Exception e){ /*nothing*/ }
     }
 

@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -290,7 +289,7 @@ public class ActivityTales extends ActivityMain {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
-            this.registerReceiver(receiver, filter);
+            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
         }catch (Exception e){
             // nothing
         }
