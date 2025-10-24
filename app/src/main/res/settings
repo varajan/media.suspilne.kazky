@@ -1,5 +1,5 @@
 radioIsOff:false
-radioIsAvailable:true
+radioIsAvailable:false
 talesFromGit:true
-version:4.122.3
-whatsNew:Виправлено проблему з завантаженням розмальовок.
+version:4.122.5
+whatsNew:Оновлено бібліотеки.
