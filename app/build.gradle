@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     defaultConfig {
         applicationId "media.suspilne.kazky"
-        minSdkVersion 34
+        minSdkVersion 35
         compileSdk 35
-        versionCode 134
+        versionCode 135
         versionName "4.122.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
