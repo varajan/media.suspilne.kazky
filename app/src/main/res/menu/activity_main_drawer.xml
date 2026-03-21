@@ -5,10 +5,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/radio_menu"
-            android:icon="@drawable/ic_radio"
-            android:title="@string/radio" />
-        <item
             android:id="@+id/tales_menu"
             android:icon="@drawable/ic_tales_list"
             android:title="@string/tales" />
