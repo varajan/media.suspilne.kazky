@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
@@ -65,11 +64,6 @@ public class PlayerService extends IntentService {
         String type = intent != null ? intent.getStringExtra("type") : "null";
         SettingsHelper.setString("StreamType", type);
         registerReceiver();
-
-        if (type.equals(getString(R.string.radio))){
-            playRadio();
-            return START_NOT_STICKY;
-        }
 
         if (type.equals(getString(R.string.tales))){
             int taleId = intent != null ? intent.getIntExtra("tale.id", -1) : -1;
@@ -237,31 +231,6 @@ public class PlayerService extends IntentService {
         try{
             this.unregisterReceiver(receiver);
         }catch (Exception e){ /*nothing*/ }
-    }
-
-    private void playRadio(){
-        PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
-            @Override
-            public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
-            }
-
-            @Override
-            public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
-                stopSelf();
-            }
-        };
-
-        playerNotificationManager = new PlayerNotificationManager
-                .Builder(this, NOTIFICATION_ID, NOTIFICATION_CHANNEL)
-                .setNotificationListener(listener)
-                .setMediaDescriptionAdapter(new PlayerRadioAdapter(this))
-                .setStopActionIconResourceId(R.drawable.exo_notification_stop)
-                .build();
-        playerNotificationManager.setUseStopAction(true);
-
-        playStream("https://radio.nrcu.gov.ua:8443/kazka-mp3", 0);
-        sendMessage("SetPlayBtnIcon");
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {

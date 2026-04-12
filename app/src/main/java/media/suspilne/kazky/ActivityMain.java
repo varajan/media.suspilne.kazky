@@ -176,8 +176,6 @@ public class ActivityMain extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            SettingsHelper.setBoolean("radioIsOff", settings.contains("radioIsOff:true") || settings.isEmpty());
-            SettingsHelper.setBoolean("radioIsAvailable", settings.contains("radioIsAvailable:true") || settings.isEmpty());
             SettingsHelper.setBoolean("playTalesFromGit", settings.contains("talesFromGit:true"));
             SettingsHelper.setBoolean("readSettingsFromGit", false);
             SettingsHelper.setString("version", getSettingsValue(settings, "version", SettingsHelper.getVersionName()));
@@ -228,10 +226,6 @@ public class ActivityMain extends AppCompatActivity
             case R.id.tales_menu:
             case R.id.coloring_menu:
                 setContentView(R.layout.activity_tales);
-                break;
-
-            case R.id.radio_menu:
-                setContentView(R.layout.activity_radio);
                 break;
 
             case R.id.readers_menu:
@@ -342,12 +336,6 @@ public class ActivityMain extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.radio_menu:
-                if (currentView != R.id.radio_menu) {
-                    openActivity(ActivityRadio.class);
-                }
-                break;
-
             case R.id.tales_menu:
                 if (currentView != R.id.tales_menu) {
                     openActivity(ActivityTales.class);
