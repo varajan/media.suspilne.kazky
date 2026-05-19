@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="requiredSpace">660</string>
+    <string name="requiredSpace">670</string>
     <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
     <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
     <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
@@ -243,12 +243,12 @@
     <string name="tale_121">Вечiрня пiсня</string>
     <string name="tale_122">Тепле сонечко сідає</string>
     <string name="tale_123">Снігова королева</string>
-    <string name="tale_124"></string>
-    <string name="tale_125"></string>
-    <string name="tale_126"></string>
-    <string name="tale_127"></string>
-    <string name="tale_128"></string>
-    <string name="tale_129"></string>
+    <string name="tale_124">Пригоди білого ведмедика</string>
+    <string name="tale_125">Запасливий хом\'ячок</string>
+    <string name="tale_126">Витівки мавпочки Зізі</string>
+    <string name="tale_127">Жирафа Плямочка</string>
+    <string name="tale_128">Дивна мрія лабрадора</string>
+    <string name="tale_129">Тигреня, яке не вміло гарчати</string>
     <string name="tale_130"></string>
 
     <string name="anastasiia_gudyma">Анастасія Гудима</string>
@@ -339,4 +339,16 @@
     <string name="vitaliy_bilonozhko_description">Засновник Міжнародного фестивалю родинної творчості \'Мелодія двох сердець\'</string>
     <string name="nataliya_vasko">Наталя Васько</string>
     <string name="nataliya_vasko_description">Провідна акторка Київського Молодого театру</string>
+    <string name="ruhanko_man">РуханкоМен</string>
+    <string name="ruhanko_man_description">Музичний виконавець</string>
+    <string name="roxolana">Roxolana</string>
+    <string name="roxolana_description">Українська авторка пісень і співачка</string>
+    <string name="antonina_hyzhniak">Антоніна Хижняк</string>
+    <string name="antonina_hyzhniak_description">Українська акторка театру, кіно та дубляжу</string>
+    <string name="kola">Kola</string>
+    <string name="kola_description">Українська співачка, авторка і виконавиця власних пісень</string>
+    <string name="kler">Kler</string>
+    <string name="kler_description">Українська співачка і авторка пісень</string>
+    <string name="ivan_kaluzhny">Іван Калюжний</string>
+    <string name="ivan_kaluzhny_description"></string>
 </resources>
