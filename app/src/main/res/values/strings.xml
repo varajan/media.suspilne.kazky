@@ -242,7 +242,7 @@
 
     <string name="tale_121">Вечiрня пiсня</string>
     <string name="tale_122">Тепле сонечко сідає</string>
-    <string name="tale_123"></string>
+    <string name="tale_123">Снігова королева</string>
     <string name="tale_124"></string>
     <string name="tale_125"></string>
     <string name="tale_126"></string>
@@ -337,4 +337,6 @@
     <string name="olga_tokar_description">Аранжувальниця та хормайстриня</string>
     <string name="vitaliy_bilonozhko">Віталій Білоножко</string>
     <string name="vitaliy_bilonozhko_description">Засновник Міжнародного фестивалю родинної творчості \'Мелодія двох сердець\'</string>
+    <string name="nataliya_vasko">Наталя Васько</string>
+    <string name="nataliya_vasko_description">Провідна акторка Київського Молодого театру</string>
 </resources>

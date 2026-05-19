@@ -64,6 +64,7 @@ public class Readers {
             new Reader(R.string.ira_bova, R.string.ira_bova_description),
             new Reader(R.string.nina_matvienko, R.string.nina_matvienko_description),
             new Reader(R.string.olga_tokar, R.string.olga_tokar_description),
-            new Reader(R.string.vitaliy_bilonozhko, R.string.vitaliy_bilonozhko_description)
+            new Reader(R.string.vitaliy_bilonozhko, R.string.vitaliy_bilonozhko_description),
+            new Reader(R.string.nataliya_vasko, R.string.nataliya_vasko_description)
     ));
 }
