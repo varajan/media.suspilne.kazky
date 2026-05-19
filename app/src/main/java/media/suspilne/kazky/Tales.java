@@ -326,17 +326,16 @@ class Tales {
             new Tale(119, TaleAge.LULLABIES, 	"03:05", 0, 0, R.string.tale_119, R.string.nina_matvienko,	SettingsHelper.getBoolean("showBigImages") ? R.drawable.t119 : R.drawable.t119_min),
             new Tale(120, TaleAge.LULLABIES, 	"02:12", 0, 0, R.string.tale_120, R.string.olga_tokar,		SettingsHelper.getBoolean("showBigImages") ? R.drawable.t120 : R.drawable.t120_min),
 
-            new Tale(121, TaleAge.LULLABIES, 	"04:10", 0, 0, R.string.tale_121, R.string.olga_tokar,		SettingsHelper.getBoolean("showBigImages") ? R.drawable.t121 : R.drawable.t121_min),
-            new Tale(122, TaleAge.LULLABIES, 	"02:34", 0, 0, R.string.tale_122, R.string.vitaliy_bilonozhko,	SettingsHelper.getBoolean("showBigImages") ? R.drawable.t122 : R.drawable.t122_min),
-            new Tale(123, TaleAge.FOR_BOTH,      "16:35", 7000, 0, R.string.tale_123, R.string.nataliya_vasko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t123 : R.drawable.t123_min)
+            new Tale(121, TaleAge.LULLABIES,    "04:10", 0, 0, R.string.tale_121, R.string.olga_tokar,		SettingsHelper.getBoolean("showBigImages") ? R.drawable.t121 : R.drawable.t121_min),
+            new Tale(122, TaleAge.LULLABIES,    "02:34", 0, 0, R.string.tale_122, R.string.vitaliy_bilonozhko,	SettingsHelper.getBoolean("showBigImages") ? R.drawable.t122 : R.drawable.t122_min),
+            new Tale(123, TaleAge.FOR_BOTH,     "16:35", 7000, 0, R.string.tale_123, R.string.nataliya_vasko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t123 : R.drawable.t123_min),
+            new Tale(124, TaleAge.FOR_BOTH,     "11:24", 5000, 0, R.string.tale_124, R.string.ruhanko_man, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t124 : R.drawable.t124_min),
+            new Tale(125, TaleAge.FOR_BOTH,     "07:10", 5000, 0, R.string.tale_125, R.string.roxolana, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t125 : R.drawable.t125_min),
+            new Tale(126, TaleAge.FOR_BOTH,     "06:53", 5000, 0, R.string.tale_126, R.string.ivan_kaluzhny, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t126 : R.drawable.t126_min),
+            new Tale(127, TaleAge.FOR_BOTH,     "08:28", 5000, 0, R.string.tale_127, R.string.antonina_hyzhniak, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t127 : R.drawable.t127_min),
+            new Tale(128, TaleAge.FOR_BOTH,     "06:42", 5000, 0, R.string.tale_128, R.string.kola, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t128 : R.drawable.t128_min),
+            new Tale(129, TaleAge.FOR_BOTH,     "08:33", 5000, 0, R.string.tale_129, R.string.kler, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t129 : R.drawable.t129_min)
 
 //            new Tale(3, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_3, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t3_min),
-//            new Tale(4, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_4, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t4_min),
-//            new Tale(5, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_5, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t5_min),
-//            new Tale(6, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_6, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t6_min),
-//            new Tale(7, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_7, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t7_min),
-//            new Tale(8, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_8, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t8_min),
-//            new Tale(9, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_9, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t9_min),
-//            new Tale(0, TaleAge.FOR_BABIES, "00:00", 5000, 0, R.string.tale_0, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t0_min),
     ));
 }
