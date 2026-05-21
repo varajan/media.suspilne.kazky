@@ -328,7 +328,7 @@ class Tales {
 
             new Tale(121, TaleAge.LULLABIES,    "04:10", 0, 0, R.string.tale_121, R.string.olga_tokar,		SettingsHelper.getBoolean("showBigImages") ? R.drawable.t121 : R.drawable.t121_min),
             new Tale(122, TaleAge.LULLABIES,    "02:34", 0, 0, R.string.tale_122, R.string.vitaliy_bilonozhko,	SettingsHelper.getBoolean("showBigImages") ? R.drawable.t122 : R.drawable.t122_min),
-            new Tale(123, TaleAge.FOR_BOTH,     "16:35", 7000, 0, R.string.tale_123, R.string.nataliya_vasko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t123 : R.drawable.t123_min),
+            new Tale(123, TaleAge.FOR_KIDS,     "16:35", 7000, 0, R.string.tale_123, R.string.nataliya_vasko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t123 : R.drawable.t123_min),
             new Tale(124, TaleAge.FOR_BOTH,     "11:24", 2000, 0, R.string.tale_124, R.string.ruhanko_man, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t124 : R.drawable.t124_min),
             new Tale(125, TaleAge.FOR_BOTH,     "07:10", 2000, 0, R.string.tale_125, R.string.roxolana, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t125 : R.drawable.t125_min),
             new Tale(126, TaleAge.FOR_BOTH,     "06:53", 4000, 0, R.string.tale_126, R.string.ivan_kaluzhny, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t126 : R.drawable.t126_min),
