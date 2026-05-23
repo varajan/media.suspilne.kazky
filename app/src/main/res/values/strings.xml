@@ -249,7 +249,29 @@
     <string name="tale_127">Жирафа Плямочка</string>
     <string name="tale_128">Дивна мрія лабрадора</string>
     <string name="tale_129">Тигреня, яке не вміло гарчати</string>
-    <string name="tale_130"></string>
+    <string name="tale_130">Вел і Цуц</string>
+
+    <string name="tale_131">Місто сирен</string>
+    <string name="tale_132">Кепка сили</string>
+    <string name="tale_133">Їжачок Лесик і лісова зграя</string>
+    <string name="tale_134">Їжачок Лесик на новому березі</string>
+    <string name="tale_135">Любий мамозавр</string>
+    <string name="tale_136">Бульбашки для зайчика Вжуха</string>
+    <string name="tale_137">Як волонтери зірки купували</string>
+    <string name="tale_138">Диво у темряві</string>
+    <string name="tale_139">Біжи, мишеня</string>
+    <string name="tale_140">Мій (Над)звичайний Пес</string>
+
+    <string name="tale_141">Воїни-котики з острова Паляниця</string>
+    <string name="tale_142"></string>
+    <string name="tale_143"></string>
+    <string name="tale_144"></string>
+    <string name="tale_145"></string>
+    <string name="tale_146"></string>
+    <string name="tale_147"></string>
+    <string name="tale_148"></string>
+    <string name="tale_149"></string>
+    <string name="tale_150"></string>
 
     <string name="anastasiia_gudyma">Анастасія Гудима</string>
     <string name="anastasiia_gudyma_description">Керівниця Координаційного центру національних меншин ПАТ НСТУ</string>
@@ -351,4 +373,22 @@
     <string name="kler_description">Українська співачка і авторка пісень</string>
     <string name="ivan_kaluzhny">Іван Калюжний</string>
     <string name="ivan_kaluzhny_description">Гравець національної збірної України з футболу</string>
+    <string name="julia_sanina">Юлія Саніна</string>
+    <string name="julia_sanina_description">Фронтвумен українського гурту The Hardkiss</string>
+    <string name="busha">Олександр, Лео та Елвін Буша</string>
+    <string name="busha_description">Творча родина з Ірпеня</string>
+    <string name="pavlo_vyshebaba">Павло Вишебаба</string>
+    <string name="pavlo_vyshebaba_description">Письменник, військовий, музикант</string>
+    <string name="irma_vitovska">Ірма Вітовська</string>
+    <string name="irma_vitovska_description">Заслужена артистка України</string>
+    <string name="olena_topolia">Олена Тополя</string>
+    <string name="olena_topolia_description">Українська співачка Alyosha</string>
+    <string name="serhii_prytula">Сергій Притула</string>
+    <string name="serhii_prytula_description">Волонтер і громадський діяч</string>
+    <string name="natalka_denysenko">Наталка Денисенко</string>
+    <string name="natalka_denysenko_description">Українська акторка театру, кіно та дубляжу, дикторка, режисерка та телеведуча</string>
+    <string name="zlata_ognevich">Злата Огнєвіч</string>
+    <string name="zlata_ognevich_description">Українська співачка, заслужена артистка АР Крим</string>
+    <string name="taras_kompanichenko">Тарас Компаніченко</string>
+    <string name="taras_kompanichenko_description">Композитор, поет, кобзар, бандурист, лірник</string>
 </resources>
