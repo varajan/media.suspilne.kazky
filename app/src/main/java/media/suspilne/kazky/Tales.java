@@ -338,14 +338,14 @@ class Tales {
             new Tale(130, TaleAge.FOR_KIDS,     "08:52", 6000, 0, R.string.tale_130, R.string.julia_sanina, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t130 : R.drawable.t130_min),
 
             new Tale(131, TaleAge.FOR_KIDS,     "06:10", 4000, 0, R.string.tale_131, R.string.busha, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t131 : R.drawable.t131_min),
-            new Tale(132, TaleAge.FOR_KIDS,     "11:33", 12000, 0, R.string.tale_132, R.string.pavlo_vyshebaba, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t132 : R.drawable.t132_min),
-            new Tale(133, TaleAge.FOR_KIDS,     "13:57", 12000, 0, R.string.tale_133, R.string.irma_vitovska, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t133 : R.drawable.t133_min),
-            new Tale(134, TaleAge.FOR_KIDS,     "11:52", 11000, 0, R.string.tale_134, R.string.olena_topolia, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t134 : R.drawable.t134_min),
+            new Tale(132, TaleAge.FOR_KIDS,    "11:33", 12000, 0, R.string.tale_132, R.string.pavlo_vyshebaba, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t132 : R.drawable.t132_min),
+            new Tale(133, TaleAge.FOR_BABIES,  "13:57", 12000, 0, R.string.tale_133, R.string.irma_vitovska, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t133 : R.drawable.t133_min),
+            new Tale(134, TaleAge.FOR_BABIES,  "11:52", 11000, 0, R.string.tale_134, R.string.olena_topolia, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t134 : R.drawable.t134_min),
             new Tale(135, TaleAge.FOR_KIDS,     "11:38", 3000, 0, R.string.tale_135, R.string.antonina_hyzhniak, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t135 : R.drawable.t135_min),
             new Tale(136, TaleAge.FOR_KIDS,     "11:43", 3000, 0, R.string.tale_136, R.string.timur_miroshnychenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t136 : R.drawable.t136_min),
             new Tale(137, TaleAge.FOR_KIDS,     "09:02", 2500, 0, R.string.tale_137, R.string.serhii_prytula, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t137 : R.drawable.t137_min),
             new Tale(138, TaleAge.FOR_KIDS,     "06:33", 4000, 0, R.string.tale_138, R.string.roxolana, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t138 : R.drawable.t138_min),
-//            new Tale(139, TaleAge.FOR_KIDS,     "09:42", 11000, 0, R.string.tale_139, R.string.natalka_denysenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t139 : R.drawable.t139_min),
+            new Tale(139, TaleAge.FOR_KIDS,    "09:42", 11000, 0, R.string.tale_139, R.string.natalka_denysenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t139 : R.drawable.t139_min),
             new Tale(140, TaleAge.FOR_KIDS,     "07:46", 4000, 0, R.string.tale_140, R.string.zlata_ognevich, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t140 : R.drawable.t140_min),
 
             new Tale(141, TaleAge.FOR_KIDS,     "12:13", 3500, 0, R.string.tale_141, R.string.taras_kompanichenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t141 : R.drawable.t141_min)
