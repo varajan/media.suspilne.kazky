@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -22,14 +23,16 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ActivityTales extends ActivityMain {
     private Tales tales;
     private LinearLayout TalesList;
     private boolean returnToReaders = false;
+    String searchText = "";
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -62,32 +65,6 @@ public class ActivityTales extends ActivityMain {
             super.resetQuitTimeout();
             this.resetVolumeReduceTimer();
         }
-    }
-
-    private void filterTales(){
-        activityTitle.setText(Tales.getFilter().equals("") ? getString(R.string.tales) : "\u2315 " + Tales.getFilter());
-        View nothing = findViewById(R.id.nothingToShow);
-        int visibility = View.VISIBLE;
-        StringBuilder list = new StringBuilder();
-
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
-        boolean showForKids = Tales.getShowForKids();
-        boolean showForBabies = Tales.getShowForBabies();
-        boolean showLullabies = Tales.getShowLullabies();
-        String filter = Tales.getFilter();
-
-        for (final Tale tale:tales.getTalesList()) {
-            if (tale.shouldBeShown(showOnlyFavorite, showForKids, showForBabies, showLullabies, filter)){
-                tale.show();
-                visibility = View.GONE;
-                list.append(tale.id).append(";");
-            }else{
-                tale.hide();
-            }
-        }
-
-        nothing.setVisibility(visibility);
-        SettingsHelper.setString("filteredTalesList", list.toString());
     }
 
     private void showTales(){
@@ -169,46 +146,53 @@ public class ActivityTales extends ActivityMain {
         registerReceiver();
     }
 
-    private final List<Integer> group1Items = Collections.singletonList(R.string.showOnlyFavorite);
-    private final List<Integer> group2Items = Arrays.asList(R.string.showLullabies);
+    private final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
 
     private void showFilterDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
+        EditText searchField = dialogView.findViewById(R.id.searchField);
+        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
+        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
 
-        LinearLayout container1 = dialogView.findViewById(R.id.favoritesGroup);
-        LinearLayout container2 = dialogView.findViewById(R.id.categoriesGroup);
+        List<String> onlyFavorite = Tales.getShowOnlyFavorite()
+                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
+                : Collections.emptyList();
+        List<String> checkedCategories = Constants.TaleCategories.stream()
+                .map(this::getResourceString)
+                .filter(Tales::getShowCategory)
+                .collect(Collectors.toList());
 
-        // Динамічно наповнюємо контейнери чекбоксами
-        populateContainer(container1, group1Items);
-        populateContainer(container2, group2Items);
+        searchField.setText(searchText);
+        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
+        populateContainer(categoriesContainer, Constants.TaleCategories, checkedCategories);
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.filtersDialog)
                 .setView(dialogView)
                 .setPositiveButton(R.string.apply, (dialog, which) -> {
-                    // Зчитуємо вибрані елементи з кожного контейнера
-                    String searchText = "";
-                    List<String> selectedGroup1 = getSelectedItems(container1);
-                    List<String> selectedGroup2 = getSelectedItems(container2);
+                    searchText = searchField.getText().toString();
+                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
+                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
 
-                    // Логіка застосування фільтрів
-                    applyFilters(searchText, selectedGroup1, selectedGroup2);
+                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories);
+                    filterTales();
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .show();
     }
 
-    // Допоміжний метод для додавання CheckBox у ViewGroup
-    private void populateContainer(LinearLayout container, List<Integer> items) {
+    private void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
         container.removeAllViews();
-        for (@StringRes int itemText : items) {
+        for (@StringRes int item : items) {
             CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(itemText);
+            checkBox.setText(item);
+
+            String itemText = this.getResourceString(item);
+            if (selected.contains(itemText)) checkBox.setChecked(true);
             container.addView(checkBox);
         }
     }
 
-    // Допоміжний метод для збору вибраних варіантів
     private List<String> getSelectedItems(LinearLayout container) {
         List<String> selected = new ArrayList<>();
         for (int i = 0; i < container.getChildCount(); i++) {
@@ -223,8 +207,41 @@ public class ActivityTales extends ActivityMain {
         return selected;
     }
 
-    private void applyFilters(String searchText, List<String> g1, List<String> g2) {
-        // g1, g2, g3 містять списки вибраних рядків для відповідних груп
+    private void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories) {
+        Tales.setFilter(filter);
+        Tales.setShowOnlyFavorite(showOnlyFavorites);
+
+        for (final Integer categoryId : Constants.TaleCategories) {
+            String category = getResourceString(categoryId);
+            boolean categoryEnabled = selectedCategories.contains(category);
+            Tales.setShowCategory(category, categoryEnabled);
+        }
+    }
+
+    private void filterTales() {
+        View nothing = findViewById(R.id.nothingToShow);
+        int visibility = View.VISIBLE;
+        StringBuilder list = new StringBuilder();
+
+        String filter = Tales.getFilter();
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+        List<String> categories = Constants.TaleCategories.stream()
+                .map(this::getResourceString)
+                .filter(Tales::getShowCategory)
+                .collect(Collectors.toList());
+
+        for (final Tale tale:tales.getTalesList()) {
+            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)){
+                tale.show();
+                visibility = View.GONE;
+                list.append(tale.id).append(";");
+            } else {
+                tale.hide();
+            }
+        }
+
+        nothing.setVisibility(visibility);
+        SettingsHelper.setString("filteredTalesList", list.toString());
     }
 
     private void playTale(Tale tale){

@@ -164,11 +164,11 @@ public class ActivitySettings extends ActivityMain {
         SettingsHelper.setBoolean(title, isChecked);
         if (title.equals("groupByReader")) new Tales().setTalesList();
 
-        if (!Tales.getShowForBabies() && !Tales.getShowForKids() && !Tales.getShowLullabies()){
-            Tales.setShowForBabies(true);
-            Tales.setShowForKids(true);
-            Tales.setShowLullabies(true);
-        }
+//        if (!Tales.getShowForBabies() && !Tales.getShowForKids() && !Tales.getShowLullabies()){
+//            Tales.setShowForBabies(true);
+//            Tales.setShowForKids(true);
+//            Tales.setShowLullabies(true);
+//        }
 
         setColorsAndState();
 

@@ -55,7 +55,7 @@
     <string name="grant_permissions">Відкрити системні налаштування?</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
-    <string name="showLullabies">Колискові</string>
+    <string name="lullabies">Колискові</string>
     <string name="showOnlyFavorite">Лише улюблені, відмічені ⭐</string>
     <string name="showOnlyFavoriteOn">Улюблені казки</string>
     <string name="showOnlyFavoriteOff">Усі казки</string>

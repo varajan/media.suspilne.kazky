@@ -379,18 +379,6 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
-    protected void openInstagramAccount(){
-        Uri uri = Uri.parse("http://instagram.com/_u/" + "suspilne.media");
-        Intent insta = new Intent(Intent.ACTION_VIEW, uri);
-        insta.setPackage("com.instagram.android");
-
-        if (SettingsHelper.isIntentAvailable(insta)){
-            startActivity(insta);
-        } else{
-            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }
-    }
-
     private void rateApp(){
         try {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
@@ -468,10 +456,10 @@ public class ActivityMain extends AppCompatActivity
     private void updateTalesCountPerReader(){
         if (Tales.getTalesCountUpdated()) return;
 
-        boolean showBabyTales = Tales.getShowForBabies();
-        boolean showKidsTales = Tales.getShowForKids();
+        boolean showBabyTales = true; // Tales.getShowForBabies();
+        boolean showKidsTales = true; // Tales.getShowForKids();
         boolean showFavorite = Tales.getShowOnlyFavorite();
-        boolean showLullabies = Tales.getShowLullabies();
+        boolean showLullabies = true; // Tales.getShowLullabies();
 
         for (Reader reader: new Readers().Readers) {
             int count = 0;
@@ -529,6 +517,10 @@ public class ActivityMain extends AppCompatActivity
             SettingsHelper.setBoolean("checkForUpdates", false);
             e.printStackTrace();
         }
+    }
+
+    protected String getResourceString(Integer stringId){
+        return getText(stringId).toString();
     }
 
     protected boolean hasPermission(String permission){

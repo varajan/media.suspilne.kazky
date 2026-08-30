@@ -12,6 +12,7 @@ import com.google.android.gms.common.util.IOUtils;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 
 public class Tale{
     public int id;
@@ -85,18 +86,14 @@ public class Tale{
         }
     }
 
-    boolean shouldBeShown(boolean showOnlyFavorite, boolean showForKids, boolean showForBabies, boolean showLullabies, String filter){
+    boolean shouldBeShown(boolean showOnlyFavorite, List<String> categories, String filter){
         return matchesFilter(filter)
                 && (!showOnlyFavorite || isFavorite)
-                && shouldBeShown(showForKids, showForBabies, showLullabies);
+                && shouldBeShown(categories);
     }
 
-    boolean shouldBeShown(boolean showForKids, boolean showForBabies, boolean showLullabies){
-        boolean x1 = (age == TaleAge.FOR_KIDS || age == TaleAge.FOR_BOTH) && showForKids;
-        boolean x2 = (age == TaleAge.FOR_BABIES || age == TaleAge.FOR_BOTH) && showForBabies;
-        boolean x3 = age == TaleAge.LULLABIES && showLullabies;
-
-        return x1 || x2 || x3;
+    boolean shouldBeShown(List<String> categories){
+        return true;
     }
 
     boolean matchesFilter(String filter){

@@ -11,21 +11,9 @@ class Tales {
     public static boolean getTalesCountUpdated(){ return SettingsHelper.getBoolean("tales.count.updated"); }
     public static void setTalesCountUpdated(boolean value){SettingsHelper.setBoolean("tales.count.updated", value);}
 
-    public static boolean getShowLullabies() { return SettingsHelper.getBoolean("showLullabies"); }
-    public static void setShowLullabies(boolean value) {
-        SettingsHelper.setBoolean("showLullabies", value);
-        setTalesCountUpdated(false);
-    }
-
-    public static boolean getShowForBabies() { return SettingsHelper.getBoolean("showBabiesTales"); }
-    public static void setShowForBabies(boolean value) {
-        SettingsHelper.setBoolean("showBabiesTales", value);
-        setTalesCountUpdated(false);
-    }
-
-    public static boolean getShowForKids() { return SettingsHelper.getBoolean("showKidsTales"); }
-    public static void setShowForKids(boolean value) {
-        SettingsHelper.setBoolean("showKidsTales", value);
+    public static boolean getShowCategory(String category) { return SettingsHelper.getBoolean("show_" + category); }
+    public static void setShowCategory(String category, boolean value) {
+        SettingsHelper.setBoolean("show_" + category, value);
         setTalesCountUpdated(false);
     }
 
