@@ -370,10 +370,6 @@ public class ActivityMain extends AppCompatActivity
                 rateApp();
                 break;
 
-            case R.id.fb_page:
-                openFaceBookPage(getResources().getString(R.string.facebook_page));
-                break;
-
             case R.id.exit_menu:
                 showQuitDialog();
                 break;
@@ -381,10 +377,6 @@ public class ActivityMain extends AppCompatActivity
 
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer(GravityCompat.START);
         return false;
-    }
-
-    protected void openFaceBookPage(String url){
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SettingsHelper.getFacebookPageURL(url))));
     }
 
     protected void openInstagramAccount(){

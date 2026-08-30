@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+
+import androidx.annotation.StringRes;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -16,12 +18,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class ActivityTales extends ActivityMain {
     private Tales tales;
@@ -251,37 +259,62 @@ public class ActivityTales extends ActivityMain {
         registerReceiver();
     }
 
-    private final String[] categories = new String[]{"Категорія 1", "Категорія 2", "Категорія 3"};
-    private final boolean[] selectedItems = new boolean[]{false, false, false};
+    private final List<Integer> group1Items = Collections.singletonList(R.string.showOnlyFavorite);
+    private final List<Integer> group2Items = Arrays.asList(R.string.showBabiesTales, R.string.showKidsTales, R.string.showLullabies);
 
     private void showFilterDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Виберіть фільтри");
+        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
 
-        // Передаємо масив пунктів та поточний стан чекбоксів
-        builder.setMultiChoiceItems(categories, selectedItems, (dialog, which, isChecked) -> {
-            // Оновлюємо стан вибраного чекбокса
-            selectedItems[which] = isChecked;
-        });
+        LinearLayout container1 = dialogView.findViewById(R.id.favoritesGroup);
+        LinearLayout container2 = dialogView.findViewById(R.id.categoriesGroup);
 
-        builder.setPositiveButton("Застосувати", (dialog, which) -> {
-            // Логіка фільтрації елементів ScrollView
-            applyFilter(selectedItems);
-        });
+        // Динамічно наповнюємо контейнери чекбоксами
+        populateContainer(container1, group1Items);
+        populateContainer(container2, group2Items);
 
-        builder.setNegativeButton("Скасувати", (dialog, which) -> dialog.dismiss());
+        new AlertDialog.Builder(this)
+                .setTitle("Фільтрація")
+                .setView(dialogView)
+                .setPositiveButton("Застосувати", (dialog, which) -> {
+                    // Зчитуємо вибрані елементи з кожного контейнера
+                    String searchText = "";
+                    List<String> selectedGroup1 = getSelectedItems(container1);
+                    List<String> selectedGroup2 = getSelectedItems(container2);
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+                    // Логіка застосування фільтрів
+                    applyFilters(searchText, selectedGroup1, selectedGroup2);
+                })
+                .setNegativeButton("Скасувати", null)
+                .show();
     }
 
-    private void applyFilter(boolean[] selectedCategories) {
-        // Приклад: selectedCategories[0] покаже, чи вибрана "Категорія 1"
-        boolean isCat1 = selectedCategories[0];
-        boolean isCat2 = selectedCategories[1];
-        boolean isCat3 = selectedCategories[2];
+    // Допоміжний метод для додавання CheckBox у ViewGroup
+    private void populateContainer(LinearLayout container, List<Integer> items) {
+        container.removeAllViews();
+        for (@StringRes int itemText : items) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(itemText);
+            container.addView(checkBox);
+        }
+    }
 
-        // Тут ваші дії з приховування або показу елементів у ScrollView
+    // Допоміжний метод для збору вибраних варіантів
+    private List<String> getSelectedItems(LinearLayout container) {
+        List<String> selected = new ArrayList<>();
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View view = container.getChildAt(i);
+            if (view instanceof CheckBox) {
+                CheckBox cb = (CheckBox) view;
+                if (cb.isChecked()) {
+                    selected.add(cb.getText().toString());
+                }
+            }
+        }
+        return selected;
+    }
+
+    private void applyFilters(String searchText, List<String> g1, List<String> g2) {
+        // g1, g2, g3 містять списки вибраних рядків для відповідних груп
     }
 
     private void playTale(Tale tale){
