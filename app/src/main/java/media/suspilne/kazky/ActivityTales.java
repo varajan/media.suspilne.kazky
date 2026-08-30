@@ -2,6 +2,7 @@ package media.suspilne.kazky;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ActivityTales extends ActivityMain {
     private Tales tales;
@@ -229,6 +232,9 @@ public class ActivityTales extends ActivityMain {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
 
+        FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
+        categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
+
         Intent intent = getIntent();
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
         TalesList = findViewById(R.id.talesList);
@@ -243,6 +249,39 @@ public class ActivityTales extends ActivityMain {
         continueDownloadTales();
         suggestToDownloadFavoriteTales();
         registerReceiver();
+    }
+
+    private final String[] categories = new String[]{"Категорія 1", "Категорія 2", "Категорія 3"};
+    private final boolean[] selectedItems = new boolean[]{false, false, false};
+
+    private void showFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Виберіть фільтри");
+
+        // Передаємо масив пунктів та поточний стан чекбоксів
+        builder.setMultiChoiceItems(categories, selectedItems, (dialog, which, isChecked) -> {
+            // Оновлюємо стан вибраного чекбокса
+            selectedItems[which] = isChecked;
+        });
+
+        builder.setPositiveButton("Застосувати", (dialog, which) -> {
+            // Логіка фільтрації елементів ScrollView
+            applyFilter(selectedItems);
+        });
+
+        builder.setNegativeButton("Скасувати", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void applyFilter(boolean[] selectedCategories) {
+        // Приклад: selectedCategories[0] покаже, чи вибрана "Категорія 1"
+        boolean isCat1 = selectedCategories[0];
+        boolean isCat2 = selectedCategories[1];
+        boolean isCat3 = selectedCategories[2];
+
+        // Тут ваші дії з приховування або показу елементів у ScrollView
     }
 
     private void playTale(Tale tale){
