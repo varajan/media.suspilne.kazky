@@ -1,7 +1,6 @@
 package media.suspilne.kazky;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,13 +12,9 @@ import androidx.annotation.StringRes;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -33,9 +28,6 @@ import java.util.List;
 
 public class ActivityTales extends ActivityMain {
     private Tales tales;
-    private ImageView favoriteIcon;
-    private ImageView searchIcon;
-    private EditText searchField;
     private LinearLayout TalesList;
     private boolean returnToReaders = false;
 
@@ -72,88 +64,7 @@ public class ActivityTales extends ActivityMain {
         }
     }
 
-    private void hideSearch(){
-        searchIcon.setVisibility(View.VISIBLE);
-        favoriteIcon.setVisibility(View.VISIBLE);
-        searchField.setVisibility(View.GONE);
-
-        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(searchField.getWindowToken(), 0);
-    }
-
-    private View.OnClickListener search = v -> {
-        searchIcon.setVisibility(View.GONE);
-        favoriteIcon.setVisibility(View.GONE);
-        searchField.setVisibility(View.VISIBLE);
-        searchField.requestFocus();
-
-        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    };
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void addSearchField() {
-        favoriteIcon = findViewById(R.id.showFavorite);
-        searchIcon = findViewById(R.id.searchIcon);
-        searchField = findViewById(R.id.searchField);
-
-        findViewById(R.id.toolbar).setOnClickListener(search);
-        searchIcon.setOnClickListener(search);
-
-        favoriteIcon.setOnClickListener(v -> {
-            Tales.setShowOnlyFavorite(!Tales.getShowOnlyFavorite());
-            Toast.makeText(getActivity(),
-                    Tales.getShowOnlyFavorite() ? R.string.showOnlyFavoriteOn : R.string.showOnlyFavoriteOff,
-                    Toast.LENGTH_SHORT).show();
-            filterTales();
-        });
-
-        searchField.setText(Tales.getFilter());
-        searchField.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Tales.setFilter(v.getText().toString());
-                returnToReaders = false;
-
-                hideSearch();
-                filterTales();
-                return true;
-            }
-            return false;
-        });
-
-        searchField.setOnTouchListener((view, event) -> {
-            int actionX = (int) event.getX();
-            int viewWidth = view.getWidth();
-            int buttonWidth = SettingsHelper.dpToPx(50);
-
-            if (viewWidth - buttonWidth <= actionX){
-                searchField.setText("");
-                Tales.setFilter("");
-                returnToReaders = false;
-
-                hideSearch();
-                filterTales();
-                return true;
-            }
-
-            return false;
-        });
-    }
-
-    @Override
-    public boolean onKeyDown(int keycode, KeyEvent event){
-        if (searchField.getVisibility() == View.VISIBLE && (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK)){
-            Tales.setFilter(searchField.getText().toString());
-            hideSearch();
-            filterTales();
-            return false;
-        }
-
-        return super.onKeyDown(keycode, event);
-    }
-
     private void filterTales(){
-        favoriteIcon.setImageResource(Tales.getShowOnlyFavorite() ? R.drawable.ic_favorite : R.drawable.ic_all);
         activityTitle.setText(Tales.getFilter().equals("") ? getString(R.string.tales) : "\u2315 " + Tales.getFilter());
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
@@ -250,7 +161,6 @@ public class ActivityTales extends ActivityMain {
 
         if (!returnToReaders) { Tales.setFilter(""); }
 
-        addSearchField();
         showTales();
         filterTales();
         continueTale(savedInstanceState);
@@ -260,7 +170,7 @@ public class ActivityTales extends ActivityMain {
     }
 
     private final List<Integer> group1Items = Collections.singletonList(R.string.showOnlyFavorite);
-    private final List<Integer> group2Items = Arrays.asList(R.string.showBabiesTales, R.string.showKidsTales, R.string.showLullabies);
+    private final List<Integer> group2Items = Arrays.asList(R.string.showLullabies);
 
     private void showFilterDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
@@ -273,9 +183,9 @@ public class ActivityTales extends ActivityMain {
         populateContainer(container2, group2Items);
 
         new AlertDialog.Builder(this)
-                .setTitle("Фільтрація")
+                .setTitle(R.string.filtersDialog)
                 .setView(dialogView)
-                .setPositiveButton("Застосувати", (dialog, which) -> {
+                .setPositiveButton(R.string.apply, (dialog, which) -> {
                     // Зчитуємо вибрані елементи з кожного контейнера
                     String searchText = "";
                     List<String> selectedGroup1 = getSelectedItems(container1);
@@ -284,7 +194,7 @@ public class ActivityTales extends ActivityMain {
                     // Логіка застосування фільтрів
                     applyFilters(searchText, selectedGroup1, selectedGroup2);
                 })
-                .setNegativeButton("Скасувати", null)
+                .setNegativeButton(R.string.cancel, null)
                 .show();
     }
 

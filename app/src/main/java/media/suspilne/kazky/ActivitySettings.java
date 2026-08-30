@@ -32,10 +32,6 @@ public class ActivitySettings extends ActivityMain {
     private Switch parentLock;
 
     private Switch showBigImages;
-    private Switch showBabiesTales;
-    private Switch showKidsTales;
-    private Switch showLullabies;
-    private Switch showOnlyFavorite;
     private RadioGroup sorting;
     private Switch groupByReader;
     private Switch skipIntro;
@@ -60,11 +56,7 @@ public class ActivitySettings extends ActivityMain {
         volumeControl = this.findViewById(R.id.volumeControl);
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
 
-        showBabiesTales = this.findViewById(R.id.showBabiesTales);
-        showKidsTales = this.findViewById(R.id.showKidsTales);
         showBigImages = this.findViewById(R.id.showBigImages);
-        showLullabies = this.findViewById(R.id.showLullabies);
-        showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
         sorting = this.findViewById(R.id.sorting);
         groupByReader = this.findViewById(R.id.groupByReader);
         skipIntro = this.findViewById(R.id.skipIntro);
@@ -80,10 +72,6 @@ public class ActivitySettings extends ActivityMain {
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
 
         showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
-        showBabiesTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBabiesTales", isChecked));
-        showKidsTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showKidsTales", isChecked));
-        showLullabies.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showLullabies", isChecked));
-        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
 
@@ -342,18 +330,6 @@ public class ActivitySettings extends ActivityMain {
 
         volumeControl.setTextColor(isVolumeControl ? activeColor : inactiveColor);
         volumeControl.setText(isVolumeControl ? getString(R.string.volume_timeout_text, volumeMinutes) : getString(R.string.volume_timeout));
-
-        showOnlyFavorite.setChecked(isShowOnlyFavorite);
-        showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
-
-        showLullabies.setChecked(isShowLullabies);
-        showLullabies.setTextColor(isShowLullabies ? activeColor : inactiveColor);
-
-        showKidsTales.setChecked(isShowKidsTales);
-        showKidsTales.setTextColor(isShowKidsTales ? activeColor : inactiveColor);
-
-        showBabiesTales.setChecked(isShowBabiesTales);
-        showBabiesTales.setTextColor(isShowBabiesTales ? activeColor : inactiveColor);
 
         showBigImages.setChecked(isShowBigImages);
         showBigImages.setTextColor(isShowBigImages ? activeColor : inactiveColor);

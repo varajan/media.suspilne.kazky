@@ -35,7 +35,7 @@ public class ActivityColorings extends ActivityMain {
         searchField = findViewById(R.id.searchField);
         searchIcon = findViewById(R.id.searchIcon);
 
-        findViewById(R.id.showFavorite).setVisibility(View.GONE);
+//        findViewById(R.id.showFavorite).setVisibility(View.GONE);
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.setMarginEnd(0);

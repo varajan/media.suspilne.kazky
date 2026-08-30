@@ -76,7 +76,7 @@
                 android:text="@string/parentLock"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                app:layout_constraintTop_toBottomOf="@id/showBigImages"
                 tools:typeface="serif" />
 
             <Switch
@@ -92,82 +92,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:typeface="serif" />
 
-            <ProgressBar
-                android:id="@+id/progressBar1"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="-5dp" />
-
-
-            <TextView
-                android:id="@+id/talesView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/talesView"
-                android:fontFamily="@font/chalkboard"
-                android:textColor="@color/white"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:textSize="16sp" />
-
-            <Switch
-                android:id="@+id/showBabiesTales"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/chalkboard"
-                android:text="@string/showBabiesTales"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
-                tools:typeface="serif" />
-
-            <Switch
-                android:id="@+id/showKidsTales"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/chalkboard"
-                android:text="@string/showKidsTales"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
-                tools:typeface="serif" />
-
-            <Switch
-                android:id="@+id/showLullabies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/chalkboard"
-                android:text="@string/showLullabies"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
-                tools:typeface="serif" />
-
-            <Switch
-                android:id="@+id/showOnlyFavorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/chalkboard"
-                android:text="@string/showOnlyFavorite"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
-                tools:typeface="serif" />
-
             <Switch
                 android:id="@+id/showBigImages"
                 android:layout_width="match_parent"
@@ -179,7 +103,7 @@
                 android:text="@string/showBigImages"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                app:layout_constraintTop_toBottomOf="@id/fontColor"
                 tools:typeface="serif" />
 
             <ProgressBar
@@ -306,7 +230,7 @@
                 android:text="@string/sleep_timeout"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                app:layout_constraintTop_toBottomOf="@id/fontColor"
                 tools:typeface="serif" />
 
             <SeekBar
@@ -333,7 +257,7 @@
                 android:text="@string/volume_timeout"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/showOnlyFavorite"
+                app:layout_constraintTop_toBottomOf="@id/showBigImages"
                 tools:typeface="serif" />
 
             <SeekBar

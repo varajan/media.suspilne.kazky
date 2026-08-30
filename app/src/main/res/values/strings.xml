@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="requiredSpace">816</string>
-    <string name="taleUrl">https://kazky.suspilne.media/tales/songs/%02d.mp3</string>
     <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
     <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
-    <string name="facebook_page">https://www.facebook.com/102210331819966</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -14,6 +12,8 @@
     <string name="tales">Казки</string>
     <string name="settings">Налаштування</string>
     <string name="filter">Фільтри</string>
+    <string name="filtersDialog">Пошук і фільтрація</string>
+    <string name="categories">Категорії</string>
     <string name="coloring">Розмальовки</string>
     <string name="readers">Казкарі</string>
     <string name="info">Про програму</string>
@@ -35,7 +35,6 @@
     <string name="next">Далі ≫</string>
     <string name="stop">Зупинити</string>
     <string name="rate">Оцінити</string>
-    <string name="fb_page">Facebook сторінка</string>
     <string name="exit">Вийти</string>
     <string name="ok">OK</string>
     <string name="yes">Так</string>
@@ -43,9 +42,6 @@
     <string name="confirm_exit">Вийти з UA: Казки?</string>
     <string name="x_minutes">%s хвилин</string>
     <string name="no_internet">Відсутній Інтернет!</string>
-    <string name="no_radio_header">На жаль, Суспільне вимкнуло Радіо.</string>
-    <string name="no_radio_text">Якщо ви хочете допомогти відновити роботу радіо, то напишіть їм, що радіо Казки мовчить.\n\nТакож ви можете скористатись розділом "Казки".</string>
-    <string name="radio_error">Проблеми на сервері або відсутній Інтернет!\n\nПеревірте Інтернет, спробуйте пізніше або послухайте збережені казки.</string>
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
     <string name="sleep_timeout_text">Зупинити відтворення через %s хв.</string>
     <string name="volume_timeout">Поступово зменшувати гучність</string>
@@ -59,17 +55,15 @@
     <string name="grant_permissions">Відкрити системні налаштування?</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
-    <string name="showBabiesTales">Відображати казки для дошкільнят</string>
-    <string name="showKidsTales">Відображати казки для молодшого шкільного віку</string>
-    <string name="showLullabies">Відображати колискові</string>
-    <string name="showOnlyFavorite">Відображати лише улюблені казки (Відмічені ⭐)</string>
+    <string name="showLullabies">Колискові</string>
+    <string name="showOnlyFavorite">Лише улюблені, відмічені ⭐</string>
     <string name="showOnlyFavoriteOn">Улюблені казки</string>
     <string name="showOnlyFavoriteOff">Усі казки</string>
     <string name="addedToFavorites">\'%s\' додано до списку \'Улюблені\'</string>
     <string name="removedFromFavorites">\'%s\' видалено зі списку \'Улюблені\'</string>
     <string name="nothing">Нічого не знайдено.</string>
-    <string name="nothingToShow">Нічого не знайдено. Перевірте фільтри у налаштуваннях.</string>
-    <string name="filterTalesHint">Назва чи казкар</string>
+    <string name="nothingToShow">Нічого не знайдено. Перевірте фільтри.</string>
+    <string name="filterTalesHint">Введіть назву чи ім\'я казкаря</string>
     <string name="filterReadersHint">Казкар</string>
     <string name="download_completed">Завантажено казок: %d</string>
     <string name="done">Готово.</string>
@@ -96,9 +90,8 @@
     <string name="groupByReader">Групувати казки за казкарем</string>
     <string name="parentLock">Захистити Налаштування від дітей</string>
     <string name="update">Оновити</string>
+    <string name="apply">Застосувати</string>
     <string name="cancel">Скасувати</string>
-    <string name="writeFB">Написати у FaceBook</string>
-    <string name="writeInsta">Написати у Instagram</string>
     <string name="playback">Відтворення:</string>
     <string name="basicSettings">Загальні налаштування:</string>
     <string name="sorting">Сортування казок:</string>

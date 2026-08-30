@@ -230,7 +230,7 @@ public class Tale{
     private String stream(int tale){
         return isDownloaded(tale)
             ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(tale)
-            : ActivityTales.getActivity().getResources().getString(Tales.playTalesFromGit() ?  R.string.gitTaleUrl : R.string.taleUrl, tale);
+            : ActivityTales.getActivity().getResources().getString(R.string.gitTaleUrl, tale);
     }
 
     public void download(){
