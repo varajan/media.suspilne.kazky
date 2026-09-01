@@ -86,14 +86,21 @@ public class Tale{
         }
     }
 
-    boolean shouldBeShown(boolean showOnlyFavorite, List<String> categories, String filter){
+    boolean shouldBeShown(boolean showOnlyFavorite, List<Integer> categories, String filter){
         return matchesFilter(filter)
                 && (!showOnlyFavorite || isFavorite)
                 && shouldBeShown(categories);
     }
 
-    boolean shouldBeShown(List<String> categories){
-        return true;
+    boolean shouldBeShown(List<Integer> categories){
+        List<Integer> categoryTaleIds = Categories
+                .Items
+                .stream()
+                .filter(category -> categories.contains(category.title))
+                .flatMap(category -> category.taleIds.stream())
+                .toList();
+
+        return categoryTaleIds.contains(this.id);
     }
 
     boolean matchesFilter(String filter){

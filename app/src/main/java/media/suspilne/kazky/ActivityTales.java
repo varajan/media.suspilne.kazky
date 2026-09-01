@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -157,14 +156,14 @@ public class ActivityTales extends ActivityMain {
         List<String> onlyFavorite = Tales.getShowOnlyFavorite()
                 ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
                 : Collections.emptyList();
-        List<String> checkedCategories = Constants.TaleCategories.stream()
+        List<String> checkedCategories = Categories.NameIds.stream()
                 .map(this::getResourceString)
                 .filter(Tales::getShowCategory)
                 .collect(Collectors.toList());
 
         searchField.setText(searchText);
         populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
-        populateContainer(categoriesContainer, Constants.TaleCategories, checkedCategories);
+        populateContainer(categoriesContainer, Categories.NameIds, checkedCategories);
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.filtersDialog)
@@ -211,7 +210,7 @@ public class ActivityTales extends ActivityMain {
         Tales.setFilter(filter);
         Tales.setShowOnlyFavorite(showOnlyFavorites);
 
-        for (final Integer categoryId : Constants.TaleCategories) {
+        for (final Integer categoryId : Categories.NameIds) {
             String category = getResourceString(categoryId);
             boolean categoryEnabled = selectedCategories.contains(category);
             Tales.setShowCategory(category, categoryEnabled);
@@ -225,9 +224,8 @@ public class ActivityTales extends ActivityMain {
 
         String filter = Tales.getFilter();
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
-        List<String> categories = Constants.TaleCategories.stream()
-                .map(this::getResourceString)
-                .filter(Tales::getShowCategory)
+        List<Integer> categories = Categories.NameIds.stream()
+                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
                 .collect(Collectors.toList());
 
         for (final Tale tale:tales.getTalesList()) {
