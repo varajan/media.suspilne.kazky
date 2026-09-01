@@ -17,7 +17,6 @@ import java.util.List;
 public class Tale{
     public int id;
     public int introTime;
-    public TaleAge age;
     public int coloring;
     private int titleId;
     private int readerId;
@@ -30,9 +29,8 @@ public class Tale{
 
     Tale(){ id = -1; }
 
-    Tale(int id, TaleAge age, String duration, int intro, int coloring, int title, int name, int img){
+    Tale(int id, String duration, int intro, int coloring, int title, int name, int img){
         this.id = id;
-        this.age = age;
         this.introTime = intro;
         this.coloring = coloring;
         this.duration = "⏱ " + duration;

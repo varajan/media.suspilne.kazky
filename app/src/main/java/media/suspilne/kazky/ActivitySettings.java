@@ -20,9 +20,6 @@ import androidx.core.content.ContextCompat;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ActivitySettings extends ActivityMain {
     private Switch fontColor;
     private Switch downloadAllTales;
@@ -158,18 +155,8 @@ public class ActivitySettings extends ActivityMain {
     }
 
     private void setSwitch(String title, boolean isChecked){
-        List<String> filterOptions = Arrays.asList("showBabiesTales", "showKidsTales", "showLullabies", "showOnlyFavorite");
-        if (filterOptions.contains(title)) { Tales.setTalesCountUpdated(false); }
-
         SettingsHelper.setBoolean(title, isChecked);
         if (title.equals("groupByReader")) new Tales().setTalesList();
-
-//        if (!Tales.getShowForBabies() && !Tales.getShowForKids() && !Tales.getShowLullabies()){
-//            Tales.setShowForBabies(true);
-//            Tales.setShowForKids(true);
-//            Tales.setShowLullabies(true);
-//        }
-
         setColorsAndState();
 
         if(title.equals("autoQuit") || title.equals("volumeControl")){
