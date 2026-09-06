@@ -8,13 +8,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import androidx.annotation.StringRes;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +31,7 @@ public class ActivityTales extends ActivityMain {
     private LinearLayout TalesList;
     private TextView titleFld;
     private boolean returnToReaders = false;
-    private String searchText = "";
+    private List<Integer> allCategories;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -129,24 +126,24 @@ public class ActivityTales extends ActivityMain {
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
-        titleFld = findViewById(R.id.title);
-        FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
-        ImageButton searchIcon = findViewById(R.id.searchIcon);
 
         Intent intent = getIntent();
+        ImageButton searchIcon = findViewById(R.id.searchIcon);
+        FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
         TalesList = findViewById(R.id.talesList);
+        titleFld = findViewById(R.id.title);
         tales = new Tales();
-
+        allCategories = Categories.NameIds;
+        
         if (returnToReaders) {
             Tales.setShowOnlyFavorite(false);
 
-            for (final Integer categoryId : Categories.NameIds) {
+            for (final Integer categoryId : allCategories) {
                 String category = getResourceString(categoryId);
                 Tales.setShowCategory(category, true);
             }
         }
-        searchText = Tales.getFilter();
 
         categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
         searchIcon.setOnClickListener(v -> showFilterDialog());
@@ -160,8 +157,6 @@ public class ActivityTales extends ActivityMain {
         registerReceiver();
     }
 
-    private final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
-
     private void showFilterDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
         EditText searchField = dialogView.findViewById(R.id.searchField);
@@ -171,101 +166,55 @@ public class ActivityTales extends ActivityMain {
         List<String> onlyFavorite = Tales.getShowOnlyFavorite()
                 ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
                 : Collections.emptyList();
-        List<String> checkedCategories = Categories.NameIds.stream()
+        List<String> checkedCategories = allCategories.stream()
                 .map(this::getResourceString)
                 .filter(Tales::getShowCategory)
                 .collect(Collectors.toList());
 
-        searchField.setText(searchText);
+        String initialSearchText = Tales.getFilter();
+        searchField.setText(initialSearchText);
         populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
-        populateContainer(categoriesContainer, Categories.NameIds, checkedCategories);
+        populateContainer(categoriesContainer, allCategories, checkedCategories);
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.filtersDialog)
                 .setView(dialogView)
                 .setPositiveButton(R.string.apply, (dialog, which) -> {
-                    searchText = searchField.getText().toString();
+                    String searchText = searchField.getText().toString();
                     List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
                     List<String> selectedCategories = getSelectedItems(categoriesContainer);
 
-                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories);
+                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, allCategories);
                     filterTales();
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .show();
     }
 
-    private void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
-        container.removeAllViews();
-        for (@StringRes int item : items) {
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(item);
-
-            String itemText = this.getResourceString(item);
-            if (selected.contains(itemText)) checkBox.setChecked(true);
-            container.addView(checkBox);
-        }
-    }
-
-    private List<String> getSelectedItems(LinearLayout container) {
-        List<String> selected = new ArrayList<>();
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View view = container.getChildAt(i);
-            if (view instanceof CheckBox) {
-                CheckBox cb = (CheckBox) view;
-                if (cb.isChecked()) {
-                    selected.add(cb.getText().toString());
-                }
-            }
-        }
-        return selected;
-    }
-
-    private void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories) {
-        Tales.setFilter(filter);
-        Tales.setShowOnlyFavorite(showOnlyFavorites);
-
-        for (final Integer categoryId : Categories.NameIds) {
-            String category = getResourceString(categoryId);
-            boolean categoryEnabled = selectedCategories.contains(category);
-            Tales.setShowCategory(category, categoryEnabled);
-        }
-    }
-
     private void filterTales() {
         View nothing = findViewById(R.id.nothingToShow);
-        String searchFieldText = "";
-        int visibility = View.VISIBLE;
+        int nothingToShowVisibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
         String filter = Tales.getFilter();
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
-        List<Integer> categories = Categories.NameIds.stream()
+        List<Integer> categories = allCategories.stream()
                 .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
                 .collect(Collectors.toList());
-
-        boolean allCategoriesSelected = categories.equals(Categories.NameIds);
-        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && allCategoriesSelected;
-
-        searchFieldText += filter;
-        if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.favoriteTales); }
-        if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
-                .map(this::getString)
-                .collect(Collectors.joining(", "));
-        searchFieldText = searchFieldText.replaceAll("^,+|,+$", "").trim();
 
         for (final Tale tale:tales.getTalesList()) {
             if (tale.shouldBeShown(showOnlyFavorite, categories, filter)){
                 tale.show();
-                visibility = View.GONE;
+                nothingToShowVisibility = View.GONE;
                 list.append(tale.id).append(";");
             } else {
                 tale.hide();
             }
         }
 
-        titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : searchFieldText);
-        nothing.setVisibility(visibility);
+        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(allCategories);
+        titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : getSearchFieldText(allCategories));
+        nothing.setVisibility(nothingToShowVisibility);
         SettingsHelper.setString("filteredTalesList", list.toString());
     }
 

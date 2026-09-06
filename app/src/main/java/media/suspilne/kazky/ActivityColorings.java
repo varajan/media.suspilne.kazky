@@ -1,29 +1,30 @@
 package media.suspilne.kazky;
 
-import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ActivityColorings extends ActivityMain {
-    private LinearLayout TalesList;
-    private EditText searchField;
-    private ImageView searchIcon;
     private Tales tales;
+    private LinearLayout TalesList;
+    private TextView titleFld;
+    private List<Integer> categoriesWithColorings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,44 +32,93 @@ public class ActivityColorings extends ActivityMain {
         super.onCreate(savedInstanceState);
 
         tales  = new Tales();
+        titleFld = findViewById(R.id.title);
         TalesList = findViewById(R.id.talesList);
-        searchField = findViewById(R.id.searchField);
-        searchIcon = findViewById(R.id.searchIcon);
+        ImageButton searchIcon = findViewById(R.id.searchIcon);
+        FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
 
-//        findViewById(R.id.showFavorite).setVisibility(View.GONE);
+        categoriesWithColorings = Categories.Items.stream()
+                .filter(c -> c.taleIds.stream()
+                        .anyMatch(t -> tales.getById(t).coloring > 0))
+                .map(c -> c.title)
+                .toList();
+        
+        categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
+        searchIcon.setOnClickListener(v -> showFilterDialog());
+        titleFld.setOnClickListener(v -> showFilterDialog());
 
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMarginEnd(0);
-        searchIcon.setLayoutParams(lp);
-
-        addSearchField();
         showTales();
         filterTales();
     }
 
-    private void filterTales() {
-        activityTitle.setText(Tales.getFilter().isEmpty() ? getString(R.string.coloring) : "⌕ " + Tales.getFilter());
-        TextView nothing = findViewById(R.id.nothingToShow);
-        int visibility = View.VISIBLE;
-        String filter = searchField.getText().toString();
+    private void showFilterDialog() {
+        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
+        EditText searchField = dialogView.findViewById(R.id.searchField);
+        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
+        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
 
-        for (final Tale tale : tales.getTalesList()) {
-            if (tale.matchesFilter(filter)) {
+        List<String> onlyFavorite = Tales.getShowOnlyFavorite()
+                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
+                : Collections.emptyList();
+
+        List<String> checkedCategories = categoriesWithColorings.stream()
+                .map(this::getResourceString)
+                .filter(Tales::getShowCategory)
+                .toList();
+
+        String initialSearchText = Tales.getFilter();
+        searchField.setText(initialSearchText);
+        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
+        populateContainer(categoriesContainer, categoriesWithColorings, checkedCategories);
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.filtersDialog)
+                .setView(dialogView)
+                .setPositiveButton(R.string.apply, (dialog, which) -> {
+                    String searchText = searchField.getText().toString();
+                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
+                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
+
+                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, categoriesWithColorings);
+                    filterTales();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    private void filterTales() {
+        View nothing = findViewById(R.id.nothingToShow);
+        int nothingToShowVisibility = View.VISIBLE;
+        StringBuilder list = new StringBuilder();
+
+        String filter = Tales.getFilter();
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+        List<Integer> categories = categoriesWithColorings.stream()
+                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
+                .collect(Collectors.toList());
+
+        for (final Tale tale:tales.getTalesList()) {
+            if (tale.coloring == 0) continue;
+
+            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)){
                 tale.show();
-                visibility = View.GONE;
+                nothingToShowVisibility = View.GONE;
+                list.append(tale.id).append(";");
             } else {
                 tale.hide();
             }
         }
 
-        nothing.setVisibility(visibility);
-        nothing.setText(R.string.nothing);
+        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(categoriesWithColorings);
+        titleFld.setText(hideSearchText ? this.getText(R.string.coloring) : getSearchFieldText(categoriesWithColorings));
+        nothing.setVisibility(nothingToShowVisibility);
+        SettingsHelper.setString("filteredTalesList", list.toString());
     }
 
     private void showTales() {
         boolean showBigImages = SettingsHelper.getBoolean("showBigImages");
 
-        for (final Tale tale : tales.items) {
+        for (final Tale tale:tales.getTalesList()) {
             if (tale.coloring == 0) continue;
 
             View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, TalesList, false);
@@ -91,73 +141,6 @@ public class ActivityColorings extends ActivityMain {
                         .show();
             });
         }
-    }
-
-    private void hideSearch() {
-        searchIcon.setVisibility(View.VISIBLE);
-        searchField.setVisibility(View.GONE);
-
-        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(searchField.getWindowToken(), 0);
-    }
-
-    private final View.OnClickListener search = v -> {
-        searchIcon.setVisibility(View.GONE);
-        searchField.setVisibility(View.VISIBLE);
-        searchField.requestFocus();
-
-        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    };
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void addSearchField() {
-        searchIcon = findViewById(R.id.searchIcon);
-        searchField = findViewById(R.id.searchField);
-
-        findViewById(R.id.toolbar).setOnClickListener(search);
-        searchIcon.setOnClickListener(search);
-
-        searchField.setText(Tales.getFilter());
-        searchField.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Tales.setFilter(v.getText().toString());
-
-                hideSearch();
-                filterTales();
-                return true;
-            }
-            return false;
-        });
-
-        searchField.setOnTouchListener((view, event) -> {
-            int actionX = (int) event.getX();
-            int viewWidth = view.getWidth();
-            int buttonWidth = SettingsHelper.dpToPx(50);
-
-            if (viewWidth - buttonWidth <= actionX) {
-                searchField.setText("");
-                Tales.setFilter("");
-
-                hideSearch();
-                filterTales();
-                return true;
-            }
-
-            return false;
-        });
-    }
-
-    @Override
-    public boolean onKeyDown(int keycode, KeyEvent event) {
-        if (searchField.getVisibility() == View.VISIBLE && (event.getAction() == KeyEvent.ACTION_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_BACK)) {
-            Tales.setFilter(searchField.getText().toString());
-            hideSearch();
-            filterTales();
-            return false;
-        }
-
-        return super.onKeyDown(keycode, event);
     }
 
     private void download(String url, String fileName) {

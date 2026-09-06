@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.provider.Settings;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +38,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -130,6 +137,64 @@ public class ActivityMain extends AppCompatActivity
                 sendBroadcast(intent);
             }
         }
+    }
+
+    protected final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
+
+    protected void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
+        container.removeAllViews();
+        for (@StringRes int item : items) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(item);
+
+            String itemText = this.getResourceString(item);
+            if (selected.contains(itemText)) checkBox.setChecked(true);
+            container.addView(checkBox);
+        }
+    }
+
+    protected List<String> getSelectedItems(LinearLayout container) {
+        List<String> selected = new ArrayList<>();
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View view = container.getChildAt(i);
+            if (view instanceof CheckBox) {
+                CheckBox cb = (CheckBox) view;
+                if (cb.isChecked()) {
+                    selected.add(cb.getText().toString());
+                }
+            }
+        }
+        return selected;
+    }
+
+    protected void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories, List<Integer> categories) {
+        Tales.setFilter(filter);
+        Tales.setShowOnlyFavorite(showOnlyFavorites);
+
+        for (final Integer categoryId : categories) {
+            String category = getResourceString(categoryId);
+            boolean categoryEnabled = selectedCategories.contains(category);
+            Tales.setShowCategory(category, categoryEnabled);
+        }
+    }
+
+    protected String getSearchFieldText(List<Integer> allCategoryIds) {
+        String filter = Tales.getFilter();
+        String searchFieldText = "";
+        List<Integer> categories = allCategoryIds.stream()
+                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
+                .collect(Collectors.toList());
+        boolean allCategoriesSelected = categories.equals(allCategoryIds);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+
+        searchFieldText += filter;
+        if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.favoriteTales); }
+        if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
+                .map(this::getString)
+                .collect(Collectors.joining(", "));
+        searchFieldText = searchFieldText.replaceAll("^,+|,+$", "").trim();
+
+        return searchFieldText;
     }
 
     protected boolean isTalePlaying() {
