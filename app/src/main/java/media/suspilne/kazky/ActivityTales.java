@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 public class ActivityTales extends ActivityMain {
     private Tales tales;
     private LinearLayout TalesList;
+    private TextView titleFld;
     private boolean returnToReaders = false;
     private String searchText = "";
 
@@ -126,6 +128,7 @@ public class ActivityTales extends ActivityMain {
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
+        titleFld = findViewById(R.id.title);
 
         FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
         categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
@@ -228,6 +231,7 @@ public class ActivityTales extends ActivityMain {
 
     private void filterTales() {
         View nothing = findViewById(R.id.nothingToShow);
+        String searchFieldText = "";
         int visibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
@@ -236,6 +240,16 @@ public class ActivityTales extends ActivityMain {
         List<Integer> categories = Categories.NameIds.stream()
                 .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
                 .collect(Collectors.toList());
+
+        boolean allCategoriesSelected = categories.equals(Categories.NameIds);
+        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && allCategoriesSelected;
+
+        searchFieldText += filter;
+        if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.showOnlyFavoriteOn); }
+        if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
+                .map(this::getString)
+                .collect(Collectors.joining(", "));
+        searchFieldText = searchFieldText.replaceAll("^,+|,+$", "").trim();
 
         for (final Tale tale:tales.getTalesList()) {
             if (tale.shouldBeShown(showOnlyFavorite, categories, filter)){
@@ -247,6 +261,8 @@ public class ActivityTales extends ActivityMain {
             }
         }
 
+        titleFld.setVisibility(hideSearchText ? View.GONE : View.VISIBLE);
+        titleFld.setText(searchFieldText);
         nothing.setVisibility(visibility);
         SettingsHelper.setString("filteredTalesList", list.toString());
     }
