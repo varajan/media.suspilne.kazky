@@ -11,7 +11,7 @@
         android:contentDescription="@string/filter"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/filter"
+        android:src="@drawable/ic_search"
         app:backgroundTint="@color/playBtn"
         app:tint="@android:color/white"
 
