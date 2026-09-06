@@ -27,7 +27,7 @@ public class Tale{
     String fileName;
     String duration;
 
-    Tale(){ id = -1; }
+    Tale() { id = -1; }
 
     Tale(int id, String duration, int intro, int coloring, int title, int name, int img){
         this.id = id;
@@ -43,15 +43,15 @@ public class Tale{
         this.fileName = id > 0 ? fileName(id) : null;
     }
 
-    String getReader(){
+    String getReader() {
         return ActivityTales.getActivity().getResources().getString(readerId);
     }
 
-    String getTitle(){
+    String getTitle() {
         return ActivityTales.getActivity().getResources().getString(titleId);
     }
 
-    private View getTaleView(){
+    private View getTaleView() {
         try{
             return ActivityTales.getActivity().findViewById(R.id.talesList).findViewWithTag(id);
         }
@@ -60,7 +60,7 @@ public class Tale{
         }
     }
 
-    void resetFavorite(){
+    void resetFavorite() {
         boolean downloadAll = SettingsHelper.getBoolean("downloadAllTales");
         boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoriteTales");
 
@@ -74,7 +74,7 @@ public class Tale{
         if (!isFavorite && Tales.getShowOnlyFavorite()) Tales.setTalesCountUpdated(false);
     }
 
-    private void setDownloadedIcon(){
+    private void setDownloadedIcon() {
         View taleView = getTaleView();
 
         if (taleView != null){
@@ -106,7 +106,7 @@ public class Tale{
         return getTitle().toLowerCase().contains(filter) || getReader().toLowerCase().contains(filter);
     }
 
-    void scrollIntoView(){
+    void scrollIntoView() {
         try
         {
             ScrollView scrollView = ActivityTales.getActivity().findViewById(R.id.scrollView);
@@ -126,17 +126,17 @@ public class Tale{
         }
     }
 
-    void hide(){
+    void hide() {
         View tale = getTaleView();
         if (tale != null) tale.setVisibility(View.GONE);
     }
 
-    void show(){
+    void show() {
         View tale = getTaleView();
         if (tale != null) tale.setVisibility(View.VISIBLE);
     }
 
-    void setViewDetails(){
+    void setViewDetails() {
         try
         {
             Bitmap preview = null;
@@ -235,11 +235,11 @@ public class Tale{
             : ActivityTales.getActivity().getResources().getString(R.string.gitTaleUrl, tale);
     }
 
-    public void download(){
+    public void download() {
         new DownloadTrack().execute(this);
     }
 
-    public void deleteFile(){
+    public void deleteFile() {
         ActivityMain.getActivity().deleteFile(fileName);
         setDownloadedIcon();
     }

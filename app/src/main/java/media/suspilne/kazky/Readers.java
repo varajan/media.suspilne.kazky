@@ -7,7 +7,7 @@ import java.util.List;
 public class Readers {
     public List<Reader> Readers;
 
-    public Readers(){
+    public Readers() {
         if (isAscSorted()){
             items.sort(Comparator.comparing(Reader::getName));
         }else{
@@ -17,7 +17,7 @@ public class Readers {
         Readers = items;
     }
 
-    public static boolean isAscSorted(){
+    public static boolean isAscSorted() {
         return SettingsHelper.getBoolean("isAscSorted");
     }
 

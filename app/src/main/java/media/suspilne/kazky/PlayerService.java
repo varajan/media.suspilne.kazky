@@ -46,7 +46,7 @@ public class PlayerService extends IntentService {
     }
     
     @Override
-    public void onCreate(){
+    public void onCreate() {
         registerReceiver();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
@@ -157,7 +157,7 @@ public class PlayerService extends IntentService {
         unregisterReceiver();
     }
 
-    private void releasePlayer(){
+    private void releasePlayer() {
         while (player != null){
             player.release();
             player = null;
@@ -214,7 +214,7 @@ public class PlayerService extends IntentService {
         sendMessage("SetPlayBtnIcon");
     }
 
-    private void registerReceiver(){
+    private void registerReceiver() {
         try{
             IntentFilter filter = new IntentFilter();
 
@@ -227,7 +227,7 @@ public class PlayerService extends IntentService {
         }catch (Exception e){ /*nothing*/ }
     }
 
-    private void unregisterReceiver(){
+    private void unregisterReceiver() {
         try{
             this.unregisterReceiver(receiver);
         }catch (Exception e){ /*nothing*/ }

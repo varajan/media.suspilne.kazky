@@ -26,7 +26,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     static int COMPLETED = 23;
     static int WITH_ERROR = 24;
 
-    public static void cancelAllNotifications(){
+    public static void cancelAllNotifications() {
         NotificationManager notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
 
         notificationManager.cancel(IN_PROGRESS);
@@ -49,7 +49,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         notificationManager.notify(IN_PROGRESS, notificationBuilder.build());
     }
 
-    private void showCompletedNotification(){
+    private void showCompletedNotification() {
         if (count == 0){
             cancelAllNotifications();
         } else {

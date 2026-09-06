@@ -92,7 +92,7 @@ public class ActivityReaders extends ActivityMain {
 
     private final View.OnClickListener onSearchClick = view -> showSearch();
 
-    private void showSearch(){
+    private void showSearch() {
         searchIcon.setVisibility(View.GONE);
         sortIcon.setVisibility(View.GONE);
         searchField.setVisibility(View.VISIBLE);
@@ -102,7 +102,7 @@ public class ActivityReaders extends ActivityMain {
                 .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    private void hideSearch(){
+    private void hideSearch() {
         searchIcon.setVisibility(View.VISIBLE);
         sortIcon.setVisibility(View.VISIBLE);
         searchField.setVisibility(View.GONE);
@@ -122,7 +122,7 @@ public class ActivityReaders extends ActivityMain {
         return super.onKeyDown(keycode, event);
     }
 
-    private void filterReaders(){
+    private void filterReaders() {
         String filter = searchField.getText().toString();
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
@@ -141,7 +141,7 @@ public class ActivityReaders extends ActivityMain {
         nothing.setVisibility(visibility);
     }
 
-    private void showReaders(){
+    private void showReaders() {
         sortIcon.setImageResource(Readers.isAscSorted() ? R.drawable.ic_sort_alpha : R.drawable.ic_soft_digits);
         ReadersList.removeViews(1, ReadersList.getChildCount()-1);
         nothing.setVisibility(View.GONE);

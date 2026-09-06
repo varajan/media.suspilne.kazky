@@ -69,7 +69,7 @@ public class ActivityTales extends ActivityMain {
         }
     }
 
-    private void showTales(){
+    private void showTales() {
         boolean showBigImages = SettingsHelper.getBoolean("showBigImages");
 
         for (final Tale tale:tales.getTalesList()) {
@@ -282,7 +282,7 @@ public class ActivityTales extends ActivityMain {
         setPlayBtnIcon(false);
     }
 
-    private void setPlayBtnIcon(){ setPlayBtnIcon(false); }
+    private void setPlayBtnIcon() { setPlayBtnIcon(false); }
 
     private void setPlayBtnIcon(boolean scrollToTale){
         LinearLayout list = findViewById(R.id.talesList);
@@ -309,7 +309,7 @@ public class ActivityTales extends ActivityMain {
         setPlayBtnIcon();
     }
 
-    private void registerReceiver(){
+    private void registerReceiver() {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
@@ -319,7 +319,7 @@ public class ActivityTales extends ActivityMain {
         }
     }
 
-    private void unregisterReceiver(){
+    private void unregisterReceiver() {
         try{
             this.unregisterReceiver(receiver);
         }catch (Exception e){ /*nothing*/ }

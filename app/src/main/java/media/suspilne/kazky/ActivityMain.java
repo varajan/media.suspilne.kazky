@@ -49,16 +49,16 @@ public class ActivityMain extends AppCompatActivity
     protected int currentView;
 
     private static Activity activity;
-    public static Activity getActivity(){ return activity; }
+    public static Activity getActivity() { return activity; }
 
-    private void stopVolumeReduceTimer(){
+    private void stopVolumeReduceTimer() {
         if (volumeReduceTimer != null) {
             volumeReduceTimer.cancel();
             volumeReduceTimer = null;
         }
     }
 
-    private void stopQuitTimer(){
+    private void stopQuitTimer() {
         if (quitTimer != null) {
             quitTimer.cancel();
             quitTimer = null;
@@ -67,7 +67,7 @@ public class ActivityMain extends AppCompatActivity
         SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
     }
 
-    protected void resetVolumeReduceTimer(){
+    protected void resetVolumeReduceTimer() {
         stopVolumeReduceTimer();
         if (!SettingsHelper.getBoolean("volumeControl")) return;
         if (!isTalePlaying() && !isRadioPlaying()) return;
@@ -79,7 +79,7 @@ public class ActivityMain extends AppCompatActivity
         volumeReduceTimer.schedule(new reduceVolume(), timeout * 60_000L);
     }
 
-    protected void resetQuitTimeout(){
+    protected void resetQuitTimeout() {
         if (SettingsHelper.getBoolean("autoQuit")) {
             stopQuitTimer();
 
@@ -112,7 +112,7 @@ public class ActivityMain extends AppCompatActivity
 
     class reduceVolume extends TimerTask {
         @Override
-        public void run(){
+        public void run() {
             MediaVolume media = new MediaVolume();
 
             if (media.getLevel() > 1) {
@@ -132,13 +132,13 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    protected boolean isTalePlaying(){
+    protected boolean isTalePlaying() {
         return isServiceRunning()
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.tales))
                 && !Tales.isPaused();
     }
 
-    protected boolean isRadioPlaying(){
+    protected boolean isRadioPlaying() {
         return isServiceRunning()
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
                 && !Tales.isPaused();
@@ -154,7 +154,7 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
-    private void readSettingsFromGit(){
+    private void readSettingsFromGit() {
         if (!SettingsHelper.getBoolean("readSettingsFromGit")) return;
 
         new Thread(() -> {
@@ -193,7 +193,7 @@ public class ActivityMain extends AppCompatActivity
         return defaultValue;
     }
 
-    protected boolean isNetworkUnavailable(){
+    protected boolean isNetworkUnavailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
@@ -264,14 +264,14 @@ public class ActivityMain extends AppCompatActivity
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         showErrorMessage();
 
         ActivityMain.activity = this;
     }
 
-    private void showErrorMessage(){
+    private void showErrorMessage() {
         String errorMessage = SettingsHelper.getString("errorMessage");
 
         if (!errorMessage.isEmpty()){
@@ -283,7 +283,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    private void exit(){
+    private void exit() {
         moveTaskToBack(true);
         stopVolumeReduceTimer();
         stopPlayerService();
@@ -302,7 +302,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    private void showQuitDialog(){
+    private void showQuitDialog() {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.confirm_exit)
@@ -316,7 +316,7 @@ public class ActivityMain extends AppCompatActivity
         activityTitle.setText(title);
     }
 
-    protected void stopPlayerService(){
+    protected void stopPlayerService() {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         stopService(new Intent(this, PlayerService.class));
@@ -379,7 +379,7 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
-    private void rateApp(){
+    private void rateApp() {
         try {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -396,7 +396,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    void download(){
+    void download() {
         if (this.isNetworkUnavailable()){
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
@@ -417,7 +417,7 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
-    protected void continueDownloadTales(){
+    protected void continueDownloadTales() {
         if (!SettingsHelper.getBoolean("downloadAllTales") && !SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
@@ -434,7 +434,7 @@ public class ActivityMain extends AppCompatActivity
         if (!allAreDownloaded) download();
     }
 
-    protected void suggestToDownloadFavoriteTales(){
+    protected void suggestToDownloadFavoriteTales() {
         if (SettingsHelper.getBoolean("suggestToDownloadFavoriteTales")) return;
         if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
@@ -470,7 +470,7 @@ public class ActivityMain extends AppCompatActivity
         Tales.setTalesCountUpdated(true);
     }
 
-    private void update(){
+    private void update() {
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/apps")));
         } catch (ActivityNotFoundException e) {
@@ -478,7 +478,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    private void checkForUpdates(){
+    private void checkForUpdates() {
         if (!SettingsHelper.getBoolean("checkForUpdates")) return;
         if (this.isNetworkUnavailable()) return;
 
@@ -528,7 +528,7 @@ public class ActivityMain extends AppCompatActivity
                 .show();
     }
 
-    private void openAndroidSettings(){
+    private void openAndroidSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);

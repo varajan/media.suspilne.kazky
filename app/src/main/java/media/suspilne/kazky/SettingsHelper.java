@@ -130,13 +130,13 @@ public class SettingsHelper {
         return folderSize(ActivityMain.getActivity().getFilesDir());
     }
 
-    public static long freeSpace(){
+    public static long freeSpace() {
         StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
 
         return stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
     }
 
-    public static String getVersionName(){
+    public static String getVersionName() {
         try {
             return ActivityMain.getActivity().getPackageManager()
                     .getPackageInfo(ActivityMain.getActivity().getPackageName(), 0)

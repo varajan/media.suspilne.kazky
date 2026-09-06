@@ -82,7 +82,7 @@ public class ActivitySettings extends ActivityMain {
     int random(int min, int max) {
         return min + (int) (Math.random() * (max - min));
     }
-    String questionAndAnswer(){
+    String questionAndAnswer() {
         int a = random(5, 10);
         int b = random(5, 10);
         int c = random(10, 30) - random(10, 20);
@@ -93,11 +93,11 @@ public class ActivitySettings extends ActivityMain {
                 : "" + a + "x" + b + "+" + c + "?:" + x;
     }
 
-    void checkAccess(){
+    void checkAccess() {
         if (!SettingsHelper.getBoolean("isParent")) { finish(); }
     }
 
-    void applyParentLock(){
+    void applyParentLock() {
         SettingsHelper.setBoolean("isParent", false);
 
         String questionAndAnswer = questionAndAnswer();
@@ -131,7 +131,7 @@ public class ActivitySettings extends ActivityMain {
         }
     }
 
-    void pickColor(){
+    void pickColor() {
         ColorPickerDialogBuilder
             .with(this)
             .setTitle("Choose color")
@@ -192,7 +192,7 @@ public class ActivitySettings extends ActivityMain {
         new Tales().setTalesList();
     }
 
-    private void doDownloadAll(){
+    private void doDownloadAll() {
         long available = SettingsHelper.freeSpace();
         long usedSpace = SettingsHelper.usedSpace();
         long required = totalRequiredSpace - usedSpace;
@@ -212,7 +212,7 @@ public class ActivitySettings extends ActivityMain {
         setColorsAndState();
     }
 
-    private void doDownloadFavorite(){
+    private void doDownloadFavorite() {
         SettingsHelper.setBoolean("downloadFavoriteTales", true);
         download();
         setColorsAndState();
@@ -334,7 +334,7 @@ public class ActivitySettings extends ActivityMain {
         setSortingState();
     }
 
-    private void setSortingState(){
+    private void setSortingState() {
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
 

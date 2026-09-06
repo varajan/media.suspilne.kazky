@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 class Tales {
-    public static boolean getTalesCountUpdated(){ return SettingsHelper.getBoolean("tales.count.updated"); }
+    public static boolean getTalesCountUpdated() { return SettingsHelper.getBoolean("tales.count.updated"); }
     public static void setTalesCountUpdated(boolean value){SettingsHelper.setBoolean("tales.count.updated", value);}
 
     public static boolean getShowCategory(String category) { return SettingsHelper.getBoolean("show_" + category); }
@@ -23,14 +23,14 @@ class Tales {
         setTalesCountUpdated(false);
     }
 
-    public static String getFilter(){ return SettingsHelper.getString("talesFilter"); }
+    public static String getFilter() { return SettingsHelper.getString("talesFilter"); }
     public static void setFilter(String filter){ SettingsHelper.setString("talesFilter", filter); }
 
     public static void setLastPosition(long value){
         SettingsHelper.setLong("PlayerPosition", value);
     }
 
-    public static long getLastPosition(){
+    public static long getLastPosition() {
         return SettingsHelper.getLong("PlayerPosition");
     }
 
@@ -38,7 +38,7 @@ class Tales {
         SettingsHelper.setInt("tales.lastPlaying", value);
     }
 
-    public static int getLastPlaying(){
+    public static int getLastPlaying() {
         return SettingsHelper.getInt("tales.lastPlaying");
     }
 
@@ -46,7 +46,7 @@ class Tales {
         SettingsHelper.setInt("tales.nowPlaying", value);
     }
 
-    public static int getNowPlaying(){
+    public static int getNowPlaying() {
         return SettingsHelper.getInt("tales.nowPlaying");
     }
 
@@ -54,13 +54,13 @@ class Tales {
         SettingsHelper.setBoolean("tales.paused", value);
     }
 
-    public static boolean isPaused(){
+    public static boolean isPaused() {
         return SettingsHelper.getBoolean("tales.paused");
     }
 
-    public static boolean playTalesFromGit(){ return SettingsHelper.getBoolean("playTalesFromGit"); }
+    public static boolean playTalesFromGit() { return SettingsHelper.getBoolean("playTalesFromGit"); }
 
-    Tale getPrevious(){
+    Tale getPrevious() {
         boolean skip = true;
         int nowPlaying = getNowPlaying();
         List<String> ids = Arrays.asList( SettingsHelper.getString("filteredTalesList").split(";") );
@@ -78,7 +78,7 @@ class Tales {
         return ids.size() == 0 ? new Tale() : getById(ids.get(0));
     }
 
-    Tale getNext(){
+    Tale getNext() {
         boolean skip = true;
         int nowPlaying = getNowPlaying();
         List<String> ids = ListHelper.removeBlank(SettingsHelper.getString("filteredTalesList").split(";"));
@@ -114,7 +114,7 @@ class Tales {
         return collator.compare(arg1, arg2);
     }
 
-    public void setTalesList(){
+    public void setTalesList() {
         String sorting = SettingsHelper.getString("sorting", "shuffle");
         StringBuilder list = new StringBuilder();
         List<Tale> result = new ArrayList<>(items);
@@ -161,7 +161,7 @@ class Tales {
         return result;
     }
 
-    public List<Tale> getTalesList(){
+    public List<Tale> getTalesList() {
         List<Tale> result = new ArrayList<>();
 
         if (SettingsHelper.getString("talesList", "").length() == 0) setTalesList();
@@ -173,7 +173,7 @@ class Tales {
         return result;
     }
 
-    int getFavoriteCount(){
+    int getFavoriteCount() {
         int result = 0;
 
         for(Tale tale:items) if (tale.isFavorite) result++;

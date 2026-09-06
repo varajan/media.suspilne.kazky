@@ -25,22 +25,22 @@ public class Reader {
         return getName().toLowerCase().contains(filter) || getDescription().toLowerCase().contains(filter);
     }
 
-    private View getView(){
+    private View getView() {
         return ActivityReaders.getActivity().findViewById(R.id.readersList).findViewWithTag(getName());
     }
 
-    void hide(){ getView().setVisibility(View.GONE); }
+    void hide() { getView().setVisibility(View.GONE); }
 
-    void show(){ getView().setVisibility(View.VISIBLE); }
+    void show() { getView().setVisibility(View.VISIBLE); }
 
-    public String getName(){
+    public String getName() {
         return ActivityMain.getActivity().getResources().getString(name);
     }
-    public String getDescription(){
+    public String getDescription() {
         return ActivityMain.getActivity().getResources().getString(description);
     }
 
-    private View getReaderView(){
+    private View getReaderView() {
         return ActivityMain.getActivity().findViewById(R.id.readersList).findViewWithTag(getName());
     }
 
@@ -69,7 +69,7 @@ public class Reader {
         }
     }
 
-    private int getPhoto(){
+    private int getPhoto() {
         switch (name){
             case R.string.andrii_hlyvniuk: return R.mipmap.andrii_hlyvniuk;
             case R.string.marko_galanevych: return R.mipmap.marko_galanevych;
@@ -136,7 +136,7 @@ public class Reader {
         }
     }
 
-    private int getTalesCount(){
+    private int getTalesCount() {
         return SettingsHelper.getInt(getName(), 0);
     }
 }
