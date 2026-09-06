@@ -149,6 +149,6 @@ public class SettingsHelper {
     public static boolean isIntentAvailable(Intent intent) {
         final PackageManager packageManager = ActivityMain.getActivity().getPackageManager();
         List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
+        return !list.isEmpty();
     }
 }

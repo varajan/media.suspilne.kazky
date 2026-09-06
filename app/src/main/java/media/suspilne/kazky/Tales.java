@@ -58,8 +58,6 @@ class Tales {
         return SettingsHelper.getBoolean("tales.paused");
     }
 
-    public static boolean playTalesFromGit() { return SettingsHelper.getBoolean("playTalesFromGit"); }
-
     Tale getPrevious() {
         boolean skip = true;
         int nowPlaying = getNowPlaying();
@@ -75,7 +73,7 @@ class Tales {
             return getById(taleId);
         }
 
-        return ids.size() == 0 ? new Tale() : getById(ids.get(0));
+        return ids.isEmpty() ? new Tale() : getById(ids.get(0));
     }
 
     Tale getNext() {
@@ -92,7 +90,7 @@ class Tales {
             return getById(taleId);
         }
 
-        return ids.size() == 0 ? new Tale() : getById(ids.get(0));
+        return ids.isEmpty() ? new Tale() : getById(ids.get(0));
     }
 
     Tale getById(String id) {
@@ -127,21 +125,21 @@ class Tales {
             case "sortAsc":
                 Collections.shuffle(result);
                 if (SettingsHelper.getBoolean("groupByReader")) {
-                    Collections.sort(result, (tale1, tale2)
+                    result.sort((tale1, tale2)
                             -> tale1.getReader().equals(tale2.getReader())
-                            ?  compare(tale1.getTitle(), tale2.getTitle())
-                            :  compare(tale1.getReader(), tale2.getReader()));
+                            ? compare(tale1.getTitle(), tale2.getTitle())
+                            : compare(tale1.getReader(), tale2.getReader()));
                 } else {
-                    Collections.sort(result, (tale1, tale2) -> compare(tale1.getTitle(), tale2.getTitle()));
+                    result.sort((tale1, tale2) -> compare(tale1.getTitle(), tale2.getTitle()));
                 }
                 break;
 
             case "sort19":
-                Collections.sort(result, (tale1, tale2) -> compare(tale1.duration, tale2.duration));
+                result.sort((tale1, tale2) -> compare(tale1.duration, tale2.duration));
                 break;
 
             case "sort91":
-                Collections.sort(result, (tale1, tale2) -> compare(tale1.duration, tale2.duration));
+                result.sort((tale1, tale2) -> compare(tale1.duration, tale2.duration));
                 Collections.reverse(result);
                 break;
         }
@@ -164,7 +162,7 @@ class Tales {
     public List<Tale> getTalesList() {
         List<Tale> result = new ArrayList<>();
 
-        if (SettingsHelper.getString("talesList", "").length() == 0) setTalesList();
+        if (SettingsHelper.getString("talesList", "").isEmpty()) setTalesList();
 
         for(String id:SettingsHelper.getString("talesList").split(";")){
             result.add(getById(id));

@@ -13,7 +13,7 @@ public class ListHelper {
         List<String> result = new ArrayList<String>();
 
         for (String item: list) {
-            if (item != null && !item.equals(""))
+            if (item != null && !item.isEmpty())
                 result.add(item);
         }
 

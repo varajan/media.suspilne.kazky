@@ -127,7 +127,7 @@ public class ActivityReaders extends ActivityMain {
         View nothing = findViewById(R.id.nothingToShow);
         int visibility = View.VISIBLE;
 
-        activityTitle.setText(filter.equals("") ? getString(R.string.readers) : "\u2315 " + filter);
+        activityTitle.setText(filter.isEmpty() ? getString(R.string.readers) : "\u2315 " + filter);
 
         for (final Reader reader: new Readers().Readers) {
             if (reader.talesCount > 0 && reader.matchesFilter(filter)){
