@@ -453,17 +453,14 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
-    private void updateTalesCountPerReader(){
+    private void updateTalesCountPerReader() {
         if (Tales.getTalesCountUpdated()) return;
 
-        boolean showFavorite = Tales.getShowOnlyFavorite();
         for (Reader reader: new Readers().Readers) {
             int count = 0;
 
             for (Tale tale : new Tales().getTalesList()) {
-                if (!tale.getReader().equals(reader.getName()))                         continue;
-                if (showFavorite && !tale.isFavorite)                                   continue;
-
+                if (!tale.getReader().equals(reader.getName())) continue;
                 count++;
             }
 
