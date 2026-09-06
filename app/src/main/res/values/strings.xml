@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="requiredSpace">816</string>
+    <string name="requiredSpace">831</string>
     <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
     <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
