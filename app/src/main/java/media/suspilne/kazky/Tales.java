@@ -337,7 +337,7 @@ class Tales {
             new Tale(140, "07:46", 4000, 0, R.string.tale_140, R.string.zlata_ognevich, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t140 : R.drawable.t140_min),
 
             new Tale(141, "12:13", 3500, 0, R.string.tale_141, R.string.taras_kompanichenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t141 : R.drawable.t141_min),
-            new Tale(142, "06:27", 0, 0, R.string.tale_142, R.string.vlad_rudnitsky, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t142 : R.drawable.t142_min)
+            new Tale(142, "06:27", 3000, 0, R.string.tale_142, R.string.vlad_rudnitsky, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t142 : R.drawable.t142_min)
 
 //            new Tale(3, "00:00", 5000, 0, R.string.tale_3, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t3_min),
     );
