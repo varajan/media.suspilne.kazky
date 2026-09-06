@@ -1,6 +1,5 @@
 package media.suspilne.kazky;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,6 +56,7 @@ public class Categories {
             new Category(R.string.internationalTales, internationalTales),
             new Category(R.string.bigWorldAnimals, new Range(124, 129)), // + котик-хвалько
             new Category(R.string.brave, new Range(130, 141)),
+            new Category(R.string.modernAuthorTales, new Range(118, 118)),
             new Category(R.string.lullabies, new Range(119, 122))
         );
 

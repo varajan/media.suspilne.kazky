@@ -31,7 +31,7 @@ public class ActivityTales extends ActivityMain {
     private Tales tales;
     private LinearLayout TalesList;
     private boolean returnToReaders = false;
-    String searchText = "";
+    private String searchText = "";
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -135,7 +135,16 @@ public class ActivityTales extends ActivityMain {
         TalesList = findViewById(R.id.talesList);
         tales = new Tales();
 
-        if (!returnToReaders) { Tales.setFilter(""); }
+        if (returnToReaders) {
+            Tales.setShowOnlyFavorite(false);
+
+            for (final Integer categoryId : Categories.NameIds) {
+                String category = getResourceString(categoryId);
+                Tales.setShowCategory(category, true);
+            }
+        }
+
+        searchText = Tales.getFilter();
 
         showTales();
         filterTales();

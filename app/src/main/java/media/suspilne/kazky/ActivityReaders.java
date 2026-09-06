@@ -74,7 +74,7 @@ public class ActivityReaders extends ActivityMain {
         return false;
     };
 
-    private final View.OnClickListener onPlayClick = view -> {
+    private final View.OnClickListener onReaderClick = view -> {
         Intent intent = new Intent(this, ActivityTales.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("returnToReaders", true);
@@ -151,7 +151,7 @@ public class ActivityReaders extends ActivityMain {
             readerView.setTag(reader.getName());
             ReadersList.addView(readerView);
             reader.setViewDetails(this);
-            readerView.setOnClickListener(onPlayClick);
+            readerView.setOnClickListener(onReaderClick);
         }
     }
 }
