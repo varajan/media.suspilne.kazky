@@ -130,6 +130,7 @@ public class Reader {
             case R.string.natalka_denysenko: return R.mipmap.natalka_denysenko;
             case R.string.zlata_ognevich: return R.mipmap.zlata_ognevich;
             case R.string.taras_kompanichenko: return R.mipmap.taras_kompanichenko;
+            case R.string.vlad_rudnitsky: return R.mipmap.vlad_rudnitsky;
 
             default: return R.mipmap.logo;
         }

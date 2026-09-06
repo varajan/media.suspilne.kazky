@@ -26,7 +26,7 @@ public class Categories {
             new Range(101, 107),
             new Range(109, 110),
             new Range(113, 117)
-    };
+        };
 
     private static final Range[] internationalTales = {
             new Range(3, 5),
@@ -49,14 +49,24 @@ public class Categories {
             new Range(108, 108),
             new Range(111, 112),
             new Range(123, 123)
-    };
+        };
+
+    private static final Range[] bigWorldAnimalsTales = {
+            new Range(124, 129),
+            new Range(142, 142)
+        };
+
+    private static final Range[] modernAuthorTales = {
+            new Range(118, 118),
+            new Range(142, 142)
+        };
 
     public static List<Category> Items = Arrays.asList(
             new Category(R.string.ukrainianFolkTales, ukrainianTales),
             new Category(R.string.internationalTales, internationalTales),
-            new Category(R.string.bigWorldAnimals, new Range(124, 129)), // + котик-хвалько
+            new Category(R.string.bigWorldAnimals, bigWorldAnimalsTales),
             new Category(R.string.brave, new Range(130, 141)),
-            new Category(R.string.modernAuthorTales, new Range(118, 118)),
+            new Category(R.string.modernAuthorTales, modernAuthorTales),
             new Category(R.string.lullabies, new Range(119, 122))
         );
 

@@ -80,6 +80,7 @@ public class Readers {
             new Reader(R.string.serhii_prytula, R.string.serhii_prytula_description),
             new Reader(R.string.natalka_denysenko, R.string.natalka_denysenko_description),
             new Reader(R.string.zlata_ognevich, R.string.zlata_ognevich_description),
-            new Reader(R.string.taras_kompanichenko, R.string.taras_kompanichenko_description)
+            new Reader(R.string.taras_kompanichenko, R.string.taras_kompanichenko_description),
+            new Reader(R.string.vlad_rudnitsky, R.string.vlad_rudnitsky_description)
     );
 }
