@@ -63,7 +63,8 @@
     <string name="modernAuthorTales">Сучасні авторські казки</string>
 
     <string name="showOnlyFavorite">Лише улюблені, відмічені ⭐</string>
-    <string name="showOnlyFavoriteOn">Улюблені казки</string>
+    <string name="favoriteTales">Улюблені казки</string>
+    <string name="allTales">Усі казки</string>
     <string name="showOnlyFavoriteOff">Усі казки</string>
     <string name="addedToFavorites">\'%s\' додано до списку \'Улюблені\'</string>
     <string name="removedFromFavorites">\'%s\' видалено зі списку \'Улюблені\'</string>

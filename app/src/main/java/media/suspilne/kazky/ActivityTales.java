@@ -248,7 +248,7 @@ public class ActivityTales extends ActivityMain {
         boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && allCategoriesSelected;
 
         searchFieldText += filter;
-        if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.showOnlyFavoriteOn); }
+        if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.favoriteTales); }
         if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
                 .map(this::getString)
                 .collect(Collectors.joining(", "));
@@ -264,7 +264,7 @@ public class ActivityTales extends ActivityMain {
             }
         }
 
-        titleFld.setText(hideSearchText ? this.getText(R.string.tales) : searchFieldText);
+        titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : searchFieldText);
         nothing.setVisibility(visibility);
         SettingsHelper.setString("filteredTalesList", list.toString());
     }
