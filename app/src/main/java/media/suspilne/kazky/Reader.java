@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-class Reader{
+public class Reader {
     public Integer name;
     public Integer description;
     public Integer photo;

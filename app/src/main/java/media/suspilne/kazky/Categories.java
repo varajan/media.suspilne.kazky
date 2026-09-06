@@ -52,13 +52,13 @@ public class Categories {
             new Range(123, 123)
     };
 
-    public static List<Category> Items = new ArrayList<>(Arrays.asList(
+    public static List<Category> Items = Arrays.asList(
             new Category(R.string.ukrainianFolkTales, ukrainianTales),
             new Category(R.string.internationalTales, internationalTales),
             new Category(R.string.bigWorldAnimals, new Range(124, 129)), // + котик-хвалько
             new Category(R.string.brave, new Range(130, 141)),
             new Category(R.string.lullabies, new Range(119, 122))
-            ));
+        );
 
     public static List<Integer> NameIds = Items.stream().map(category -> category.title).toList();
 }

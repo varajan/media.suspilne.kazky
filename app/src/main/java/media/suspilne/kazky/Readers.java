@@ -1,17 +1,17 @@
 package media.suspilne.kazky;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class Readers {
-    public ArrayList<Reader> Readers;
+    public List<Reader> Readers;
 
     public Readers(){
         if (isAscSorted()){
-            Collections.sort(items, (c1, c2) -> c1.getName().compareTo(c2.getName()));
+            items.sort(Comparator.comparing(Reader::getName));
         }else{
-            Collections.sort(items, (c1, c2) -> c2.talesCount.compareTo(c1.talesCount));
+            items.sort((c1, c2) -> c2.talesCount.compareTo(c1.talesCount));
         }
 
         Readers = items;
@@ -21,7 +21,7 @@ public class Readers {
         return SettingsHelper.getBoolean("isAscSorted");
     }
 
-    private ArrayList<Reader> items = new ArrayList<>(Arrays.asList(
+    private List<Reader> items = Arrays.asList(
             new Reader(R.string.anastasiia_gudyma, R.string.anastasiia_gudyma_description),
             new Reader(R.string.andrii_hlyvniuk, R.string.andrii_hlyvniuk_description),
             new Reader(R.string.marko_galanevych, R.string.marko_galanevych_description),
@@ -81,5 +81,5 @@ public class Readers {
             new Reader(R.string.natalka_denysenko, R.string.natalka_denysenko_description),
             new Reader(R.string.zlata_ognevich, R.string.zlata_ognevich_description),
             new Reader(R.string.taras_kompanichenko, R.string.taras_kompanichenko_description)
-    ));
+    );
 }

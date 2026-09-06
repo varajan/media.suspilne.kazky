@@ -181,7 +181,7 @@ class Tales {
         return result;
     }
 
-    public List<Tale> items = new ArrayList<>(Arrays.asList(
+    public List<Tale> items = Arrays.asList(
             new Tale(1, "02:04", 7200, 1, R.string.tale_001, R.string.andrii_hlyvniuk, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t001 : R.drawable.t001_min),
             new Tale(2, "02:28", 7200, 1, R.string.tale_002, R.string.andrii_hlyvniuk, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t002 : R.drawable.t002_min),
             new Tale(3, "02:10", 8200, 1, R.string.tale_003, R.string.andrii_hlyvniuk, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t003 : R.drawable.t003_min),
@@ -339,5 +339,5 @@ class Tales {
             new Tale(141, "12:13", 3500, 0, R.string.tale_141, R.string.taras_kompanichenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t141 : R.drawable.t141_min)
 
 //            new Tale(3, "00:00", 5000, 0, R.string.tale_3, R.string., SettingsHelper.getBoolean("showBigImages") ? R.drawable.t1 : R.drawable.t3_min),
-    ));
+    );
 }
