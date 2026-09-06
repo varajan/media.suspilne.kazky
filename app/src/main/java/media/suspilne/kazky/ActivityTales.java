@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -129,9 +130,8 @@ public class ActivityTales extends ActivityMain {
         currentView = R.id.tales_menu;
         super.onCreate(savedInstanceState);
         titleFld = findViewById(R.id.title);
-
         FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
-        categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
+        ImageButton searchIcon = findViewById(R.id.searchIcon);
 
         Intent intent = getIntent();
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
@@ -146,8 +146,11 @@ public class ActivityTales extends ActivityMain {
                 Tales.setShowCategory(category, true);
             }
         }
-
         searchText = Tales.getFilter();
+
+        categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
+        searchIcon.setOnClickListener(v -> showFilterDialog());
+        titleFld.setOnClickListener(v -> showFilterDialog());
 
         showTales();
         filterTales();
@@ -261,8 +264,7 @@ public class ActivityTales extends ActivityMain {
             }
         }
 
-        titleFld.setVisibility(hideSearchText ? View.GONE : View.VISIBLE);
-        titleFld.setText(searchFieldText);
+        titleFld.setText(hideSearchText ? this.getText(R.string.tales) : searchFieldText);
         nothing.setVisibility(visibility);
         SettingsHelper.setString("filteredTalesList", list.toString());
     }
