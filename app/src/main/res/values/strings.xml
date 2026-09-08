@@ -101,11 +101,14 @@
     <string name="cancel">Скасувати</string>
     <string name="playback">Відтворення:</string>
     <string name="basicSettings">Загальні налаштування:</string>
-    <string name="sorting">Сортування казок:</string>
+    <string name="sortingTales">Сортування казок:</string>
+    <string name="sortingReaders">Сортування казкарів:</string>
     <string name="talesView">Список казок:</string>
     <string name="sort19">За тривалістю (спершу найкоротші)</string>
     <string name="sort91">За тривалістю (спершу найдовші)</string>
     <string name="sortAsc">За назвою</string>
+    <string name="sortByName">За алфавітом</string>
+    <string name="sortByTalesCount">За кількість казок</string>
     <string name="shuffle">Перемішати казки</string>
     <string name="skipIntro">Пропускати мелодію перед казкою</string>
 
