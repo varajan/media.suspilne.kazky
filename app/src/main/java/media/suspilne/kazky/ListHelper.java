@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ListHelper {
-    public static List<String> removeBlank(String[] array){
+    public static List<String> removeBlank(String[] array) {
         return removeBlank(Arrays.asList(array));
     }
 
-    public static List<String> removeBlank(List<String> list){
+    public static List<String> removeBlank(List<String> list) {
         List<String> result = new ArrayList<String>();
 
         for (String item: list) {

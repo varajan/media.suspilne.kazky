@@ -107,7 +107,7 @@
                 tools:typeface="serif" />
 
             <ProgressBar
-                android:id="@+id/progressBar2"
+                android:id="@+id/progressBar1"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -115,10 +115,10 @@
                 android:layout_marginEnd="-5dp" />
 
             <TextView
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/sortTales"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sorting"
+                android:text="@string/sortingTales"
                 android:fontFamily="@font/chalkboard"
                 android:textColor="@color/white"
                 android:layout_marginStart="24dp"
@@ -126,7 +126,7 @@
                 android:textSize="16sp" />
 
             <RadioGroup
-                android:id="@+id/sorting"
+                android:id="@+id/sortingTales"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
@@ -185,6 +185,51 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/downloadFavoriteTales"
                 tools:typeface="serif" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="-5dp" />
+
+            <TextView
+                android:id="@+id/sortReaders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sortingReaders"
+                android:fontFamily="@font/chalkboard"
+                android:textColor="@color/white"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/sortingReaders"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <RadioButton
+                    android:id="@+id/sortByName"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text= "@string/sortByName"
+                    android:fontFamily="@font/chalkboard"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/sortByTalesCount"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text= "@string/sortByTalesCount"
+                    android:fontFamily="@font/chalkboard"
+                    android:textSize="16sp" />
+            </RadioGroup>
 
             <ProgressBar
                 android:id="@+id/progressBar3"

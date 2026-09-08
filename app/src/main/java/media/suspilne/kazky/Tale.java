@@ -29,7 +29,7 @@ public class Tale{
 
     Tale() { id = -1; }
 
-    Tale(int id, String duration, int intro, int coloring, int title, int name, int img){
+    Tale(int id, String duration, int intro, int coloring, int title, int name, int img) {
         this.id = id;
         this.introTime = intro;
         this.coloring = coloring;
@@ -41,6 +41,10 @@ public class Tale{
         this.isDownloaded = id > 0 && isDownloaded(this.id);
         this.stream = id > 0 ? stream(id) : null;
         this.fileName = id > 0 ? fileName(id) : null;
+    }
+
+    int getReaderId() {
+        return readerId;
     }
 
     String getReader() {
@@ -77,20 +81,20 @@ public class Tale{
     private void setDownloadedIcon() {
         View taleView = getTaleView();
 
-        if (taleView != null){
+        if (taleView != null) {
             isDownloaded = isDownloaded(id);
             getTaleView().findViewById(R.id.downloaded).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
             getTaleView().findViewById(R.id.downloaded_shadow).setVisibility(isDownloaded ? View.VISIBLE : View.GONE);
         }
     }
 
-    boolean shouldBeShown(boolean showOnlyFavorite, List<Integer> categories, String filter){
+    boolean shouldBeShown(boolean showOnlyFavorite, List<Integer> categories, String filter) {
         return matchesFilter(filter)
                 && (!showOnlyFavorite || isFavorite)
                 && shouldBeShown(categories);
     }
 
-    boolean shouldBeShown(List<Integer> categories){
+    boolean shouldBeShown(List<Integer> categories) {
         List<Integer> categoryTaleIds = Categories
                 .Items
                 .stream()
@@ -101,7 +105,7 @@ public class Tale{
         return categoryTaleIds.contains(this.id);
     }
 
-    boolean matchesFilter(String filter){
+    boolean matchesFilter(String filter) {
         filter = filter.toLowerCase();
         return getTitle().toLowerCase().contains(filter) || getReader().toLowerCase().contains(filter);
     }
@@ -121,7 +125,7 @@ public class Tale{
 
             scrollView.postDelayed(() -> scrollView.scrollTo(x, y), 300);
         }
-        catch (Exception e){
+        catch (Exception e) {
             Kazky.logError(e.getMessage());
         }
     }
@@ -145,7 +149,7 @@ public class Tale{
             try {
                 preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image);
             }
-            catch(OutOfMemoryError outOfMemoryError){
+            catch(OutOfMemoryError outOfMemoryError) {
                 Kazky.logError("Failed to load tale #" + id + " preview image", false);
                 Kazky.logError(outOfMemoryError.getMessage());
             }
@@ -168,7 +172,7 @@ public class Tale{
             duration.setTextColor(color);
 
             setDownloadedIcon();
-        }catch (Exception e){
+        }catch (Exception e) {
             Kazky.logError("Failed to load tale #" + id, false);
             Kazky.logError(e.getMessage());
 
@@ -176,7 +180,7 @@ public class Tale{
         }
     }
 
-    void setColoringDetails(boolean showBigImages){
+    void setColoringDetails(boolean showBigImages) {
         try
         {
             Bitmap preview = null;
@@ -185,7 +189,7 @@ public class Tale{
             try {
                 preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image);
             }
-            catch(OutOfMemoryError outOfMemoryError){
+            catch(OutOfMemoryError outOfMemoryError) {
                 Kazky.logError("Failed to load tale #" + id + " preview image", false);
                 Kazky.logError(outOfMemoryError.getMessage());
             }
@@ -208,7 +212,7 @@ public class Tale{
             if (showBigImages) ((ImageView)taleView.findViewById(R.id.favoriteShadow)).setVisibility(View.INVISIBLE);
             ((ImageView)taleView.findViewById(R.id.favorite)).setVisibility(View.INVISIBLE);
             ((ImageView)taleView.findViewById(R.id.play)).setImageResource(R.mipmap.download);
-        }catch (Exception e){
+        }catch (Exception e) {
             Kazky.logError("Failed to load tale #" + id, false);
             Kazky.logError(e.getMessage());
 
@@ -217,11 +221,11 @@ public class Tale{
     }
 
     @SuppressLint("DefaultLocale")
-    private String fileName(int tale){
+    private String fileName(int tale) {
         return String.format("%d.mp3", tale);
     }
 
-    private boolean isDownloaded(int tale){
+    private boolean isDownloaded(int tale) {
         try{
             return ActivityMain.getActivity().getFileStreamPath(fileName(tale)).exists();
         } catch (Exception ex) {
@@ -229,7 +233,7 @@ public class Tale{
         }
     }
 
-    private String stream(int tale){
+    private String stream(int tale) {
         return isDownloaded(tale)
             ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(tale)
             : ActivityTales.getActivity().getResources().getString(R.string.gitTaleUrl, tale);
@@ -262,7 +266,7 @@ public class Tale{
                     InputStream is = (InputStream) new URL(tale.stream).getContent();
                     SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
                 }
-            }catch (Exception e){
+            }catch (Exception e) {
                 e.printStackTrace();
             }
 

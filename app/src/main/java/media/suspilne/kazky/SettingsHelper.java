@@ -31,59 +31,59 @@ public class SettingsHelper {
                 : ContextCompat.getColor(ActivityMain.getActivity(), R.color.white);
     }
 
-    static String getString(String setting){
+    static String getString(String setting) {
         return getString(setting, "");
     }
 
-    static String getString(String setting, String defaultValue){
+    static String getString(String setting, String defaultValue) {
         return getString(ActivityMain.getActivity(), setting, defaultValue);
     }
 
-    static String getString(Context context, String setting, String defaultValue){
+    static String getString(Context context, String setting, String defaultValue) {
         return context.getSharedPreferences(application,0).getString(setting, defaultValue);
     }
 
-    static void setString(String setting, String value){
+    static void setString(String setting, String value) {
         try{
             SharedPreferences.Editor editor = ActivityMain.getActivity().getSharedPreferences(application, 0).edit();
             editor.putString(setting, value);
             editor.apply();
         }
-        catch (Exception e){
+        catch (Exception e) {
             /*nothing*/
         }
     }
 
-    public static boolean getBoolean(String setting){
+    public static boolean getBoolean(String setting) {
         try{
             return getString(setting).equalsIgnoreCase("true");
         }
-        catch (Exception e){
+        catch (Exception e) {
             return false;
         }
     }
 
-    public static void setBoolean(String setting, boolean value){
+    public static void setBoolean(String setting, boolean value) {
         setString(setting, String.valueOf(value));
     }
 
-    public static int getInt(String setting, int defaultValue){
+    public static int getInt(String setting, int defaultValue) {
         return Integer.parseInt(getString(setting, String.valueOf(defaultValue)));
     }
 
-    public static int getInt(String setting){
+    public static int getInt(String setting) {
         return Integer.parseInt(getString(setting, "0"));
     }
 
-    public static void setInt(String setting, int value){
+    public static void setInt(String setting, int value) {
         setString(setting, String.valueOf(value));
     }
 
-    public static long getLong(String setting){
+    public static long getLong(String setting) {
         return Long.parseLong(getString(setting, "0"));
     }
 
-    public static void setLong(String setting, long value){
+    public static void setLong(String setting, long value) {
         setString(setting, String.valueOf(value));
     }
 
@@ -92,7 +92,7 @@ public class SettingsHelper {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public static void saveFile(String name, byte[] bytes){
+    public static void saveFile(String name, byte[] bytes) {
         try {
             FileOutputStream outputStream;
             outputStream = ActivityMain.getActivity().openFileOutput(name, Context.MODE_PRIVATE);
@@ -119,7 +119,7 @@ public class SettingsHelper {
         return length;
     }
 
-    public static String formattedSize(long size){
+    public static String formattedSize(long size) {
         if(size <= 0) return "0";
         final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
         int digitGroups = (int) (Math.log10(size)/Math.log10(1024));

@@ -7,22 +7,38 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class Reader {
     public Integer name;
     public Integer description;
     public Integer photo;
     public Integer talesCount;
 
-    public Reader(int name, int description){
+    public Reader(int name, int description) {
         this.name = name;
         this.description = description;
         this.photo = getPhoto();
         this.talesCount = getTalesCount();
     }
 
-    boolean matchesFilter(String filter){
-        filter = filter.toLowerCase();
-        return getName().toLowerCase().contains(filter) || getDescription().toLowerCase().contains(filter);
+    boolean matchesFilter(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+        List<Integer> categoryTales = Categories.Items.stream()
+                .filter(c -> categories.contains(c.title))
+                .flatMap(c -> c.taleIds.stream())
+                .toList();
+
+        List<Tale> readerTales = new Tales().items.stream()
+                .filter(t -> t.getReaderId() == this.name)
+                .filter(t -> !showOnlyFavorite || t.isFavorite)
+                .filter(t -> categoryTales.contains(t.id))
+                .toList();
+
+        String finalFilter = filter.toLowerCase().trim();
+        boolean matchName = getName().toLowerCase().contains(finalFilter) || getDescription().toLowerCase().contains(finalFilter);
+        boolean matchTaleName = readerTales.stream().anyMatch(t -> t.getTitle().contains(finalFilter));
+
+        return (matchName && !readerTales.isEmpty()) || matchTaleName;
     }
 
     private View getView() {
@@ -44,7 +60,7 @@ public class Reader {
         return ActivityMain.getActivity().findViewById(R.id.readersList).findViewWithTag(getName());
     }
 
-    public void setViewDetails(Context context){
+    public void setViewDetails(Context context) {
         try
         {
             Bitmap photo = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), this.photo, 100, 100);
@@ -62,7 +78,7 @@ public class Reader {
 
             description.setText(context.getString(R.string.reader_description, getDescription(), talesCount));
             description.setTextColor(color);
-        }catch (Exception e){
+        }catch (Exception e) {
             Log.e(SettingsHelper.application, e.getMessage());
             Log.e(SettingsHelper.application, e.getStackTrace().toString());
             e.printStackTrace();
@@ -70,7 +86,7 @@ public class Reader {
     }
 
     private int getPhoto() {
-        switch (name){
+        switch (name) {
             case R.string.andrii_hlyvniuk: return R.mipmap.andrii_hlyvniuk;
             case R.string.marko_galanevych: return R.mipmap.marko_galanevych;
             case R.string.alina_pash: return R.mipmap.alina_pash;

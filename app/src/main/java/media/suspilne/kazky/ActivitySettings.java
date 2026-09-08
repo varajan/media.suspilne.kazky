@@ -54,7 +54,7 @@ public class ActivitySettings extends ActivityMain {
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
 
         showBigImages = this.findViewById(R.id.showBigImages);
-        sorting = this.findViewById(R.id.sorting);
+        sorting = this.findViewById(R.id.sortingTales);
         groupByReader = this.findViewById(R.id.groupByReader);
         skipIntro = this.findViewById(R.id.skipIntro);
 
@@ -121,11 +121,11 @@ public class ActivitySettings extends ActivityMain {
         alert.show();
     }
 
-    void updateColor(boolean isChecked){
-        if (isChecked){
+    void updateColor(boolean isChecked) {
+        if (isChecked) {
             SettingsHelper.setBoolean("use.font.color", true);
             pickColor();
-        } else{
+        } else {
             SettingsHelper.setBoolean("use.font.color", false);
             setColorsAndState();
         }
@@ -154,19 +154,19 @@ public class ActivitySettings extends ActivityMain {
             .show();
     }
 
-    private void setSwitch(String title, boolean isChecked){
+    private void setSwitch(String title, boolean isChecked) {
         SettingsHelper.setBoolean(title, isChecked);
         if (title.equals("groupByReader")) new Tales().setTalesList();
         setColorsAndState();
 
-        if(title.equals("autoQuit") || title.equals("volumeControl")){
+        if(title.equals("autoQuit") || title.equals("volumeControl")) {
             resetQuitTimeout();
             resetVolumeReduceTimer();
         }
     }
 
     private void setSorting() {
-        switch (sorting.getCheckedRadioButtonId()){
+        switch (sorting.getCheckedRadioButtonId()) {
             case R.id.shuffle:
                 SettingsHelper.setString("sorting", "shuffle");
                 groupByReader.setVisibility(View.GONE);
@@ -197,7 +197,7 @@ public class ActivitySettings extends ActivityMain {
         long usedSpace = SettingsHelper.usedSpace();
         long required = totalRequiredSpace - usedSpace;
 
-        if (available < required){
+        if (available < required) {
             String title = getString(R.string.an_error_occurred);
             String message = getString(R.string.not_enough_space, SettingsHelper.formattedSize(available), SettingsHelper.formattedSize(required));
 
@@ -218,15 +218,15 @@ public class ActivitySettings extends ActivityMain {
         setColorsAndState();
     }
 
-    private void doCleanup(boolean includeFavorite){
+    private void doCleanup(boolean includeFavorite) {
         for (Tale tale : new Tales().items) {
-            if (includeFavorite || !tale.isFavorite){
+            if (includeFavorite || !tale.isFavorite) {
                 tale.deleteFile();
             }
         }
 
         SettingsHelper.setBoolean(includeFavorite ? "downloadFavoriteTales" : "downloadAllTales", false);
-        if (!includeFavorite && new Tales().getFavoriteCount() == 0){
+        if (!includeFavorite && new Tales().getFavoriteCount() == 0) {
             SettingsHelper.setBoolean("downloadFavoriteTales", false);
         }
 
@@ -345,7 +345,7 @@ public class ActivitySettings extends ActivityMain {
 
         sorting.setOnCheckedChangeListener(null);
 
-        switch (SettingsHelper.getString("sorting")){
+        switch (SettingsHelper.getString("sorting")) {
             case "sort19":
                 ((RadioButton)findViewById(R.id.sort19)).setTextColor(activeColor);
                 sorting.check(R.id.sort19);

@@ -20,7 +20,7 @@ public class MediaVolume {
         return manager.getStreamVolume(AudioManager.STREAM_MUSIC);
     }
 
-    public void setLevel(int level){
+    public void setLevel(int level) {
         manager.setStreamVolume(AudioManager.STREAM_MUSIC, level, 0);
     }
 }

@@ -26,7 +26,7 @@ public class ImageHelper {
         return bitmap;
     }
 
-    public static Drawable getDrawable(Bitmap bitmap){
+    public static Drawable getDrawable(Bitmap bitmap) {
         return new BitmapDrawable(bitmap);
     }
 

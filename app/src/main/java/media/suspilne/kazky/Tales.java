@@ -9,7 +9,7 @@ import java.util.Locale;
 
 class Tales {
     public static boolean getTalesCountUpdated() { return SettingsHelper.getBoolean("tales.count.updated"); }
-    public static void setTalesCountUpdated(boolean value){SettingsHelper.setBoolean("tales.count.updated", value);}
+    public static void setTalesCountUpdated(boolean value) {SettingsHelper.setBoolean("tales.count.updated", value);}
 
     public static boolean getShowCategory(String category) { return SettingsHelper.getBoolean("show_" + category); }
     public static void setShowCategory(String category, boolean value) {
@@ -24,9 +24,9 @@ class Tales {
     }
 
     public static String getFilter() { return SettingsHelper.getString("talesFilter"); }
-    public static void setFilter(String filter){ SettingsHelper.setString("talesFilter", filter); }
+    public static void setFilter(String filter) { SettingsHelper.setString("talesFilter", filter); }
 
-    public static void setLastPosition(long value){
+    public static void setLastPosition(long value) {
         SettingsHelper.setLong("PlayerPosition", value);
     }
 
@@ -42,7 +42,7 @@ class Tales {
         return SettingsHelper.getInt("tales.lastPlaying");
     }
 
-    public static void setNowPlaying(int value){
+    public static void setNowPlaying(int value) {
         SettingsHelper.setInt("tales.nowPlaying", value);
     }
 
@@ -50,7 +50,7 @@ class Tales {
         return SettingsHelper.getInt("tales.nowPlaying");
     }
 
-    public static void setPause(boolean value){
+    public static void setPause(boolean value) {
         SettingsHelper.setBoolean("tales.paused", value);
     }
 
@@ -64,7 +64,7 @@ class Tales {
         List<String> ids = Arrays.asList( SettingsHelper.getString("filteredTalesList").split(";") );
         Collections.reverse(ids);
 
-        for(String id:ids){
+        for(String id:ids) {
             int taleId = Integer.parseInt(id);
 
             if (taleId != nowPlaying && skip) continue;
@@ -81,7 +81,7 @@ class Tales {
         int nowPlaying = getNowPlaying();
         List<String> ids = ListHelper.removeBlank(SettingsHelper.getString("filteredTalesList").split(";"));
 
-        for(String id:ids){
+        for(String id:ids) {
             int taleId = Integer.parseInt(id);
 
             if (taleId != nowPlaying && skip) continue;
@@ -97,7 +97,7 @@ class Tales {
         return getById(Integer.parseInt(id));
     }
 
-    Tale getById(int id){
+    Tale getById(int id) {
         for (Tale tale:items) {
             if (tale.id == id) return tale;
         }
@@ -117,7 +117,7 @@ class Tales {
         StringBuilder list = new StringBuilder();
         List<Tale> result = new ArrayList<>(items);
 
-        switch (sorting){
+        switch (sorting) {
             case "shuffle":
                 Collections.shuffle(result);
                 break;
@@ -149,7 +149,7 @@ class Tales {
         SettingsHelper.setString("talesList", list.toString());
     }
 
-    public List<Tale> getTalesList(boolean favoriteOnly){
+    public List<Tale> getTalesList(boolean favoriteOnly) {
         List<Tale> result = new ArrayList<>();
 
         for (Tale tale: getTalesList()) {
@@ -164,7 +164,7 @@ class Tales {
 
         if (SettingsHelper.getString("talesList", "").isEmpty()) setTalesList();
 
-        for(String id:SettingsHelper.getString("talesList").split(";")){
+        for(String id:SettingsHelper.getString("talesList").split(";")) {
             result.add(getById(id));
         }
 

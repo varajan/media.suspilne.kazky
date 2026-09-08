@@ -8,9 +8,9 @@ public class Readers {
     public List<Reader> Readers;
 
     public Readers() {
-        if (isAscSorted()){
+        if (isAscSorted()) {
             items.sort(Comparator.comparing(Reader::getName));
-        }else{
+        } else {
             items.sort((c1, c2) -> c2.talesCount.compareTo(c1.talesCount));
         }
 

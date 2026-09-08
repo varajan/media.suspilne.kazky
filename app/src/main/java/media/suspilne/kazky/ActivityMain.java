@@ -27,6 +27,7 @@ import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,13 +106,13 @@ public class ActivityMain extends AppCompatActivity
         public void run() {
             stopVolumeReduceTimer();
 
-            if (isRadioPlaying()){
+            if (isRadioPlaying()) {
                 Intent intent = new Intent();
                 intent.setAction(SettingsHelper.application);
                 intent.putExtra("code", "StopPlay");
                 sendBroadcast(intent);
             }
-            else{
+            else {
                 SettingsHelper.setBoolean("stopPlaybackOnTimeout", true);
             }
         }
@@ -125,7 +126,7 @@ public class ActivityMain extends AppCompatActivity
             if (media.getLevel() > 1) {
                 media.setLevel(media.getLevel() - 1);
                 resetVolumeReduceTimer();
-            }else{
+            } else {
                 media.setLevel(media.getMaxLevel() / 2);
                 stopVolumeReduceTimer();
                 stopPlayerService();
@@ -140,6 +141,40 @@ public class ActivityMain extends AppCompatActivity
     }
 
     protected final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
+
+    protected void showFilterDialog(List<Integer> categories, Runnable filter) {
+        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
+        EditText searchField = dialogView.findViewById(R.id.searchField);
+        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
+        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
+
+        List<String> onlyFavorite = Tales.getShowOnlyFavorite()
+                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
+                : Collections.emptyList();
+        List<String> checkedCategories = categories.stream()
+                .map(this::getResourceString)
+                .filter(Tales::getShowCategory)
+                .collect(Collectors.toList());
+
+        String initialSearchText = Tales.getFilter();
+        searchField.setText(initialSearchText);
+        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
+        populateContainer(categoriesContainer, categories, checkedCategories);
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.filtersDialog)
+                .setView(dialogView)
+                .setPositiveButton(R.string.apply, (dialog, which) -> {
+                    String searchText = searchField.getText().toString();
+                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
+                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
+
+                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, categories);
+                    filter.run();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
 
     protected void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
         container.removeAllViews();
@@ -192,9 +227,12 @@ public class ActivityMain extends AppCompatActivity
         if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
                 .map(this::getString)
                 .collect(Collectors.joining(", "));
-        searchFieldText = searchFieldText.replaceAll("^,+|,+$", "").trim();
+        searchFieldText = searchFieldText
+                .trim()
+                .replaceAll("^,+|,+$", "")
+                .trim();
 
-        return searchFieldText;
+        return "⌕ " + searchFieldText;
     }
 
     protected boolean isTalePlaying() {
@@ -248,9 +286,9 @@ public class ActivityMain extends AppCompatActivity
         }).start();
     }
 
-    private String getSettingsValue(ArrayList<String> settings, String key, String defaultValue){
+    private String getSettingsValue(ArrayList<String> settings, String key, String defaultValue) {
         for (String setting:settings) {
-            if (setting.contains(key)){
+            if (setting.contains(key)) {
                 return setting.substring(key.length() + 1);
             }
         }
@@ -287,7 +325,7 @@ public class ActivityMain extends AppCompatActivity
         ActivityMain.activity = this;
         readSettingsFromGit();
 
-        switch (currentView){
+        switch (currentView) {
             case R.id.tales_menu:
             case R.id.coloring_menu:
                 setContentView(R.layout.activity_tales);
@@ -339,7 +377,7 @@ public class ActivityMain extends AppCompatActivity
     private void showErrorMessage() {
         String errorMessage = SettingsHelper.getString("errorMessage");
 
-        if (!errorMessage.isEmpty()){
+        if (!errorMessage.isEmpty()) {
             notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
             showAlert(getString(R.string.an_error_occurred), errorMessage);
@@ -387,12 +425,12 @@ public class ActivityMain extends AppCompatActivity
         stopService(new Intent(this, PlayerService.class));
         try {
             notificationManager.cancelAll();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void openActivity(Class view){
+    protected void openActivity(Class view) {
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
@@ -455,14 +493,14 @@ public class ActivityMain extends AppCompatActivity
                 a.printStackTrace();
 
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-            }catch (Exception e){
+            }catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
     void download() {
-        if (this.isNetworkUnavailable()){
+        if (this.isNetworkUnavailable()) {
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
@@ -473,7 +511,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    public void showAlert(String title, String message){
+    public void showAlert(String title, String message) {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(title)
@@ -489,8 +527,8 @@ public class ActivityMain extends AppCompatActivity
         boolean allAreDownloaded = true;
         boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
 
-        for (Tale tale : new Tales().getTalesList()){
-            if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded){
+        for (Tale tale : new Tales().getTalesList()) {
+            if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded) {
                 allAreDownloaded = false;
                 break;
             }
@@ -555,7 +593,7 @@ public class ActivityMain extends AppCompatActivity
             String currentVersion = SettingsHelper.getVersionName();
             String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
 
-            if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ){
+            if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ) {
                     SettingsHelper.setString("LatestVersion", latestVersion);
 
                 new AlertDialog.Builder(this)
@@ -573,15 +611,15 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    protected String getResourceString(Integer stringId){
+    protected String getResourceString(Integer stringId) {
         return getText(stringId).toString();
     }
 
-    protected boolean hasPermission(String permission){
+    protected boolean hasPermission(String permission) {
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    protected void requestPermission(String permission, int title, int error){
+    protected void requestPermission(String permission, int title, int error) {
         if (hasPermission(permission)) return;
 
         new AlertDialog.Builder(this)

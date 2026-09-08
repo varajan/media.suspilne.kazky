@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +31,7 @@ public class ActivityColorings extends ActivityMain {
         tales  = new Tales();
         titleFld = findViewById(R.id.title);
         TalesList = findViewById(R.id.talesList);
-        ImageButton searchIcon = findViewById(R.id.searchIcon);
-        FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
+        FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
 
         categoriesWithColorings = Categories.Items.stream()
                 .filter(c -> c.taleIds.stream()
@@ -43,47 +39,11 @@ public class ActivityColorings extends ActivityMain {
                 .map(c -> c.title)
                 .toList();
         
-        categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
-        searchIcon.setOnClickListener(v -> showFilterDialog());
-        titleFld.setOnClickListener(v -> showFilterDialog());
+        searchBtn.setOnClickListener(v -> showFilterDialog(categoriesWithColorings, this::filterTales));
+        titleFld.setOnClickListener(v -> showFilterDialog(categoriesWithColorings, this::filterTales));
 
         showTales();
         filterTales();
-    }
-
-    private void showFilterDialog() {
-        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
-        EditText searchField = dialogView.findViewById(R.id.searchField);
-        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
-        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
-
-        List<String> onlyFavorite = Tales.getShowOnlyFavorite()
-                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
-                : Collections.emptyList();
-
-        List<String> checkedCategories = categoriesWithColorings.stream()
-                .map(this::getResourceString)
-                .filter(Tales::getShowCategory)
-                .toList();
-
-        String initialSearchText = Tales.getFilter();
-        searchField.setText(initialSearchText);
-        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
-        populateContainer(categoriesContainer, categoriesWithColorings, checkedCategories);
-
-        new android.app.AlertDialog.Builder(this)
-                .setTitle(R.string.filtersDialog)
-                .setView(dialogView)
-                .setPositiveButton(R.string.apply, (dialog, which) -> {
-                    String searchText = searchField.getText().toString();
-                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
-                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
-
-                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, categoriesWithColorings);
-                    filterTales();
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
     }
 
     private void filterTales() {
@@ -100,7 +60,7 @@ public class ActivityColorings extends ActivityMain {
         for (final Tale tale:tales.getTalesList()) {
             if (tale.coloring == 0) continue;
 
-            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)){
+            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)) {
                 tale.show();
                 nothingToShowVisibility = View.GONE;
                 list.append(tale.id).append(";");
@@ -112,7 +72,6 @@ public class ActivityColorings extends ActivityMain {
         boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(categoriesWithColorings);
         titleFld.setText(hideSearchText ? this.getText(R.string.coloring) : getSearchFieldText(categoriesWithColorings));
         nothing.setVisibility(nothingToShowVisibility);
-        SettingsHelper.setString("filteredTalesList", list.toString());
     }
 
     private void showTales() {
@@ -153,7 +112,7 @@ public class ActivityColorings extends ActivityMain {
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             downloadManager.enqueue(request);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_LONG).show();
         }
     }

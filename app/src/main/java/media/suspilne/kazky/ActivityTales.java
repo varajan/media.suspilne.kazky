@@ -1,7 +1,6 @@
 package media.suspilne.kazky;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +12,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,7 +19,6 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,12 +50,12 @@ public class ActivityTales extends ActivityMain {
         setPlayBtnIcon(true);
     }
 
-    private void continueTale(Bundle bundle){
+    private void continueTale(Bundle bundle) {
         if (bundle == null) return;
 
         returnToReaders = bundle.getBoolean("returnToReaders");
 
-        if (Tales.getNowPlaying() > 0){
+        if (Tales.getNowPlaying() > 0) {
             setPlayBtnIcon();
             super.resetQuitTimeout();
             this.resetVolumeReduceTimer();
@@ -78,7 +74,7 @@ public class ActivityTales extends ActivityMain {
             final ImageView playBtn = taleView.findViewById(R.id.play);
             playBtn.setTag(R.mipmap.tale_play);
             playBtn.setOnClickListener(v -> {
-                if (playBtn.getTag().equals(R.mipmap.tale_pause)){
+                if (playBtn.getTag().equals(R.mipmap.tale_pause)) {
                     Tales.setLastPlaying(tale.id);
                     Tales.setNowPlaying(-1);
 
@@ -86,7 +82,7 @@ public class ActivityTales extends ActivityMain {
                     playBtn.setImageResource(R.mipmap.tale_play);
                     playBtn.setTag(R.mipmap.tale_play);
                     super.resetVolumeReduceTimer();
-                }else{
+                } else {
                     if (!hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
                         Toast.makeText(getActivity(), R.string.no_post_notifications_permissions, Toast.LENGTH_LONG).show();
                     }
@@ -117,7 +113,7 @@ public class ActivityTales extends ActivityMain {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (returnToReaders && !drawer.isDrawerOpen(GravityCompat.START)) {
             finish();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -128,8 +124,7 @@ public class ActivityTales extends ActivityMain {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        ImageButton searchIcon = findViewById(R.id.searchIcon);
-        FloatingActionButton categoriesFilterBtn = findViewById(R.id.categoriesFilterBtn);
+        FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
         TalesList = findViewById(R.id.talesList);
         titleFld = findViewById(R.id.title);
@@ -145,9 +140,8 @@ public class ActivityTales extends ActivityMain {
             }
         }
 
-        categoriesFilterBtn.setOnClickListener(v -> showFilterDialog());
-        searchIcon.setOnClickListener(v -> showFilterDialog());
-        titleFld.setOnClickListener(v -> showFilterDialog());
+        searchBtn.setOnClickListener(v -> showFilterDialog(allCategories, this::filterTales));
+        titleFld.setOnClickListener(v -> showFilterDialog(allCategories, this::filterTales));
 
         showTales();
         filterTales();
@@ -155,40 +149,6 @@ public class ActivityTales extends ActivityMain {
         continueDownloadTales();
         suggestToDownloadFavoriteTales();
         registerReceiver();
-    }
-
-    private void showFilterDialog() {
-        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
-        EditText searchField = dialogView.findViewById(R.id.searchField);
-        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
-        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
-
-        List<String> onlyFavorite = Tales.getShowOnlyFavorite()
-                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
-                : Collections.emptyList();
-        List<String> checkedCategories = allCategories.stream()
-                .map(this::getResourceString)
-                .filter(Tales::getShowCategory)
-                .collect(Collectors.toList());
-
-        String initialSearchText = Tales.getFilter();
-        searchField.setText(initialSearchText);
-        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
-        populateContainer(categoriesContainer, allCategories, checkedCategories);
-
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.filtersDialog)
-                .setView(dialogView)
-                .setPositiveButton(R.string.apply, (dialog, which) -> {
-                    String searchText = searchField.getText().toString();
-                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
-                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
-
-                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, allCategories);
-                    filterTales();
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
     }
 
     private void filterTales() {
@@ -203,7 +163,7 @@ public class ActivityTales extends ActivityMain {
                 .collect(Collectors.toList());
 
         for (final Tale tale:tales.getTalesList()) {
-            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)){
+            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)) {
                 tale.show();
                 nothingToShowVisibility = View.GONE;
                 list.append(tale.id).append(";");
@@ -215,13 +175,13 @@ public class ActivityTales extends ActivityMain {
         boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(allCategories);
         titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : getSearchFieldText(allCategories));
         nothing.setVisibility(nothingToShowVisibility);
-        SettingsHelper.setString("filteredTalesList", list.toString());
+        SettingsHelper.setString("filteredTalesList", list.toString().trim());
     }
 
-    private void playTale(Tale tale){
+    private void playTale(Tale tale) {
         super.stopPlayerService();
 
-        if (tale.id != -1){
+        if (tale.id != -1) {
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("tale.id", tale.id);
             stream.putExtra("type", getString(R.string.tales));
@@ -233,12 +193,12 @@ public class ActivityTales extends ActivityMain {
 
     private void setPlayBtnIcon() { setPlayBtnIcon(false); }
 
-    private void setPlayBtnIcon(boolean scrollToTale){
+    private void setPlayBtnIcon(boolean scrollToTale) {
         LinearLayout list = findViewById(R.id.talesList);
         Tale currentTale = tales.getById(Tales.getNowPlaying());
         boolean isPaused = Tales.isPaused();
 
-        for (Tale tale:tales.getTalesList()){
+        for (Tale tale:tales.getTalesList()) {
             ImageView btn = list.findViewWithTag(tale.id).findViewById(R.id.play);
             boolean isPlaying = !isPaused && currentTale != null && tale.id == currentTale.id;
 
@@ -246,7 +206,7 @@ public class ActivityTales extends ActivityMain {
             btn.setTag(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
         }
 
-        if (scrollToTale && currentTale != null){
+        if (scrollToTale && currentTale != null) {
             currentTale.scrollIntoView();
         }
     }
@@ -263,7 +223,7 @@ public class ActivityTales extends ActivityMain {
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
             this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
-        }catch (Exception e){
+        }catch (Exception e) {
             // nothing
         }
     }
@@ -271,7 +231,7 @@ public class ActivityTales extends ActivityMain {
     private void unregisterReceiver() {
         try{
             this.unregisterReceiver(receiver);
-        }catch (Exception e){ /*nothing*/ }
+        }catch (Exception e) { /*nothing*/ }
     }
 
     @Override
@@ -283,7 +243,7 @@ public class ActivityTales extends ActivityMain {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        switch (intent.getStringExtra("code")){
+        switch (intent.getStringExtra("code")) {
             case "SourceIsNotAccessible":
                 Tales.setPause(true);
                 setPlayBtnIcon();
