@@ -5,6 +5,23 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/searchBtn"
+        android:layout_width="wrap_content"
+        android:contentDescription="@string/filter"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_search"
+        app:backgroundTint="@color/playBtn"
+        app:tint="@android:color/white"
+
+        app:elevation="22dp"
+        app:pressedTranslationZ="18dp"
+        app:borderWidth="3dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"

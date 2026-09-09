@@ -31,19 +31,19 @@ public class Kazky extends Application {
         editor.apply();
     }
 
-    public static void logError(String message, boolean logStackTrace){
-        if (logStackTrace){
+    public static void logError(String message, boolean logStackTrace) {
+        if (logStackTrace) {
             logStackTrace(message);
         } else {
             Log.e(SettingsHelper.application, message);
         }
     }
 
-    public static void logError(String message){
+    public static void logError(String message) {
         logError(message, true);
     }
 
-    private static void logStackTrace(String message){
+    private static void logStackTrace(String message) {
         StringBuilder stackTrace = new StringBuilder(message + "\r\n");
 
         for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {

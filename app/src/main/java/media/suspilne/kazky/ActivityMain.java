@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.provider.Settings;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +39,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,16 +57,16 @@ public class ActivityMain extends AppCompatActivity
     protected int currentView;
 
     private static Activity activity;
-    public static Activity getActivity(){ return activity; }
+    public static Activity getActivity() { return activity; }
 
-    private void stopVolumeReduceTimer(){
+    private void stopVolumeReduceTimer() {
         if (volumeReduceTimer != null) {
             volumeReduceTimer.cancel();
             volumeReduceTimer = null;
         }
     }
 
-    private void stopQuitTimer(){
+    private void stopQuitTimer() {
         if (quitTimer != null) {
             quitTimer.cancel();
             quitTimer = null;
@@ -67,7 +75,7 @@ public class ActivityMain extends AppCompatActivity
         SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
     }
 
-    protected void resetVolumeReduceTimer(){
+    protected void resetVolumeReduceTimer() {
         stopVolumeReduceTimer();
         if (!SettingsHelper.getBoolean("volumeControl")) return;
         if (!isTalePlaying() && !isRadioPlaying()) return;
@@ -79,7 +87,7 @@ public class ActivityMain extends AppCompatActivity
         volumeReduceTimer.schedule(new reduceVolume(), timeout * 60_000L);
     }
 
-    protected void resetQuitTimeout(){
+    protected void resetQuitTimeout() {
         if (SettingsHelper.getBoolean("autoQuit")) {
             stopQuitTimer();
 
@@ -98,13 +106,13 @@ public class ActivityMain extends AppCompatActivity
         public void run() {
             stopVolumeReduceTimer();
 
-            if (isRadioPlaying()){
+            if (isRadioPlaying()) {
                 Intent intent = new Intent();
                 intent.setAction(SettingsHelper.application);
                 intent.putExtra("code", "StopPlay");
                 sendBroadcast(intent);
             }
-            else{
+            else {
                 SettingsHelper.setBoolean("stopPlaybackOnTimeout", true);
             }
         }
@@ -112,13 +120,13 @@ public class ActivityMain extends AppCompatActivity
 
     class reduceVolume extends TimerTask {
         @Override
-        public void run(){
+        public void run() {
             MediaVolume media = new MediaVolume();
 
             if (media.getLevel() > 1) {
                 media.setLevel(media.getLevel() - 1);
                 resetVolumeReduceTimer();
-            }else{
+            } else {
                 media.setLevel(media.getMaxLevel() / 2);
                 stopVolumeReduceTimer();
                 stopPlayerService();
@@ -132,13 +140,108 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    protected boolean isTalePlaying(){
+    protected final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
+
+    protected void showFilterDialog(List<Integer> categories, Runnable filter) {
+        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
+        EditText searchField = dialogView.findViewById(R.id.searchField);
+        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
+        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
+
+        List<String> onlyFavorite = Tales.getShowOnlyFavorite()
+                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
+                : Collections.emptyList();
+        List<String> checkedCategories = categories.stream()
+                .map(this::getResourceString)
+                .filter(Tales::getShowCategory)
+                .collect(Collectors.toList());
+
+        String initialSearchText = Tales.getFilter();
+        searchField.setText(initialSearchText);
+        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
+        populateContainer(categoriesContainer, categories, checkedCategories);
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.filtersDialog)
+                .setView(dialogView)
+                .setPositiveButton(R.string.apply, (dialog, which) -> {
+                    String searchText = searchField.getText().toString();
+                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
+                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
+
+                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, categories);
+                    filter.run();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    protected void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
+        container.removeAllViews();
+        for (@StringRes int item : items) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(item);
+
+            String itemText = this.getResourceString(item);
+            if (selected.contains(itemText)) checkBox.setChecked(true);
+            container.addView(checkBox);
+        }
+    }
+
+    protected List<String> getSelectedItems(LinearLayout container) {
+        List<String> selected = new ArrayList<>();
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View view = container.getChildAt(i);
+            if (view instanceof CheckBox) {
+                CheckBox cb = (CheckBox) view;
+                if (cb.isChecked()) {
+                    selected.add(cb.getText().toString());
+                }
+            }
+        }
+        return selected;
+    }
+
+    protected void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories, List<Integer> categories) {
+        Tales.setFilter(filter);
+        Tales.setShowOnlyFavorite(showOnlyFavorites);
+
+        for (final Integer categoryId : categories) {
+            String category = getResourceString(categoryId);
+            boolean categoryEnabled = selectedCategories.contains(category);
+            Tales.setShowCategory(category, categoryEnabled);
+        }
+    }
+
+    protected String getSearchFieldText(List<Integer> allCategoryIds) {
+        String filter = Tales.getFilter();
+        String searchFieldText = "";
+        List<Integer> categories = allCategoryIds.stream()
+                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
+                .collect(Collectors.toList());
+        boolean allCategoriesSelected = categories.equals(allCategoryIds);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+
+        searchFieldText += filter;
+        if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.favoriteTales); }
+        if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
+                .map(this::getString)
+                .collect(Collectors.joining(", "));
+        searchFieldText = searchFieldText
+                .trim()
+                .replaceAll("^,+|,+$", "")
+                .trim();
+
+        return "⌕ " + searchFieldText;
+    }
+
+    protected boolean isTalePlaying() {
         return isServiceRunning()
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.tales))
                 && !Tales.isPaused();
     }
 
-    protected boolean isRadioPlaying(){
+    protected boolean isRadioPlaying() {
         return isServiceRunning()
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
                 && !Tales.isPaused();
@@ -154,7 +257,7 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
-    private void readSettingsFromGit(){
+    private void readSettingsFromGit() {
         if (!SettingsHelper.getBoolean("readSettingsFromGit")) return;
 
         new Thread(() -> {
@@ -183,9 +286,9 @@ public class ActivityMain extends AppCompatActivity
         }).start();
     }
 
-    private String getSettingsValue(ArrayList<String> settings, String key, String defaultValue){
+    private String getSettingsValue(ArrayList<String> settings, String key, String defaultValue) {
         for (String setting:settings) {
-            if (setting.contains(key)){
+            if (setting.contains(key)) {
                 return setting.substring(key.length() + 1);
             }
         }
@@ -193,7 +296,7 @@ public class ActivityMain extends AppCompatActivity
         return defaultValue;
     }
 
-    protected boolean isNetworkUnavailable(){
+    protected boolean isNetworkUnavailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
@@ -222,7 +325,7 @@ public class ActivityMain extends AppCompatActivity
         ActivityMain.activity = this;
         readSettingsFromGit();
 
-        switch (currentView){
+        switch (currentView) {
             case R.id.tales_menu:
             case R.id.coloring_menu:
                 setContentView(R.layout.activity_tales);
@@ -264,17 +367,17 @@ public class ActivityMain extends AppCompatActivity
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         showErrorMessage();
 
         ActivityMain.activity = this;
     }
 
-    private void showErrorMessage(){
+    private void showErrorMessage() {
         String errorMessage = SettingsHelper.getString("errorMessage");
 
-        if (!errorMessage.isEmpty()){
+        if (!errorMessage.isEmpty()) {
             notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
             showAlert(getString(R.string.an_error_occurred), errorMessage);
@@ -283,7 +386,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    private void exit(){
+    private void exit() {
         moveTaskToBack(true);
         stopVolumeReduceTimer();
         stopPlayerService();
@@ -302,7 +405,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    private void showQuitDialog(){
+    private void showQuitDialog() {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.confirm_exit)
@@ -316,18 +419,18 @@ public class ActivityMain extends AppCompatActivity
         activityTitle.setText(title);
     }
 
-    protected void stopPlayerService(){
+    protected void stopPlayerService() {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         stopService(new Intent(this, PlayerService.class));
         try {
             notificationManager.cancelAll();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void openActivity(Class view){
+    protected void openActivity(Class view) {
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
@@ -370,10 +473,6 @@ public class ActivityMain extends AppCompatActivity
                 rateApp();
                 break;
 
-            case R.id.fb_page:
-                openFaceBookPage(getResources().getString(R.string.facebook_page));
-                break;
-
             case R.id.exit_menu:
                 showQuitDialog();
                 break;
@@ -383,23 +482,7 @@ public class ActivityMain extends AppCompatActivity
         return false;
     }
 
-    protected void openFaceBookPage(String url){
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SettingsHelper.getFacebookPageURL(url))));
-    }
-
-    protected void openInstagramAccount(){
-        Uri uri = Uri.parse("http://instagram.com/_u/" + "suspilne.media");
-        Intent insta = new Intent(Intent.ACTION_VIEW, uri);
-        insta.setPackage("com.instagram.android");
-
-        if (SettingsHelper.isIntentAvailable(insta)){
-            startActivity(insta);
-        } else{
-            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }
-    }
-
-    private void rateApp(){
+    private void rateApp() {
         try {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -410,14 +493,14 @@ public class ActivityMain extends AppCompatActivity
                 a.printStackTrace();
 
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-            }catch (Exception e){
+            }catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    void download(){
-        if (this.isNetworkUnavailable()){
+    void download() {
+        if (this.isNetworkUnavailable()) {
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
@@ -428,7 +511,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    public void showAlert(String title, String message){
+    public void showAlert(String title, String message) {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(title)
@@ -437,15 +520,15 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
-    protected void continueDownloadTales(){
+    protected void continueDownloadTales() {
         if (!SettingsHelper.getBoolean("downloadAllTales") && !SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
         boolean allAreDownloaded = true;
         boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
 
-        for (Tale tale : new Tales().getTalesList()){
-            if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded){
+        for (Tale tale : new Tales().getTalesList()) {
+            if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded) {
                 allAreDownloaded = false;
                 break;
             }
@@ -454,7 +537,7 @@ public class ActivityMain extends AppCompatActivity
         if (!allAreDownloaded) download();
     }
 
-    protected void suggestToDownloadFavoriteTales(){
+    protected void suggestToDownloadFavoriteTales() {
         if (SettingsHelper.getBoolean("suggestToDownloadFavoriteTales")) return;
         if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
@@ -473,25 +556,14 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
-    private void updateTalesCountPerReader(){
+    private void updateTalesCountPerReader() {
         if (Tales.getTalesCountUpdated()) return;
-
-        boolean showBabyTales = Tales.getShowForBabies();
-        boolean showKidsTales = Tales.getShowForKids();
-        boolean showFavorite = Tales.getShowOnlyFavorite();
-        boolean showLullabies = Tales.getShowLullabies();
 
         for (Reader reader: new Readers().Readers) {
             int count = 0;
 
             for (Tale tale : new Tales().getTalesList()) {
-                if (!tale.getReader().equals(reader.getName()))                         continue;
-                if (showFavorite && !tale.isFavorite)                                   continue;
-                if (!showBabyTales && tale.age == TaleAge.FOR_BABIES)                   continue;
-                if (!showKidsTales && tale.age == TaleAge.FOR_KIDS)                     continue;
-                if (!showLullabies && tale.age == TaleAge.LULLABIES)                    continue;
-                if (!showKidsTales && !showBabyTales && tale.age == TaleAge.FOR_BOTH)   continue;
-
+                if (!tale.getReader().equals(reader.getName())) continue;
                 count++;
             }
 
@@ -501,7 +573,7 @@ public class ActivityMain extends AppCompatActivity
         Tales.setTalesCountUpdated(true);
     }
 
-    private void update(){
+    private void update() {
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/apps")));
         } catch (ActivityNotFoundException e) {
@@ -509,7 +581,7 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    private void checkForUpdates(){
+    private void checkForUpdates() {
         if (!SettingsHelper.getBoolean("checkForUpdates")) return;
         if (this.isNetworkUnavailable()) return;
 
@@ -521,7 +593,7 @@ public class ActivityMain extends AppCompatActivity
             String currentVersion = SettingsHelper.getVersionName();
             String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
 
-            if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ){
+            if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ) {
                     SettingsHelper.setString("LatestVersion", latestVersion);
 
                 new AlertDialog.Builder(this)
@@ -539,11 +611,15 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    protected boolean hasPermission(String permission){
+    protected String getResourceString(Integer stringId) {
+        return getText(stringId).toString();
+    }
+
+    protected boolean hasPermission(String permission) {
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    protected void requestPermission(String permission, int title, int error){
+    protected void requestPermission(String permission, int title, int error) {
         if (hasPermission(permission)) return;
 
         new AlertDialog.Builder(this)
@@ -555,7 +631,7 @@ public class ActivityMain extends AppCompatActivity
                 .show();
     }
 
-    private void openAndroidSettings(){
+    private void openAndroidSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);

@@ -26,7 +26,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     static int COMPLETED = 23;
     static int WITH_ERROR = 24;
 
-    public static void cancelAllNotifications(){
+    public static void cancelAllNotifications() {
         NotificationManager notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
 
         notificationManager.cancel(IN_PROGRESS);
@@ -34,7 +34,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         notificationManager.cancel(WITH_ERROR);
     }
 
-    private void showProgressNotification(String text){
+    private void showProgressNotification(String text) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
             .setSmallIcon(R.drawable.ic_cloud_download)
             .setContentTitle(ActivityMain.getActivity().getString(R.string.downloading))
@@ -49,8 +49,8 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         notificationManager.notify(IN_PROGRESS, notificationBuilder.build());
     }
 
-    private void showCompletedNotification(){
-        if (count == 0){
+    private void showCompletedNotification() {
+        if (count == 0) {
             cancelAllNotifications();
         } else {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
@@ -66,7 +66,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         }
     }
 
-    private void showFailedNotification(String errorMessage){
+    private void showFailedNotification(String errorMessage) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
             .setSmallIcon(R.drawable.ic_error)
             .setContentTitle(ActivityMain.getActivity().getString(R.string.an_error_occurred))
@@ -106,9 +106,9 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     protected void onPostExecute(String result) {
         cancelAllNotifications();
 
-        if (result.isEmpty()){
+        if (result.isEmpty()) {
             showCompletedNotification();
-        }else{
+        } else {
             showFailedNotification(result);
         }
     }
@@ -128,7 +128,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
                 long freeSpace = SettingsHelper.freeSpace();
                 long required = 100 * 1024 * 1024;
 
-                if (freeSpace < required){
+                if (freeSpace < required) {
                     throw new Exception(ActivityMain.getActivity().getString(
                         R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
                 }
@@ -138,7 +138,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
                 publishProgress(tale.getReader() + ": " + tale.getTitle());
                 current++;
             }
-        }catch (Exception e){
+        }catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
         }

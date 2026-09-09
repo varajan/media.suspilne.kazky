@@ -46,12 +46,12 @@ public class PlayerService extends IntentService {
     }
     
     @Override
-    public void onCreate(){
+    public void onCreate() {
         registerReceiver();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
 
-        if (channel == null){
+        if (channel == null) {
             NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setSound(null, null);
             notificationChannel.setShowBadge(false);
@@ -60,12 +60,12 @@ public class PlayerService extends IntentService {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
+    public int onStartCommand(Intent intent, int flags, int startId) {
         String type = intent != null ? intent.getStringExtra("type") : "null";
         SettingsHelper.setString("StreamType", type);
         registerReceiver();
 
-        if (type.equals(getString(R.string.tales))){
+        if (type.equals(getString(R.string.tales))) {
             int taleId = intent != null ? intent.getIntExtra("tale.id", -1) : -1;
             Tale tale = new Tales().getById(taleId);
             playTale(tale);
@@ -139,7 +139,7 @@ public class PlayerService extends IntentService {
         });
     }
 
-    private void sendMessage(String code){
+    private void sendMessage(String code) {
         Intent intent = new Intent();
         intent.setAction(SettingsHelper.application);
         intent.putExtra("code", code);
@@ -157,15 +157,15 @@ public class PlayerService extends IntentService {
         unregisterReceiver();
     }
 
-    private void releasePlayer(){
-        while (player != null){
+    private void releasePlayer() {
+        while (player != null) {
             player.release();
             player = null;
         }
     }
 
-    private void playTale(Tale tale){
-        if (tale.id != -1 && !SettingsHelper.getBoolean(("stopPlaybackOnTimeout"))){
+    private void playTale(Tale tale) {
+        if (tale.id != -1 && !SettingsHelper.getBoolean(("stopPlaybackOnTimeout"))) {
             long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
             position = SettingsHelper.getBoolean("skipIntro") ? Math.max(position, tale.introTime) : position;
 
@@ -214,7 +214,7 @@ public class PlayerService extends IntentService {
         sendMessage("SetPlayBtnIcon");
     }
 
-    private void registerReceiver(){
+    private void registerReceiver() {
         try{
             IntentFilter filter = new IntentFilter();
 
@@ -224,13 +224,13 @@ public class PlayerService extends IntentService {
             filter.addAction(SettingsHelper.application + "stop");
 
             this.registerReceiver(receiver, filter);
-        }catch (Exception e){ /*nothing*/ }
+        }catch (Exception e) { /*nothing*/ }
     }
 
-    private void unregisterReceiver(){
+    private void unregisterReceiver() {
         try{
             this.unregisterReceiver(receiver);
-        }catch (Exception e){ /*nothing*/ }
+        }catch (Exception e) { /*nothing*/ }
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {

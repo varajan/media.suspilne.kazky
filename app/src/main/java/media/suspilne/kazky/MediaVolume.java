@@ -7,7 +7,7 @@ public class MediaVolume {
     AudioManager manager;
     Context context;
 
-    public int getMaxLevel(){
+    public int getMaxLevel() {
         return manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
     }
 
@@ -16,11 +16,11 @@ public class MediaVolume {
         manager = (AudioManager) this.context.getSystemService(Context.AUDIO_SERVICE);
     }
 
-    public int getLevel(){
+    public int getLevel() {
         return manager.getStreamVolume(AudioManager.STREAM_MUSIC);
     }
 
-    public void setLevel(int level){
+    public void setLevel(int level) {
         manager.setStreamVolume(AudioManager.STREAM_MUSIC, level, 0);
     }
 }

@@ -31,59 +31,59 @@ public class SettingsHelper {
                 : ContextCompat.getColor(ActivityMain.getActivity(), R.color.white);
     }
 
-    static String getString(String setting){
+    static String getString(String setting) {
         return getString(setting, "");
     }
 
-    static String getString(String setting, String defaultValue){
+    static String getString(String setting, String defaultValue) {
         return getString(ActivityMain.getActivity(), setting, defaultValue);
     }
 
-    static String getString(Context context, String setting, String defaultValue){
+    static String getString(Context context, String setting, String defaultValue) {
         return context.getSharedPreferences(application,0).getString(setting, defaultValue);
     }
 
-    static void setString(String setting, String value){
+    static void setString(String setting, String value) {
         try{
             SharedPreferences.Editor editor = ActivityMain.getActivity().getSharedPreferences(application, 0).edit();
             editor.putString(setting, value);
             editor.apply();
         }
-        catch (Exception e){
+        catch (Exception e) {
             /*nothing*/
         }
     }
 
-    public static boolean getBoolean(String setting){
+    public static boolean getBoolean(String setting) {
         try{
             return getString(setting).equalsIgnoreCase("true");
         }
-        catch (Exception e){
+        catch (Exception e) {
             return false;
         }
     }
 
-    public static void setBoolean(String setting, boolean value){
+    public static void setBoolean(String setting, boolean value) {
         setString(setting, String.valueOf(value));
     }
 
-    public static int getInt(String setting, int defaultValue){
+    public static int getInt(String setting, int defaultValue) {
         return Integer.parseInt(getString(setting, String.valueOf(defaultValue)));
     }
 
-    public static int getInt(String setting){
+    public static int getInt(String setting) {
         return Integer.parseInt(getString(setting, "0"));
     }
 
-    public static void setInt(String setting, int value){
+    public static void setInt(String setting, int value) {
         setString(setting, String.valueOf(value));
     }
 
-    public static long getLong(String setting){
+    public static long getLong(String setting) {
         return Long.parseLong(getString(setting, "0"));
     }
 
-    public static void setLong(String setting, long value){
+    public static void setLong(String setting, long value) {
         setString(setting, String.valueOf(value));
     }
 
@@ -92,7 +92,7 @@ public class SettingsHelper {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public static void saveFile(String name, byte[] bytes){
+    public static void saveFile(String name, byte[] bytes) {
         try {
             FileOutputStream outputStream;
             outputStream = ActivityMain.getActivity().openFileOutput(name, Context.MODE_PRIVATE);
@@ -119,7 +119,7 @@ public class SettingsHelper {
         return length;
     }
 
-    public static String formattedSize(long size){
+    public static String formattedSize(long size) {
         if(size <= 0) return "0";
         final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
         int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
@@ -130,13 +130,13 @@ public class SettingsHelper {
         return folderSize(ActivityMain.getActivity().getFilesDir());
     }
 
-    public static long freeSpace(){
+    public static long freeSpace() {
         StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
 
         return stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
     }
 
-    public static String getVersionName(){
+    public static String getVersionName() {
         try {
             return ActivityMain.getActivity().getPackageManager()
                     .getPackageInfo(ActivityMain.getActivity().getPackageName(), 0)
@@ -146,20 +146,9 @@ public class SettingsHelper {
         }
     }
 
-    public static String getFacebookPageURL(String url) {
-        PackageManager packageManager = ActivityMain.getActivity().getPackageManager();
-        try {
-            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
-            String fb = (versionCode >= 3002850) ? "fb://facewebmodal/f?href=" : "fb://page/";
-            return fb + url;
-        } catch (PackageManager.NameNotFoundException e) {
-            return url;
-        }
-    }
-
     public static boolean isIntentAvailable(Intent intent) {
         final PackageManager packageManager = ActivityMain.getActivity().getPackageManager();
         List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
+        return !list.isEmpty();
     }
 }

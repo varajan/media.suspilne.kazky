@@ -16,7 +16,7 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
         this.context = context;
     }
 
-    private Tale tale(){
+    private Tale tale() {
         return new Tales().getById(Tales.getNowPlaying());
     }
 

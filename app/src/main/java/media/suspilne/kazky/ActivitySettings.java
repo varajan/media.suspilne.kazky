@@ -20,9 +20,6 @@ import androidx.core.content.ContextCompat;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ActivitySettings extends ActivityMain {
     private Switch fontColor;
     private Switch downloadAllTales;
@@ -32,10 +29,6 @@ public class ActivitySettings extends ActivityMain {
     private Switch parentLock;
 
     private Switch showBigImages;
-    private Switch showBabiesTales;
-    private Switch showKidsTales;
-    private Switch showLullabies;
-    private Switch showOnlyFavorite;
     private RadioGroup sorting;
     private Switch groupByReader;
     private Switch skipIntro;
@@ -60,12 +53,8 @@ public class ActivitySettings extends ActivityMain {
         volumeControl = this.findViewById(R.id.volumeControl);
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
 
-        showBabiesTales = this.findViewById(R.id.showBabiesTales);
-        showKidsTales = this.findViewById(R.id.showKidsTales);
         showBigImages = this.findViewById(R.id.showBigImages);
-        showLullabies = this.findViewById(R.id.showLullabies);
-        showOnlyFavorite = this.findViewById(R.id.showOnlyFavorite);
-        sorting = this.findViewById(R.id.sorting);
+        sorting = this.findViewById(R.id.sortingTales);
         groupByReader = this.findViewById(R.id.groupByReader);
         skipIntro = this.findViewById(R.id.skipIntro);
 
@@ -80,10 +69,6 @@ public class ActivitySettings extends ActivityMain {
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
 
         showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
-        showBabiesTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBabiesTales", isChecked));
-        showKidsTales.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showKidsTales", isChecked));
-        showLullabies.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showLullabies", isChecked));
-        showOnlyFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showOnlyFavorite", isChecked));
         groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
 
@@ -97,7 +82,7 @@ public class ActivitySettings extends ActivityMain {
     int random(int min, int max) {
         return min + (int) (Math.random() * (max - min));
     }
-    String questionAndAnswer(){
+    String questionAndAnswer() {
         int a = random(5, 10);
         int b = random(5, 10);
         int c = random(10, 30) - random(10, 20);
@@ -108,11 +93,11 @@ public class ActivitySettings extends ActivityMain {
                 : "" + a + "x" + b + "+" + c + "?:" + x;
     }
 
-    void checkAccess(){
+    void checkAccess() {
         if (!SettingsHelper.getBoolean("isParent")) { finish(); }
     }
 
-    void applyParentLock(){
+    void applyParentLock() {
         SettingsHelper.setBoolean("isParent", false);
 
         String questionAndAnswer = questionAndAnswer();
@@ -136,17 +121,17 @@ public class ActivitySettings extends ActivityMain {
         alert.show();
     }
 
-    void updateColor(boolean isChecked){
-        if (isChecked){
+    void updateColor(boolean isChecked) {
+        if (isChecked) {
             SettingsHelper.setBoolean("use.font.color", true);
             pickColor();
-        } else{
+        } else {
             SettingsHelper.setBoolean("use.font.color", false);
             setColorsAndState();
         }
     }
 
-    void pickColor(){
+    void pickColor() {
         ColorPickerDialogBuilder
             .with(this)
             .setTitle("Choose color")
@@ -169,29 +154,19 @@ public class ActivitySettings extends ActivityMain {
             .show();
     }
 
-    private void setSwitch(String title, boolean isChecked){
-        List<String> filterOptions = Arrays.asList("showBabiesTales", "showKidsTales", "showLullabies", "showOnlyFavorite");
-        if (filterOptions.contains(title)) { Tales.setTalesCountUpdated(false); }
-
+    private void setSwitch(String title, boolean isChecked) {
         SettingsHelper.setBoolean(title, isChecked);
         if (title.equals("groupByReader")) new Tales().setTalesList();
-
-        if (!Tales.getShowForBabies() && !Tales.getShowForKids() && !Tales.getShowLullabies()){
-            Tales.setShowForBabies(true);
-            Tales.setShowForKids(true);
-            Tales.setShowLullabies(true);
-        }
-
         setColorsAndState();
 
-        if(title.equals("autoQuit") || title.equals("volumeControl")){
+        if(title.equals("autoQuit") || title.equals("volumeControl")) {
             resetQuitTimeout();
             resetVolumeReduceTimer();
         }
     }
 
     private void setSorting() {
-        switch (sorting.getCheckedRadioButtonId()){
+        switch (sorting.getCheckedRadioButtonId()) {
             case R.id.shuffle:
                 SettingsHelper.setString("sorting", "shuffle");
                 groupByReader.setVisibility(View.GONE);
@@ -217,12 +192,12 @@ public class ActivitySettings extends ActivityMain {
         new Tales().setTalesList();
     }
 
-    private void doDownloadAll(){
+    private void doDownloadAll() {
         long available = SettingsHelper.freeSpace();
         long usedSpace = SettingsHelper.usedSpace();
         long required = totalRequiredSpace - usedSpace;
 
-        if (available < required){
+        if (available < required) {
             String title = getString(R.string.an_error_occurred);
             String message = getString(R.string.not_enough_space, SettingsHelper.formattedSize(available), SettingsHelper.formattedSize(required));
 
@@ -237,21 +212,21 @@ public class ActivitySettings extends ActivityMain {
         setColorsAndState();
     }
 
-    private void doDownloadFavorite(){
+    private void doDownloadFavorite() {
         SettingsHelper.setBoolean("downloadFavoriteTales", true);
         download();
         setColorsAndState();
     }
 
-    private void doCleanup(boolean includeFavorite){
+    private void doCleanup(boolean includeFavorite) {
         for (Tale tale : new Tales().items) {
-            if (includeFavorite || !tale.isFavorite){
+            if (includeFavorite || !tale.isFavorite) {
                 tale.deleteFile();
             }
         }
 
         SettingsHelper.setBoolean(includeFavorite ? "downloadFavoriteTales" : "downloadAllTales", false);
-        if (!includeFavorite && new Tales().getFavoriteCount() == 0){
+        if (!includeFavorite && new Tales().getFavoriteCount() == 0) {
             SettingsHelper.setBoolean("downloadFavoriteTales", false);
         }
 
@@ -343,18 +318,6 @@ public class ActivitySettings extends ActivityMain {
         volumeControl.setTextColor(isVolumeControl ? activeColor : inactiveColor);
         volumeControl.setText(isVolumeControl ? getString(R.string.volume_timeout_text, volumeMinutes) : getString(R.string.volume_timeout));
 
-        showOnlyFavorite.setChecked(isShowOnlyFavorite);
-        showOnlyFavorite.setTextColor(isShowOnlyFavorite ? activeColor : inactiveColor);
-
-        showLullabies.setChecked(isShowLullabies);
-        showLullabies.setTextColor(isShowLullabies ? activeColor : inactiveColor);
-
-        showKidsTales.setChecked(isShowKidsTales);
-        showKidsTales.setTextColor(isShowKidsTales ? activeColor : inactiveColor);
-
-        showBabiesTales.setChecked(isShowBabiesTales);
-        showBabiesTales.setTextColor(isShowBabiesTales ? activeColor : inactiveColor);
-
         showBigImages.setChecked(isShowBigImages);
         showBigImages.setTextColor(isShowBigImages ? activeColor : inactiveColor);
 
@@ -371,7 +334,7 @@ public class ActivitySettings extends ActivityMain {
         setSortingState();
     }
 
-    private void setSortingState(){
+    private void setSortingState() {
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
 
@@ -382,7 +345,7 @@ public class ActivitySettings extends ActivityMain {
 
         sorting.setOnCheckedChangeListener(null);
 
-        switch (SettingsHelper.getString("sorting")){
+        switch (SettingsHelper.getString("sorting")) {
             case "sort19":
                 ((RadioButton)findViewById(R.id.sort19)).setTextColor(activeColor);
                 sorting.check(R.id.sort19);
