@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,7 +31,7 @@ public class ActivityColorings extends ActivityMain {
 
         tales  = new Tales();
         titleFld = findViewById(R.id.title);
-        TalesList = findViewById(R.id.talesList);
+        TalesList = findViewById(R.id.itemsList);
         FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
 
         categoriesWithColorings = Categories.Items.stream()
@@ -48,6 +49,7 @@ public class ActivityColorings extends ActivityMain {
 
     private void filterTales() {
         View nothing = findViewById(R.id.nothingToShow);
+        AppCompatButton showAllBtn = findViewById(R.id.showAllBtn);
         int nothingToShowVisibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
@@ -72,6 +74,12 @@ public class ActivityColorings extends ActivityMain {
         boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(categoriesWithColorings);
         titleFld.setText(hideSearchText ? this.getText(R.string.coloring) : getSearchFieldText(categoriesWithColorings));
         nothing.setVisibility(nothingToShowVisibility);
+        showAllBtn.setVisibility(nothingToShowVisibility);
+        showAllBtn.setOnClickListener(v -> {
+            List<String> categoryNames = categoriesWithColorings.stream().map(this::getString).toList();
+            saveFilters("", false, categoryNames, categoriesWithColorings);
+            filterTales();
+        });
     }
 
     private void showTales() {

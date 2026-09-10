@@ -23,6 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
@@ -40,6 +41,7 @@
             android:id="@+id/readersList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
@@ -53,6 +55,21 @@
                 android:textAlignment="gravity"
                 android:gravity="center|center_vertical"
                 android:textSize="38sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/showAllBtn"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_margin="70dp"
+                android:minWidth="240dp"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/playBtn"
+                android:text="@string/showAll"
+                android:textAllCaps="false"
+                android:drawablePadding="8dp"
+                android:gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

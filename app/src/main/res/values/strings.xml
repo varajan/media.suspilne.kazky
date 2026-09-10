@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="requiredSpace">852</string>
-    <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
+<!--    <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>-->
+    <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/categories/tales/%02d.mp3</string>
     <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -69,7 +70,8 @@
     <string name="addedToFavorites">\'%s\' додано до списку \'Улюблені\'</string>
     <string name="removedFromFavorites">\'%s\' видалено зі списку \'Улюблені\'</string>
     <string name="nothing">Нічого не знайдено.</string>
-    <string name="nothingToShow">Нічого не знайдено. Перевірте фільтри.</string>
+    <string name="nothingToShow">Нічого не знайдено.\n\nСпробуйте змінити пошук або фільтри.</string>
+    <string name="showAll">Показати всі</string>
     <string name="filterTalesHint">Введіть назву чи ім\'я казкаря</string>
     <string name="filterReadersHint">Казкар</string>
     <string name="download_completed">Завантажено казок: %d</string>

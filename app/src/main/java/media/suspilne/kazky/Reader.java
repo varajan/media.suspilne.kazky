@@ -42,7 +42,7 @@ public class Reader {
     }
 
     private View getView() {
-        return ActivityReaders.getActivity().findViewById(R.id.readersList).findViewWithTag(getName());
+        return ActivityReaders.getActivity().findViewById(R.id.itemsList).findViewWithTag(getName());
     }
 
     void hide() { getView().setVisibility(View.GONE); }
@@ -57,7 +57,7 @@ public class Reader {
     }
 
     private View getReaderView() {
-        return ActivityMain.getActivity().findViewById(R.id.readersList).findViewWithTag(getName());
+        return ActivityMain.getActivity().findViewById(R.id.itemsList).findViewWithTag(getName());
     }
 
     public void setViewDetails(Context context) {

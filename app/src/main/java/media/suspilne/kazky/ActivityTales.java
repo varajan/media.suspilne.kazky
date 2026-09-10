@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -126,7 +127,7 @@ public class ActivityTales extends ActivityMain {
         Intent intent = getIntent();
         FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
-        TalesList = findViewById(R.id.talesList);
+        TalesList = findViewById(R.id.itemsList);
         titleFld = findViewById(R.id.title);
         tales = new Tales();
         allCategories = Categories.NameIds;
@@ -153,6 +154,7 @@ public class ActivityTales extends ActivityMain {
 
     private void filterTales() {
         View nothing = findViewById(R.id.nothingToShow);
+        AppCompatButton showAllBtn = findViewById(R.id.showAllBtn);
         int nothingToShowVisibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
@@ -175,6 +177,13 @@ public class ActivityTales extends ActivityMain {
         boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(allCategories);
         titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : getSearchFieldText(allCategories));
         nothing.setVisibility(nothingToShowVisibility);
+        showAllBtn.setVisibility(nothingToShowVisibility);
+        showAllBtn.setOnClickListener(v -> {
+            List<String> categoryNames = allCategories.stream().map(this::getString).toList();
+            saveFilters("", false, categoryNames, allCategories);
+            filterTales();
+        });
+
         SettingsHelper.setString("filteredTalesList", list.toString().trim());
     }
 
@@ -194,12 +203,11 @@ public class ActivityTales extends ActivityMain {
     private void setPlayBtnIcon() { setPlayBtnIcon(false); }
 
     private void setPlayBtnIcon(boolean scrollToTale) {
-        LinearLayout list = findViewById(R.id.talesList);
         Tale currentTale = tales.getById(Tales.getNowPlaying());
         boolean isPaused = Tales.isPaused();
 
         for (Tale tale:tales.getTalesList()) {
-            ImageView btn = list.findViewWithTag(tale.id).findViewById(R.id.play);
+            ImageView btn = TalesList.findViewWithTag(tale.id).findViewById(R.id.play);
             boolean isPlaying = !isPaused && currentTale != null && tale.id == currentTale.id;
 
             btn.setImageResource(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);

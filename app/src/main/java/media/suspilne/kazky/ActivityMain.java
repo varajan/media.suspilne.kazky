@@ -327,12 +327,9 @@ public class ActivityMain extends AppCompatActivity
 
         switch (currentView) {
             case R.id.tales_menu:
+            case R.id.readers_menu:
             case R.id.coloring_menu:
                 setContentView(R.layout.activity_tales);
-                break;
-
-            case R.id.readers_menu:
-                setContentView(R.layout.activity_readers);
                 break;
 
             case R.id.settings_menu:

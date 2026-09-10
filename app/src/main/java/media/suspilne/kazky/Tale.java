@@ -57,7 +57,7 @@ public class Tale{
 
     private View getTaleView() {
         try{
-            return ActivityTales.getActivity().findViewById(R.id.talesList).findViewWithTag(id);
+            return ActivityTales.getActivity().findViewById(R.id.itemsList).findViewWithTag(id);
         }
         catch (Exception e) {
             return null;
