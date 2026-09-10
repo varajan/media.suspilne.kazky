@@ -49,6 +49,7 @@ public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     protected String activityName;
+    protected String fromReadersFilter = "fromReadersFilter";
 
     private NotificationManager notificationManager;
     private Timer quitTimer;

@@ -53,7 +53,15 @@ public class ActivityReaders extends ActivityMain {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("returnToReaders", true);
 
-        Tales.setFilter(activityName, view.getTag().toString());
+        Tales.setFilter(fromReadersFilter, view.getTag().toString());
+        Tales.setShowOnlyFavorite(fromReadersFilter,Tales.getShowOnlyFavorite(activityName));
+
+        for (final Integer categoryId : allCategories) {
+            String category = getResourceString(categoryId);
+            boolean enabled = Tales.getShowCategory(activityName, category);
+            Tales.setShowCategory(fromReadersFilter, category, enabled);
+        }
+
         startActivityForResult(intent, 0);
     };
 

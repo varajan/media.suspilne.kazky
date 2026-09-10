@@ -122,7 +122,6 @@ public class ActivityTales extends ActivityMain {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.tales_menu;
-        activityName = this.getString(R.string.tales);
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
@@ -132,15 +131,17 @@ public class ActivityTales extends ActivityMain {
         titleFld = findViewById(R.id.title);
         tales = new Tales();
         allCategories = Categories.NameIds;
-        
-        if (returnToReaders) {
-            Tales.setShowOnlyFavorite(activityName,false);
 
-            for (final Integer categoryId : allCategories) {
-                String category = getResourceString(categoryId);
-                Tales.setShowCategory(activityName, category, true);
-            }
-        }
+        activityName = returnToReaders ? fromReadersFilter : this.getString(R.string.tales);
+
+//        if () {
+//            Tales.setShowOnlyFavorite(activityName,false);
+//
+//            for (final Integer categoryId : allCategories) {
+//                String category = getResourceString(categoryId);
+//                Tales.setShowCategory(activityName, category, true);
+//            }
+//        }
 
         searchBtn.setOnClickListener(v -> showFilterDialog(allCategories, this::filterTales));
         titleFld.setOnClickListener(v -> showFilterDialog(allCategories, this::filterTales));
