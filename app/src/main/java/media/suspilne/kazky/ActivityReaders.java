@@ -31,6 +31,7 @@ public class ActivityReaders extends ActivityMain {
     @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.readers_menu;
+        activityName = this.getString(R.string.readers);
         super.onCreate(savedInstanceState);
 
         FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
@@ -52,17 +53,17 @@ public class ActivityReaders extends ActivityMain {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("returnToReaders", true);
 
-        Tales.setFilter(view.getTag().toString());
+        Tales.setFilter(activityName, view.getTag().toString());
         startActivityForResult(intent, 0);
     };
 
     private void filterReaders() {
         int nothingToShowVisibility = View.VISIBLE;
 
-        String filter = Tales.getFilter();
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+        String filter = Tales.getFilter(activityName);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
         List<Integer> categories = allCategories.stream()
-                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
+                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
                 .collect(Collectors.toList());
 
         for (final Reader reader: new Readers().Readers) {

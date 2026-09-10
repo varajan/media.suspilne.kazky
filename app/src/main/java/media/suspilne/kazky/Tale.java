@@ -64,7 +64,7 @@ public class Tale{
         }
     }
 
-    void resetFavorite() {
+    void resetFavorite(String filterPrefix) {
         boolean downloadAll = SettingsHelper.getBoolean("downloadAllTales");
         boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoriteTales");
 
@@ -75,7 +75,7 @@ public class Tale{
 
         if ( isFavorite && downloadFavorite && !downloadAll) this.download();
         if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
-        if (!isFavorite && Tales.getShowOnlyFavorite()) Tales.setTalesCountUpdated(false);
+        if (!isFavorite && Tales.getShowOnlyFavorite(filterPrefix)) Tales.setTalesCountUpdated(false);
     }
 
     private void setDownloadedIcon() {

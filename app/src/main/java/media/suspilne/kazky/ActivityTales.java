@@ -98,7 +98,7 @@ public class ActivityTales extends ActivityMain {
             });
 
             taleView.findViewById(R.id.favorite).setOnClickListener(v -> {
-                tale.resetFavorite();
+                tale.resetFavorite(activityName);
                 Toast.makeText(getActivity(),
                         tale.isFavorite ? getString(R.string.addedToFavorites, tale.getTitle()) : getString(R.string.removedFromFavorites, tale.getTitle()),
                         Toast.LENGTH_LONG).show();
@@ -122,6 +122,7 @@ public class ActivityTales extends ActivityMain {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.tales_menu;
+        activityName = this.getString(R.string.tales);
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
@@ -133,11 +134,11 @@ public class ActivityTales extends ActivityMain {
         allCategories = Categories.NameIds;
         
         if (returnToReaders) {
-            Tales.setShowOnlyFavorite(false);
+            Tales.setShowOnlyFavorite(activityName,false);
 
             for (final Integer categoryId : allCategories) {
                 String category = getResourceString(categoryId);
-                Tales.setShowCategory(category, true);
+                Tales.setShowCategory(activityName, category, true);
             }
         }
 
@@ -158,10 +159,10 @@ public class ActivityTales extends ActivityMain {
         int nothingToShowVisibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
-        String filter = Tales.getFilter();
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+        String filter = Tales.getFilter(activityName);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
         List<Integer> categories = allCategories.stream()
-                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
+                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
                 .collect(Collectors.toList());
 
         for (final Tale tale:tales.getTalesList()) {

@@ -11,20 +11,20 @@ class Tales {
     public static boolean getTalesCountUpdated() { return SettingsHelper.getBoolean("tales.count.updated"); }
     public static void setTalesCountUpdated(boolean value) {SettingsHelper.setBoolean("tales.count.updated", value);}
 
-    public static boolean getShowCategory(String category) { return SettingsHelper.getBoolean("show_" + category); }
-    public static void setShowCategory(String category, boolean value) {
-        SettingsHelper.setBoolean("show_" + category, value);
+    public static boolean getShowCategory(String filterPrefix, String category) { return SettingsHelper.getBoolean(filterPrefix + "_show_" + category); }
+    public static void setShowCategory(String filterPrefix, String category, boolean value) {
+        SettingsHelper.setBoolean(filterPrefix + "_show_" + category, value);
         setTalesCountUpdated(false);
     }
 
-    public static boolean getShowOnlyFavorite() { return SettingsHelper.getBoolean("showOnlyFavorite"); }
-    public static void setShowOnlyFavorite(boolean value) {
-        SettingsHelper.setBoolean("showOnlyFavorite", value);
+    public static boolean getShowOnlyFavorite(String filterPrefix) { return SettingsHelper.getBoolean(filterPrefix + "_showOnlyFavorite"); }
+    public static void setShowOnlyFavorite(String filterPrefix, boolean value) {
+        SettingsHelper.setBoolean(filterPrefix + "_showOnlyFavorite", value);
         setTalesCountUpdated(false);
     }
 
-    public static String getFilter() { return SettingsHelper.getString("talesFilter"); }
-    public static void setFilter(String filter) { SettingsHelper.setString("talesFilter", filter); }
+    public static String getFilter(String filterPrefix) { return SettingsHelper.getString(filterPrefix + "_talesFilter"); }
+    public static void setFilter(String filterPrefix, String filter) { SettingsHelper.setString(filterPrefix + "_talesFilter", filter); }
 
     public static void setLastPosition(long value) {
         SettingsHelper.setLong("PlayerPosition", value);

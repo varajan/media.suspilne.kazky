@@ -48,6 +48,8 @@ import java.util.stream.Collectors;
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    protected String activityName;
+
     private NotificationManager notificationManager;
     private Timer quitTimer;
     private Timer volumeReduceTimer;
@@ -148,15 +150,15 @@ public class ActivityMain extends AppCompatActivity
         LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
         LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
 
-        List<String> onlyFavorite = Tales.getShowOnlyFavorite()
+        List<String> onlyFavorite = Tales.getShowOnlyFavorite(activityName)
                 ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
                 : Collections.emptyList();
         List<String> checkedCategories = categories.stream()
                 .map(this::getResourceString)
-                .filter(Tales::getShowCategory)
+                .filter(c -> Tales.getShowCategory(activityName, c))
                 .collect(Collectors.toList());
 
-        String initialSearchText = Tales.getFilter();
+        String initialSearchText = Tales.getFilter(activityName);
         searchField.setText(initialSearchText);
         populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
         populateContainer(categoriesContainer, categories, checkedCategories);
@@ -203,24 +205,24 @@ public class ActivityMain extends AppCompatActivity
     }
 
     protected void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories, List<Integer> categories) {
-        Tales.setFilter(filter);
-        Tales.setShowOnlyFavorite(showOnlyFavorites);
+        Tales.setFilter(activityName, filter);
+        Tales.setShowOnlyFavorite(activityName, showOnlyFavorites);
 
         for (final Integer categoryId : categories) {
             String category = getResourceString(categoryId);
             boolean categoryEnabled = selectedCategories.contains(category);
-            Tales.setShowCategory(category, categoryEnabled);
+            Tales.setShowCategory(activityName, category, categoryEnabled);
         }
     }
 
     protected String getSearchFieldText(List<Integer> allCategoryIds) {
-        String filter = Tales.getFilter();
+        String filter = Tales.getFilter(activityName);
         String searchFieldText = "";
         List<Integer> categories = allCategoryIds.stream()
-                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
+                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
                 .collect(Collectors.toList());
         boolean allCategoriesSelected = categories.equals(allCategoryIds);
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
 
         searchFieldText += filter;
         if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.favoriteTales); }

@@ -27,6 +27,7 @@ public class ActivityColorings extends ActivityMain {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.coloring_menu;
+        activityName = this.getString(R.string.coloring);
         super.onCreate(savedInstanceState);
 
         tales  = new Tales();
@@ -53,10 +54,10 @@ public class ActivityColorings extends ActivityMain {
         int nothingToShowVisibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
-        String filter = Tales.getFilter();
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite();
+        String filter = Tales.getFilter(activityName);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
         List<Integer> categories = categoriesWithColorings.stream()
-                .filter(category -> Tales.getShowCategory(this.getResourceString(category)))
+                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
                 .collect(Collectors.toList());
 
         for (final Tale tale:tales.getTalesList()) {
