@@ -43,7 +43,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <include
-            layout="@layout/activity_tales_content"
+            layout="@layout/activity_list_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

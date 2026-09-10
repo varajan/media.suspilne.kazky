@@ -329,7 +329,7 @@ public class ActivityMain extends AppCompatActivity
             case R.id.tales_menu:
             case R.id.readers_menu:
             case R.id.coloring_menu:
-                setContentView(R.layout.activity_tales);
+                setContentView(R.layout.activity_list);
                 break;
 
             case R.id.settings_menu:
