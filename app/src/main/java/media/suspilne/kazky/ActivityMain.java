@@ -50,6 +50,7 @@ public class ActivityMain extends AppCompatActivity
 
     protected String activityName;
     protected String fromReadersFilter = "fromReadersFilter";
+    protected List<Integer> categories;
 
     private NotificationManager notificationManager;
     private Timer quitTimer;
@@ -145,7 +146,7 @@ public class ActivityMain extends AppCompatActivity
 
     protected final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
 
-    protected void showFilterDialog(List<Integer> categories, Runnable filter) {
+    protected void showFilterDialog(Runnable filter) {
         View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
         EditText searchField = dialogView.findViewById(R.id.searchField);
         LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
@@ -177,6 +178,14 @@ public class ActivityMain extends AppCompatActivity
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .show();
+    }
+
+    protected void resetFilter() { resetFilter(null); }
+
+    protected void resetFilter(Runnable filter) {
+        List<String> categoryNames = categories.stream().map(this::getString).toList();
+        saveFilters("", false, categoryNames, categories);
+        if (filter != null) filter.run();
     }
 
     protected void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
@@ -556,6 +565,7 @@ public class ActivityMain extends AppCompatActivity
             .show();
     }
 
+    // count tales, that match filter/categories
     private void updateTalesCountPerReader() {
         if (Tales.getTalesCountUpdated()) return;
 

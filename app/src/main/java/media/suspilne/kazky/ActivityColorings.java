@@ -22,7 +22,6 @@ public class ActivityColorings extends ActivityMain {
     private Tales tales;
     private LinearLayout TalesList;
     private TextView titleFld;
-    private List<Integer> categoriesWithColorings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +34,18 @@ public class ActivityColorings extends ActivityMain {
         TalesList = findViewById(R.id.itemsList);
         FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
 
-        categoriesWithColorings = Categories.Items.stream()
+        categories = Categories.Items.stream()
                 .filter(c -> c.taleIds.stream()
                         .anyMatch(t -> tales.getById(t).coloring > 0))
                 .map(c -> c.title)
                 .toList();
         
-        searchBtn.setOnClickListener(v -> showFilterDialog(categoriesWithColorings, this::filterTales));
-        titleFld.setOnClickListener(v -> showFilterDialog(categoriesWithColorings, this::filterTales));
+        searchBtn.setOnClickListener(v -> showFilterDialog(this::filterTales));
+        titleFld.setOnClickListener(v -> showFilterDialog(this::filterTales));
+        boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
 
         showTales();
+        if (nothingToShow) resetFilter();
         filterTales();
     }
 
@@ -56,7 +57,7 @@ public class ActivityColorings extends ActivityMain {
 
         String filter = Tales.getFilter(activityName);
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
-        List<Integer> categories = categoriesWithColorings.stream()
+        List<Integer> selectedCategories = categories.stream()
                 .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
                 .collect(Collectors.toList());
 
@@ -72,15 +73,13 @@ public class ActivityColorings extends ActivityMain {
             }
         }
 
-        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(categoriesWithColorings);
-        titleFld.setText(hideSearchText ? this.getText(R.string.coloring) : getSearchFieldText(categoriesWithColorings));
+        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
+        titleFld.setText(hideSearchText ? this.getText(R.string.coloring) : getSearchFieldText(categories));
         nothing.setVisibility(nothingToShowVisibility);
         showAllBtn.setVisibility(nothingToShowVisibility);
-        showAllBtn.setOnClickListener(v -> {
-            List<String> categoryNames = categoriesWithColorings.stream().map(this::getString).toList();
-            saveFilters("", false, categoryNames, categoriesWithColorings);
-            filterTales();
-        });
+        showAllBtn.setOnClickListener(v -> resetFilter(this::filterTales));
+
+        SettingsHelper.setInt(activityName, nothingToShowVisibility);
     }
 
     private void showTales() {

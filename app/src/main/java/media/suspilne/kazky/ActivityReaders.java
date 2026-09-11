@@ -20,7 +20,6 @@ public class ActivityReaders extends ActivityMain {
     private TextView titleFld;
     private TextView nothing;
     AppCompatButton showAllBtn;
-    private List<Integer> allCategories;
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -39,12 +38,14 @@ public class ActivityReaders extends ActivityMain {
         titleFld = findViewById(R.id.title);
         nothing = findViewById(R.id.nothingToShow);
         showAllBtn = findViewById(R.id.showAllBtn);
-        allCategories = Categories.NameIds;
+        categories = Categories.NameIds;
 
-        searchBtn.setOnClickListener(v -> showFilterDialog(allCategories, this::filterReaders));
-        titleFld.setOnClickListener(v -> showFilterDialog(allCategories, this::filterReaders));
+        searchBtn.setOnClickListener(v -> showFilterDialog(this::filterReaders));
+        titleFld.setOnClickListener(v -> showFilterDialog(this::filterReaders));
+        boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
 
         showReaders();
+        if (nothingToShow) resetFilter();
         filterReaders();
     }
 
@@ -56,7 +57,7 @@ public class ActivityReaders extends ActivityMain {
         Tales.setFilter(fromReadersFilter, view.getTag().toString());
         Tales.setShowOnlyFavorite(fromReadersFilter,Tales.getShowOnlyFavorite(activityName));
 
-        for (final Integer categoryId : allCategories) {
+        for (final Integer categoryId : categories) {
             String category = getResourceString(categoryId);
             boolean enabled = Tales.getShowCategory(activityName, category);
             Tales.setShowCategory(fromReadersFilter, category, enabled);
@@ -70,7 +71,7 @@ public class ActivityReaders extends ActivityMain {
 
         String filter = Tales.getFilter(activityName);
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
-        List<Integer> categories = allCategories.stream()
+        List<Integer> selectedCategories = categories.stream()
                 .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
                 .collect(Collectors.toList());
 
@@ -83,15 +84,13 @@ public class ActivityReaders extends ActivityMain {
             }
         }
 
-        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(allCategories);
-        titleFld.setText(hideSearchText ? this.getText(R.string.readers) : getSearchFieldText(allCategories));
+        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
+        titleFld.setText(hideSearchText ? this.getText(R.string.readers) : getSearchFieldText(categories));
         nothing.setVisibility(nothingToShowVisibility);
         showAllBtn.setVisibility(nothingToShowVisibility);
-        showAllBtn.setOnClickListener(v -> {
-            List<String> categoryNames = allCategories.stream().map(this::getString).toList();
-            saveFilters("", false, categoryNames, allCategories);
-            filterReaders();
-        });
+        showAllBtn.setOnClickListener(v -> resetFilter(this::filterReaders));
+
+        SettingsHelper.setInt(activityName, nothingToShowVisibility);
     }
 
     private void showReaders() {

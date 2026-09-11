@@ -28,7 +28,6 @@ public class ActivityTales extends ActivityMain {
     private LinearLayout TalesList;
     private TextView titleFld;
     private boolean returnToReaders = false;
-    private List<Integer> allCategories;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -130,23 +129,17 @@ public class ActivityTales extends ActivityMain {
         TalesList = findViewById(R.id.itemsList);
         titleFld = findViewById(R.id.title);
         tales = new Tales();
-        allCategories = Categories.NameIds;
+        categories = Categories.NameIds;
 
         activityName = returnToReaders ? fromReadersFilter : this.getString(R.string.tales);
+        boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
 
-//        if () {
-//            Tales.setShowOnlyFavorite(activityName,false);
-//
-//            for (final Integer categoryId : allCategories) {
-//                String category = getResourceString(categoryId);
-//                Tales.setShowCategory(activityName, category, true);
-//            }
-//        }
-
-        searchBtn.setOnClickListener(v -> showFilterDialog(allCategories, this::filterTales));
-        titleFld.setOnClickListener(v -> showFilterDialog(allCategories, this::filterTales));
+        searchBtn.setOnClickListener(v -> showFilterDialog(this::filterTales));
+        titleFld.setOnClickListener(v -> showFilterDialog(this::filterTales));
 
         showTales();
+        if (nothingToShow) resetFilter();
+
         filterTales();
         continueTale(savedInstanceState);
         continueDownloadTales();
@@ -162,12 +155,12 @@ public class ActivityTales extends ActivityMain {
 
         String filter = Tales.getFilter(activityName);
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
-        List<Integer> categories = allCategories.stream()
+        List<Integer> selectedCategories = categories.stream()
                 .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
                 .collect(Collectors.toList());
 
         for (final Tale tale:tales.getTalesList()) {
-            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)) {
+            if (tale.shouldBeShown(showOnlyFavorite, selectedCategories, filter)) {
                 tale.show();
                 nothingToShowVisibility = View.GONE;
                 list.append(tale.id).append(";");
@@ -176,16 +169,13 @@ public class ActivityTales extends ActivityMain {
             }
         }
 
-        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && categories.equals(allCategories);
-        titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : getSearchFieldText(allCategories));
+        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
+        titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : getSearchFieldText(categories));
         nothing.setVisibility(nothingToShowVisibility);
         showAllBtn.setVisibility(nothingToShowVisibility);
-        showAllBtn.setOnClickListener(v -> {
-            List<String> categoryNames = allCategories.stream().map(this::getString).toList();
-            saveFilters("", false, categoryNames, allCategories);
-            filterTales();
-        });
+        showAllBtn.setOnClickListener(v -> resetFilter(this::filterTales));
 
+        SettingsHelper.setInt(activityName, nothingToShowVisibility);
         SettingsHelper.setString("filteredTalesList", list.toString().trim());
     }
 
