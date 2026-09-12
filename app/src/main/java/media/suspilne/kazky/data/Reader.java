@@ -28,13 +28,13 @@ public class Reader {
         this.talesCount = getTalesCount();
     }
 
-    public boolean matchesFilter(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+    public Integer getMatchedTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
         List<Integer> categoryTales = Categories.Items.stream()
                 .filter(c -> categories.contains(c.title))
                 .flatMap(c -> c.taleIds.stream())
                 .toList();
 
-        List<Tale> readerTales = new Tales().items.stream()
+        List<Tale> allReaderTales = new Tales().items.stream()
                 .filter(t -> t.getReaderId() == this.name)
                 .filter(t -> !showOnlyFavorite || t.isFavorite)
                 .filter(t -> categoryTales.contains(t.id))
@@ -42,9 +42,11 @@ public class Reader {
 
         String finalFilter = filter.toLowerCase().trim();
         boolean matchName = getName().toLowerCase().contains(finalFilter) || getDescription().toLowerCase().contains(finalFilter);
-        boolean matchTaleName = readerTales.stream().anyMatch(t -> t.getTitle().contains(finalFilter));
+        List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.getTitle().contains(finalFilter)).toList();
 
-        return (matchName && !readerTales.isEmpty()) || matchTaleName;
+        return matchName
+                ? allReaderTales.size()
+                : talesMatchFilter.size();
     }
 
     private View getView() {
@@ -53,7 +55,14 @@ public class Reader {
 
     public void hide() { getView().setVisibility(View.GONE); }
 
-    public void show() { getView().setVisibility(View.VISIBLE); }
+    public void show(Context context, Integer talesCount) {
+
+        getView().setVisibility(View.VISIBLE);
+        View readerView = getReaderView();
+        TextView description = readerView.findViewById(R.id.description);
+
+        description.setText(context.getString(R.string.reader_description, getDescription(), talesCount));
+    }
 
     public String getName() {
         return MainActivity.getActivity().getResources().getString(name);
@@ -66,7 +75,7 @@ public class Reader {
         return MainActivity.getActivity().findViewById(R.id.itemsList).findViewWithTag(getName());
     }
 
-    public void setViewDetails(Context context) {
+    public void setViewDetails() {
         try
         {
             Bitmap photo = ImageHelper.getBitmapFromResource(MainActivity.getActivity().getResources(), this.photo, 100, 100);
@@ -81,8 +90,6 @@ public class Reader {
 
             reader.setText(name);
             reader.setTextColor(color);
-
-            description.setText(context.getString(R.string.reader_description, getDescription(), talesCount));
             description.setTextColor(color);
         }catch (Exception e) {
             Log.e(SettingsHelper.application, e.getMessage());

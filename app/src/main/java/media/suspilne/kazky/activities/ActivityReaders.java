@@ -27,8 +27,8 @@ public class ActivityReaders extends ListActivity {
         currentView = R.id.readers_menu;
         activityName = defaultTitleText = this.getString(R.string.readers);
         categories = Categories.NameIds;
-        initControls();
         super.onCreate(savedInstanceState);
+        initControls();
 
         searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
         titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
@@ -60,8 +60,10 @@ public class ActivityReaders extends ListActivity {
         int nothingToShowVisibility = View.VISIBLE;
 
         for (final Reader reader: new Readers().Readers) {
-            if (reader.matchesFilter(filter, showOnlyFavorite, categories)) {
-                reader.show();
+            Integer matchedTales = reader.getMatchedTales(filter, showOnlyFavorite, categories);
+
+            if (matchedTales > 0) {
+                reader.show(this, matchedTales);
                 nothingToShowVisibility = View.GONE;
             } else {
                 reader.hide();
@@ -79,7 +81,7 @@ public class ActivityReaders extends ListActivity {
             View readerView = LayoutInflater.from(this).inflate(R.layout.reader_item, ItemsList, false);
             readerView.setTag(reader.getName());
             ItemsList.addView(readerView);
-            reader.setViewDetails(this);
+            reader.setViewDetails();
             readerView.setOnClickListener(onReaderClick);
         }
     }

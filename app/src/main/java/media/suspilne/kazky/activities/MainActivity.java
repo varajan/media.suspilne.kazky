@@ -456,20 +456,22 @@ public abstract class MainActivity extends AppCompatActivity
 
     // count tales, that match filter/categories
     private void updateTalesCountPerReader() {
-        if (Tales.getTalesCountUpdated()) return;
+        return;
 
-        for (Reader reader: new Readers().Readers) {
-            int count = 0;
-
-            for (Tale tale : new Tales().getTalesList()) {
-                if (!tale.getReader().equals(reader.getName())) continue;
-                count++;
-            }
-
-            SettingsHelper.setInt(reader.getName(), count);
-        }
-
-        Tales.setTalesCountUpdated(true);
+//        if (Tales.getTalesCountUpdated()) return;
+//
+//        for (Reader reader: new Readers().Readers) {
+//            int count = 0;
+//
+//            for (Tale tale : new Tales().getTalesList()) {
+//                if (!tale.getReader().equals(reader.getName())) continue;
+//                count++;
+//            }
+//
+//            SettingsHelper.setInt(reader.getName(), count);
+//        }
+//
+//        Tales.setTalesCountUpdated(true);
     }
 
     private void update() {
