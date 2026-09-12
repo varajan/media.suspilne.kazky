@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -18,9 +15,7 @@ import media.suspilne.kazky.data.Readers;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tales;
 
-public class ActivityReaders extends ListActivity implements IListActivity {
-    private LinearLayout ReadersList;
-
+public class ActivityReaders extends ListActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -32,12 +27,7 @@ public class ActivityReaders extends ListActivity implements IListActivity {
         currentView = R.id.readers_menu;
         activityName = defaultTitleText = this.getString(R.string.readers);
         super.onCreate(savedInstanceState);
-
-        FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
-        ReadersList = findViewById(R.id.itemsList);
-        titleFld = findViewById(R.id.title);
-        nothing = findViewById(R.id.nothingToShow);
-        showAllBtn = findViewById(R.id.showAllBtn);
+        initControls();
         categories = Categories.NameIds;
 
         searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
@@ -83,12 +73,12 @@ public class ActivityReaders extends ListActivity implements IListActivity {
 
     private void showReaders() {
         int nothingToShowElements = 2;
-        ReadersList.removeViews(nothingToShowElements, ReadersList.getChildCount() - nothingToShowElements);
+        ItemsList.removeViews(nothingToShowElements, ItemsList.getChildCount() - nothingToShowElements);
 
         for (final Reader reader:new Readers().Readers) {
-            View readerView = LayoutInflater.from(this).inflate(R.layout.reader_item, ReadersList, false);
+            View readerView = LayoutInflater.from(this).inflate(R.layout.reader_item, ItemsList, false);
             readerView.setTag(reader.getName());
-            ReadersList.addView(readerView);
+            ItemsList.addView(readerView);
             reader.setViewDetails(this);
             readerView.setOnClickListener(onReaderClick);
         }

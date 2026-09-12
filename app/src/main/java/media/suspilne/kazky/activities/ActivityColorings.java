@@ -7,11 +7,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -21,9 +18,8 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
 
-public class ActivityColorings extends ListActivity implements IListActivity {
+public class ActivityColorings extends ListActivity {
     private Tales tales;
-    private LinearLayout TalesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +29,7 @@ public class ActivityColorings extends ListActivity implements IListActivity {
 
         tales  = new Tales();
         titleFld = findViewById(R.id.title);
-        TalesList = findViewById(R.id.itemsList);
-        nothing = findViewById(R.id.nothingToShow);
-        showAllBtn = findViewById(R.id.showAllBtn);
-        FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
+        initControls();
 
         categories = Categories.Items.stream()
                 .filter(c -> c.taleIds.stream()
@@ -74,9 +67,9 @@ public class ActivityColorings extends ListActivity implements IListActivity {
         for (final Tale tale:tales.getTalesList()) {
             if (tale.coloring == 0) continue;
 
-            View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, TalesList, false);
+            View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, ItemsList, false);
             taleView.setTag(tale.id);
-            TalesList.addView(taleView);
+            ItemsList.addView(taleView);
             tale.setColoringDetails(showBigImages);
 
             taleView.findViewById(R.id.play).setOnClickListener(v -> {

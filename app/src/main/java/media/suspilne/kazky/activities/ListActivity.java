@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,11 +25,22 @@ public abstract class ListActivity extends MainActivity {
     protected String defaultTitleText;
     protected String fromReadersFilter = "fromReadersFilter";
     protected List<Integer> categories;
+
+    protected FloatingActionButton searchBtn;
+    protected LinearLayout ItemsList;
     protected TextView titleFld;
     protected TextView nothing;
     protected AppCompatButton showAllBtn;
 
     private final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
+
+    protected void initControls() {
+        searchBtn = findViewById(R.id.searchBtn);
+        ItemsList = findViewById(R.id.itemsList);
+        titleFld = findViewById(R.id.title);
+        nothing = findViewById(R.id.nothingToShow);
+        showAllBtn = findViewById(R.id.showAllBtn);
+    }
 
     protected void showFilterDialog(Runnable filterAction) {
         View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
@@ -165,5 +178,3 @@ public abstract class ListActivity extends MainActivity {
 interface FilterAction {
     public int run(String filter, boolean showOnlyFavorite, List<Integer> categories);
 }
-
-interface IListActivity { }

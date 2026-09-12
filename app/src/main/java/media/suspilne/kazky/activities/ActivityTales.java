@@ -13,10 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -27,9 +24,8 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
 
-public class ActivityTales extends ListActivity implements IListActivity {
+public class ActivityTales extends ListActivity {
     private Tales tales;
-    private LinearLayout TalesList;
     private boolean returnToReaders = false;
 
     @Override
@@ -69,9 +65,9 @@ public class ActivityTales extends ListActivity implements IListActivity {
         boolean showBigImages = SettingsHelper.getBoolean("showBigImages");
 
         for (final Tale tale:tales.getTalesList()) {
-            View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, TalesList, false);
+            View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, ItemsList, false);
             taleView.setTag(tale.id);
-            TalesList.addView(taleView);
+            ItemsList.addView(taleView);
             tale.setViewDetails();
 
             final ImageView playBtn = taleView.findViewById(R.id.play);
@@ -129,12 +125,8 @@ public class ActivityTales extends ListActivity implements IListActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
-        TalesList = findViewById(R.id.itemsList);
-        titleFld = findViewById(R.id.title);
-        nothing = findViewById(R.id.nothingToShow);
-        showAllBtn = findViewById(R.id.showAllBtn);
+        initControls();
         tales = new Tales();
         categories = Categories.NameIds;
 
@@ -193,7 +185,7 @@ public class ActivityTales extends ListActivity implements IListActivity {
         boolean isPaused = Tales.isPaused();
 
         for (Tale tale:tales.getTalesList()) {
-            ImageView btn = TalesList.findViewWithTag(tale.id).findViewById(R.id.play);
+            ImageView btn = ItemsList.findViewWithTag(tale.id).findViewById(R.id.play);
             boolean isPlaying = !isPaused && currentTale != null && tale.id == currentTale.id;
 
             btn.setImageResource(isPlaying ? R.mipmap.tale_pause : R.mipmap.tale_play);
