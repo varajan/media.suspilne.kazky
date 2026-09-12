@@ -42,7 +42,7 @@ public class Reader {
 
         String finalFilter = filter.toLowerCase().trim();
         boolean matchName = getName().toLowerCase().contains(finalFilter) || getDescription().toLowerCase().contains(finalFilter);
-        List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.getTitle().contains(finalFilter)).toList();
+        List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.getTitle().toLowerCase().contains(finalFilter)).toList();
 
         return matchName
                 ? allReaderTales.size()
