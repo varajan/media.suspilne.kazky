@@ -10,12 +10,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.R;
@@ -36,6 +34,8 @@ public class ActivityColorings extends ListActivity implements IListActivity {
         tales  = new Tales();
         titleFld = findViewById(R.id.title);
         TalesList = findViewById(R.id.itemsList);
+        nothing = findViewById(R.id.nothingToShow);
+        showAllBtn = findViewById(R.id.showAllBtn);
         FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
 
         categories = Categories.Items.stream()
@@ -44,45 +44,28 @@ public class ActivityColorings extends ListActivity implements IListActivity {
                 .map(c -> c.title)
                 .toList();
         
-        searchBtn.setOnClickListener(v -> showFilterDialog(this::filterTales));
-        titleFld.setOnClickListener(v -> showFilterDialog(this::filterTales));
+        searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
+        titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
         boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
 
         showTales();
         if (nothingToShow) resetFilter();
-        filterTales();
+        applyFilter(this::filterTales);
     }
 
-    private void filterTales() {
-        View nothing = findViewById(R.id.nothingToShow);
-        AppCompatButton showAllBtn = findViewById(R.id.showAllBtn);
+    private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
         int nothingToShowVisibility = View.VISIBLE;
-        StringBuilder list = new StringBuilder();
-
-        String filter = Tales.getFilter(activityName);
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
-        List<Integer> selectedCategories = categories.stream()
-                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
-                .collect(Collectors.toList());
 
         for (final Tale tale:tales.getTalesList()) {
-            if (tale.coloring == 0) continue;
-
-            if (tale.shouldBeShown(showOnlyFavorite, selectedCategories, filter)) {
+            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)) {
                 tale.show();
                 nothingToShowVisibility = View.GONE;
-                list.append(tale.id).append(";");
             } else {
                 tale.hide();
             }
         }
 
-        setSearchFieldText();
-        nothing.setVisibility(nothingToShowVisibility);
-        showAllBtn.setVisibility(nothingToShowVisibility);
-        showAllBtn.setOnClickListener(v -> resetFilter(this::filterTales));
-
-        SettingsHelper.setInt(activityName, nothingToShowVisibility);
+        return nothingToShowVisibility;
     }
 
     private void showTales() {

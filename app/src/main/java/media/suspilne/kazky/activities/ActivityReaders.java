@@ -6,14 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.R;
@@ -24,13 +20,11 @@ import media.suspilne.kazky.data.Tales;
 
 public class ActivityReaders extends ListActivity implements IListActivity {
     private LinearLayout ReadersList;
-    private TextView nothing;
-    AppCompatButton showAllBtn;
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        filterReaders();
+        applyFilter(this::filterReaders);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -46,13 +40,13 @@ public class ActivityReaders extends ListActivity implements IListActivity {
         showAllBtn = findViewById(R.id.showAllBtn);
         categories = Categories.NameIds;
 
-        searchBtn.setOnClickListener(v -> showFilterDialog(this::filterReaders));
-        titleFld.setOnClickListener(v -> showFilterDialog(this::filterReaders));
+        searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
+        titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
         boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
 
         showReaders();
         if (nothingToShow) resetFilter();
-        filterReaders();
+        applyFilter(this::filterReaders);
     }
 
     private final View.OnClickListener onReaderClick = view -> {
@@ -72,17 +66,11 @@ public class ActivityReaders extends ListActivity implements IListActivity {
         startActivityForResult(intent, 0);
     };
 
-    private void filterReaders() {
+    private int filterReaders(String filter, boolean showOnlyFavorite, List<Integer> categories) {
         int nothingToShowVisibility = View.VISIBLE;
 
-        String filter = Tales.getFilter(activityName);
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
-        List<Integer> selectedCategories = categories.stream()
-                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
-                .collect(Collectors.toList());
-
         for (final Reader reader: new Readers().Readers) {
-            if (reader.matchesFilter(filter, showOnlyFavorite, selectedCategories)) {
+            if (reader.matchesFilter(filter, showOnlyFavorite, categories)) {
                 reader.show();
                 nothingToShowVisibility = View.GONE;
             } else {
@@ -90,12 +78,7 @@ public class ActivityReaders extends ListActivity implements IListActivity {
             }
         }
 
-        setSearchFieldText();
-        nothing.setVisibility(nothingToShowVisibility);
-        showAllBtn.setVisibility(nothingToShowVisibility);
-        showAllBtn.setOnClickListener(v -> resetFilter(this::filterReaders));
-
-        SettingsHelper.setInt(activityName, nothingToShowVisibility);
+        return nothingToShowVisibility;
     }
 
     private void showReaders() {

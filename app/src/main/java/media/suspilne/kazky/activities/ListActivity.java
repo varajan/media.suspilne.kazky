@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.StringRes;
+import androidx.appcompat.widget.AppCompatButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.data.Tales;
+import media.suspilne.kazky.helpers.SettingsHelper;
 
 public abstract class ListActivity extends MainActivity {
     protected String activityName;
@@ -22,6 +24,8 @@ public abstract class ListActivity extends MainActivity {
     protected String fromReadersFilter = "fromReadersFilter";
     protected List<Integer> categories;
     protected TextView titleFld;
+    protected TextView nothing;
+    protected AppCompatButton showAllBtn;
 
     private final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
 
@@ -65,6 +69,23 @@ public abstract class ListActivity extends MainActivity {
         List<String> categoryNames = categories.stream().map(this::getString).toList();
         saveFilters("", false, categoryNames, categories);
         if (filterAction != null) filterAction.run();
+    }
+
+    protected void applyFilter(FilterAction filterAction) {
+        String filter = Tales.getFilter(activityName);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
+        List<Integer> selectedCategories = categories.stream()
+                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
+                .collect(Collectors.toList());
+
+        int nothingToShowVisibility = filterAction.run(filter, showOnlyFavorite, selectedCategories);
+
+        setSearchFieldText();
+        nothing.setVisibility(nothingToShowVisibility);
+        showAllBtn.setVisibility(nothingToShowVisibility);
+        showAllBtn.setOnClickListener(v -> resetFilter(() -> this.applyFilter(filterAction)));
+
+        SettingsHelper.setInt(activityName, nothingToShowVisibility);
     }
 
     protected void setSearchFieldText() {
@@ -138,6 +159,11 @@ public abstract class ListActivity extends MainActivity {
             Tales.setShowCategory(activityName, category, categoryEnabled);
         }
     }
+}
+
+@FunctionalInterface
+interface FilterAction {
+    public int run(String filter, boolean showOnlyFavorite, List<Integer> categories);
 }
 
 interface IListActivity { }

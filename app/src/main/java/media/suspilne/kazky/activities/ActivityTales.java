@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.player.PlayerService;
@@ -106,7 +104,7 @@ public class ActivityTales extends ListActivity implements IListActivity {
                 Toast.makeText(getActivity(),
                         tale.isFavorite ? getString(R.string.addedToFavorites, tale.getTitle()) : getString(R.string.removedFromFavorites, tale.getTitle()),
                         Toast.LENGTH_LONG).show();
-                filterTales();
+                applyFilter(this::filterTales);
             });
         }
 
@@ -135,39 +133,33 @@ public class ActivityTales extends ListActivity implements IListActivity {
         returnToReaders = intent.getBooleanExtra("returnToReaders", false);
         TalesList = findViewById(R.id.itemsList);
         titleFld = findViewById(R.id.title);
+        nothing = findViewById(R.id.nothingToShow);
+        showAllBtn = findViewById(R.id.showAllBtn);
         tales = new Tales();
         categories = Categories.NameIds;
 
         activityName = returnToReaders ? fromReadersFilter : this.getString(R.string.tales);
         boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
 
-        searchBtn.setOnClickListener(v -> showFilterDialog(this::filterTales));
-        titleFld.setOnClickListener(v -> showFilterDialog(this::filterTales));
+        searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
+        titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
 
         showTales();
         if (nothingToShow) resetFilter();
 
-        filterTales();
+        applyFilter(this::filterTales);
         continueTale(savedInstanceState);
         continueDownloadTales();
         suggestToDownloadFavoriteTales();
         registerReceiver();
     }
 
-    private void filterTales() {
-        View nothing = findViewById(R.id.nothingToShow);
-        AppCompatButton showAllBtn = findViewById(R.id.showAllBtn);
+    private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
         int nothingToShowVisibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 
-        String filter = Tales.getFilter(activityName);
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
-        List<Integer> selectedCategories = categories.stream()
-                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
-                .collect(Collectors.toList());
-
         for (final Tale tale:tales.getTalesList()) {
-            if (tale.shouldBeShown(showOnlyFavorite, selectedCategories, filter)) {
+            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)) {
                 tale.show();
                 nothingToShowVisibility = View.GONE;
                 list.append(tale.id).append(";");
@@ -176,13 +168,9 @@ public class ActivityTales extends ListActivity implements IListActivity {
             }
         }
 
-        setSearchFieldText();
-        nothing.setVisibility(nothingToShowVisibility);
-        showAllBtn.setVisibility(nothingToShowVisibility);
-        showAllBtn.setOnClickListener(v -> resetFilter(this::filterTales));
-
-        SettingsHelper.setInt(activityName, nothingToShowVisibility);
         SettingsHelper.setString("filteredTalesList", list.toString().trim());
+
+        return nothingToShowVisibility;
     }
 
     private void playTale(Tale tale) {
