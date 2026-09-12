@@ -172,9 +172,9 @@ public abstract class ListActivity extends MainActivity {
             Tales.setShowCategory(activityName, category, categoryEnabled);
         }
     }
-}
 
-@FunctionalInterface
-interface FilterAction {
-    public int run(String filter, boolean showOnlyFavorite, List<Integer> categories);
+    @FunctionalInterface
+    public interface FilterAction {
+        int run(String filter, boolean showOnlyFavorite, List<Integer> categories);
+    }
 }

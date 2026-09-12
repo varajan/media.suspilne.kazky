@@ -26,9 +26,9 @@ public class ActivityReaders extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.readers_menu;
         activityName = defaultTitleText = this.getString(R.string.readers);
-        super.onCreate(savedInstanceState);
-        initControls();
         categories = Categories.NameIds;
+        initControls();
+        super.onCreate(savedInstanceState);
 
         searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
         titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
