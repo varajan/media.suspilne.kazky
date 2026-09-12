@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import media.suspilne.kazky.activities.views.TaleView;
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.player.PlayerService;
 import media.suspilne.kazky.R;
@@ -68,7 +69,7 @@ public class ActivityTales extends ListActivity {
             View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, ItemsList, false);
             taleView.setTag(tale.id);
             ItemsList.addView(taleView);
-            tale.setViewDetails();
+            new TaleView(tale).setViewDetails();
 
             final ImageView playBtn = taleView.findViewById(R.id.play);
             playBtn.setTag(R.mipmap.tale_play);
@@ -96,10 +97,11 @@ public class ActivityTales extends ListActivity {
             });
 
             taleView.findViewById(R.id.favorite).setOnClickListener(v -> {
-                tale.resetFavorite(activityName);
+                tale.resetFavorite();
                 Toast.makeText(getActivity(),
                         tale.isFavorite ? getString(R.string.addedToFavorites, tale.getTitle()) : getString(R.string.removedFromFavorites, tale.getTitle()),
                         Toast.LENGTH_LONG).show();
+                new TaleView(tale).setFavoriteIcon();
                 applyFilter(this::filterTales);
             });
         }
@@ -151,12 +153,14 @@ public class ActivityTales extends ListActivity {
         StringBuilder list = new StringBuilder();
 
         for (final Tale tale:tales.getTalesList()) {
+            TaleView taleView = new TaleView(tale);
+
             if (tale.shouldBeShown(showOnlyFavorite, categories, filter)) {
-                tale.show();
+                taleView.show();
                 nothingToShowVisibility = View.GONE;
                 list.append(tale.id).append(";");
             } else {
-                tale.hide();
+                taleView.hide();
             }
         }
 
@@ -193,7 +197,7 @@ public class ActivityTales extends ListActivity {
         }
 
         if (scrollToTale && currentTale != null) {
-            currentTale.scrollIntoView();
+            new TaleView(currentTale).scrollIntoView();
         }
     }
 

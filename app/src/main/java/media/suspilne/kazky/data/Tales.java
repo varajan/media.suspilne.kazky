@@ -12,18 +12,14 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.helpers.ListHelper;
 
 public class Tales {
-    public static void setTalesCountUpdated(boolean value) {SettingsHelper.setBoolean("tales.count.updated", value);}
-
     public static boolean getShowCategory(String filterPrefix, String category) { return SettingsHelper.getBoolean(filterPrefix + "_show_" + category); }
     public static void setShowCategory(String filterPrefix, String category, boolean value) {
         SettingsHelper.setBoolean(filterPrefix + "_show_" + category, value);
-        setTalesCountUpdated(false);
     }
 
     public static boolean getShowOnlyFavorite(String filterPrefix) { return SettingsHelper.getBoolean(filterPrefix + "_showOnlyFavorite"); }
     public static void setShowOnlyFavorite(String filterPrefix, boolean value) {
         SettingsHelper.setBoolean(filterPrefix + "_showOnlyFavorite", value);
-        setTalesCountUpdated(false);
     }
 
     public static String getFilter(String filterPrefix) { return SettingsHelper.getString(filterPrefix + "_talesFilter"); }
