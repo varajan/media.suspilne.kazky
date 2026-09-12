@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
@@ -27,12 +26,11 @@ import media.suspilne.kazky.data.Tales;
 public class ActivityColorings extends ListActivity implements IListActivity {
     private Tales tales;
     private LinearLayout TalesList;
-    private TextView titleFld;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.coloring_menu;
-        activityName = this.getString(R.string.coloring);
+        activityName = defaultTitleText = this.getString(R.string.coloring);
         super.onCreate(savedInstanceState);
 
         tales  = new Tales();
@@ -70,7 +68,7 @@ public class ActivityColorings extends ListActivity implements IListActivity {
         for (final Tale tale:tales.getTalesList()) {
             if (tale.coloring == 0) continue;
 
-            if (tale.shouldBeShown(showOnlyFavorite, categories, filter)) {
+            if (tale.shouldBeShown(showOnlyFavorite, selectedCategories, filter)) {
                 tale.show();
                 nothingToShowVisibility = View.GONE;
                 list.append(tale.id).append(";");
@@ -79,8 +77,7 @@ public class ActivityColorings extends ListActivity implements IListActivity {
             }
         }
 
-        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
-        titleFld.setText(hideSearchText ? this.getText(R.string.coloring) : getSearchFieldText(categories));
+        setSearchFieldText();
         nothing.setVisibility(nothingToShowVisibility);
         showAllBtn.setVisibility(nothingToShowVisibility);
         showAllBtn.setOnClickListener(v -> resetFilter(this::filterTales));

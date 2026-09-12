@@ -24,7 +24,6 @@ import media.suspilne.kazky.data.Tales;
 
 public class ActivityReaders extends ListActivity implements IListActivity {
     private LinearLayout ReadersList;
-    private TextView titleFld;
     private TextView nothing;
     AppCompatButton showAllBtn;
 
@@ -37,7 +36,7 @@ public class ActivityReaders extends ListActivity implements IListActivity {
     @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.readers_menu;
-        activityName = this.getString(R.string.readers);
+        activityName = defaultTitleText = this.getString(R.string.readers);
         super.onCreate(savedInstanceState);
 
         FloatingActionButton searchBtn = findViewById(R.id.searchBtn);
@@ -83,7 +82,7 @@ public class ActivityReaders extends ListActivity implements IListActivity {
                 .collect(Collectors.toList());
 
         for (final Reader reader: new Readers().Readers) {
-            if (reader.matchesFilter(filter, showOnlyFavorite, categories)) {
+            if (reader.matchesFilter(filter, showOnlyFavorite, selectedCategories)) {
                 reader.show();
                 nothingToShowVisibility = View.GONE;
             } else {
@@ -91,8 +90,7 @@ public class ActivityReaders extends ListActivity implements IListActivity {
             }
         }
 
-        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
-        titleFld.setText(hideSearchText ? this.getText(R.string.readers) : getSearchFieldText(categories));
+        setSearchFieldText();
         nothing.setVisibility(nothingToShowVisibility);
         showAllBtn.setVisibility(nothingToShowVisibility);
         showAllBtn.setOnClickListener(v -> resetFilter(this::filterReaders));

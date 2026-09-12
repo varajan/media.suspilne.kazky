@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.StringRes;
 
@@ -15,18 +16,20 @@ import java.util.stream.Collectors;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.data.Tales;
 
-public class ListActivity extends MainActivity {
+public abstract class ListActivity extends MainActivity {
     protected String activityName;
+    protected String defaultTitleText;
     protected String fromReadersFilter = "fromReadersFilter";
     protected List<Integer> categories;
+    protected TextView titleFld;
 
-    protected final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
+    private final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
 
-    protected void showFilterDialog(Runnable filter) {
+    protected void showFilterDialog(Runnable filterAction) {
         View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
         EditText searchField = dialogView.findViewById(R.id.searchField);
-        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
-        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
+        LinearLayout showOnlyFavoriteCheckbox = dialogView.findViewById(R.id.favoritesGroup);
+        LinearLayout categoriesCheckboxes = dialogView.findViewById(R.id.categoriesGroup);
 
         List<String> onlyFavorite = Tales.getShowOnlyFavorite(activityName)
                 ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
@@ -38,19 +41,19 @@ public class ListActivity extends MainActivity {
 
         String initialSearchText = Tales.getFilter(activityName);
         searchField.setText(initialSearchText);
-        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
-        populateContainer(categoriesContainer, categories, checkedCategories);
+        setCheckboxes(showOnlyFavoriteCheckbox, showOnlyFavorite, onlyFavorite);
+        setCheckboxes(categoriesCheckboxes, categories, checkedCategories);
 
         new android.app.AlertDialog.Builder(this)
                 .setTitle(R.string.filtersDialog)
                 .setView(dialogView)
                 .setPositiveButton(R.string.apply, (dialog, which) -> {
                     String searchText = searchField.getText().toString();
-                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
-                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
+                    boolean showOnlyFavorites = !getSelectedCheckboxes(showOnlyFavoriteCheckbox).isEmpty();
+                    List<String> selectedCategories = getSelectedCheckboxes(categoriesCheckboxes);
 
-                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, categories);
-                    filter.run();
+                    saveFilters(searchText, showOnlyFavorites, selectedCategories, categories);
+                    filterAction.run();
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .show();
@@ -58,50 +61,24 @@ public class ListActivity extends MainActivity {
 
     protected void resetFilter() { resetFilter(null); }
 
-    protected void resetFilter(Runnable filter) {
+    protected void resetFilter(Runnable filterAction) {
         List<String> categoryNames = categories.stream().map(this::getString).toList();
         saveFilters("", false, categoryNames, categories);
-        if (filter != null) filter.run();
+        if (filterAction != null) filterAction.run();
     }
 
-    protected void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
-        container.removeAllViews();
-        for (@StringRes int item : items) {
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(item);
+    protected void setSearchFieldText() {
+        String filter = Tales.getFilter(activityName);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
+        List<Integer> selectedCategories = categories.stream()
+                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
+                .collect(Collectors.toList());
 
-            String itemText = this.getResourceString(item);
-            if (selected.contains(itemText)) checkBox.setChecked(true);
-            container.addView(checkBox);
-        }
+        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
+        titleFld.setText(hideSearchText ? defaultTitleText : getSearchFieldText(categories));
     }
 
-    protected List<String> getSelectedItems(LinearLayout container) {
-        List<String> selected = new ArrayList<>();
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View view = container.getChildAt(i);
-            if (view instanceof CheckBox) {
-                CheckBox cb = (CheckBox) view;
-                if (cb.isChecked()) {
-                    selected.add(cb.getText().toString());
-                }
-            }
-        }
-        return selected;
-    }
-
-    protected void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories, List<Integer> categories) {
-        Tales.setFilter(activityName, filter);
-        Tales.setShowOnlyFavorite(activityName, showOnlyFavorites);
-
-        for (final Integer categoryId : categories) {
-            String category = getResourceString(categoryId);
-            boolean categoryEnabled = selectedCategories.contains(category);
-            Tales.setShowCategory(activityName, category, categoryEnabled);
-        }
-    }
-
-    protected String getSearchFieldText(List<Integer> allCategoryIds) {
+    private String getSearchFieldText(List<Integer> allCategoryIds) {
         String filter = Tales.getFilter(activityName);
         String searchFieldText = "";
         List<Integer> categories = allCategoryIds.stream()
@@ -121,6 +98,45 @@ public class ListActivity extends MainActivity {
                 .trim();
 
         return "⌕ " + searchFieldText;
+    }
+
+    private void setCheckboxes(LinearLayout container, List<Integer> items, List<String> selected) {
+        container.removeAllViews();
+        for (@StringRes int item : items) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(item);
+
+            String itemText = this.getResourceString(item);
+            if (selected.contains(itemText)) checkBox.setChecked(true);
+            container.addView(checkBox);
+        }
+    }
+
+    private List<String> getSelectedCheckboxes(LinearLayout container) {
+        List<String> result = new ArrayList<>();
+
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View view = container.getChildAt(i);
+
+            if (view instanceof CheckBox) {
+                CheckBox cb = (CheckBox) view;
+                if (cb.isChecked()) {
+                    result.add(cb.getText().toString());
+                }
+            }
+        }
+        return result;
+    }
+
+    private void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories, List<Integer> categories) {
+        Tales.setFilter(activityName, filter);
+        Tales.setShowOnlyFavorite(activityName, showOnlyFavorites);
+
+        for (final Integer categoryId : categories) {
+            String category = getResourceString(categoryId);
+            boolean categoryEnabled = selectedCategories.contains(category);
+            Tales.setShowCategory(activityName, category, categoryEnabled);
+        }
     }
 }
 

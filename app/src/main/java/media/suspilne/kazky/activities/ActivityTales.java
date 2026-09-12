@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,7 +32,6 @@ import media.suspilne.kazky.data.Tales;
 public class ActivityTales extends ListActivity implements IListActivity {
     private Tales tales;
     private LinearLayout TalesList;
-    private TextView titleFld;
     private boolean returnToReaders = false;
 
     @Override
@@ -128,6 +126,8 @@ public class ActivityTales extends ListActivity implements IListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.tales_menu;
+        defaultTitleText = this.getString(R.string.allTales);
+
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
@@ -176,8 +176,7 @@ public class ActivityTales extends ListActivity implements IListActivity {
             }
         }
 
-        boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
-        titleFld.setText(hideSearchText ? this.getText(R.string.allTales) : getSearchFieldText(categories));
+        setSearchFieldText();
         nothing.setVisibility(nothingToShowVisibility);
         showAllBtn.setVisibility(nothingToShowVisibility);
         showAllBtn.setOnClickListener(v -> resetFilter(this::filterTales));
