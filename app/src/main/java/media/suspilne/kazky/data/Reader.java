@@ -68,7 +68,7 @@ public class Reader {
         return MainActivity.getActivity().getString(name);
     }
     public String getDescription() {
-        return MainActivity.getActivity().getResources().getString(description);
+        return MainActivity.getActivity().getString(description);
     }
 
     private View getReaderView() {

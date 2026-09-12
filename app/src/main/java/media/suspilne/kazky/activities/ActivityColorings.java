@@ -78,7 +78,7 @@ public class ActivityColorings extends ListActivity {
                     return;
                 }
 
-                String url = ActivityColorings.getActivity().getResources().getString(R.string.coloringUrl, tale.id);
+                String url = ActivityColorings.getActivity().getString(R.string.coloringUrl, tale.id);
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.coloring_download_ask)

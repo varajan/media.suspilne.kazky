@@ -47,7 +47,7 @@ public class ActivitySettings extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         currentView = R.id.settings_menu;
         super.onCreate(savedInstanceState);
-        totalRequiredSpace = (long) Integer.parseInt(getResources().getString(R.string.requiredSpace)) * 1024 * 1024;
+        totalRequiredSpace = (long) Integer.parseInt(getString(R.string.requiredSpace)) * 1024 * 1024;
 
         fontColor = this.findViewById(R.id.fontColor);
         downloadAllTales = this.findViewById(R.id.downloadAllTales);

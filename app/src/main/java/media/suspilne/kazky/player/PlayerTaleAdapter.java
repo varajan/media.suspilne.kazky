@@ -32,7 +32,7 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
             return tale().getTitle();
         }
         catch (Exception e) {
-            return context.getResources().getString(R.string.title);
+            return context.getString(R.string.title);
         }
     }
 
@@ -43,7 +43,7 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
             return tale().getReader();
         }
         catch (Exception e) {
-            return context.getResources().getString(R.string.reader);
+            return context.getString(R.string.reader);
         }
     }
 

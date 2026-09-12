@@ -56,11 +56,11 @@ public class Tale{
     }
 
     public String getReader() {
-        return ActivityTales.getActivity().getResources().getString(readerId);
+        return ActivityTales.getActivity().getString(readerId);
     }
 
     public String getTitle() {
-        return ActivityTales.getActivity().getResources().getString(titleId);
+        return ActivityTales.getActivity().getString(titleId);
     }
 
     private View getTaleView() {
@@ -250,7 +250,7 @@ public class Tale{
     private String stream(int tale) {
         return isDownloaded(tale)
             ? MainActivity.getActivity().getFilesDir() + "/" + fileName(tale)
-            : ActivityTales.getActivity().getResources().getString(R.string.gitTaleUrl, tale);
+            : ActivityTales.getActivity().getString(R.string.gitTaleUrl, tale);
     }
 
     public void download() {
