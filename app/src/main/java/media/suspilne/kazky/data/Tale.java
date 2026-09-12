@@ -20,6 +20,7 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.activities.MainActivity;
 import media.suspilne.kazky.activities.ActivityTales;
 import media.suspilne.kazky.helpers.ImageHelper;
+import media.suspilne.kazky.helpers.StringHelper;
 
 public class Tale{
     public int id;
@@ -114,6 +115,12 @@ public class Tale{
 
     boolean matchesFilter(String filter) {
         filter = filter.toLowerCase();
+        String reader = StringHelper.substringTo(filter, ",").trim();
+        String title = StringHelper.substringFrom(filter, ",").trim();
+
+        if (reader != "")
+            return getTitle().toLowerCase().contains(title) && getReader().toLowerCase().contains(reader);
+
         return getTitle().toLowerCase().contains(filter) || getReader().toLowerCase().contains(filter);
     }
 

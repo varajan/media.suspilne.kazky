@@ -12,7 +12,6 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.helpers.ListHelper;
 
 public class Tales {
-    public static boolean getTalesCountUpdated() { return SettingsHelper.getBoolean("tales.count.updated"); }
     public static void setTalesCountUpdated(boolean value) {SettingsHelper.setBoolean("tales.count.updated", value);}
 
     public static boolean getShowCategory(String filterPrefix, String category) { return SettingsHelper.getBoolean(filterPrefix + "_show_" + category); }

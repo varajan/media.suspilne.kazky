@@ -65,7 +65,7 @@ public class Reader {
     }
 
     public String getName() {
-        return MainActivity.getActivity().getResources().getString(name);
+        return MainActivity.getActivity().getString(name);
     }
     public String getDescription() {
         return MainActivity.getActivity().getResources().getString(description);

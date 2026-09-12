@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import media.suspilne.kazky.data.Reader;
 import media.suspilne.kazky.data.Readers;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tales;
+import media.suspilne.kazky.helpers.StringHelper;
 
 public class ActivityReaders extends ListActivity {
     @Override
@@ -44,7 +46,18 @@ public class ActivityReaders extends ListActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("returnToReaders", true);
 
-        Tales.setFilter(fromReadersFilter, view.getTag().toString());
+        String readerName = view.getTag().toString();
+        TextView readerView = findViewById(R.id.itemsList).findViewWithTag(readerName).findViewById(R.id.description);
+        String readerInfo = readerView.getText().toString();
+        String talesFilter = Tales.getFilter(activityName);
+        String readerFilter = StringHelper.containsIgnoreCase(readerName, talesFilter) || StringHelper.containsIgnoreCase(readerInfo, talesFilter)
+                ? ""
+                : talesFilter;
+
+        String filter = readerName + ", " + readerFilter;
+        filter = StringHelper.trim(filter, ",");
+
+        Tales.setFilter(fromReadersFilter, filter);
         Tales.setShowOnlyFavorite(fromReadersFilter,Tales.getShowOnlyFavorite(activityName));
 
         for (final Integer categoryId : categories) {

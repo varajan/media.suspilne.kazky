@@ -41,8 +41,6 @@ import media.suspilne.kazky.tasks.DownloadTask;
 import media.suspilne.kazky.player.MediaVolume;
 import media.suspilne.kazky.player.PlayerService;
 import media.suspilne.kazky.R;
-import media.suspilne.kazky.data.Reader;
-import media.suspilne.kazky.data.Readers;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
@@ -260,7 +258,6 @@ public abstract class MainActivity extends AppCompatActivity
         setTitle();
         resetQuitTimeout();
         showErrorMessage();
-        updateTalesCountPerReader();
         checkForUpdates();
     }
 
@@ -452,26 +449,6 @@ public abstract class MainActivity extends AppCompatActivity
             .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoriteTales", true); download();})
             .setNegativeButton(R.string.no, null)
             .show();
-    }
-
-    // count tales, that match filter/categories
-    private void updateTalesCountPerReader() {
-        return;
-
-//        if (Tales.getTalesCountUpdated()) return;
-//
-//        for (Reader reader: new Readers().Readers) {
-//            int count = 0;
-//
-//            for (Tale tale : new Tales().getTalesList()) {
-//                if (!tale.getReader().equals(reader.getName())) continue;
-//                count++;
-//            }
-//
-//            SettingsHelper.setInt(reader.getName(), count);
-//        }
-//
-//        Tales.setTalesCountUpdated(true);
     }
 
     private void update() {

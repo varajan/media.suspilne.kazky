@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.data.Tales;
 import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.helpers.StringHelper;
 
 public abstract class ListActivity extends MainActivity {
     protected String activityName;
@@ -126,10 +127,7 @@ public abstract class ListActivity extends MainActivity {
         if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
                 .map(this::getString)
                 .collect(Collectors.joining(", "));
-        searchFieldText = searchFieldText
-                .trim()
-                .replaceAll("^,+|,+$", "")
-                .trim();
+        searchFieldText = StringHelper.trim(searchFieldText, ",");
 
         return "⌕ " + searchFieldText;
     }
