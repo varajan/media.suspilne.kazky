@@ -21,6 +21,7 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import media.suspilne.kazky.R;
+import media.suspilne.kazky.data.Readers;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
@@ -34,7 +35,8 @@ public class ActivitySettings extends MainActivity {
     private Switch parentLock;
 
     private Switch showBigImages;
-    private RadioGroup sorting;
+    private RadioGroup sortingTales;
+    private RadioGroup sortingReaders;
     private Switch groupByReader;
     private Switch skipIntro;
 
@@ -59,12 +61,14 @@ public class ActivitySettings extends MainActivity {
         volumeTimeout = this.findViewById(R.id.volumeControlTimeout);
 
         showBigImages = this.findViewById(R.id.showBigImages);
-        sorting = this.findViewById(R.id.sortingTales);
+        sortingTales = this.findViewById(R.id.sortingTales);
+        sortingReaders = this.findViewById(R.id.sortingReaders);
         groupByReader = this.findViewById(R.id.groupByReader);
         skipIntro = this.findViewById(R.id.skipIntro);
 
         setColorsAndState();
-        setSorting();
+        setTalesSorting();
+        setReaderSorting();
 
         fontColor.setOnCheckedChangeListener((buttonView, isChecked) -> updateColor(isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
@@ -170,8 +174,8 @@ public class ActivitySettings extends MainActivity {
         }
     }
 
-    private void setSorting() {
-        switch (sorting.getCheckedRadioButtonId()) {
+    private void setTalesSorting() {
+        switch (sortingTales.getCheckedRadioButtonId()) {
             case R.id.shuffle:
                 SettingsHelper.setString("sorting", "shuffle");
                 groupByReader.setVisibility(View.GONE);
@@ -195,6 +199,11 @@ public class ActivitySettings extends MainActivity {
 
         setColorsAndState();
         new Tales().setTalesList();
+    }
+    private void setReaderSorting() {
+        boolean isAscSorted = sortingReaders.getCheckedRadioButtonId() == R.id.sortByName;
+        Readers.setAscSorting(isAscSorted);
+        setColorsAndState();
     }
 
     private void doDownloadAll() {
@@ -336,10 +345,11 @@ public class ActivitySettings extends MainActivity {
         parentLock.setTextColor(isParentLock ? activeColor : inactiveColor);
         parentLock.setChecked(isParentLock);
 
-        setSortingState();
+        setTalesSortingState();
+        setReadersSortingState();
     }
 
-    private void setSortingState() {
+    private void setTalesSortingState() {
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
 
@@ -348,31 +358,44 @@ public class ActivitySettings extends MainActivity {
         ((RadioButton)findViewById(R.id.sort19)).setTextColor(inactiveColor);
         ((RadioButton)findViewById(R.id.sort91)).setTextColor(inactiveColor);
 
-        sorting.setOnCheckedChangeListener(null);
+        sortingTales.setOnCheckedChangeListener(null);
 
         switch (SettingsHelper.getString("sorting")) {
             case "sort19":
                 ((RadioButton)findViewById(R.id.sort19)).setTextColor(activeColor);
-                sorting.check(R.id.sort19);
+                sortingTales.check(R.id.sort19);
                 break;
 
             case "sort91":
                 ((RadioButton)findViewById(R.id.sort91)).setTextColor(activeColor);
-                sorting.check(R.id.sort91);
+                sortingTales.check(R.id.sort91);
                 break;
 
             case "sortAsc":
                 ((RadioButton)findViewById(R.id.sortAsc)).setTextColor(activeColor);
-                sorting.check(R.id.sortAsc);
+                sortingTales.check(R.id.sortAsc);
                 break;
 
             default:
                 ((RadioButton)findViewById(R.id.shuffle)).setTextColor(activeColor);
-                sorting.check(R.id.shuffle);
+                sortingTales.check(R.id.shuffle);
                 break;
         }
 
-        sorting.setOnCheckedChangeListener((x, y) -> setSorting());
+        sortingTales.setOnCheckedChangeListener((x, y) -> setTalesSorting());
+    }
+
+    private void setReadersSortingState() {
+        int activeColor   = SettingsHelper.getColor();
+        int inactiveColor = ContextCompat.getColor(this, R.color.gray);
+        boolean isAscSorted = Readers.isAscSorted();
+
+        sortingReaders.setOnCheckedChangeListener(null);
+        sortingReaders.check(isAscSorted ? R.id.sortByName : R.id.sortByTalesCount);
+        ((RadioButton)findViewById(R.id.sortByName)).setTextColor(isAscSorted ? activeColor : inactiveColor);
+        ((RadioButton)findViewById(R.id.sortByTalesCount)).setTextColor(isAscSorted ? inactiveColor : activeColor);
+
+        sortingReaders.setOnCheckedChangeListener((x, y) -> setReaderSorting());
     }
 
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {

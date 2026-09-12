@@ -20,6 +20,10 @@ public class Readers {
         Readers = items;
     }
 
+    public static void setAscSorting(boolean value) {
+        SettingsHelper.setBoolean("isAscSorted", value);
+    }
+
     public static boolean isAscSorted() {
         return SettingsHelper.getBoolean("isAscSorted");
     }
