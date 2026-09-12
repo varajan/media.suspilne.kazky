@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.player;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +8,12 @@ import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
+
+import media.suspilne.kazky.helpers.ImageHelper;
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.data.Tale;
+import media.suspilne.kazky.data.Tales;
+import media.suspilne.kazky.activities.ActivityTales;
 
 public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescriptionAdapter{
     private Context context;

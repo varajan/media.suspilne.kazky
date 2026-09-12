@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.player;
 
 import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK;
 
@@ -23,6 +23,12 @@ import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
+
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.data.Tale;
+import media.suspilne.kazky.data.Tales;
+import media.suspilne.kazky.activities.MainActivity;
 
 public class PlayerService extends IntentService {
     private ExoPlayer player;
@@ -84,7 +90,7 @@ public class PlayerService extends IntentService {
                 .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
                 .build();
 
-        player = new ExoPlayer.Builder(ActivityMain.getActivity()).build();
+        player = new ExoPlayer.Builder(MainActivity.getActivity()).build();
         player.setMediaItem(mediaItem);
         player.prepare();
         player.setAudioAttributes(audioAttributes, true);

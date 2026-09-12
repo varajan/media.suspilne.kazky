@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.data;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.activities.MainActivity;
+import media.suspilne.kazky.activities.ActivityReaders;
+import media.suspilne.kazky.helpers.ImageHelper;
 
 public class Reader {
     public Integer name;
@@ -22,7 +28,7 @@ public class Reader {
         this.talesCount = getTalesCount();
     }
 
-    boolean matchesFilter(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+    public boolean matchesFilter(String filter, boolean showOnlyFavorite, List<Integer> categories) {
         List<Integer> categoryTales = Categories.Items.stream()
                 .filter(c -> categories.contains(c.title))
                 .flatMap(c -> c.taleIds.stream())
@@ -45,25 +51,25 @@ public class Reader {
         return ActivityReaders.getActivity().findViewById(R.id.itemsList).findViewWithTag(getName());
     }
 
-    void hide() { getView().setVisibility(View.GONE); }
+    public void hide() { getView().setVisibility(View.GONE); }
 
-    void show() { getView().setVisibility(View.VISIBLE); }
+    public void show() { getView().setVisibility(View.VISIBLE); }
 
     public String getName() {
-        return ActivityMain.getActivity().getResources().getString(name);
+        return MainActivity.getActivity().getResources().getString(name);
     }
     public String getDescription() {
-        return ActivityMain.getActivity().getResources().getString(description);
+        return MainActivity.getActivity().getResources().getString(description);
     }
 
     private View getReaderView() {
-        return ActivityMain.getActivity().findViewById(R.id.itemsList).findViewWithTag(getName());
+        return MainActivity.getActivity().findViewById(R.id.itemsList).findViewWithTag(getName());
     }
 
     public void setViewDetails(Context context) {
         try
         {
-            Bitmap photo = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), this.photo, 100, 100);
+            Bitmap photo = ImageHelper.getBitmapFromResource(MainActivity.getActivity().getResources(), this.photo, 100, 100);
             photo = this.photo.equals(R.mipmap.logo) ? photo : ImageHelper.getCircularDrawable(photo);
             int color = SettingsHelper.getColor();
 

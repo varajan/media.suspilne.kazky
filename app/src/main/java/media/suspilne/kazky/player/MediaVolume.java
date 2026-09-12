@@ -1,7 +1,9 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.player;
 
 import android.content.Context;
 import android.media.AudioManager;
+
+import media.suspilne.kazky.activities.MainActivity;
 
 public class MediaVolume {
     AudioManager manager;
@@ -12,7 +14,7 @@ public class MediaVolume {
     }
 
     public MediaVolume() {
-        this.context = ActivityMain.getActivity();
+        this.context = MainActivity.getActivity();
         manager = (AudioManager) this.context.getSystemService(Context.AUDIO_SERVICE);
     }
 

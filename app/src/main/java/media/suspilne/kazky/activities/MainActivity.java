@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,7 +14,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,10 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.provider.Settings;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,18 +34,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.stream.Collectors;
 
-public class ActivityMain extends AppCompatActivity
+import media.suspilne.kazky.tasks.DownloadTask;
+import media.suspilne.kazky.player.MediaVolume;
+import media.suspilne.kazky.player.PlayerService;
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.data.Reader;
+import media.suspilne.kazky.data.Readers;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.data.Tale;
+import media.suspilne.kazky.data.Tales;
+
+public abstract class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    protected String activityName;
-    protected String fromReadersFilter = "fromReadersFilter";
-    protected List<Integer> categories;
 
     private NotificationManager notificationManager;
     private Timer quitTimer;
@@ -82,7 +80,7 @@ public class ActivityMain extends AppCompatActivity
     protected void resetVolumeReduceTimer() {
         stopVolumeReduceTimer();
         if (!SettingsHelper.getBoolean("volumeControl")) return;
-        if (!isTalePlaying() && !isRadioPlaying()) return;
+        if (!isTalePlaying()) return;
 
         int timeout = SettingsHelper.getInt("volumeMinutes");
         timeout = timeout == 0 ? 5 : timeout;
@@ -110,7 +108,7 @@ public class ActivityMain extends AppCompatActivity
         public void run() {
             stopVolumeReduceTimer();
 
-            if (isRadioPlaying()) {
+            if (isTalePlaying()) {
                 Intent intent = new Intent();
                 intent.setAction(SettingsHelper.application);
                 intent.putExtra("code", "StopPlay");
@@ -144,118 +142,9 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-    protected final List<Integer> showOnlyFavorite = Collections.singletonList(R.string.showOnlyFavorite);
-
-    protected void showFilterDialog(Runnable filter) {
-        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
-        EditText searchField = dialogView.findViewById(R.id.searchField);
-        LinearLayout showOnlyFavoriteContainer = dialogView.findViewById(R.id.favoritesGroup);
-        LinearLayout categoriesContainer = dialogView.findViewById(R.id.categoriesGroup);
-
-        List<String> onlyFavorite = Tales.getShowOnlyFavorite(activityName)
-                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
-                : Collections.emptyList();
-        List<String> checkedCategories = categories.stream()
-                .map(this::getResourceString)
-                .filter(c -> Tales.getShowCategory(activityName, c))
-                .collect(Collectors.toList());
-
-        String initialSearchText = Tales.getFilter(activityName);
-        searchField.setText(initialSearchText);
-        populateContainer(showOnlyFavoriteContainer, showOnlyFavorite, onlyFavorite);
-        populateContainer(categoriesContainer, categories, checkedCategories);
-
-        new android.app.AlertDialog.Builder(this)
-                .setTitle(R.string.filtersDialog)
-                .setView(dialogView)
-                .setPositiveButton(R.string.apply, (dialog, which) -> {
-                    String searchText = searchField.getText().toString();
-                    List<String> showOnlyFavorites = getSelectedItems(showOnlyFavoriteContainer);
-                    List<String> selectedCategories = getSelectedItems(categoriesContainer);
-
-                    saveFilters(searchText, !showOnlyFavorites.isEmpty(), selectedCategories, categories);
-                    filter.run();
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
-    }
-
-    protected void resetFilter() { resetFilter(null); }
-
-    protected void resetFilter(Runnable filter) {
-        List<String> categoryNames = categories.stream().map(this::getString).toList();
-        saveFilters("", false, categoryNames, categories);
-        if (filter != null) filter.run();
-    }
-
-    protected void populateContainer(LinearLayout container, List<Integer> items, List<String> selected) {
-        container.removeAllViews();
-        for (@StringRes int item : items) {
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(item);
-
-            String itemText = this.getResourceString(item);
-            if (selected.contains(itemText)) checkBox.setChecked(true);
-            container.addView(checkBox);
-        }
-    }
-
-    protected List<String> getSelectedItems(LinearLayout container) {
-        List<String> selected = new ArrayList<>();
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View view = container.getChildAt(i);
-            if (view instanceof CheckBox) {
-                CheckBox cb = (CheckBox) view;
-                if (cb.isChecked()) {
-                    selected.add(cb.getText().toString());
-                }
-            }
-        }
-        return selected;
-    }
-
-    protected void saveFilters(String filter, boolean showOnlyFavorites, List<String> selectedCategories, List<Integer> categories) {
-        Tales.setFilter(activityName, filter);
-        Tales.setShowOnlyFavorite(activityName, showOnlyFavorites);
-
-        for (final Integer categoryId : categories) {
-            String category = getResourceString(categoryId);
-            boolean categoryEnabled = selectedCategories.contains(category);
-            Tales.setShowCategory(activityName, category, categoryEnabled);
-        }
-    }
-
-    protected String getSearchFieldText(List<Integer> allCategoryIds) {
-        String filter = Tales.getFilter(activityName);
-        String searchFieldText = "";
-        List<Integer> categories = allCategoryIds.stream()
-                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
-                .collect(Collectors.toList());
-        boolean allCategoriesSelected = categories.equals(allCategoryIds);
-        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
-
-        searchFieldText += filter;
-        if (showOnlyFavorite) { searchFieldText += ", " + this.getString(R.string.favoriteTales); }
-        if (!allCategoriesSelected) searchFieldText += ", " + categories.stream()
-                .map(this::getString)
-                .collect(Collectors.joining(", "));
-        searchFieldText = searchFieldText
-                .trim()
-                .replaceAll("^,+|,+$", "")
-                .trim();
-
-        return "⌕ " + searchFieldText;
-    }
-
     protected boolean isTalePlaying() {
         return isServiceRunning()
                 && SettingsHelper.getString("StreamType").equals(getString(R.string.tales))
-                && !Tales.isPaused();
-    }
-
-    protected boolean isRadioPlaying() {
-        return isServiceRunning()
-                && SettingsHelper.getString("StreamType").equals(getString(R.string.radio))
                 && !Tales.isPaused();
     }
 
@@ -334,7 +223,7 @@ public class ActivityMain extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ActivityMain.activity = this;
+        MainActivity.activity = this;
         readSettingsFromGit();
 
         switch (currentView) {
@@ -380,7 +269,7 @@ public class ActivityMain extends AppCompatActivity
         super.onResume();
         showErrorMessage();
 
-        ActivityMain.activity = this;
+        MainActivity.activity = this;
     }
 
     private void showErrorMessage() {
@@ -556,7 +445,7 @@ public class ActivityMain extends AppCompatActivity
 
         SettingsHelper.setBoolean("suggestToDownloadFavoriteTales", true);
 
-        new AlertDialog.Builder(ActivityMain.this)
+        new AlertDialog.Builder(MainActivity.this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.download)
             .setMessage(getString(R.string.suggestToDownloadFavorite, favorites))

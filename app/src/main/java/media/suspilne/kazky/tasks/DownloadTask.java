@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.tasks;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,19 +15,25 @@ import java.net.URL;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.data.Tale;
+import media.suspilne.kazky.activities.MainActivity;
+import media.suspilne.kazky.helpers.ImageHelper;
+
 public class DownloadTask extends AsyncTask<Tale, String, String> {
     private NotificationManager notificationManager;
     private PendingIntent openApplication;
 
-    private final Drawable image = ContextCompat.getDrawable(ActivityMain.getActivity(), R.mipmap.logo);
+    private final Drawable image = ContextCompat.getDrawable(MainActivity.getActivity(), R.mipmap.logo);
     private int count;
     private int current;
-    static int IN_PROGRESS = 22;
-    static int COMPLETED = 23;
-    static int WITH_ERROR = 24;
+    public static int IN_PROGRESS = 22;
+    public static int COMPLETED = 23;
+    public static int WITH_ERROR = 24;
 
     public static void cancelAllNotifications() {
-        NotificationManager notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) MainActivity.getActivity().getSystemService(NOTIFICATION_SERVICE);
 
         notificationManager.cancel(IN_PROGRESS);
         notificationManager.cancel(COMPLETED);
@@ -35,9 +41,9 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     }
 
     private void showProgressNotification(String text) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
             .setSmallIcon(R.drawable.ic_cloud_download)
-            .setContentTitle(ActivityMain.getActivity().getString(R.string.downloading))
+            .setContentTitle(MainActivity.getActivity().getString(R.string.downloading))
             .setContentText(text)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -53,9 +59,9 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         if (count == 0) {
             cancelAllNotifications();
         } else {
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
                     .setSmallIcon(R.drawable.ic_cloud_done)
-                    .setContentTitle(ActivityMain.getActivity().getString(R.string.download_completed, count))
+                    .setContentTitle(MainActivity.getActivity().getString(R.string.download_completed, count))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setLargeIcon(ImageHelper.getBitmap(image))
@@ -67,9 +73,9 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     }
 
     private void showFailedNotification(String errorMessage) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ActivityMain.getActivity(), SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
             .setSmallIcon(R.drawable.ic_error)
-            .setContentTitle(ActivityMain.getActivity().getString(R.string.an_error_occurred))
+            .setContentTitle(MainActivity.getActivity().getString(R.string.an_error_occurred))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setLargeIcon(ImageHelper.getBitmap(image))
@@ -81,7 +87,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     }
 
     protected void onPreExecute() {
-        notificationManager = (NotificationManager) ActivityMain.getActivity().getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) MainActivity.getActivity().getSystemService(NOTIFICATION_SERVICE);
         cancelAllNotifications();
 
         NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
@@ -90,11 +96,11 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
 
         notificationManager.createNotificationChannel(notificationChannel);
 
-        Intent notificationIntent = new Intent(ActivityMain.getActivity(), ActivityMain.getActivity().getClass());
+        Intent notificationIntent = new Intent(MainActivity.getActivity(), MainActivity.getActivity().getClass());
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         int flag = android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.R ? 0 : PendingIntent.FLAG_IMMUTABLE;
-        openApplication = PendingIntent.getActivity(ActivityMain.getActivity(), 0, notificationIntent, flag);
+        openApplication = PendingIntent.getActivity(MainActivity.getActivity(), 0, notificationIntent, flag);
     }
 
     @Override
@@ -129,7 +135,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
                 long required = 100 * 1024 * 1024;
 
                 if (freeSpace < required) {
-                    throw new Exception(ActivityMain.getActivity().getString(
+                    throw new Exception(MainActivity.getActivity().getString(
                         R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
                 }
 

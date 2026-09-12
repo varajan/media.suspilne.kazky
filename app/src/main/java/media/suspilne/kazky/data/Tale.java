@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.data;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -14,6 +14,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
+import media.suspilne.kazky.Kazky;
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.activities.MainActivity;
+import media.suspilne.kazky.activities.ActivityTales;
+import media.suspilne.kazky.helpers.ImageHelper;
+
 public class Tale{
     public int id;
     public int introTime;
@@ -21,10 +28,10 @@ public class Tale{
     private int titleId;
     private int readerId;
     public int image;
-    boolean isFavorite;
-    boolean isDownloaded;
-    String stream;
-    String fileName;
+    public boolean isFavorite;
+    public boolean isDownloaded;
+    public String stream;
+    public String fileName;
     String duration;
 
     Tale() { id = -1; }
@@ -47,11 +54,11 @@ public class Tale{
         return readerId;
     }
 
-    String getReader() {
+    public String getReader() {
         return ActivityTales.getActivity().getResources().getString(readerId);
     }
 
-    String getTitle() {
+    public String getTitle() {
         return ActivityTales.getActivity().getResources().getString(titleId);
     }
 
@@ -64,7 +71,7 @@ public class Tale{
         }
     }
 
-    void resetFavorite(String filterPrefix) {
+    public void resetFavorite(String filterPrefix) {
         boolean downloadAll = SettingsHelper.getBoolean("downloadAllTales");
         boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoriteTales");
 
@@ -88,7 +95,7 @@ public class Tale{
         }
     }
 
-    boolean shouldBeShown(boolean showOnlyFavorite, List<Integer> categories, String filter) {
+    public boolean shouldBeShown(boolean showOnlyFavorite, List<Integer> categories, String filter) {
         return matchesFilter(filter)
                 && (!showOnlyFavorite || isFavorite)
                 && shouldBeShown(categories);
@@ -110,7 +117,7 @@ public class Tale{
         return getTitle().toLowerCase().contains(filter) || getReader().toLowerCase().contains(filter);
     }
 
-    void scrollIntoView() {
+    public void scrollIntoView() {
         try
         {
             ScrollView scrollView = ActivityTales.getActivity().findViewById(R.id.scrollView);
@@ -130,24 +137,24 @@ public class Tale{
         }
     }
 
-    void hide() {
+    public void hide() {
         View tale = getTaleView();
         if (tale != null) tale.setVisibility(View.GONE);
     }
 
-    void show() {
+    public void show() {
         View tale = getTaleView();
         if (tale != null) tale.setVisibility(View.VISIBLE);
     }
 
-    void setViewDetails() {
+    public void setViewDetails() {
         try
         {
             Bitmap preview = null;
             View taleView = getTaleView();
 
             try {
-                preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image);
+                preview = ImageHelper.getBitmapFromResource(MainActivity.getActivity().getResources(), image);
             }
             catch(OutOfMemoryError outOfMemoryError) {
                 Kazky.logError("Failed to load tale #" + id + " preview image", false);
@@ -180,14 +187,14 @@ public class Tale{
         }
     }
 
-    void setColoringDetails(boolean showBigImages) {
+    public void setColoringDetails(boolean showBigImages) {
         try
         {
             Bitmap preview = null;
             View taleView = getTaleView();
 
             try {
-                preview = ImageHelper.getBitmapFromResource(ActivityMain.getActivity().getResources(), image);
+                preview = ImageHelper.getBitmapFromResource(MainActivity.getActivity().getResources(), image);
             }
             catch(OutOfMemoryError outOfMemoryError) {
                 Kazky.logError("Failed to load tale #" + id + " preview image", false);
@@ -227,7 +234,7 @@ public class Tale{
 
     private boolean isDownloaded(int tale) {
         try{
-            return ActivityMain.getActivity().getFileStreamPath(fileName(tale)).exists();
+            return MainActivity.getActivity().getFileStreamPath(fileName(tale)).exists();
         } catch (Exception ex) {
             return false;
         }
@@ -235,7 +242,7 @@ public class Tale{
 
     private String stream(int tale) {
         return isDownloaded(tale)
-            ? ActivityMain.getActivity().getFilesDir() + "/" + fileName(tale)
+            ? MainActivity.getActivity().getFilesDir() + "/" + fileName(tale)
             : ActivityTales.getActivity().getResources().getString(R.string.gitTaleUrl, tale);
     }
 
@@ -244,7 +251,7 @@ public class Tale{
     }
 
     public void deleteFile() {
-        ActivityMain.getActivity().deleteFile(fileName);
+        MainActivity.getActivity().deleteFile(fileName);
         setDownloadedIcon();
     }
 

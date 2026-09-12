@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.data;
 
 import java.util.Arrays;
 import java.util.List;

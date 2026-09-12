@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,7 +20,12 @@ import androidx.core.content.ContextCompat;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
-public class ActivitySettings extends ActivityMain {
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.data.Tale;
+import media.suspilne.kazky.data.Tales;
+
+public class ActivitySettings extends MainActivity {
     private Switch fontColor;
     private Switch downloadAllTales;
     private Switch downloadFavoriteTales;

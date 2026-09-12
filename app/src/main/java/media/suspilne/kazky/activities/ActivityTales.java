@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.activities;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -23,7 +23,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ActivityTales extends ActivityMain {
+import media.suspilne.kazky.data.Categories;
+import media.suspilne.kazky.player.PlayerService;
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.data.Tale;
+import media.suspilne.kazky.data.Tales;
+
+public class ActivityTales extends ListActivity implements IListActivity {
     private Tales tales;
     private LinearLayout TalesList;
     private TextView titleFld;

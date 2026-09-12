@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,7 +15,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ActivityReaders extends ActivityMain {
+import media.suspilne.kazky.data.Categories;
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.data.Reader;
+import media.suspilne.kazky.data.Readers;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.data.Tales;
+
+public class ActivityReaders extends ListActivity implements IListActivity {
     private LinearLayout ReadersList;
     private TextView titleFld;
     private TextView nothing;

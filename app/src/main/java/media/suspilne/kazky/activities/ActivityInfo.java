@@ -1,9 +1,12 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.activities;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class ActivityInfo extends ActivityMain {
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+
+public class ActivityInfo extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_info);
         currentView = R.id.info_menu;

@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.data;
 
 public class Range {
     public int from, to;

@@ -1,8 +1,11 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.data;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
 
 public class Readers {
     public List<Reader> Readers;

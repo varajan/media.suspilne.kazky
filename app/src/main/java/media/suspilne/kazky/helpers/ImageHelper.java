@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.helpers;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

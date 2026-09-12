@@ -1,4 +1,4 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.data;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -7,7 +7,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-class Tales {
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.helpers.ListHelper;
+
+public class Tales {
     public static boolean getTalesCountUpdated() { return SettingsHelper.getBoolean("tales.count.updated"); }
     public static void setTalesCountUpdated(boolean value) {SettingsHelper.setBoolean("tales.count.updated", value);}
 
@@ -58,7 +62,7 @@ class Tales {
         return SettingsHelper.getBoolean("tales.paused");
     }
 
-    Tale getPrevious() {
+    public Tale getPrevious() {
         boolean skip = true;
         int nowPlaying = getNowPlaying();
         List<String> ids = Arrays.asList( SettingsHelper.getString("filteredTalesList").split(";") );
@@ -76,7 +80,7 @@ class Tales {
         return ids.isEmpty() ? new Tale() : getById(ids.get(0));
     }
 
-    Tale getNext() {
+    public Tale getNext() {
         boolean skip = true;
         int nowPlaying = getNowPlaying();
         List<String> ids = ListHelper.removeBlank(SettingsHelper.getString("filteredTalesList").split(";"));
@@ -97,7 +101,7 @@ class Tales {
         return getById(Integer.parseInt(id));
     }
 
-    Tale getById(int id) {
+    public Tale getById(int id) {
         for (Tale tale:items) {
             if (tale.id == id) return tale;
         }
@@ -171,7 +175,7 @@ class Tales {
         return result;
     }
 
-    int getFavoriteCount() {
+    public int getFavoriteCount() {
         int result = 0;
 
         for(Tale tale:items) if (tale.isFavorite) result++;

@@ -1,7 +1,9 @@
-package media.suspilne.kazky;
+package media.suspilne.kazky.data;
 
 import java.util.Arrays;
 import java.util.List;
+
+import media.suspilne.kazky.R;
 
 public class Categories {
     private static final Range[] ukrainianTales = {
