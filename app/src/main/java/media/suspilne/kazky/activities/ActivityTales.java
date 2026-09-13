@@ -133,7 +133,7 @@ public class ActivityTales extends ListActivity {
         categories = Categories.NameIds;
 
         activityName = returnToReaders ? fromReadersFilter : this.getString(R.string.tales);
-        boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
+        boolean nothingToShow = ! activityName.equals(fromReadersFilter) && SettingsHelper.getInt(activityName) == View.VISIBLE;
 
         searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
         titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
