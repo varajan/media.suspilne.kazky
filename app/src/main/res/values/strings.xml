@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="requiredSpace">852</string>
-    <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
+<!--    <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>-->
+    <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/categories/tales/%02d.mp3</string>
     <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="app_name">UA: Казки</string>
     <string name="reader_description">%s\nКазок: %d</string>
-    <string name="radio">Радіо</string>
     <string name="tales">Казки</string>
     <string name="settings">Налаштування</string>
     <string name="filter">Фільтри</string>
@@ -17,19 +17,18 @@
     <string name="coloring">Розмальовки</string>
     <string name="readers">Казкарі</string>
     <string name="info">Про програму</string>
-    <string name="radio_description">Радіо хвиля авторських казок українською мовою для дітей</string>
     <string name="description">
         Версія %s\n\n
-        [Казки] - більше сотні казок: слухайте, шукайте по назві чи імені казкаря, позначайте як "улюблені".
+        [Казки] — більше сотні казок: слухайте, шукайте за назвою чи іменем казкаря, фільтруйте за категоріями, показуйте лише улюблені та позначайте казки як «улюблені».
         Збережені на пристрої казки позначені значком 💾\n\n
 
-        [Казкарі] - Шукайте по імені, відсортуйте список за алфавітом або кількістю казок, відкрийте всі казки в один клік.\n\n
+        [Казкарі] — шукайте за іменем та відкривайте всі казки казкаря в один клік.\n\n
 
-        [Розмальовки] - Чорнобілі контурні картинки усіх казок - завнтажуйте і роздрукуйте.\n\n
+       [Розмальовки] — чорно-білі контурні картинки до казок: завантажуйте та роздруковуйте.\n\n
 
-        [Налаштування] - виберіть скачати всі казки чи тільки улюблені, встановіть таймер сну тощо.\n\n
-		
-		[Екран блокування] - керуйте казками не розблоковуючи пристрій: пауза, наступна чи попередня.\n
+        [Налаштування] — керуйте збереженням казок, сортуванням списків, відтворенням та виглядом програми: завантажуйте всі або лише улюблені казки, змінюйте порядок сортування, налаштовуйте таймер сну та інші параметри.\n\n
+
+        [Екран блокування] — керуйте казками без розблокування пристрою: пауза, наступна чи попередня казка.\n
     </string>
     <string name="prev">≪ Назад</string>
     <string name="next">Далі ≫</string>
@@ -41,16 +40,16 @@
     <string name="no">Ні</string>
     <string name="confirm_exit">Вийти з UA: Казки?</string>
     <string name="x_minutes">%s хвилин</string>
-    <string name="no_internet">Відсутній Інтернет!</string>
+    <string name="no_internet">Немає інтернету.</string>
     <string name="sleep_timeout">Таймер сну (зупиняти відтворення)</string>
     <string name="sleep_timeout_text">Зупинити відтворення через %s хв.</string>
     <string name="volume_timeout">Поступово зменшувати гучність</string>
     <string name="volume_timeout_text">Зменшувати гучність кожні %s хв.</string>
     <string name="coloring_download_ask">Зберегти розмальовку в папку Downloads?</string>
     <string name="coloring_download">Розмальовку буде збережено в папку Downloads</string>
-    <string name="no_write_permission">Програма не має дозволу для збереження файлів.</string>
-    <string name="no_post_notifications_permissions">Програма не має дозволу показувати повідомлення, а віддтак і мініплейер.</string>
-    <string name="no_post_notifications_permissions_title">Мініплейер недоступний</string>
+    <string name="no_write_permission">Програма не має дозволу на збереження файлів.</string>
+    <string name="no_post_notifications_permissions">Без дозволу на сповіщення мініплеєр недоступний.</string>
+    <string name="no_post_notifications_permissions_title">Мініплеєр недоступний</string>
     <string name="no_post_notifications_permissions_error">Програма не має дозволу показувати повідомлення.</string>
     <string name="grant_permissions">Відкрити системні налаштування?</string>
     <string name="title">Назва</string>
@@ -61,40 +60,37 @@
     <string name="internationalTales">Казки народів світу</string>
     <string name="bigWorldAnimals">Казки про тварин великого світу</string>
     <string name="modernAuthorTales">Сучасні авторські казки</string>
-
     <string name="showOnlyFavorite">Лише улюблені, відмічені ⭐</string>
     <string name="favoriteTales">Улюблені казки</string>
     <string name="allTales">Усі казки</string>
-    <string name="showOnlyFavoriteOff">Усі казки</string>
     <string name="addedToFavorites">\'%s\' додано до списку \'Улюблені\'</string>
     <string name="removedFromFavorites">\'%s\' видалено зі списку \'Улюблені\'</string>
-    <string name="nothing">Нічого не знайдено.</string>
-    <string name="nothingToShow">Нічого не знайдено.\n\nСпробуйте змінити пошук або фільтри.</string>
+    <string name="nothingToShow">Нічого не знайдено.\n\nСпробуйте змінити параметри пошуку або фільтри.</string>
     <string name="showAll">Показати всі</string>
     <string name="filterTalesHint">Введіть назву чи ім\'я казкаря</string>
     <string name="filterReadersHint">Казкар</string>
     <string name="download_completed">Завантажено казок: %d</string>
     <string name="done">Готово.</string>
-    <string name="an_error_occurred">Сталась помилка.</string>
-    <string name="not_enough_space">Завантаження неможливе. Доступно %s вільного місця, а необхідно мінімум %s</string>
+    <string name="an_error_occurred">сталася помилка.</string>
+    <string name="not_enough_space">Завантаження неможливе. Вільного місця: %s, а потрібно щонайменше %s.</string>
     <string name="download">Завантажити</string>
-    <string name="suggestToDownloadFavorite">У вас %d улюблених казок. Хочете завантажити їх на пристрій і вони будуть доступні офф-лайн?</string>
+    <string name="suggestToDownloadFavorite">У вас %d улюблених казок. Завантажити їх на пристрій, щоб слухати без Інтернету?</string>
     <string name="downloading">Завантаження казок…</string>
     <string name="clear">Видалити</string>
     <string name="continueDownload">Продовжити завантаження?</string>
     <string name="not_all_tales">Не всі казки завантажено.</string>
     <string name="not_downloaded_favorite_tales">Не всі улюблені казки завантажено.</string>
-    <string name="freeSpace">\n(Доступно: %s вільного місця)</string>
+    <string name="freeSpace">\n(Вільного місця: %s)</string>
     <string name="usedSpace">\n(Використано: %s)</string>
     <string name="fontColor">Змінити колір тексту</string>
-    <string name="downloadAllTales">Зберігати всі казки на пристрої</string>
-    <string name="downloadFavoriteTales">Зберігати улюблені казки на пристрої</string>
-    <string name="downloadAllTalesQuestion">Зберігти всі казки на пристрої? Для цього потрібно приблизно %s вільного місця.</string>
-    <string name="downloadFavoriteTalesQuestion">Зберігати тільки улюблені казки на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
+    <string name="downloadAllTales">Зберегти всі казки на пристрої</string>
+    <string name="downloadFavoriteTales">Зберегти улюблені казки на пристрої</string>
+    <string name="downloadAllTalesQuestion">Зберегти всі казки на пристрої? Для цього знадобиться приблизно %s вільного місця.</string>
+    <string name="downloadFavoriteTalesQuestion">Зберегти тільки улюблені казки на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTalesQuestion">Видалити збережені казки? Улюблені казки залишаться на пристрої.</string>
     <string name="clearFavoriteTalesQuestion">Видалити збережені улюблені казки? Надалі для прослуховування буде потрібен Інтернет.</string>
     <string name="newVersion">Доступна нова версія %s!</string>
-    <string name="showBigImages">Великі зображення для Казок\n(Впливає на швидкість роботи)</string>
+    <string name="showBigImages">Великі зображення для Казок\n(впливає на швидкість роботи)</string>
     <string name="groupByReader">Групувати казки за казкарем</string>
     <string name="parentLock">Захистити Налаштування від дітей</string>
     <string name="update">Оновити</string>
@@ -109,7 +105,7 @@
     <string name="sort91">За тривалістю (спершу найдовші)</string>
     <string name="sortAsc">За назвою</string>
     <string name="sortByName">За алфавітом</string>
-    <string name="sortByTalesCount">За кількість казок</string>
+    <string name="sortByTalesCount">За кількістю казок</string>
     <string name="shuffle">Перемішати казки</string>
     <string name="skipIntro">Пропускати мелодію перед казкою</string>
 
