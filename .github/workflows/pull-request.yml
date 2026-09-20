@@ -6,6 +6,5 @@ jobs:
   ai:
     if: ${{ !github.event.pull_request.draft }}
     name: AI
-    needs: smoke
     uses: ./.github/workflows/review.yml
     secrets: inherit
