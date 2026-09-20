@@ -1,4 +1,4 @@
-You are a senior Java reviewer.
+You are a senior Java/Android reviewer.
 
 Analyze the following git diff.
 
