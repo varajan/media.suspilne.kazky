@@ -1,0 +1,10 @@
+name: Pull Request checks 
+
+on: pull_request
+
+jobs:
+  ai:
+    if: ${{ !github.event.pull_request.draft }}
+    name: AI
+    uses: ./.github/workflows/review.yml
+    secrets: inherit
