@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.core.content.ContextCompat;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,12 +108,11 @@ public class ActivityTales extends ListActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (returnToReaders && !drawer.isDrawerOpen(GravityCompat.START)) {
+    protected void onBackPressedCustomAction() {
+        if (returnToReaders) {
             finish();
         } else {
-            super.onBackPressed();
+            super.onBackPressedCustomAction();
         }
     }
 
@@ -146,6 +143,7 @@ public class ActivityTales extends ListActivity {
         continueDownloadTales();
         suggestToDownloadFavoriteTales();
         registerReceiver();
+        setupBackPressedHandler();
     }
 
     private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
@@ -176,7 +174,7 @@ public class ActivityTales extends ListActivity {
             Intent stream = new Intent(this, PlayerService.class);
             stream.putExtra("tale.id", tale.id);
             stream.putExtra("type", getString(R.string.tales));
-            startForegroundService(stream);
+            ContextCompat.startForegroundService(this, stream);
         }
 
         setPlayBtnIcon(false);
@@ -212,7 +210,13 @@ public class ActivityTales extends ListActivity {
         try{
             IntentFilter filter = new IntentFilter();
             filter.addAction(SettingsHelper.application);
-            this.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+
+            ContextCompat.registerReceiver(
+                    this,
+                    receiver,
+                    filter,
+                    ContextCompat.RECEIVER_EXPORTED
+            );
         }catch (Exception e) {
             // nothing
         }

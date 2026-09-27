@@ -1,7 +1,5 @@
 package media.suspilne.kazky.player;
 
-import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK;
-
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,11 +8,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ServiceInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ServiceCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -55,13 +57,16 @@ public class PlayerService extends IntentService {
     public void onCreate() {
         registerReceiver();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
 
-        if (channel == null) {
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setSound(null, null);
-            notificationChannel.setShowBadge(false);
-            notificationManager.createNotificationChannel(notificationChannel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
+
+            if (channel == null){
+                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationChannel.setSound(null, null);
+                notificationChannel.setShowBadge(false);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
         }
     }
 
@@ -181,11 +186,21 @@ public class PlayerService extends IntentService {
             PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
                 @Override
                 public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                    startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
+                    if (ongoing) {
+                        ServiceCompat.startForeground(
+                                PlayerService.this,
+                                notificationId,
+                                notification,
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                        );
+                    } else {
+                        ServiceCompat.stopForeground(PlayerService.this, ServiceCompat.STOP_FOREGROUND_DETACH);
+                    }
                 }
 
                 @Override
                 public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
+                    ServiceCompat.stopForeground(PlayerService.this, ServiceCompat.STOP_FOREGROUND_REMOVE);
                     stopSelf();
                 }
             };
@@ -229,8 +244,13 @@ public class PlayerService extends IntentService {
             filter.addAction(SettingsHelper.application + "next");
             filter.addAction(SettingsHelper.application + "stop");
 
-            this.registerReceiver(receiver, filter);
-        }catch (Exception e) { /*nothing*/ }
+            ContextCompat.registerReceiver(
+                    this,
+                    receiver,
+                    filter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+            );
+        } catch (Exception e) { /*nothing*/ }
     }
 
     private void unregisterReceiver() {

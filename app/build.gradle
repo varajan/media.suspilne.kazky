@@ -7,10 +7,10 @@ android {
 
     defaultConfig {
         applicationId "media.suspilne.kazky"
-        minSdk = 35
+        minSdk = 24
         targetSdk 36
-        versionCode 143
-        versionName "4.142.0"
+        versionCode 144
+        versionName "5.142.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
