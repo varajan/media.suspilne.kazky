@@ -335,15 +335,15 @@ public class Tales {
 
             new Tale(141, "12:13", 3500, 0, R.string.tale_141, R.string.taras_kompanichenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t141 : R.drawable.t141_min),
             new Tale(142, "06:27", 3000, 0, R.string.tale_142, R.string.vlad_rudnitsky, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t142 : R.drawable.t142_min),
-            new Tale(143, "05:46", 5000, 0, R.string.tale_143, R.string.sofia_nersesian, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t143 : R.drawable.t143_min),
-            new Tale(144, "06:35", 5000, 0, R.string.tale_144, R.string.vitaliia, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t144 : R.drawable.t144_min),
-            new Tale(145, "08:37", 5000, 0, R.string.tale_145, R.string.daniil_mireschkin, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t145 : R.drawable.t145_min),
-            new Tale(146, "06:57", 5000, 0, R.string.tale_146, R.string.alyona_alyona, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t146 : R.drawable.t146_min),
-            new Tale(147, "06:31", 5000, 0, R.string.tale_147, R.string.yevgen_yanovych, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t147 : R.drawable.t147_min),
-            new Tale(148, "04:18", 5000, 0, R.string.tale_148, R.string.marta_zotsenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t148 : R.drawable.t148_min),
-            new Tale(149, "07:54", 5000, 0, R.string.tale_149, R.string.ivanna_onufriichuck, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t149 : R.drawable.t149_min),
-            new Tale(150, "08:37", 5000, 0, R.string.tale_150, R.string.oleksandr_teren, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t150 : R.drawable.t150_min),
+            new Tale(143, "05:46", 2500, 0, R.string.tale_143, R.string.sofia_nersesian, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t143 : R.drawable.t143_min),
+            new Tale(144, "06:35", 3000, 0, R.string.tale_144, R.string.vitaliia, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t144 : R.drawable.t144_min),
+            new Tale(145, "08:37", 3000, 0, R.string.tale_145, R.string.daniil_mireschkin, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t145 : R.drawable.t145_min),
+            new Tale(146, "06:57", 2000, 0, R.string.tale_146, R.string.alyona_alyona, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t146 : R.drawable.t146_min),
+            new Tale(147, "06:31", 2000, 0, R.string.tale_147, R.string.yevgen_yanovych, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t147 : R.drawable.t147_min),
+            new Tale(148, "04:18", 3000, 0, R.string.tale_148, R.string.marta_zotsenko, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t148 : R.drawable.t148_min),
+            new Tale(149, "07:54", 4000, 0, R.string.tale_149, R.string.ivanna_onufriichuck, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t149 : R.drawable.t149_min),
+            new Tale(150, "08:37", 3000, 0, R.string.tale_150, R.string.oleksandr_teren, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t150 : R.drawable.t150_min),
 
-            new Tale(151, "08:18", 5000, 0, R.string.tale_151, R.string.khayat, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t151 : R.drawable.t151_min)
+            new Tale(151, "08:18", 3000, 0, R.string.tale_151, R.string.khayat, SettingsHelper.getBoolean("showBigImages") ? R.drawable.t151 : R.drawable.t151_min)
     );
 }
