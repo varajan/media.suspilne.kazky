@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
@@ -58,15 +57,13 @@ public class PlayerService extends IntentService {
         registerReceiver();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
+        NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
 
-            if (channel == null){
-                NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
-                notificationChannel.setSound(null, null);
-                notificationChannel.setShowBadge(false);
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
+        if (channel == null){
+            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setSound(null, null);
+            notificationChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
     }
 
