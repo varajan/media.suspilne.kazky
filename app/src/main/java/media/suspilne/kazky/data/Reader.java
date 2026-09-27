@@ -160,6 +160,14 @@ public class Reader {
             case R.string.zlata_ognevich: return R.mipmap.zlata_ognevich;
             case R.string.taras_kompanichenko: return R.mipmap.taras_kompanichenko;
             case R.string.vlad_rudnitsky: return R.mipmap.vlad_rudnitsky;
+            case R.string.sofia_nersesian: return R.mipmap.sofia_nersesian;
+            case R.string.vitaliia: return R.mipmap.vitaliia;
+            case R.string.daniil_mireschkin: return R.mipmap.daniil_mireschkin;
+            case R.string.yevgen_yanovych: return R.mipmap.yevgen_yanovych;
+            case R.string.marta_zotsenko: return R.mipmap.marta_zotsenko;
+            case R.string.ivanna_onufriichuck: return R.mipmap.ivanna_onufriichuck;
+            case R.string.oleksandr_teren: return R.mipmap.oleksandr_teren;
+            case R.string.khayat: return R.mipmap.khayat;
 
             default: return R.mipmap.logo;
         }

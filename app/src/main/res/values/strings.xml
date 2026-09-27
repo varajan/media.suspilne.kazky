@@ -55,6 +55,7 @@
     <string name="reader">Казкар</string>
     <string name="lullabies">Колискові</string>
     <string name="brave">Хоробрі казки</string>
+    <string name="kind">Добрі казки</string>
     <string name="ukrainianFolkTales">Українські народні казки</string>
     <string name="internationalTales">Казки народів світу</string>
     <string name="bigWorldAnimals">Казки про тварин великого світу</string>
@@ -264,14 +265,25 @@
 
     <string name="tale_141">Воїни-котики з острова Паляниця</string>
     <string name="tale_142">Котик-хвалько</string>
-    <string name="tale_143"></string>
-    <string name="tale_144"></string>
-    <string name="tale_145"></string>
-    <string name="tale_146"></string>
-    <string name="tale_147"></string>
-    <string name="tale_148"></string>
-    <string name="tale_149"></string>
-    <string name="tale_150"></string>
+    <string name="tale_143">Я тобі заспіваю</string>
+    <string name="tale_144">Свого не цуратись і чужого навчатись</string>
+    <string name="tale_145">Котяча пригода</string>
+    <string name="tale_146">Як свинка Альба познайомилася з лелекою Онуфрієм</string>
+    <string name="tale_147">Поросятко Бантик і чарівна Осінь</string>
+    <string name="tale_148">Мишеня, яке стало хоробрим</string>
+    <string name="tale_149">Рома і Черепаха Мудрида</string>
+    <string name="tale_150">Супергерої з протезами</string>
+
+    <string name="tale_151">Інше небо</string>
+    <string name="tale_152"></string>
+    <string name="tale_153"></string>
+    <string name="tale_154"></string>
+    <string name="tale_155"></string>
+    <string name="tale_156"></string>
+    <string name="tale_157"></string>
+    <string name="tale_158"></string>
+    <string name="tale_159"></string>
+    <string name="tale_160"></string>
 
     <string name="anastasiia_gudyma">Анастасія Гудима</string>
     <string name="anastasiia_gudyma_description">Керівниця Координаційного центру національних меншин ПАТ НСТУ</string>
@@ -393,4 +405,24 @@
     <string name="taras_kompanichenko_description">Композитор, поет, кобзар, бандурист, лірник</string>
     <string name="vlad_rudnitsky">Влад Рудніцький</string>
     <string name="vlad_rudnitsky_description">Ведучий та журналіст підліткових новин на @suspilne.media</string>
+    <string name="sofia_nersesian">Софія Нерсесян</string>
+    <string name="sofia_nersesian_description">Молода українська співачка та акторка дубляжу, фіналістка Національного відбору на Дитяче Євробачення</string>
+    <string name="vitaliia">Vitaliia</string>
+    <string name="vitaliia_description">Українська співачка, скрипалька та авторка пісень</string>
+    <string name="daniil_mireschkin">Данііл Мірешкін</string>
+    <string name="daniil_mireschkin_description">Український актор театру та кіно, військовослужбовець 12-ї бригади спеціального призначення «Азов» НГУ</string>
+    <string name="yevgen_yanovych">Євген Янович</string>
+    <string name="yevgen_yanovych_description">Український актор, комік, співзасновник студії «Мамахохотала» та автор YouTube-шоу «20:23»</string>
+    <string name="marta_zotsenko">Марта Зоценко</string>
+    <string name="marta_zotsenko_description">Юна українська виконавиця та акторка озвучування й дубляжу</string>
+    <string name="ivanna_onufriichuck">Іванна Онуфрійчук</string>
+    <string name="ivanna_onufriichuck_description">Українська телеведуча, акторка та засновниця благодійного фонду</string>
+    <string name="oleksandr_teren">Олександр Терен</string>
+    <string name="oleksandr_teren_description">Український військовослужбовець, ветеран російсько-української війни, письменник, громадський діяч</string>
+    <string name="khayat">KHAYAT</string>
+    <string name="khayat_description">Український співак та автор пісень, фіналіст Нацвідбору на «Євробачення» та шоу «Голос країни»</string>
+
+    <string name="x"></string>
+    <string name="x_description"></string>
+
 </resources>
