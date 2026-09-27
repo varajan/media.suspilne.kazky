@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 
@@ -144,6 +145,10 @@ public class ActivityTales extends ListActivity {
         suggestToDownloadFavoriteTales();
         registerReceiver();
         setupBackPressedHandler();
+
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+            requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
+        }
     }
 
     private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {

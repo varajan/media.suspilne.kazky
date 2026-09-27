@@ -53,9 +53,8 @@ public class ActivityColorings extends ListActivity {
     private boolean hasWritePermission() {
         String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P
-                && !hasPermission(permission)) {
-            requestPermission(permission, R.string.no_write_permission, R.string.no_write_permission);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P && !hasPermission(permission)) {
+            requestPermission(permission, R.string.no_write_permission_title, R.string.no_write_permission_error);
             return false;
         }
 
@@ -92,7 +91,7 @@ public class ActivityColorings extends ListActivity {
 
             taleView.findViewById(R.id.play).setOnClickListener(v -> {
                 if (!hasWritePermission()) {
-                    Toast.makeText(getActivity(), R.string.no_write_permission, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.no_write_permission_title, Toast.LENGTH_LONG).show();
                     return;
                 }
 
