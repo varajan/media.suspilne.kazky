@@ -1,5 +1,6 @@
 package media.suspilne.kazky.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -11,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -468,6 +470,15 @@ public abstract class MainActivity extends AppCompatActivity
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/apps")));
         } catch (ActivityNotFoundException e) {
             rateApp();
+        }
+    }
+
+    protected void checkForNotifications() {
+        if (!SettingsHelper.getBoolean("checkForNotifications")) return;
+        SettingsHelper.setBoolean("checkForNotifications", false);
+
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+            requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
         }
     }
 

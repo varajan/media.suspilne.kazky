@@ -145,10 +145,7 @@ public class ActivityTales extends ListActivity {
         suggestToDownloadFavoriteTales();
         registerReceiver();
         setupBackPressedHandler();
-
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
-        }
+        checkForNotifications();
     }
 
     private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
