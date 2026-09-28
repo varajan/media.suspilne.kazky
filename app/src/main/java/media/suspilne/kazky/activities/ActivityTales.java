@@ -113,7 +113,7 @@ public class ActivityTales extends ListActivity {
         if (returnToReaders) {
             finish();
         } else {
-            super.onBackPressedCustomAction();
+            showQuitDialog();
         }
     }
 

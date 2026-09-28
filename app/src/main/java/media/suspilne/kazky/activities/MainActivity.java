@@ -292,7 +292,7 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void onBackPressedCustomAction() {
-        showQuitDialog();
+        finish();
     }
 
     private void showErrorMessage() {
@@ -314,7 +314,7 @@ public abstract class MainActivity extends AppCompatActivity
         System.exit(1);
     }
 
-    private void showQuitDialog() {
+    protected void showQuitDialog() {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.confirm_exit)
