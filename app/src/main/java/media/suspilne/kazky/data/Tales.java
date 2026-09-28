@@ -12,7 +12,7 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.helpers.ListHelper;
 
 public class Tales {
-    public static boolean getShowCategory(String filterPrefix, String category) { return SettingsHelper.getBoolean(filterPrefix + "_show_" + category); }
+    public static boolean getShowCategory(String filterPrefix, String category) { return SettingsHelper.getBoolean(filterPrefix + "_show_" + category, true); }
     public static void setShowCategory(String filterPrefix, String category, boolean value) {
         SettingsHelper.setBoolean(filterPrefix + "_show_" + category, value);
     }
