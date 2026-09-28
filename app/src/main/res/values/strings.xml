@@ -103,8 +103,7 @@
     <string name="talesView">Список казок:</string>
     <string name="sort19">За тривалістю (спершу найкоротші)</string>
     <string name="sort91">За тривалістю (спершу найдовші)</string>
-    <string name="sortAsc">За назвою</string>
-    <string name="sortByName">За алфавітом</string>
+    <string name="sortAsc">За алфавітом</string>
     <string name="sortByTalesCount">За кількістю казок</string>
     <string name="shuffle">Перемішати казки</string>
     <string name="skipIntro">Пропускати мелодію перед казкою</string>
