@@ -18,7 +18,7 @@
     <string name="info">Про програму</string>
     <string name="description">
         Версія %s\n\n
-        [Казки] — більше сотні казок: слухайте, шукайте за назвою чи іменем казкаря, фільтруйте за категоріями, показуйте лише улюблені та позначайте казки як «улюблені».
+        [Казки] — більше сотні казок: слухайте, шукайте за назвою чи іменем казкаря, фільтруйте за категоріями, показуйте лише улюблені та позначайте казки як \'улюблені\'.
         Збережені на пристрої казки позначені значком 💾\n\n
 
         [Казкарі] — шукайте за іменем та відкривайте всі казки казкаря в один клік.\n\n
@@ -286,7 +286,7 @@
     <string name="tale_160"></string>
 
     <string name="anastasiia_gudyma">Анастасія Гудима</string>
-    <string name="anastasiia_gudyma_description">Керівниця Координаційного центру національних меншин ПАТ НСТУ</string>
+    <string name="anastasiia_gudyma_description">Керівниця Центру національних меншин НСТУ</string>
     <string name="andrii_hlyvniuk">Андрій Хливнюк</string>
     <string name="andrii_hlyvniuk_description">Вокаліст гурту \'Бумбокс\'</string>
     <string name="alina_pash">Аліна Паш</string>
@@ -302,7 +302,7 @@
     <string name="dmytro_horkin">Дмитро Хоркін</string>
     <string name="dmytro_horkin_description">Радіоведучий</string>
     <string name="dmytro_schebetiuk">Дмитро Щебетюк</string>
-    <string name="dmytro_schebetiuk_description">Телеведучій, журналіст</string>
+    <string name="dmytro_schebetiuk_description">Телеведучий, журналіст</string>
     <string name="ivan_marunych">Іван Марунич</string>
     <string name="ivan_marunych_description">Співак</string>
     <string name="inna_grebeniuk">Інна Гребенюк</string>
@@ -318,11 +318,11 @@
     <string name="kateryna_ofliyan">Катерина Офліян</string>
     <string name="kateryna_ofliyan_description">Співачка, гурт Ofliyan</string>
     <string name="michel_schur">Майкл Щур</string>
-    <string name="michel_schur_description">Телеведучій</string>
+    <string name="michel_schur_description">Телеведучий</string>
     <string name="mariana_golovko">Мар\'яна Головко</string>
     <string name="mariana_golovko_description">Співачка, акторка</string>
     <string name="marko_galanevych">Марко Галаневич</string>
-    <string name="marko_galanevych_description">Учасник гурту \'Dakhabraha\'</string>
+    <string name="marko_galanevych_description">Учасник гурту \'DakhaBrakha\'</string>
     <string name="marta_liubchyk">Марта Любчик</string>
     <string name="marta_liubchyk_description">Співачка, гурт Правиця</string>
     <string name="marusia_ionova">Маруся Іонова</string>
@@ -336,7 +336,7 @@
     <string name="olga_shurova">Оля Шурова</string>
     <string name="olga_shurova_description">Учасниця гурту Pianoboy</string>
     <string name="pavlo_varenitsa">Павло Варєніца</string>
-    <string name="pavlo_varenitsa_description">Фронтмет гурту \'Epolets\'</string>
+    <string name="pavlo_varenitsa_description">Фронтмен гурту \'Epolets\'</string>
     <string name="roman_yasynovsky">Роман Ясиновський</string>
     <string name="roman_yasynovsky_description">Актор</string>
     <string name="rosava">Росава</string>
@@ -350,27 +350,27 @@
     <string name="sergii_kolos">Сергій Колос</string>
     <string name="sergii_kolos_description">Фронтмен гурту Фіолет</string>
     <string name="sergii_tanchynets">Сергій Танчинець</string>
-    <string name="sergii_tanchynets_description">Гурт Без Обмежень</string>
+    <string name="sergii_tanchynets_description">Фронтмен гурт \'Без Обмежень\'</string>
     <string name="solomia_melnyk">Соломія Мельник</string>
     <string name="solomia_melnyk_description">Солістка гурту Dakh Daughters</string>
     <string name="stas_koroliov">Стас Корольов</string>
     <string name="stas_koroliov_description">Учасник гурту \'YUKO\'</string>
     <string name="timur_miroshnychenko">Тімур Мірошниченко</string>
-    <string name="timur_miroshnychenko_description">Телеведучій</string>
+    <string name="timur_miroshnychenko_description">Телеведучий</string>
     <string name="hrystyna_soloviy">Христина Соловій</string>
     <string name="hrystyna_soloviy_description">Співачка</string>
     <string name="vlad_fisun">Влад Фісун</string>
-    <string name="vlad_fisun_description">Діджей Dj Buro</string>
+    <string name="vlad_fisun_description">Dj Buro</string>
     <string name="vova_zi_lvova">Vova zi Lvova</string>
     <string name="vova_zi_lvova_description">Хіп-хоп виконавець</string>
     <string name="ira_bova">Іра Бова</string>
     <string name="ira_bova_description">Дитяча письменниця</string>
     <string name="nina_matvienko">Ніна Матвієнко</string>
-    <string name="nina_matvienko_description">Українська співачка та акторка, народна артистка України</string>
+    <string name="nina_matvienko_description">Співачка, акторка, народна артистка України</string>
     <string name="olga_tokar">Ольга Токар</string>
     <string name="olga_tokar_description">Аранжувальниця та хормайстриня</string>
     <string name="vitaliy_bilonozhko">Віталій Білоножко</string>
-    <string name="vitaliy_bilonozhko_description">Засновник Міжнародного фестивалю родинної творчості \'Мелодія двох сердець\'</string>
+    <string name="vitaliy_bilonozhko_description">Засновник фестивалю \'Мелодія двох сердець\'</string>
     <string name="nataliya_vasko">Наталя Васько</string>
     <string name="nataliya_vasko_description">Провідна акторка Київського Молодого театру</string>
     <string name="ruhanko_man">РуханкоМен</string>
@@ -380,11 +380,11 @@
     <string name="antonina_hyzhniak">Антоніна Хижняк</string>
     <string name="antonina_hyzhniak_description">Українська акторка театру, кіно та дубляжу</string>
     <string name="kola">Kola</string>
-    <string name="kola_description">Українська співачка, авторка і виконавиця власних пісень</string>
+    <string name="kola_description">Співачка, авторка та виконавиця пісень</string>
     <string name="kler">Kler</string>
     <string name="kler_description">Українська співачка і авторка пісень</string>
     <string name="ivan_kaluzhny">Іван Калюжний</string>
-    <string name="ivan_kaluzhny_description">Гравець національної збірної України з футболу</string>
+    <string name="ivan_kaluzhny_description">Гравець збірної України з футболу</string>
     <string name="julia_sanina">Юлія Саніна</string>
     <string name="julia_sanina_description">Фронтвумен українського гурту The Hardkiss</string>
     <string name="busha">Олександр, Лео та Елвін Буша</string>
@@ -398,7 +398,7 @@
     <string name="serhii_prytula">Сергій Притула</string>
     <string name="serhii_prytula_description">Волонтер і громадський діяч</string>
     <string name="natalka_denysenko">Наталка Денисенко</string>
-    <string name="natalka_denysenko_description">Українська акторка театру, кіно та дубляжу, дикторка, режисерка та телеведуча</string>
+    <string name="natalka_denysenko_description">Акторка театру, кіно та дубляжу, телеведуч</string>
     <string name="zlata_ognevich">Злата Огнєвіч</string>
     <string name="zlata_ognevich_description">Українська співачка, заслужена артистка АР Крим</string>
     <string name="taras_kompanichenko">Тарас Компаніченко</string>
@@ -406,21 +406,21 @@
     <string name="vlad_rudnitsky">Влад Рудніцький</string>
     <string name="vlad_rudnitsky_description">Ведучий та журналіст підліткових новин на @suspilne.media</string>
     <string name="sofia_nersesian">Софія Нерсесян</string>
-    <string name="sofia_nersesian_description">Молода українська співачка та акторка дубляжу, фіналістка Національного відбору на Дитяче Євробачення</string>
+    <string name="sofia_nersesian_description">Співачка, акторка дубляжу, фіналістка Дитячого Євробачення</string>
     <string name="vitaliia">Vitaliia</string>
     <string name="vitaliia_description">Українська співачка, скрипалька та авторка пісень</string>
     <string name="daniil_mireschkin">Данііл Мірешкін</string>
-    <string name="daniil_mireschkin_description">Український актор театру та кіно, військовослужбовець 12-ї бригади спеціального призначення «Азов» НГУ</string>
+    <string name="daniil_mireschkin_description">Актор театру і кіно, військовослужбовець бригади \'Азов\'</string>
     <string name="yevgen_yanovych">Євген Янович</string>
-    <string name="yevgen_yanovych_description">Український актор, комік, співзасновник студії «Мамахохотала» та автор YouTube-шоу «20:23»</string>
+    <string name="yevgen_yanovych_description">Актор, комік, автор YouTube-шоу \'20:23\'</string>
     <string name="marta_zotsenko">Марта Зоценко</string>
-    <string name="marta_zotsenko_description">Юна українська виконавиця та акторка озвучування й дубляжу</string>
+    <string name="marta_zotsenko_description">Співачка та акторка озвучування й дубляжу</string>
     <string name="ivanna_onufriichuck">Іванна Онуфрійчук</string>
-    <string name="ivanna_onufriichuck_description">Українська телеведуча, акторка та засновниця благодійного фонду</string>
+    <string name="ivanna_onufriichuck_description">Телеведуча, акторка та засновниця благодійного фонду</string>
     <string name="oleksandr_teren">Олександр Терен</string>
-    <string name="oleksandr_teren_description">Український військовослужбовець, ветеран російсько-української війни, письменник, громадський діяч</string>
+    <string name="oleksandr_teren_description">Ветеран війни, письменник, громадський діяч</string>
     <string name="khayat">KHAYAT</string>
-    <string name="khayat_description">Український співак та автор пісень, фіналіст Нацвідбору на «Євробачення» та шоу «Голос країни»</string>
+    <string name="khayat_description">Співак, фіналіст Нацвідбору на \'Євробачення\' та \'Голос країни\'</string>
 
     <string name="x"></string>
     <string name="x_description"></string>
