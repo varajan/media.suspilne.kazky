@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.activities.MainActivity;
@@ -94,8 +95,8 @@ public class Reader {
             reader.setTextColor(color);
             description.setTextColor(color);
         }catch (Exception e) {
-            Log.e(SettingsHelper.application, e.getMessage());
-            Log.e(SettingsHelper.application, e.getStackTrace().toString());
+            Log.e(Kazky.Constants.application, e.getMessage());
+            Log.e(Kazky.Constants.application, e.getStackTrace().toString());
             e.printStackTrace();
         }
     }

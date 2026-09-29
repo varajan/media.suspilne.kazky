@@ -36,7 +36,7 @@ public class PlayerService extends IntentService {
     private ExoPlayer player;
     private PlayerNotificationManager playerNotificationManager;
 
-    public static String NOTIFICATION_CHANNEL = SettingsHelper.application;
+    public static String NOTIFICATION_CHANNEL = Kazky.Constants.application;
     public static int NOTIFICATION_ID = 21;
 
     public PlayerService() {
@@ -58,10 +58,10 @@ public class PlayerService extends IntentService {
         registerReceiver();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        NotificationChannel channel = notificationManager.getNotificationChannel(SettingsHelper.application);
+        NotificationChannel channel = notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL);
 
         if (channel == null){
-            NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, Kazky.Constants.application, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setSound(null, null);
             notificationChannel.setShowBadge(false);
             notificationManager.createNotificationChannel(notificationChannel);
@@ -150,7 +150,7 @@ public class PlayerService extends IntentService {
 
     private void sendMessage(String code) {
         Intent intent = new Intent();
-        intent.setAction(SettingsHelper.application);
+        intent.setAction(Kazky.Constants.application);
         intent.putExtra("code", code);
         sendBroadcast(intent);
     }
@@ -176,7 +176,7 @@ public class PlayerService extends IntentService {
     private void playTale(Tale tale) {
         if (tale.id != -1 && !SettingsHelper.getBoolean((Kazky.Constants.stopPlaybackOnTimeout))) {
             long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
-            position = SettingsHelper.getBoolean("skipIntro", true) ? Math.max(position, tale.introTime) : position;
+            position = SettingsHelper.getBoolean(Kazky.Constants.skipIntro, true) ? Math.max(position, tale.introTime) : position;
 
             Tales.setNowPlaying(tale.id);
             Tales.setLastPlaying(tale.id);
@@ -237,10 +237,10 @@ public class PlayerService extends IntentService {
         try{
             IntentFilter filter = new IntentFilter();
 
-            filter.addAction(SettingsHelper.application);
-            filter.addAction(SettingsHelper.application + "previous");
-            filter.addAction(SettingsHelper.application + "next");
-            filter.addAction(SettingsHelper.application + "stop");
+            filter.addAction(Kazky.Constants.application);
+            filter.addAction(Kazky.Constants.application + "previous");
+            filter.addAction(Kazky.Constants.application + "next");
+            filter.addAction(Kazky.Constants.application + "stop");
 
             ContextCompat.registerReceiver(
                     this,

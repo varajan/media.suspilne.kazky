@@ -111,7 +111,7 @@ public abstract class MainActivity extends AppCompatActivity
 
             if (isTalePlaying()) {
                 Intent intent = new Intent();
-                intent.setAction(SettingsHelper.application);
+                intent.setAction(Kazky.Constants.application);
                 intent.putExtra("code", Kazky.Constants.codeStopPlay);
                 sendBroadcast(intent);
             }
@@ -136,7 +136,7 @@ public abstract class MainActivity extends AppCompatActivity
 
                 Tales.setNowPlaying(-1);
                 Intent intent = new Intent();
-                intent.setAction(SettingsHelper.application);
+                intent.setAction(Kazky.Constants.application);
                 intent.putExtra("code", Kazky.Constants.codeSetPlayBtnIcon);
                 sendBroadcast(intent);
             }

@@ -73,15 +73,15 @@ public class ActivitySettings extends MainActivity {
         fontColor.setOnCheckedChangeListener((buttonView, isChecked) -> updateColor(isChecked));
         autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.autoQuit, isChecked));
         volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.volumeControl, isChecked));
-        parentLock.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("parentLock", isChecked));
+        parentLock.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.parentLock, isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
 
         showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.showBigImages, isChecked));
-        groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
-        skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
+        groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.groupByReader, isChecked));
+        skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.skipIntro, isChecked));
 
-        if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
+        if (SettingsHelper.getBoolean(Kazky.Constants.parentLock)) applyParentLock();
         checkForNotifications();
     }
 
@@ -100,11 +100,11 @@ public class ActivitySettings extends MainActivity {
     }
 
     void checkAccess() {
-        if (!SettingsHelper.getBoolean("isParent")) { finish(); }
+        if (!SettingsHelper.getBoolean(Kazky.Constants.isParent)) { finish(); }
     }
 
     void applyParentLock() {
-        SettingsHelper.setBoolean("isParent", false);
+        SettingsHelper.setBoolean(Kazky.Constants.isParent, false);
 
         String questionAndAnswer = questionAndAnswer();
         String question = questionAndAnswer.split(":")[0];
@@ -118,7 +118,7 @@ public class ActivitySettings extends MainActivity {
             .setIcon(R.mipmap.logo)
             .setTitle(question)
             .setView(input)
-                .setPositiveButton(R.string.ok, (dialog, which) -> { SettingsHelper.setBoolean("isParent", input.getText().toString().equals(answer)); checkAccess(); })
+                .setPositiveButton(R.string.ok, (dialog, which) -> { SettingsHelper.setBoolean(Kazky.Constants.isParent, input.getText().toString().equals(answer)); checkAccess(); })
                 .setNegativeButton(R.string.prev, (dialog, which) -> checkAccess())
                 .setOnDismissListener(dialog -> checkAccess() )
             .create();
@@ -129,10 +129,10 @@ public class ActivitySettings extends MainActivity {
 
     void updateColor(boolean isChecked) {
         if (isChecked) {
-            SettingsHelper.setBoolean("use.font.color", true);
+            SettingsHelper.setBoolean(Kazky.Constants.useFontColor, true);
             pickColor();
         } else {
-            SettingsHelper.setBoolean("use.font.color", false);
+            SettingsHelper.setBoolean(Kazky.Constants.useFontColor, false);
             setColorsAndState();
         }
     }
@@ -140,7 +140,7 @@ public class ActivitySettings extends MainActivity {
     void pickColor() {
         ColorPickerDialogBuilder
             .with(this)
-            .setTitle("Choose color")
+                .setTitle(R.string.fontColor)
             .initialColor( SettingsHelper.getCustomColor() )
             .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
             .density(15)
@@ -153,7 +153,7 @@ public class ActivitySettings extends MainActivity {
 
             .setNegativeButton(R.string.cancel, (dialog, which) ->
             {
-                SettingsHelper.setBoolean("use.font.color", false);
+                SettingsHelper.setBoolean(Kazky.Constants.useFontColor, false);
                 setColorsAndState();
             })
             .build()
@@ -162,7 +162,7 @@ public class ActivitySettings extends MainActivity {
 
     private void setSwitch(String title, boolean isChecked) {
         SettingsHelper.setBoolean(title, isChecked);
-        if (title.equals("groupByReader")) new Tales().setTalesList();
+        if (title.equals(Kazky.Constants.groupByReader)) new Tales().setTalesList();
         setColorsAndState();
 
         if(title.equals(Kazky.Constants.autoQuit) || title.equals(Kazky.Constants.volumeControl)) {
@@ -174,22 +174,22 @@ public class ActivitySettings extends MainActivity {
     private void setTalesSorting() {
         switch (sortingTales.getCheckedRadioButtonId()) {
             case R.id.shuffle:
-                SettingsHelper.setString("sorting", "shuffle");
+                SettingsHelper.setString(Kazky.Constants.sorting, Kazky.Constants.shuffle);
                 groupByReader.setVisibility(View.GONE);
                 break;
 
             case R.id.sortAsc:
-                SettingsHelper.setString("sorting", "sortAsc");
+                SettingsHelper.setString(Kazky.Constants.sorting, Kazky.Constants.sortAsc);
                 groupByReader.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.sort19:
-                SettingsHelper.setString("sorting", "sort19");
+                SettingsHelper.setString(Kazky.Constants.sorting, Kazky.Constants.sort19);
                 groupByReader.setVisibility(View.GONE);
                 break;
 
             case R.id.sort91:
-                SettingsHelper.setString("sorting", "sort91");
+                SettingsHelper.setString(Kazky.Constants.sorting, Kazky.Constants.sort91);
                 groupByReader.setVisibility(View.GONE);
                 break;
         }
@@ -279,12 +279,12 @@ public class ActivitySettings extends MainActivity {
         boolean isDownloadAllTales = SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
         boolean isDownloadFavoriteTales = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales);
         boolean isVolumeControl = SettingsHelper.getBoolean(Kazky.Constants.volumeControl);
-        boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
-        boolean isParentLock = SettingsHelper.getBoolean("parentLock");
+        boolean isFontColorOverridden = SettingsHelper.getBoolean(Kazky.Constants.useFontColor);
+        boolean isParentLock = SettingsHelper.getBoolean(Kazky.Constants.parentLock);
         boolean isShowBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
-        boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
-        boolean isShuffle = SettingsHelper.getBoolean("shuffle");
-        boolean isSkipIntro = SettingsHelper.getBoolean("skipIntro", true);
+        boolean isGroupByReader = SettingsHelper.getBoolean(Kazky.Constants.groupByReader);
+        boolean isShuffle = SettingsHelper.getBoolean(Kazky.Constants.shuffle);
+        boolean isSkipIntro = SettingsHelper.getBoolean(Kazky.Constants.skipIntro, true);
 
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
@@ -353,18 +353,18 @@ public class ActivitySettings extends MainActivity {
 
         sortingTales.setOnCheckedChangeListener(null);
 
-        switch (SettingsHelper.getString("sorting")) {
-            case "sort19":
+        switch (SettingsHelper.getString(Kazky.Constants.sorting)) {
+            case Kazky.Constants.sort19:
                 ((RadioButton)findViewById(R.id.sort19)).setTextColor(activeColor);
                 sortingTales.check(R.id.sort19);
                 break;
 
-            case "sort91":
+            case Kazky.Constants.sort91:
                 ((RadioButton)findViewById(R.id.sort91)).setTextColor(activeColor);
                 sortingTales.check(R.id.sort91);
                 break;
 
-            case "sortAsc":
+            case Kazky.Constants.sortAsc:
                 ((RadioButton)findViewById(R.id.sortAsc)).setTextColor(activeColor);
                 sortingTales.check(R.id.sortAsc);
                 break;

@@ -42,7 +42,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     }
 
     private void showProgressNotification(String text) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), Kazky.Constants.application)
             .setSmallIcon(R.drawable.ic_cloud_download)
             .setContentTitle(MainActivity.getActivity().getString(R.string.downloading))
             .setContentText(text)
@@ -60,7 +60,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         if (count == 0) {
             cancelAllNotifications();
         } else {
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), Kazky.Constants.application)
                     .setSmallIcon(R.drawable.ic_cloud_done)
                     .setContentTitle(MainActivity.getActivity().getString(R.string.download_completed, count))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -74,7 +74,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     }
 
     private void showFailedNotification(String errorMessage) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), Kazky.Constants.application)
             .setSmallIcon(R.drawable.ic_error)
             .setContentTitle(MainActivity.getActivity().getString(R.string.an_error_occurred))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -91,7 +91,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         notificationManager = (NotificationManager) MainActivity.getActivity().getSystemService(NOTIFICATION_SERVICE);
         cancelAllNotifications();
 
-        NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel notificationChannel = new NotificationChannel(Kazky.Constants.application, Kazky.Constants.application, NotificationManager.IMPORTANCE_DEFAULT);
         notificationChannel.setSound(null, null);
         notificationChannel.setShowBadge(false);
 

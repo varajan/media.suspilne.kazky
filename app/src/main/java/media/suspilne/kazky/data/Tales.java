@@ -113,18 +113,18 @@ public class Tales {
     }
 
     public void setTalesList() {
-        String sorting = SettingsHelper.getString("sorting", "shuffle");
+        String sorting = SettingsHelper.getString(Kazky.Constants.sorting, Kazky.Constants.shuffle);
         StringBuilder list = new StringBuilder();
         List<Tale> result = new ArrayList<>(items);
 
         switch (sorting) {
-            case "shuffle":
+            case Kazky.Constants.shuffle:
                 Collections.shuffle(result);
                 break;
 
-            case "sortAsc":
+            case Kazky.Constants.sortAsc:
                 Collections.shuffle(result);
-                if (SettingsHelper.getBoolean("groupByReader")) {
+                if (SettingsHelper.getBoolean(Kazky.Constants.groupByReader)) {
                     result.sort((tale1, tale2)
                             -> tale1.getReader().equals(tale2.getReader())
                             ? compare(tale1.getTitle(), tale2.getTitle())
@@ -134,11 +134,11 @@ public class Tales {
                 }
                 break;
 
-            case "sort19":
+            case Kazky.Constants.sort19:
                 result.sort((tale1, tale2) -> compare(tale1.duration, tale2.duration));
                 break;
 
-            case "sort91":
+            case Kazky.Constants.sort91:
                 result.sort((tale1, tale2) -> compare(tale1.duration, tale2.duration));
                 Collections.reverse(result);
                 break;

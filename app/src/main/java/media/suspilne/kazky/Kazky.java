@@ -4,10 +4,10 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import media.suspilne.kazky.helpers.SettingsHelper;
-
 public class Kazky extends Application {
     public static class Constants {
+        public static String application = "media.suspilne.kazky";
+
         public static String checkForNotifications = "checkForNotifications";
         public static String checkForUpdates = "checkForUpdates";
         public static String readSettingsFromGit = "readSettingsFromGit";
@@ -28,7 +28,22 @@ public class Kazky extends Application {
         public static String typeExtra = "type";
         public static String stopPlaybackOnTimeout = "stopPlaybackOnTimeout";
         public static String filteredTalesList = "filteredTalesList";
+
         public static String showBigImages = "showBigImages";
+        public static String parentLock = "parentLock";
+        public static String groupByReader = "groupByReader";
+        public static String skipIntro = "skipIntro";
+        public static String isParent = "isParent";
+        public static String useFontColor = "use.font.color";
+        public static String talesTextColor = "tales.text.color";
+
+        public static final String shuffle = "shuffle";
+        public static final String sorting = "sorting";
+        public static final String sortAsc = "sortAsc";
+        public static final String sort19 = "sort19";
+        public static final String sort91 = "sort91";
+
+        // Kazky.Constants.typeExtra
 
         public static String errorMessage = "errorMessage";
 
@@ -44,14 +59,11 @@ public class Kazky extends Application {
         public static String returnToReaders = "returnToReaders";
     }
 
-    // Kazky.Constants.showBigImages
-    // Kazky.Constants.typeExtra
-
     @Override
     public void onCreate() {
         super.onCreate();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.application, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(Constants.checkForNotifications, String.valueOf(true));
@@ -71,7 +83,7 @@ public class Kazky extends Application {
         if (logStackTrace) {
             logStackTrace(message);
         } else {
-            Log.e(SettingsHelper.application, message);
+            Log.e(Constants.application, message);
         }
     }
 
@@ -86,6 +98,6 @@ public class Kazky extends Application {
             stackTrace.append(ste).append("\r\n");
         }
 
-        Log.e(SettingsHelper.application, stackTrace.toString());
+        Log.e(Constants.application, stackTrace.toString());
     }
 }

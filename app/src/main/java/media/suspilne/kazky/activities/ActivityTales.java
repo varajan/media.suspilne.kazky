@@ -211,7 +211,7 @@ public class ActivityTales extends ListActivity {
     private void registerReceiver() {
         try{
             IntentFilter filter = new IntentFilter();
-            filter.addAction(SettingsHelper.application);
+            filter.addAction(Kazky.Constants.application);
 
             ContextCompat.registerReceiver(
                     this,

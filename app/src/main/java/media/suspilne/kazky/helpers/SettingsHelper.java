@@ -16,21 +16,21 @@ import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.activities.MainActivity;
 
 public class SettingsHelper {
-    public static String application = "media.suspilne.kazky";
     static public int timeout = 10_000;
 
-    public static void setColor(int color) { setInt("tales.text.color", color); }
+    public static void setColor(int color) { setInt(Kazky.Constants.talesTextColor, color); }
 
     public static int getColor() { return getColor(false); }
     public static int getCustomColor() { return getColor(true); }
 
     private static int getColor(boolean custom) {
-        return getBoolean("use.font.color") || custom
-                ? getInt("tales.text.color", ContextCompat.getColor(MainActivity.getActivity(), R.color.white))
+        return getBoolean(Kazky.Constants.useFontColor) || custom
+                ? getInt(Kazky.Constants.talesTextColor, ContextCompat.getColor(MainActivity.getActivity(), R.color.white))
                 : ContextCompat.getColor(MainActivity.getActivity(), R.color.white);
     }
 
@@ -43,12 +43,12 @@ public class SettingsHelper {
     }
 
     public static String getString(Context context, String setting, String defaultValue) {
-        return context.getSharedPreferences(application,0).getString(setting, defaultValue);
+        return context.getSharedPreferences(Kazky.Constants.application,0).getString(setting, defaultValue);
     }
 
     public static void setString(String setting, String value) {
         try{
-            SharedPreferences.Editor editor = MainActivity.getActivity().getSharedPreferences(application, 0).edit();
+            SharedPreferences.Editor editor = MainActivity.getActivity().getSharedPreferences(Kazky.Constants.application, 0).edit();
             editor.putString(setting, value);
             editor.apply();
         }
@@ -92,11 +92,6 @@ public class SettingsHelper {
 
     public static void setLong(String setting, long value) {
         setString(setting, String.valueOf(value));
-    }
-
-    public static int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = MainActivity.getActivity().getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static void saveFile(String name, byte[] bytes) {
@@ -151,11 +146,5 @@ public class SettingsHelper {
         } catch (PackageManager.NameNotFoundException e) {
             return "1.0.0";
         }
-    }
-
-    public static boolean isIntentAvailable(Intent intent) {
-        final PackageManager packageManager = MainActivity.getActivity().getPackageManager();
-        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return !list.isEmpty();
     }
 }
