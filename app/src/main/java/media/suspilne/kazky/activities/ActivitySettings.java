@@ -1,6 +1,5 @@
 package media.suspilne.kazky.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -275,20 +274,16 @@ public class ActivitySettings extends MainActivity {
     }
 
     private void setColorsAndState() {
-        boolean isShowOnlyFavorite = SettingsHelper.getBoolean("showOnlyFavorite");
         boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
         boolean isDownloadAllTales = SettingsHelper.getBoolean("downloadAllTales");
         boolean isDownloadFavoriteTales = SettingsHelper.getBoolean("downloadFavoriteTales");
         boolean isVolumeControl = SettingsHelper.getBoolean("volumeControl");
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
-        boolean isShowKidsTales = SettingsHelper.getBoolean("showKidsTales");
-        boolean isShowBabiesTales = SettingsHelper.getBoolean("showBabiesTales");
-        boolean isShowLullabies = SettingsHelper.getBoolean("showLullabies");
         boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
         boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
         boolean isShuffle = SettingsHelper.getBoolean("shuffle");
-        boolean isSkipIntro = SettingsHelper.getBoolean("skipIntro");
+        boolean isSkipIntro = SettingsHelper.getBoolean("skipIntro", true);
 
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);

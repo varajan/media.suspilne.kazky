@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.helpers.ListHelper;
@@ -34,27 +35,27 @@ public class Tales {
     }
 
     public static void setLastPlaying(int value) {
-        SettingsHelper.setInt("tales.lastPlaying", value);
+        SettingsHelper.setInt(Kazky.Constants.talesLastPlaying, value);
     }
 
     public static int getLastPlaying() {
-        return SettingsHelper.getInt("tales.lastPlaying");
+        return SettingsHelper.getInt(Kazky.Constants.talesLastPlaying);
     }
 
     public static void setNowPlaying(int value) {
-        SettingsHelper.setInt("tales.nowPlaying", value);
+        SettingsHelper.setInt(Kazky.Constants.talesNowPlaying, value);
     }
 
     public static int getNowPlaying() {
-        return SettingsHelper.getInt("tales.nowPlaying");
+        return SettingsHelper.getInt(Kazky.Constants.talesNowPlaying);
     }
 
     public static void setPause(boolean value) {
-        SettingsHelper.setBoolean("tales.paused", value);
+        SettingsHelper.setBoolean(Kazky.Constants.talesPaused, value);
     }
 
     public static boolean isPaused() {
-        return SettingsHelper.getBoolean("tales.paused");
+        return SettingsHelper.getBoolean(Kazky.Constants.talesPaused);
     }
 
     public Tale getPrevious() {
@@ -145,7 +146,7 @@ public class Tales {
 
         for (Tale tale:result) { list.append(tale.id).append(";"); }
 
-        SettingsHelper.setString("talesList", list.toString());
+        SettingsHelper.setString(Kazky.Constants.talesList, list.toString());
     }
 
     public List<Tale> getTalesList(boolean favoriteOnly) {
@@ -161,9 +162,9 @@ public class Tales {
     public List<Tale> getTalesList() {
         List<Tale> result = new ArrayList<>();
 
-        if (SettingsHelper.getString("talesList", "").isEmpty()) setTalesList();
+        if (SettingsHelper.getString(Kazky.Constants.talesList, "").isEmpty()) setTalesList();
 
-        for(String id:SettingsHelper.getString("talesList").split(";")) {
+        for(String id:SettingsHelper.getString(Kazky.Constants.talesList).split(";")) {
             result.add(getById(id));
         }
 

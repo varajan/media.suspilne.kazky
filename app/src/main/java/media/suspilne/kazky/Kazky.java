@@ -7,6 +7,20 @@ import android.util.Log;
 import media.suspilne.kazky.helpers.SettingsHelper;
 
 public class Kazky extends Application {
+    public static class Constants {
+        public static String checkForNotifications = "checkForNotifications";
+        public static String checkForUpdates = "checkForUpdates";
+        public static String readSettingsFromGit = "readSettingsFromGit";
+
+        public static String talesPaused = "tales.paused";
+        public static String talesLastPlaying = "tales.lastPlaying";
+        public static String talesNowPlaying = "tales.nowPlaying";
+        public static String talesList = "talesList";
+        public static String stopPlaybackOnTimeout = "stopPlaybackOnTimeout";
+
+        public static String errorMessage = "errorMessage";
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -14,19 +28,15 @@ public class Kazky extends Application {
         SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString("checkForNotifications", String.valueOf(true));
-        editor.putString("checkForUpdates", String.valueOf(true));
-        editor.putString("readSettingsFromGit", String.valueOf(true));
-        editor.putString("tales.count.updated", String.valueOf(false));
-        editor.putString("tales.paused", String.valueOf(false));
-        editor.putString("tales.lastPlaying", String.valueOf(-1));
-        editor.putString("tales.nowPlaying", String.valueOf(-1));
-        editor.putString("stopPlaybackOnTimeout", String.valueOf(false));
-        editor.putString("sortAsc", sharedPreferences.getString("sortAsc", "true"));
-        editor.putString("skipIntro", sharedPreferences.getString("skipIntro", "true"));
-        editor.putString("talesFilter", "");
-        editor.putString("talesList", "");
-        editor.putString("errorMessage", "");
+        editor.putString(Constants.checkForNotifications, String.valueOf(true));
+        editor.putString(Constants.checkForUpdates, String.valueOf(true));
+        editor.putString(Constants.readSettingsFromGit, String.valueOf(true));
+        editor.putString(Constants.talesPaused, String.valueOf(false));
+        editor.putString(Constants.talesLastPlaying, String.valueOf(-1));
+        editor.putString(Constants.talesNowPlaying, String.valueOf(-1));
+        editor.putString(Constants.stopPlaybackOnTimeout, String.valueOf(false));
+        editor.putString(Constants.talesList, "");
+        editor.putString(Constants.errorMessage, "");
 
         editor.apply();
     }

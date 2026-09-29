@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.tasks.DownloadTask;
 import media.suspilne.kazky.player.MediaVolume;
 import media.suspilne.kazky.player.PlayerService;
@@ -74,7 +75,7 @@ public abstract class MainActivity extends AppCompatActivity
             quitTimer = null;
         }
 
-        SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
+        SettingsHelper.setBoolean(Kazky.Constants.stopPlaybackOnTimeout, false);
     }
 
     protected void resetVolumeReduceTimer() {
@@ -115,7 +116,7 @@ public abstract class MainActivity extends AppCompatActivity
                 sendBroadcast(intent);
             }
             else {
-                SettingsHelper.setBoolean("stopPlaybackOnTimeout", true);
+                SettingsHelper.setBoolean(Kazky.Constants.stopPlaybackOnTimeout, true);
             }
         }
     }
@@ -159,7 +160,7 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     private void readSettingsFromGit() {
-        if (!SettingsHelper.getBoolean("readSettingsFromGit")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.readSettingsFromGit)) return;
 
         new Thread(() -> {
             ArrayList<String> settings = new ArrayList<>();
@@ -181,7 +182,7 @@ public abstract class MainActivity extends AppCompatActivity
             }
 
             SettingsHelper.setBoolean("playTalesFromGit", settings.contains("talesFromGit:true"));
-            SettingsHelper.setBoolean("readSettingsFromGit", false);
+            SettingsHelper.setBoolean(Kazky.Constants.readSettingsFromGit, false);
             SettingsHelper.setString("version", getSettingsValue(settings, "version", SettingsHelper.getVersionName()));
             SettingsHelper.setString("whatsNew", getSettingsValue(settings,"whatsNew", "Щось дуже корисне."));
         }).start();
@@ -296,14 +297,14 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     private void showErrorMessage() {
-        String errorMessage = SettingsHelper.getString("errorMessage");
+        String errorMessage = SettingsHelper.getString(Kazky.Constants.errorMessage);
 
         if (!errorMessage.isEmpty()) {
             notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
             showAlert(getString(R.string.an_error_occurred), errorMessage);
             notificationManager.cancel(DownloadTask.WITH_ERROR);
-            SettingsHelper.setString("errorMessage", "");
+            SettingsHelper.setString(Kazky.Constants.errorMessage, "");
         }
     }
 
@@ -339,7 +340,7 @@ public abstract class MainActivity extends AppCompatActivity
         }
     }
 
-    protected void openActivity(Class view) {
+    private void openActivity(Class view) {
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
@@ -415,7 +416,7 @@ public abstract class MainActivity extends AppCompatActivity
             boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
             Tale[] download = new Tales().getTalesList(onlyFavorite).toArray(new Tale[0]);
 
-            SettingsHelper.setBoolean("checkForUpdates", false);
+            SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
             new DownloadTask().execute(download);
         }
     }
@@ -474,8 +475,8 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void checkForNotifications() {
-        if (!SettingsHelper.getBoolean("checkForNotifications")) return;
-        SettingsHelper.setBoolean("checkForNotifications", false);
+        if (!SettingsHelper.getBoolean(Kazky.Constants.checkForNotifications)) return;
+        SettingsHelper.setBoolean(Kazky.Constants.checkForNotifications, false);
 
         if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
             requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
@@ -483,11 +484,11 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     private void checkForUpdates() {
-        if (!SettingsHelper.getBoolean("checkForUpdates")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.checkForUpdates)) return;
         if (this.isNetworkUnavailable()) return;
 
         try {
-            SettingsHelper.setBoolean("checkForUpdates", false);
+            SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
 
             String latestVersion = SettingsHelper.getString("version");
             String whatsNew = "• " + SettingsHelper.getString("whatsNew").replace(". ", ".\n• ");
@@ -509,7 +510,7 @@ public abstract class MainActivity extends AppCompatActivity
                         .show();
             }
         } catch (Exception e) {
-            SettingsHelper.setBoolean("checkForUpdates", false);
+            SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
             e.printStackTrace();
         }
     }

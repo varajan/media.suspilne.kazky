@@ -25,6 +25,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
@@ -173,9 +174,9 @@ public class PlayerService extends IntentService {
     }
 
     private void playTale(Tale tale) {
-        if (tale.id != -1 && !SettingsHelper.getBoolean(("stopPlaybackOnTimeout"))) {
+        if (tale.id != -1 && !SettingsHelper.getBoolean((Kazky.Constants.stopPlaybackOnTimeout))) {
             long position = tale.id == Tales.getLastPlaying() ? Tales.getLastPosition() : 0;
-            position = SettingsHelper.getBoolean("skipIntro") ? Math.max(position, tale.introTime) : position;
+            position = SettingsHelper.getBoolean("skipIntro", true) ? Math.max(position, tale.introTime) : position;
 
             Tales.setNowPlaying(tale.id);
             Tales.setLastPlaying(tale.id);

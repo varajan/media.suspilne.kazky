@@ -15,6 +15,7 @@ import java.net.URL;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
@@ -83,7 +84,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
             .setSound(null);
 
         notificationManager.notify(WITH_ERROR, notificationBuilder.build());
-        SettingsHelper.setString("errorMessage", errorMessage);
+        SettingsHelper.setString(Kazky.Constants.errorMessage, errorMessage);
     }
 
     protected void onPreExecute() {
