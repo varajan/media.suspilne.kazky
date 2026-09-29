@@ -83,7 +83,7 @@ public class TaleView {
             Kazky.logError("Failed to load tale #" + taleData.id, false);
             Kazky.logError(e.getMessage());
 
-            SettingsHelper.setBoolean("showBigImages", false);
+            SettingsHelper.setBoolean(Kazky.Constants.showBigImages, false);
         }
     }
 
@@ -123,7 +123,7 @@ public class TaleView {
             Kazky.logError("Failed to load tale #" + taleData.id, false);
             Kazky.logError(e.getMessage());
 
-            SettingsHelper.setBoolean("showBigImages", false);
+            SettingsHelper.setBoolean(Kazky.Constants.showBigImages, false);
         }
     }
 

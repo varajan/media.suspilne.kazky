@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.activities.views.TaleView;
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.player.PlayerService;
@@ -32,7 +32,7 @@ public class ActivityTales extends ListActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean("returnToReaders", returnToReaders);
+        outState.putBoolean(Kazky.Constants.returnToReaders, returnToReaders);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ActivityTales extends ListActivity {
     private void continueTale(Bundle bundle) {
         if (bundle == null) return;
 
-        returnToReaders = bundle.getBoolean("returnToReaders");
+        returnToReaders = bundle.getBoolean(Kazky.Constants.returnToReaders);
 
         if (Tales.getNowPlaying() > 0) {
             setPlayBtnIcon();
@@ -62,7 +62,7 @@ public class ActivityTales extends ListActivity {
     }
 
     private void showTales() {
-        boolean showBigImages = SettingsHelper.getBoolean("showBigImages");
+        boolean showBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
 
         for (final Tale tale:tales.getTalesList()) {
             View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, ItemsList, false);
@@ -125,7 +125,7 @@ public class ActivityTales extends ListActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        returnToReaders = intent.getBooleanExtra("returnToReaders", false);
+        returnToReaders = intent.getBooleanExtra(Kazky.Constants.returnToReaders, false);
         initControls();
         tales = new Tales();
         categories = Categories.NameIds;
@@ -164,7 +164,7 @@ public class ActivityTales extends ListActivity {
             }
         }
 
-        SettingsHelper.setString("filteredTalesList", list.toString().trim());
+        SettingsHelper.setString(Kazky.Constants.filteredTalesList, list.toString().trim());
 
         return nothingToShowVisibility;
     }
@@ -174,8 +174,8 @@ public class ActivityTales extends ListActivity {
 
         if (tale.id != -1) {
             Intent stream = new Intent(this, PlayerService.class);
-            stream.putExtra("tale.id", tale.id);
-            stream.putExtra("type", getString(R.string.tales));
+            stream.putExtra(Kazky.Constants.taleIdExtra, tale.id);
+            stream.putExtra(Kazky.Constants.typeExtra, getString(R.string.tales));
             ContextCompat.startForegroundService(this, stream);
         }
 
@@ -240,7 +240,7 @@ public class ActivityTales extends ListActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
         switch (intent.getStringExtra("code")) {
-            case "SourceIsNotAccessible":
+            case Kazky.Constants.codeSourceIsNotAccessible:
                 Tales.setPause(true);
                 setPlayBtnIcon();
                 Toast.makeText(ActivityTales.this, R.string.no_internet, Toast.LENGTH_LONG).show();

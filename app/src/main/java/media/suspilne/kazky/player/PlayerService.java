@@ -70,12 +70,12 @@ public class PlayerService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String type = intent != null ? intent.getStringExtra("type") : "null";
+        String type = intent != null ? intent.getStringExtra(Kazky.Constants.typeExtra) : "null";
         SettingsHelper.setString(Kazky.Constants.streamType, type);
         registerReceiver();
 
         if (type.equals(getString(R.string.tales))) {
-            int taleId = intent != null ? intent.getIntExtra("tale.id", -1) : -1;
+            int taleId = intent != null ? intent.getIntExtra(Kazky.Constants.taleIdExtra, -1) : -1;
             Tale tale = new Tales().getById(taleId);
             playTale(tale);
             return START_NOT_STICKY;
@@ -108,7 +108,7 @@ public class PlayerService extends IntentService {
             @Override
             public void onPlayerError(@NonNull PlaybackException error) {
                 stopSelf();
-                sendMessage("SourceIsNotAccessible");
+                sendMessage(Kazky.Constants.codeSourceIsNotAccessible);
             }
 
             @Override

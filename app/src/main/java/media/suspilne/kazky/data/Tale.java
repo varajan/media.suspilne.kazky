@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.activities.views.TaleView;
 import media.suspilne.kazky.helpers.SettingsHelper;

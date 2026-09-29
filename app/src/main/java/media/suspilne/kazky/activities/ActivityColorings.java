@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.activities.views.TaleView;
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.R;
@@ -79,7 +80,7 @@ public class ActivityColorings extends ListActivity {
     }
 
     private void showTales() {
-        boolean showBigImages = SettingsHelper.getBoolean("showBigImages");
+        boolean showBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
 
         for (final Tale tale:tales.getTalesList()) {
             if (tale.coloring == 0) continue;

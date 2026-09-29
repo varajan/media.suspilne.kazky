@@ -24,7 +24,11 @@ public class Kazky extends Application {
         public static String talesLastPlaying = "tales.lastPlaying";
         public static String talesNowPlaying = "tales.nowPlaying";
         public static String talesList = "talesList";
+        public static String taleIdExtra = "tale.id";
+        public static String typeExtra = "type";
         public static String stopPlaybackOnTimeout = "stopPlaybackOnTimeout";
+        public static String filteredTalesList = "filteredTalesList";
+        public static String showBigImages = "showBigImages";
 
         public static String errorMessage = "errorMessage";
 
@@ -33,11 +37,15 @@ public class Kazky extends Application {
         public static String volumeControl = "volumeControl";
         public static String volumeMinutes = "volumeMinutes";
 
-        public static String codeStopPlay = " StopPlay";
-        public static String codeSetPlayBtnIcon = "SetPlayBtnIcon";
+        public static final String codeStopPlay = "StopPlay";
+        public static final String codeSetPlayBtnIcon = "SetPlayBtnIcon";
+        public static final String codeSourceIsNotAccessible = "SourceIsNotAccessible";
+
+        public static String returnToReaders = "returnToReaders";
     }
 
-    // Kazky.Constants.codeSetPlayBtnIcon
+    // Kazky.Constants.showBigImages
+    // Kazky.Constants.typeExtra
 
     @Override
     public void onCreate() {

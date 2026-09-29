@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.data.Reader;
@@ -44,7 +45,7 @@ public class ActivityReaders extends ListActivity {
     private final View.OnClickListener onReaderClick = view -> {
         Intent intent = new Intent(this, ActivityTales.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra("returnToReaders", true);
+        intent.putExtra(Kazky.Constants.returnToReaders, true);
 
         String readerName = view.getTag().toString();
         TextView readerView = findViewById(R.id.itemsList).findViewWithTag(readerName).findViewById(R.id.description);

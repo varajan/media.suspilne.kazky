@@ -84,8 +84,8 @@
     <string name="freeSpace">\n(Вільного місця: %s)</string>
     <string name="usedSpace">\n(Використано: %s)</string>
     <string name="fontColor">Змінити колір тексту</string>
-    <string name=Kazky.Constants.downloadAllTales>Зберегти всі казки на пристрої</string>
-    <string name=Kazky.Constants.downloadFavoriteTales>Зберегти улюблені казки на пристрої</string>
+    <string name="downloadAllTales">Зберегти всі казки на пристрої</string>
+    <string name="downloadFavoriteTales">Зберегти улюблені казки на пристрої</string>
     <string name="downloadAllTalesQuestion">Зберегти всі казки на пристрої? Для цього знадобиться приблизно %s вільного місця.</string>
     <string name="downloadFavoriteTalesQuestion">Зберегти тільки улюблені казки на пристрої? Для прослуховування інших буде потрібен Інтернет.</string>
     <string name="clearAllTalesQuestion">Видалити збережені казки? Улюблені казки залишаться на пристрої.</string>

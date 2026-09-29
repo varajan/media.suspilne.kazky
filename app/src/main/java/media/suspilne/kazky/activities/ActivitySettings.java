@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.data.Readers;
 import media.suspilne.kazky.helpers.SettingsHelper;
@@ -76,7 +77,7 @@ public class ActivitySettings extends MainActivity {
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
 
-        showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("showBigImages", isChecked));
+        showBigImages.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.showBigImages, isChecked));
         groupByReader.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("groupByReader", isChecked));
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
 
@@ -280,7 +281,7 @@ public class ActivitySettings extends MainActivity {
         boolean isVolumeControl = SettingsHelper.getBoolean(Kazky.Constants.volumeControl);
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
-        boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
+        boolean isShowBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
         boolean isGroupByReader = SettingsHelper.getBoolean("groupByReader");
         boolean isShuffle = SettingsHelper.getBoolean("shuffle");
         boolean isSkipIntro = SettingsHelper.getBoolean("skipIntro", true);
