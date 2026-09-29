@@ -79,7 +79,7 @@ public class TaleView {
             duration.setTextColor(color);
 
             setDownloadedIcon();
-        }catch (Exception e) {
+        } catch (Exception e) {
             Kazky.logError("Failed to load tale #" + taleData.id, false);
             Kazky.logError(e.getMessage());
 
@@ -119,7 +119,7 @@ public class TaleView {
             if (showBigImages) ((ImageView)taleView.findViewById(R.id.favoriteShadow)).setVisibility(View.INVISIBLE);
             ((ImageView)taleView.findViewById(R.id.favorite)).setVisibility(View.INVISIBLE);
             ((ImageView)taleView.findViewById(R.id.play)).setImageResource(R.mipmap.download);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Kazky.logError("Failed to load tale #" + taleData.id, false);
             Kazky.logError(e.getMessage());
 
@@ -148,7 +148,7 @@ public class TaleView {
     }
 
     private View getView() {
-        try{
+        try {
             return ActivityTales.getActivity().findViewById(R.id.itemsList).findViewWithTag(taleData.id);
         }
         catch (Exception e) {

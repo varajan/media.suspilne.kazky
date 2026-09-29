@@ -30,6 +30,7 @@ public class Tale {
     public String stream;
     public String fileName;
     public String duration;
+    private String isFavoriteKey = "isFavorite_";
 
     Tale() { id = -1; }
 
@@ -41,7 +42,7 @@ public class Tale {
         this.titleId = title;
         this.readerId = name;
         this.image = img;
-        this.isFavorite = SettingsHelper.getBoolean("isFavorite_" + id);
+        this.isFavorite = SettingsHelper.getBoolean(isFavoriteKey + id);
         this.isDownloaded = id > 0 && isDownloaded(this.id);
         this.stream = id > 0 ? stream(id) : null;
         this.fileName = id > 0 ? fileName(id) : null;
@@ -64,7 +65,7 @@ public class Tale {
         boolean downloadFavorite = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales);
 
         isFavorite = !isFavorite;
-        SettingsHelper.setBoolean("isFavorite_" + id, isFavorite);
+        SettingsHelper.setBoolean(isFavoriteKey + id, isFavorite);
 
         if ( isFavorite && downloadFavorite && !downloadAll) this.download();
         if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
@@ -104,7 +105,7 @@ public class Tale {
     }
 
     public boolean isDownloaded(int tale) {
-        try{
+        try {
             return MainActivity.getActivity().getFileStreamPath(fileName(tale)).exists();
         } catch (Exception ex) {
             return false;
@@ -145,7 +146,7 @@ public class Tale {
                     InputStream is = (InputStream) new URL(tale.stream).getContent();
                     SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

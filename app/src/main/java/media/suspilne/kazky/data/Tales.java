@@ -13,25 +13,28 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.helpers.ListHelper;
 
 public class Tales {
+    private static String playerPositionKey = "PlayerPosition";
+    private static String onlyFavoriteKey = "_showOnlyFavorite";
+
     public static boolean getShowCategory(String filterPrefix, String category) { return SettingsHelper.getBoolean(filterPrefix + "_show_" + category); }
     public static void setShowCategory(String filterPrefix, String category, boolean value) {
         SettingsHelper.setBoolean(filterPrefix + "_show_" + category, value);
     }
 
-    public static boolean getShowOnlyFavorite(String filterPrefix) { return SettingsHelper.getBoolean(filterPrefix + "_showOnlyFavorite"); }
+    public static boolean getShowOnlyFavorite(String filterPrefix) { return SettingsHelper.getBoolean(filterPrefix + onlyFavoriteKey); }
     public static void setShowOnlyFavorite(String filterPrefix, boolean value) {
-        SettingsHelper.setBoolean(filterPrefix + "_showOnlyFavorite", value);
+        SettingsHelper.setBoolean(filterPrefix + onlyFavoriteKey, value);
     }
 
     public static String getFilter(String filterPrefix) { return SettingsHelper.getString(filterPrefix + "_talesFilter"); }
     public static void setFilter(String filterPrefix, String filter) { SettingsHelper.setString(filterPrefix + "_talesFilter", filter); }
 
     public static void setLastPosition(long value) {
-        SettingsHelper.setLong("PlayerPosition", value);
+        SettingsHelper.setLong(playerPositionKey, value);
     }
 
     public static long getLastPosition() {
-        return SettingsHelper.getLong("PlayerPosition");
+        return SettingsHelper.getLong(playerPositionKey);
     }
 
     public static void setLastPlaying(int value) {

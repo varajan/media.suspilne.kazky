@@ -47,7 +47,7 @@ public class SettingsHelper {
     }
 
     public static void setString(String setting, String value) {
-        try{
+        try {
             SharedPreferences.Editor editor = MainActivity.getActivity().getSharedPreferences(Kazky.Constants.application, 0).edit();
             editor.putString(setting, value);
             editor.apply();
@@ -62,7 +62,7 @@ public class SettingsHelper {
     }
 
     public static boolean getBoolean(String setting, boolean defaultValue) {
-        try{
+        try {
             return getString(setting).equalsIgnoreCase("true");
         }
         catch (Exception e) {

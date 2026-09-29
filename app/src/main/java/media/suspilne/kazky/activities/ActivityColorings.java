@@ -115,7 +115,7 @@ public class ActivityColorings extends ListActivity {
     private void download(String url, String fileName) {
         Toast.makeText(getActivity(), R.string.coloring_download, Toast.LENGTH_LONG).show();
 
-        try{
+        try {
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
             DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 

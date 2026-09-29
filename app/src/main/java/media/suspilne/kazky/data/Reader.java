@@ -94,7 +94,7 @@ public class Reader {
             reader.setText(name);
             reader.setTextColor(color);
             description.setTextColor(color);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e(Kazky.Constants.application, e.getMessage());
             Log.e(Kazky.Constants.application, e.getStackTrace().toString());
             e.printStackTrace();

@@ -209,7 +209,7 @@ public class ActivityTales extends ListActivity {
     }
 
     private void registerReceiver() {
-        try{
+        try {
             IntentFilter filter = new IntentFilter();
             filter.addAction(Kazky.Constants.application);
 
@@ -219,15 +219,15 @@ public class ActivityTales extends ListActivity {
                     filter,
                     ContextCompat.RECEIVER_EXPORTED
             );
-        }catch (Exception e) {
+        } catch (Exception e) {
             // nothing
         }
     }
 
     private void unregisterReceiver() {
-        try{
+        try {
             this.unregisterReceiver(receiver);
-        }catch (Exception e) { /*nothing*/ }
+        } catch (Exception e) { /*nothing*/ }
     }
 
     @Override

@@ -234,7 +234,7 @@ public class PlayerService extends IntentService {
     }
 
     private void registerReceiver() {
-        try{
+        try {
             IntentFilter filter = new IntentFilter();
 
             filter.addAction(Kazky.Constants.application);
@@ -252,9 +252,9 @@ public class PlayerService extends IntentService {
     }
 
     private void unregisterReceiver() {
-        try{
+        try {
             this.unregisterReceiver(receiver);
-        }catch (Exception e) { /*nothing*/ }
+        } catch (Exception e) { /*nothing*/ }
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {

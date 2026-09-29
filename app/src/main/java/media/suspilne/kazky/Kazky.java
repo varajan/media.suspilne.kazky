@@ -42,8 +42,9 @@ public class Kazky extends Application {
         public static final String sortAsc = "sortAsc";
         public static final String sort19 = "sort19";
         public static final String sort91 = "sort91";
+        public static final String isAscSorted = "isAscSorted";
 
-        // Kazky.Constants.typeExtra
+        // Kazky.Constants.isAscSorted
 
         public static String errorMessage = "errorMessage";
 

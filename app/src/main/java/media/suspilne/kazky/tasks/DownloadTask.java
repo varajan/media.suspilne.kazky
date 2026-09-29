@@ -145,7 +145,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
                 publishProgress(tale.getReader() + ": " + tale.getTitle());
                 current++;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
         }

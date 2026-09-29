@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
 
@@ -21,11 +22,11 @@ public class Readers {
     }
 
     public static void setAscSorting(boolean value) {
-        SettingsHelper.setBoolean("isAscSorted", value);
+        SettingsHelper.setBoolean(Kazky.Constants.isAscSorted, value);
     }
 
     public static boolean isAscSorted() {
-        return SettingsHelper.getBoolean("isAscSorted");
+        return SettingsHelper.getBoolean(Kazky.Constants.isAscSorted);
     }
 
     private List<Reader> items = Arrays.asList(
