@@ -80,10 +80,10 @@ public abstract class MainActivity extends AppCompatActivity
 
     protected void resetVolumeReduceTimer() {
         stopVolumeReduceTimer();
-        if (!SettingsHelper.getBoolean("volumeControl")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.volumeControl)) return;
         if (!isTalePlaying()) return;
 
-        int timeout = SettingsHelper.getInt("volumeMinutes");
+        int timeout = SettingsHelper.getInt(Kazky.Constants.volumeMinutes);
         timeout = timeout == 0 ? 5 : timeout;
 
         volumeReduceTimer = new Timer();
@@ -91,10 +91,10 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void resetQuitTimeout() {
-        if (SettingsHelper.getBoolean("autoQuit")) {
+        if (SettingsHelper.getBoolean(Kazky.Constants.autoQuit)) {
             stopQuitTimer();
 
-            int timeout = SettingsHelper.getInt("timeout");
+            int timeout = SettingsHelper.getInt(Kazky.Constants.timeout);
             timeout = timeout==0 ? 5 : timeout;
 
             quitTimer = new Timer();
@@ -112,7 +112,7 @@ public abstract class MainActivity extends AppCompatActivity
             if (isTalePlaying()) {
                 Intent intent = new Intent();
                 intent.setAction(SettingsHelper.application);
-                intent.putExtra("code", "StopPlay");
+                intent.putExtra("code", Kazky.Constants.codeStopPlay);
                 sendBroadcast(intent);
             }
             else {
@@ -137,7 +137,7 @@ public abstract class MainActivity extends AppCompatActivity
                 Tales.setNowPlaying(-1);
                 Intent intent = new Intent();
                 intent.setAction(SettingsHelper.application);
-                intent.putExtra("code", "SetPlayBtnIcon");
+                intent.putExtra("code", Kazky.Constants.codeSetPlayBtnIcon);
                 sendBroadcast(intent);
             }
         }
@@ -145,7 +145,7 @@ public abstract class MainActivity extends AppCompatActivity
 
     protected boolean isTalePlaying() {
         return isServiceRunning()
-                && SettingsHelper.getString("StreamType").equals(getString(R.string.tales))
+                && SettingsHelper.getString(Kazky.Constants.streamType).equals(getString(R.string.tales))
                 && !Tales.isPaused();
     }
 
@@ -166,7 +166,7 @@ public abstract class MainActivity extends AppCompatActivity
             ArrayList<String> settings = new ArrayList<>();
 
             try {
-                String url = "https://raw.githubusercontent.com/varajan/media.suspilne.kazky/master/app/src/main/res/settings";
+                String url = this.getString(R.string.settingsUrl);
                 HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
                 conn.setConnectTimeout(SettingsHelper.timeout);
 
@@ -181,10 +181,9 @@ public abstract class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            SettingsHelper.setBoolean("playTalesFromGit", settings.contains("talesFromGit:true"));
             SettingsHelper.setBoolean(Kazky.Constants.readSettingsFromGit, false);
-            SettingsHelper.setString("version", getSettingsValue(settings, "version", SettingsHelper.getVersionName()));
-            SettingsHelper.setString("whatsNew", getSettingsValue(settings,"whatsNew", "Щось дуже корисне."));
+            SettingsHelper.setString(Kazky.Constants.version, getSettingsValue(settings, Kazky.Constants.version, SettingsHelper.getVersionName()));
+            SettingsHelper.setString(Kazky.Constants.whatsNew, getSettingsValue(settings,Kazky.Constants.whatsNew, "Щось дуже корисне."));
         }).start();
     }
 
@@ -413,7 +412,7 @@ public abstract class MainActivity extends AppCompatActivity
         if (this.isNetworkUnavailable()) {
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
-            boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
+            boolean onlyFavorite = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales) && !SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
             Tale[] download = new Tales().getTalesList(onlyFavorite).toArray(new Tale[0]);
 
             SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
@@ -431,11 +430,11 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void continueDownloadTales() {
-        if (!SettingsHelper.getBoolean("downloadAllTales") && !SettingsHelper.getBoolean("downloadFavoriteTales")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales) && !SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales)) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
         boolean allAreDownloaded = true;
-        boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
+        boolean onlyFavorite = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales) && !SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
 
         for (Tale tale : new Tales().getTalesList()) {
             if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded) {
@@ -448,20 +447,20 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void suggestToDownloadFavoriteTales() {
-        if (SettingsHelper.getBoolean("suggestToDownloadFavoriteTales")) return;
-        if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
+        if (SettingsHelper.getBoolean(Kazky.Constants.suggestToDownloadFavoriteTales)) return;
+        if (SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales) || SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales)) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
         int favorites = new Tales().getTalesList(true).size();
         if (favorites < 5) return;
 
-        SettingsHelper.setBoolean("suggestToDownloadFavoriteTales", true);
+        SettingsHelper.setBoolean(Kazky.Constants.suggestToDownloadFavoriteTales, true);
 
         new AlertDialog.Builder(MainActivity.this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.download)
             .setMessage(getString(R.string.suggestToDownloadFavorite, favorites))
-            .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoriteTales", true); download();})
+            .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean(Kazky.Constants.downloadFavoriteTales, true); download();})
             .setNegativeButton(R.string.no, null)
             .show();
     }
@@ -490,13 +489,13 @@ public abstract class MainActivity extends AppCompatActivity
         try {
             SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
 
-            String latestVersion = SettingsHelper.getString("version");
-            String whatsNew = "• " + SettingsHelper.getString("whatsNew").replace(". ", ".\n• ");
+            String latestVersion = SettingsHelper.getString(Kazky.Constants.version);
+            String whatsNew = "• " + SettingsHelper.getString(Kazky.Constants.whatsNew).replace(". ", ".\n• ");
             String currentVersion = SettingsHelper.getVersionName();
-            String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
+            String loggedVersion = SettingsHelper.getString(Kazky.Constants.latestVersion, currentVersion);
 
             if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ) {
-                    SettingsHelper.setString("LatestVersion", latestVersion);
+                    SettingsHelper.setString(Kazky.Constants.latestVersion, latestVersion);
 
                 if (latestVersion.isEmpty() || whatsNew.equals("• ")) return;
 

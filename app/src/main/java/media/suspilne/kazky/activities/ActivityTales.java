@@ -246,7 +246,7 @@ public class ActivityTales extends ListActivity {
                 Toast.makeText(ActivityTales.this, R.string.no_internet, Toast.LENGTH_LONG).show();
                 break;
 
-            case "SetPlayBtnIcon":
+            case Kazky.Constants.codeSetPlayBtnIcon:
                 setPlayBtnIcon();
                 break;
             }

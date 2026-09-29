@@ -71,7 +71,7 @@ public class PlayerService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String type = intent != null ? intent.getStringExtra("type") : "null";
-        SettingsHelper.setString("StreamType", type);
+        SettingsHelper.setString(Kazky.Constants.streamType, type);
         registerReceiver();
 
         if (type.equals(getString(R.string.tales))) {
@@ -114,12 +114,12 @@ public class PlayerService extends IntentService {
             @Override
             public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
                 Tales.setPause(!playWhenReady);
-                sendMessage("SetPlayBtnIcon");
+                sendMessage(Kazky.Constants.codeSetPlayBtnIcon);
             }
 
             @Override
             public void onPlaybackStateChanged(@Player.State int playbackState) {
-                sendMessage("SetPlayBtnIcon");
+                sendMessage(Kazky.Constants.codeSetPlayBtnIcon);
 
                 if (playbackState == ExoPlayer.STATE_IDLE) {
                     Tales.setNowPlaying(-1);
@@ -230,7 +230,7 @@ public class PlayerService extends IntentService {
             releasePlayer();
         }
 
-        sendMessage("SetPlayBtnIcon");
+        sendMessage(Kazky.Constants.codeSetPlayBtnIcon);
     }
 
     private void registerReceiver() {
@@ -260,9 +260,9 @@ public class PlayerService extends IntentService {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if ("StopPlay".equals(intent.getStringExtra("code"))) {
+            if (Kazky.Constants.codeStopPlay.equals(intent.getStringExtra("code"))) {
                 Tales.setNowPlaying(-1);
-                sendMessage("SetPlayBtnIcon");
+                sendMessage(Kazky.Constants.codeSetPlayBtnIcon);
                 stopSelf();
             }
         }

@@ -59,8 +59,8 @@ public class Tale {
     }
 
     public void resetFavorite() {
-        boolean downloadAll = SettingsHelper.getBoolean("downloadAllTales");
-        boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoriteTales");
+        boolean downloadAll = SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
+        boolean downloadFavorite = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales);
 
         isFavorite = !isFavorite;
         SettingsHelper.setBoolean("isFavorite_" + id, isFavorite);

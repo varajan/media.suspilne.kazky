@@ -70,8 +70,8 @@ public class ActivitySettings extends MainActivity {
         setReaderSorting();
 
         fontColor.setOnCheckedChangeListener((buttonView, isChecked) -> updateColor(isChecked));
-        autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("autoQuit", isChecked));
-        volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("volumeControl", isChecked));
+        autoQuit.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.autoQuit, isChecked));
+        volumeControl.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch(Kazky.Constants.volumeControl, isChecked));
         parentLock.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("parentLock", isChecked));
         timeout.setOnSeekBarChangeListener(onTimeoutChange);
         volumeTimeout.setOnSeekBarChangeListener(onVolumeTimeoutChange);
@@ -164,7 +164,7 @@ public class ActivitySettings extends MainActivity {
         if (title.equals("groupByReader")) new Tales().setTalesList();
         setColorsAndState();
 
-        if(title.equals("autoQuit") || title.equals("volumeControl")) {
+        if(title.equals(Kazky.Constants.autoQuit) || title.equals(Kazky.Constants.volumeControl)) {
             resetQuitTimeout();
             resetVolumeReduceTimer();
         }
@@ -216,14 +216,14 @@ public class ActivitySettings extends MainActivity {
             return;
         }
 
-        SettingsHelper.setBoolean("downloadAllTales", true);
-        SettingsHelper.setBoolean("downloadFavoriteTales", true);
+        SettingsHelper.setBoolean(Kazky.Constants.downloadAllTales, true);
+        SettingsHelper.setBoolean(Kazky.Constants.downloadFavoriteTales, true);
         download();
         setColorsAndState();
     }
 
     private void doDownloadFavorite() {
-        SettingsHelper.setBoolean("downloadFavoriteTales", true);
+        SettingsHelper.setBoolean(Kazky.Constants.downloadFavoriteTales, true);
         download();
         setColorsAndState();
     }
@@ -235,9 +235,9 @@ public class ActivitySettings extends MainActivity {
             }
         }
 
-        SettingsHelper.setBoolean(includeFavorite ? "downloadFavoriteTales" : "downloadAllTales", false);
+        SettingsHelper.setBoolean(includeFavorite ? Kazky.Constants.downloadFavoriteTales : Kazky.Constants.downloadAllTales, false);
         if (!includeFavorite && new Tales().getFavoriteCount() == 0) {
-            SettingsHelper.setBoolean("downloadFavoriteTales", false);
+            SettingsHelper.setBoolean(Kazky.Constants.downloadFavoriteTales, false);
         }
 
         setColorsAndState();
@@ -274,10 +274,10 @@ public class ActivitySettings extends MainActivity {
     }
 
     private void setColorsAndState() {
-        boolean isAutoQuit = SettingsHelper.getBoolean("autoQuit");
-        boolean isDownloadAllTales = SettingsHelper.getBoolean("downloadAllTales");
-        boolean isDownloadFavoriteTales = SettingsHelper.getBoolean("downloadFavoriteTales");
-        boolean isVolumeControl = SettingsHelper.getBoolean("volumeControl");
+        boolean isAutoQuit = SettingsHelper.getBoolean(Kazky.Constants.autoQuit);
+        boolean isDownloadAllTales = SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
+        boolean isDownloadFavoriteTales = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales);
+        boolean isVolumeControl = SettingsHelper.getBoolean(Kazky.Constants.volumeControl);
         boolean isFontColorOverridden = SettingsHelper.getBoolean("use.font.color");
         boolean isParentLock = SettingsHelper.getBoolean("parentLock");
         boolean isShowBigImages = SettingsHelper.getBoolean("showBigImages");
@@ -289,11 +289,11 @@ public class ActivitySettings extends MainActivity {
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
         String usedSpace = getString(R.string.usedSpace, SettingsHelper.formattedSize(SettingsHelper.usedSpace()));
         String freeSpace = getString(R.string.freeSpace, SettingsHelper.formattedSize(SettingsHelper.freeSpace()));
-        String quitMinutes = SettingsHelper.getString("timeout", "5");
-        String volumeMinutes = SettingsHelper.getString("volumeMinutes", "5");
+        String quitMinutes = SettingsHelper.getString(Kazky.Constants.timeout, "5");
+        String volumeMinutes = SettingsHelper.getString(Kazky.Constants.volumeMinutes, "5");
 
-        timeout.setProgress(SettingsHelper.getInt("timeout", 1) / step);
-        volumeTimeout.setProgress(SettingsHelper.getInt("volumeMinutes", 5));
+        timeout.setProgress(SettingsHelper.getInt(Kazky.Constants.timeout, 1) / step);
+        volumeTimeout.setProgress(SettingsHelper.getInt(Kazky.Constants.volumeMinutes, 5));
 
         autoQuit.setChecked(isAutoQuit);
         timeout.setEnabled(isAutoQuit);
@@ -393,7 +393,7 @@ public class ActivitySettings extends MainActivity {
     SeekBar.OnSeekBarChangeListener onTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            SettingsHelper.setInt("timeout", seekBar.getProgress() * step);
+            SettingsHelper.setInt(Kazky.Constants.timeout, seekBar.getProgress() * step);
 
             autoQuit.setText(getString(R.string.sleep_timeout_text, Integer.toString(seekBar.getProgress() * step )));
 
@@ -410,7 +410,7 @@ public class ActivitySettings extends MainActivity {
     SeekBar.OnSeekBarChangeListener onVolumeTimeoutChange = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            SettingsHelper.setInt("volumeMinutes", seekBar.getProgress());
+            SettingsHelper.setInt(Kazky.Constants.volumeMinutes, seekBar.getProgress());
 
             volumeControl.setText(getString(R.string.volume_timeout_text, Integer.toString(seekBar.getProgress())));
 

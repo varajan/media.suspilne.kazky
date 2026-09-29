@@ -11,7 +11,15 @@ public class Kazky extends Application {
         public static String checkForNotifications = "checkForNotifications";
         public static String checkForUpdates = "checkForUpdates";
         public static String readSettingsFromGit = "readSettingsFromGit";
+        public static String latestVersion = "LatestVersion";
+        public static String version = "version";
+        public static String whatsNew = "whatsNew";
 
+        public static String downloadFavoriteTales = "downloadFavoriteTales";
+        public static String downloadAllTales = "downloadAllTales";
+        public static String suggestToDownloadFavoriteTales = " suggestToDownloadFavoriteTales";
+
+        public static String streamType = "StreamType";
         public static String talesPaused = "tales.paused";
         public static String talesLastPlaying = "tales.lastPlaying";
         public static String talesNowPlaying = "tales.nowPlaying";
@@ -19,7 +27,17 @@ public class Kazky extends Application {
         public static String stopPlaybackOnTimeout = "stopPlaybackOnTimeout";
 
         public static String errorMessage = "errorMessage";
+
+        public static String autoQuit = "autoQuit";
+        public static String timeout = "timeout";
+        public static String volumeControl = "volumeControl";
+        public static String volumeMinutes = "volumeMinutes";
+
+        public static String codeStopPlay = " StopPlay";
+        public static String codeSetPlayBtnIcon = "SetPlayBtnIcon";
     }
+
+    // Kazky.Constants.codeSetPlayBtnIcon
 
     @Override
     public void onCreate() {
