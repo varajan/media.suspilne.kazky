@@ -1,6 +1,7 @@
 package media.suspilne.kazky.data;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.google.android.gms.common.util.IOUtils;
@@ -8,6 +9,7 @@ import com.google.android.gms.common.util.IOUtils;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import media.suspilne.kazky.Kazky;
@@ -34,14 +36,14 @@ public class Tale {
 
     Tale() { id = -1; }
 
-    Tale(int id, String duration, int intro, int coloring, int title, int name, int img) {
+    Tale(int id, String duration, int intro, int coloring, int title, int readerName) {
         this.id = id;
         this.introTime = intro;
         this.coloring = coloring;
         this.duration = "⏱ " + duration;
         this.titleId = title;
-        this.readerId = name;
-        this.image = img;
+        this.readerId = readerName;
+        this.image = this.getTaleImage();
         this.isFavorite = SettingsHelper.getBoolean(isFavoriteKey + id);
         this.isDownloaded = id > 0 && isDownloaded(this.id);
         this.stream = id > 0 ? stream(id) : null;
@@ -110,6 +112,19 @@ public class Tale {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private int getTaleImage() {
+        Activity activity = MainActivity.getActivity();
+        boolean showBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
+        String imageName = String.format(Locale.US, "t%03d%s", id, showBigImages ? "" : "_min");
+
+        return activity.getResources().getIdentifier(
+                imageName,
+                "drawable",
+                activity.getPackageName()
+        );
     }
 
     private String stream(int tale) {
