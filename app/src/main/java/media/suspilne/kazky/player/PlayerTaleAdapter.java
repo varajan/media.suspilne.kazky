@@ -15,7 +15,7 @@ import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
 import media.suspilne.kazky.activities.ActivityTales;
 
-public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescriptionAdapter{
+public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescriptionAdapter {
     private Context context;
 
     PlayerTaleAdapter(Context context) {

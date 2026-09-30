@@ -21,13 +21,12 @@ public class Reader {
     public Integer name;
     public Integer description;
     public Integer photo;
-    public Integer talesCount;
+    public Integer talesCount = 0;
 
     public Reader(int name, int description) {
         this.name = name;
         this.description = description;
         this.photo = getPhoto();
-        this.talesCount = getTalesCount();
     }
 
     public Integer getMatchedTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
@@ -166,9 +165,5 @@ public class Reader {
 
             default: return R.mipmap.logo;
         }
-    }
-
-    private int getTalesCount() {
-        return SettingsHelper.getInt(getName(), 0);
     }
 }

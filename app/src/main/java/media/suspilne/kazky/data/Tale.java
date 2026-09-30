@@ -30,7 +30,7 @@ public class Tale {
     public String stream;
     public String fileName;
     public String duration;
-    private String isFavoriteKey = "isFavorite_";
+    private final String isFavoriteKey = "isFavorite_";
 
     Tale() { id = -1; }
 

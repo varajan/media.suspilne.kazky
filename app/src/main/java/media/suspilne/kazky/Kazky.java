@@ -44,8 +44,6 @@ public class Kazky extends Application {
         public static final String sort91 = "sort91";
         public static final String isAscSorted = "isAscSorted";
 
-        // Kazky.Constants.isAscSorted
-
         public static String errorMessage = "errorMessage";
 
         public static String autoQuit = "autoQuit";
