@@ -62,7 +62,7 @@ public class ActivityReaders extends ListActivity {
         Tales.setShowOnlyFavorite(fromReadersFilter,Tales.getShowOnlyFavorite(activityName));
 
         for (final Integer categoryId : categories) {
-            String category = getResourceString(categoryId);
+            String category = getString(categoryId);
             boolean enabled = Tales.getShowCategory(activityName, category);
             Tales.setShowCategory(fromReadersFilter, category, enabled);
         }

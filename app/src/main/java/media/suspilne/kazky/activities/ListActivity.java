@@ -50,10 +50,10 @@ public abstract class ListActivity extends MainActivity {
         LinearLayout categoriesCheckboxes = dialogView.findViewById(R.id.categoriesGroup);
 
         List<String> onlyFavorite = Tales.getShowOnlyFavorite(activityName)
-                ? Collections.singletonList(this.getResourceString(R.string.showOnlyFavorite))
+                ? Collections.singletonList(this.getString(R.string.showOnlyFavorite))
                 : Collections.emptyList();
         List<String> checkedCategories = categories.stream()
-                .map(this::getResourceString)
+                .map(this::getString)
                 .filter(c -> Tales.getShowCategory(activityName, c))
                 .collect(Collectors.toList());
 
@@ -89,7 +89,7 @@ public abstract class ListActivity extends MainActivity {
         String filter = Tales.getFilter(activityName);
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
         List<Integer> selectedCategories = categories.stream()
-                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
+                .filter(category -> Tales.getShowCategory(activityName, this.getString(category)))
                 .collect(Collectors.toList());
 
         int nothingToShowVisibility = filterAction.run(filter, showOnlyFavorite, selectedCategories);
@@ -106,7 +106,7 @@ public abstract class ListActivity extends MainActivity {
         String filter = Tales.getFilter(activityName);
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
         List<Integer> selectedCategories = categories.stream()
-                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
+                .filter(category -> Tales.getShowCategory(activityName, this.getString(category)))
                 .collect(Collectors.toList());
 
         boolean hideSearchText = !showOnlyFavorite && filter.isEmpty() && selectedCategories.equals(categories);
@@ -117,7 +117,7 @@ public abstract class ListActivity extends MainActivity {
         String filter = Tales.getFilter(activityName);
         String searchFieldText = "";
         List<Integer> categories = allCategoryIds.stream()
-                .filter(category -> Tales.getShowCategory(activityName, this.getResourceString(category)))
+                .filter(category -> Tales.getShowCategory(activityName, this.getString(category)))
                 .collect(Collectors.toList());
         boolean allCategoriesSelected = categories.equals(allCategoryIds);
         boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
@@ -138,7 +138,7 @@ public abstract class ListActivity extends MainActivity {
             CheckBox checkBox = new CheckBox(this);
             checkBox.setText(item);
 
-            String itemText = this.getResourceString(item);
+            String itemText = this.getString(item);
             if (selected.contains(itemText)) checkBox.setChecked(true);
             container.addView(checkBox);
         }
@@ -165,7 +165,7 @@ public abstract class ListActivity extends MainActivity {
         Tales.setShowOnlyFavorite(activityName, showOnlyFavorites);
 
         for (final Integer categoryId : categories) {
-            String category = getResourceString(categoryId);
+            String category = getString(categoryId);
             boolean categoryEnabled = selectedCategories.contains(category);
             Tales.setShowCategory(activityName, category, categoryEnabled);
         }

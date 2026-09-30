@@ -420,7 +420,7 @@ public abstract class MainActivity extends AppCompatActivity
         }
     }
 
-    public void showAlert(String title, String message) {
+    protected void showAlert(String title, String message) {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(title)
@@ -512,10 +512,6 @@ public abstract class MainActivity extends AppCompatActivity
             SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
             e.printStackTrace();
         }
-    }
-
-    protected String getResourceString(Integer stringId) {
-        return getText(stringId).toString();
     }
 
     protected boolean hasPermission(String permission) {
