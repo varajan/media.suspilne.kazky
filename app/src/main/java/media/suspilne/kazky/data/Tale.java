@@ -2,12 +2,7 @@ package media.suspilne.kazky.data;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.os.AsyncTask;
 
-import com.google.android.gms.common.util.IOUtils;
-
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -19,6 +14,7 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.activities.MainActivity;
 import media.suspilne.kazky.activities.ActivityTales;
 import media.suspilne.kazky.helpers.StringHelper;
+import media.suspilne.kazky.tasks.DownloadTaleTask;
 
 public class Tale {
     public int id;
@@ -134,38 +130,12 @@ public class Tale {
     }
 
     public void download() {
-        new DownloadTrack().execute(this);
+        new DownloadTaleTask().execute(this);
     }
 
     public void deleteFile() {
         MainActivity.getActivity().deleteFile(fileName);
         TaleView taleView = new TaleView(this);
         taleView.setDownloadedIcon();
-    }
-
-    static class DownloadTrack extends AsyncTask<Tale, Void, Void> {
-        private Tale tale;
-
-        @Override
-        protected void onPostExecute(Void result) {
-            TaleView taleView = new TaleView(tale);
-            taleView.setDownloadedIcon();
-        }
-
-        @Override
-        protected Void doInBackground(Tale... tales) {
-            try {
-                tale = tales[0];
-                if (!tale.isDownloaded)
-                {
-                    InputStream is = (InputStream) new URL(tale.stream).getContent();
-                    SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
     }
 }
