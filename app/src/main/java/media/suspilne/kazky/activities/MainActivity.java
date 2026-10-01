@@ -201,10 +201,6 @@ public abstract class MainActivity extends AppCompatActivity
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
-        boolean a = activeNetworkInfo == null;
-        boolean b = !activeNetworkInfo.isConnected();
-        boolean c = !isNetworkSpeedOk();
-
         return activeNetworkInfo == null || !activeNetworkInfo.isConnected() || !isNetworkSpeedOk();
     }
 
