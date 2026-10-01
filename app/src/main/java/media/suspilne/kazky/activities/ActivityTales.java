@@ -98,7 +98,7 @@ public class ActivityTales extends ListActivity {
             taleView.findViewById(R.id.favorite).setOnClickListener(v -> {
                 tale.resetFavorite();
                 Toast.makeText(getActivity(),
-                        tale.isFavorite ? getString(R.string.addedToFavorites, tale.getTitle()) : getString(R.string.removedFromFavorites, tale.getTitle()),
+                        tale.isFavorite ? getString(R.string.addedToFavorites, tale.title) : getString(R.string.removedFromFavorites, tale.title),
                         Toast.LENGTH_LONG).show();
                 new TaleView(tale).setFavoriteIcon();
                 applyFilter(this::filterTales);

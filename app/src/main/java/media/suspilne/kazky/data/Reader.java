@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import media.suspilne.kazky.Kazky;
@@ -38,14 +39,14 @@ public class Reader {
                 .collect(Collectors.toList());
 
         List<Tale> allReaderTales = new Tales().items.stream()
-                .filter(t -> t.getReaderId() == this.name)
+                .filter(t -> Objects.equals(t.readerName, this.getName()))
                 .filter(t -> !showOnlyFavorite || t.isFavorite)
                 .filter(t -> categoryTales.contains(t.id))
                 .collect(Collectors.toList());
 
         String finalFilter = filter.toLowerCase().trim();
         boolean matchName = getName().toLowerCase().contains(finalFilter) || getDescription().toLowerCase().contains(finalFilter);
-        List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.getTitle().toLowerCase().contains(finalFilter))
+        List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.title.toLowerCase().contains(finalFilter))
                 .collect(Collectors.toList());
 
         return matchName

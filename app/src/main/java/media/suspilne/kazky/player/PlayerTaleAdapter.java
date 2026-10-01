@@ -29,7 +29,7 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
     @Override
     public String getCurrentContentTitle(Player player) {
         try {
-            return tale().getTitle();
+            return tale().title;
         }
         catch (Exception e) {
             return context.getString(R.string.title);
@@ -40,7 +40,7 @@ public class PlayerTaleAdapter implements PlayerNotificationManager.MediaDescrip
     @Override
     public String getCurrentContentText(Player player) {
         try {
-            return tale().getReader();
+            return tale().readerName;
         }
         catch (Exception e) {
             return context.getString(R.string.reader);

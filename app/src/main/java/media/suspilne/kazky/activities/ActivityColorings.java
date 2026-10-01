@@ -105,7 +105,7 @@ public class ActivityColorings extends ListActivity {
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.coloring_download_ask)
-                        .setPositiveButton(R.string.yes, (dialog, which) -> download(url, tale.getTitle() + ".jpg"))
+                        .setPositiveButton(R.string.yes, (dialog, which) -> download(url, tale.title + ".jpg"))
                         .setNegativeButton(R.string.no, null)
                         .show();
             });

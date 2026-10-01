@@ -2,11 +2,7 @@ package media.suspilne.kazky.data;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 
-import com.google.common.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -14,8 +10,6 @@ import java.util.stream.Collectors;
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.activities.views.TaleView;
-import media.suspilne.kazky.helpers.AssetUtils;
-import media.suspilne.kazky.helpers.JsonUtils;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.activities.MainActivity;
 import media.suspilne.kazky.activities.ActivityTales;
@@ -26,7 +20,8 @@ public class Tale {
     public int id;
     public int introTime;
     public boolean hasColoring;
-    public int readerId;
+    public String title;
+    public String readerName;
     public int image;
     public boolean isFavorite;
     public boolean isDownloaded;
@@ -35,50 +30,20 @@ public class Tale {
     public String duration;
     private final String isFavoriteKey = "isFavorite_";
 
-    private static final List<TaleInfo> staticInfo;
-
-    static {
-        String jsonString = AssetUtils.loadJSON(MainActivity.getActivity(), "talesInfo.json");
-        Type listType = new TypeToken<List<TaleInfo>>() {}.getType();
-        staticInfo = JsonUtils.fromJson(jsonString, listType);
-    }
-
     Tale() { id = -1; }
 
-    Tale(int id, int intro, int readerName) {
-        TaleInfo taleInfo = staticInfo.stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
-
-        this.id = id;
-        this.introTime = intro;
-        this.hasColoring = taleInfo.isHasColoring();
-        this.duration = "⏱ " + taleInfo.getDuration();
-        this.readerId = readerName;
+    Tale(TaleInfo info) {
+        this.id = info.getId();
+        this.introTime = info.getIntro();
+        this.hasColoring = info.hasColoring();
+        this.duration = "⏱ " + info.getDuration();
+        this.title = info.getTitle();
+        this.readerName = info.getReader();
         this.image = this.getTaleImage();
         this.isFavorite = SettingsHelper.getBoolean(isFavoriteKey + id);
         this.isDownloaded = id > 0 && isDownloaded(this.id);
         this.stream = id > 0 ? stream(id) : null;
         this.fileName = id > 0 ? fileName(id) : null;
-    }
-
-    int getReaderId() {
-        return readerId;
-    }
-
-    public String getReader() {
-        return ActivityTales.getActivity().getString(readerId);
-    }
-
-    public String getTitle() {
-        Context context = ActivityTales.getActivity();
-        String resourceName = String.format(Locale.US, "tale_%03d", this.id);
-
-        @SuppressLint("DiscouragedApi")
-        int resId = context.getResources().getIdentifier(resourceName, "string", context.getPackageName());
-
-        return context.getString(resId);
     }
 
     public void resetFavorite() {
@@ -114,10 +79,10 @@ public class Tale {
         String reader = StringHelper.substringTo(filter, ",").trim();
         String title = StringHelper.substringFrom(filter, ",").trim();
 
-        if (reader != "")
-            return getTitle().toLowerCase().contains(title) && getReader().toLowerCase().contains(reader);
+        if (!reader.isEmpty())
+            return title.toLowerCase().contains(title) && readerName.toLowerCase().contains(reader);
 
-        return getTitle().toLowerCase().contains(filter) || getReader().toLowerCase().contains(filter);
+        return title.toLowerCase().contains(filter) || readerName.toLowerCase().contains(filter);
     }
 
     @SuppressLint("DefaultLocale")

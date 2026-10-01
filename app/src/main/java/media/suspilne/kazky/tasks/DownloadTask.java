@@ -142,7 +142,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
 
                 InputStream is = (InputStream) new URL(tale.stream).getContent();
                 SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
-                publishProgress(tale.getReader() + ": " + tale.getTitle());
+                publishProgress(tale.readerName + ": " + tale.title);
                 current++;
             }
         } catch (Exception e) {
