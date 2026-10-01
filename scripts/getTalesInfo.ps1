@@ -1,8 +1,8 @@
-$coloringsDir = Join-Path $PSScriptRoot "../colorings"
-$talesDir     = Join-Path $PSScriptRoot "../tales"
-$talesInfo    = Join-Path $PSScriptRoot "../app/src/main/assets/talesInfo.json"
-$ffprobe      = "C:/Program Files/ffmpeg/bin/ffprobe.exe"
-$stringsXmlPath = "../app/src/main/res/values/strings.xml"
+$coloringsDir 	= Join-Path $PSScriptRoot "../colorings"
+$talesDir     	= Join-Path $PSScriptRoot "../tales"
+$talesInfo    	= Join-Path $PSScriptRoot "../app/src/main/assets/talesInfo.json"
+$stringsXmlPath = Join-Path $PSScriptRoot "../app/src/main/res/values/strings.xml"
+$ffprobe      	= "C:/Program Files/ffmpeg/bin/ffprobe.exe"
 
 $existingTales = @()
 $existingIds = @()
