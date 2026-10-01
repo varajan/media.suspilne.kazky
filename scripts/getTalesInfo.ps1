@@ -2,8 +2,10 @@ $coloringsDir = Join-Path $PSScriptRoot "../colorings"
 $talesDir     = Join-Path $PSScriptRoot "../tales"
 $talesInfo    = Join-Path $PSScriptRoot "../app/src/main/assets/talesInfo.json"
 $ffprobe      = "C:/Program Files/ffmpeg/bin/ffprobe.exe"
-
+$existingTales = @()
+$existingIds = @()
 $coloringIds = @()
+
 if (Test-Path $coloringsDir) {
     $coloringIds = Get-ChildItem -Path $coloringsDir -File | 
         Where-Object { $_.Extension -match '^\.jpe?g$' } | 
@@ -15,13 +17,25 @@ if (Test-Path $coloringsDir) {
         }
 }
 
-$audioResults = @()
+if (Test-Path $talesInfo) {
+    $jsonContent = Get-Content -Path $talesInfo -Raw -Encoding utf8
+    if (-not [string]::IsNullOrWhiteSpace($jsonContent)) {
+        $existingTales = $jsonContent | ConvertFrom-Json
+        $existingIds = $existingTales | ForEach-Object { [int]$_.id }
+    }
+}
+
+$newTales = @()
 
 if (Test-Path $talesDir) {
     Get-ChildItem -Path $talesDir -File -Filter "*.mp3" | ForEach-Object {
         $filePath = $_.FullName
         $fileName = $_.Name
         $id = [int]($_.BaseName)
+
+        if ($existingIds -contains $id) {
+            return
+        }
 
         $durationSeconds = & $ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$filePath" 2>$null
 		$seconds = [math]::Truncate([double]$durationSeconds)
@@ -30,12 +44,16 @@ if (Test-Path $talesDir) {
 
         $hasColoring = $coloringIds -contains $id
 
-        $audioResults += [PSCustomObject]@{
+        $newTales += [PSCustomObject]@{
             id          = $id
+            title       = ""
             duration    = $formattedDuration
             hasColoring = $hasColoring
         }
     }
 }
 
-$audioResults | ConvertTo-Json -Depth 2 | Out-File -FilePath $talesInfo -Encoding utf8
+$allTales = @($existingTales) + @($newTales)
+$sortedTales = $allTales | Sort-Object -Property { [int]$_.id }
+
+$sortedTales | ConvertTo-Json -Depth 2 | Out-File -FilePath $talesInfo -Encoding utf8
