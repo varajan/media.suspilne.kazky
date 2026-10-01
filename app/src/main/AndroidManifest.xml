@@ -23,7 +23,7 @@
         android:largeHeap="true">
 
         <activity
-            android:name=".ActivityTales"
+            android:name=".activities.ActivityTales"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar">
@@ -34,31 +34,31 @@
         </activity>
 
         <activity
-            android:name=".ActivitySettings"
+            android:name=".activities.ActivitySettings"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".ActivityReaders"
+            android:name=".activities.ActivityReaders"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".ActivityColorings"
+            android:name=".activities.ActivityColorings"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".ActivityInfo"
+            android:name=".activities.ActivityInfo"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <service
-            android:name=".PlayerService"
+            android:name=".player.PlayerService"
             android:icon="@drawable/ic_tale"
             android:foregroundServiceType="mediaPlayback"
             android:exported="false"/>

@@ -1,0 +1,93 @@
+package media.suspilne.kazky.data;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+
+public class Readers {
+    public List<Reader> Readers;
+
+    public Readers() {
+        if (isAscSorted()) {
+            items.sort(Comparator.comparing(Reader::getName));
+        } else {
+            items.sort((c1, c2) -> c2.talesCount.compareTo(c1.talesCount));
+        }
+
+        Readers = items;
+    }
+
+    public static void setAscSorting(boolean value) {
+        SettingsHelper.setBoolean("isAscSorted", value);
+    }
+
+    public static boolean isAscSorted() {
+        return SettingsHelper.getBoolean("isAscSorted");
+    }
+
+    private List<Reader> items = Arrays.asList(
+            new Reader(R.string.anastasiia_gudyma, R.string.anastasiia_gudyma_description),
+            new Reader(R.string.andrii_hlyvniuk, R.string.andrii_hlyvniuk_description),
+            new Reader(R.string.marko_galanevych, R.string.marko_galanevych_description),
+            new Reader(R.string.alina_pash, R.string.alina_pash_description),
+            new Reader(R.string.alyona_alyona, R.string.alyona_alyona_description),
+            new Reader(R.string.vova_zi_lvova, R.string.vova_zi_lvova_description),
+            new Reader(R.string.evgen_klopotenko, R.string.evgen_klopotenko_description),
+            new Reader(R.string.evgen_maluha, R.string.evgen_maluha_description),
+            new Reader(R.string.anna_nikitina, R.string.anna_nikitina_description),
+            new Reader(R.string.vlad_fisun, R.string.vlad_fisun_description),
+            new Reader(R.string.dmytro_schebetiuk, R.string.dmytro_schebetiuk_description),
+            new Reader(R.string.dmytro_horkin, R.string.dmytro_horkin_description),
+            new Reader(R.string.inna_grebeniuk, R.string.inna_grebeniuk_description),
+            new Reader(R.string.katia_rogova, R.string.katia_rogova_description),
+            new Reader(R.string.kateryna_ofliyan, R.string.kateryna_ofliyan_description),
+            new Reader(R.string.michel_schur, R.string.michel_schur_description),
+            new Reader(R.string.mariana_golovko, R.string.mariana_golovko_description),
+            new Reader(R.string.marta_liubchyk, R.string.marta_liubchyk_description),
+            new Reader(R.string.marusia_ionova, R.string.marusia_ionova_description),
+            new Reader(R.string.oleksiy_dorychevsky, R.string.oleksiy_dorychevsky_description),
+            new Reader(R.string.pavlo_varenitsa, R.string.pavlo_varenitsa_description),
+            new Reader(R.string.roman_yasynovsky, R.string.roman_yasynovsky_description),
+            new Reader(R.string.ruslana_khazipova, R.string.ruslana_khazipova_description),
+            new Reader(R.string.sasha_koltsova, R.string.sasha_koltsova_description),
+            new Reader(R.string.sergii_zhadan, R.string.sergii_zhadan_description),
+            new Reader(R.string.sergii_kolos, R.string.sergii_kolos_description),
+            new Reader(R.string.solomia_melnyk, R.string.solomia_melnyk_description),
+            new Reader(R.string.stas_koroliov, R.string.stas_koroliov_description),
+            new Reader(R.string.timur_miroshnychenko, R.string.timur_miroshnychenko_description),
+            new Reader(R.string.hrystyna_soloviy, R.string.hrystyna_soloviy_description),
+            new Reader(R.string.julia_jurina, R.string.julia_jurina_description),
+            new Reader(R.string.jaroslav_lodygin, R.string.jaroslav_lodygin_description),
+            new Reader(R.string.ivan_marunych, R.string.ivan_marunych_description),
+            new Reader(R.string.nata_smirnova, R.string.nata_smirnova_description),
+            new Reader(R.string.oleg_moskalenko, R.string.oleg_moskalenko_description),
+            new Reader(R.string.olga_shurova, R.string.olga_shurova_description),
+            new Reader(R.string.rosava, R.string.rosava_description),
+            new Reader(R.string.sergii_tanchynets, R.string.sergii_tanchynets_description),
+            new Reader(R.string.jamala, R.string.jamala_description),
+            new Reader(R.string.ira_bova, R.string.ira_bova_description),
+            new Reader(R.string.nina_matvienko, R.string.nina_matvienko_description),
+            new Reader(R.string.olga_tokar, R.string.olga_tokar_description),
+            new Reader(R.string.vitaliy_bilonozhko, R.string.vitaliy_bilonozhko_description),
+            new Reader(R.string.nataliya_vasko, R.string.nataliya_vasko_description),
+            new Reader(R.string.ruhanko_man, R.string.ruhanko_man_description),
+            new Reader(R.string.roxolana, R.string.roxolana_description),
+            new Reader(R.string.antonina_hyzhniak, R.string.antonina_hyzhniak_description),
+            new Reader(R.string.kola, R.string.kola_description),
+            new Reader(R.string.kler, R.string.kler_description),
+            new Reader(R.string.ivan_kaluzhny, R.string.ivan_kaluzhny_description),
+            new Reader(R.string.julia_sanina, R.string.julia_sanina_description),
+            new Reader(R.string.busha, R.string.busha_description),
+            new Reader(R.string.pavlo_vyshebaba, R.string.pavlo_vyshebaba_description),
+            new Reader(R.string.irma_vitovska, R.string.irma_vitovska_description),
+            new Reader(R.string.olena_topolia, R.string.olena_topolia_description),
+            new Reader(R.string.serhii_prytula, R.string.serhii_prytula_description),
+            new Reader(R.string.natalka_denysenko, R.string.natalka_denysenko_description),
+            new Reader(R.string.zlata_ognevich, R.string.zlata_ognevich_description),
+            new Reader(R.string.taras_kompanichenko, R.string.taras_kompanichenko_description),
+            new Reader(R.string.vlad_rudnitsky, R.string.vlad_rudnitsky_description)
+    );
+}

@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#11DBE5</color>
     <color name="colorAccent">#D81B60</color>
     <color name="red">#FF0000</color>
+    <color name="playBtn">#FC5240</color>
     <color name="gray">#999999</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>

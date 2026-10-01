@@ -1,0 +1,154 @@
+package media.suspilne.kazky.tasks;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Build;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import com.google.android.gms.common.util.IOUtils;
+import java.io.InputStream;
+import java.net.URL;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+
+import media.suspilne.kazky.R;
+import media.suspilne.kazky.helpers.SettingsHelper;
+import media.suspilne.kazky.data.Tale;
+import media.suspilne.kazky.activities.MainActivity;
+import media.suspilne.kazky.helpers.ImageHelper;
+
+public class DownloadTask extends AsyncTask<Tale, String, String> {
+    private NotificationManager notificationManager;
+    private PendingIntent openApplication;
+
+    private final Drawable image = ContextCompat.getDrawable(MainActivity.getActivity(), R.mipmap.logo);
+    private int count;
+    private int current;
+    public static int IN_PROGRESS = 22;
+    public static int COMPLETED = 23;
+    public static int WITH_ERROR = 24;
+
+    public static void cancelAllNotifications() {
+        NotificationManager notificationManager = (NotificationManager) MainActivity.getActivity().getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.cancel(IN_PROGRESS);
+        notificationManager.cancel(COMPLETED);
+        notificationManager.cancel(WITH_ERROR);
+    }
+
+    private void showProgressNotification(String text) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+            .setSmallIcon(R.drawable.ic_cloud_download)
+            .setContentTitle(MainActivity.getActivity().getString(R.string.downloading))
+            .setContentText(text)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(ImageHelper.getBitmap(image))
+            .setProgress(count, current, false)
+            .setContentIntent(openApplication)
+            .setSound(null);
+
+        notificationManager.notify(IN_PROGRESS, notificationBuilder.build());
+    }
+
+    private void showCompletedNotification() {
+        if (count == 0) {
+            cancelAllNotifications();
+        } else {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+                    .setSmallIcon(R.drawable.ic_cloud_done)
+                    .setContentTitle(MainActivity.getActivity().getString(R.string.download_completed, count))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setLargeIcon(ImageHelper.getBitmap(image))
+                    .setContentIntent(openApplication)
+                    .setSound(null);
+
+            notificationManager.notify(COMPLETED, notificationBuilder.build());
+        }
+    }
+
+    private void showFailedNotification(String errorMessage) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+            .setSmallIcon(R.drawable.ic_error)
+            .setContentTitle(MainActivity.getActivity().getString(R.string.an_error_occurred))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(ImageHelper.getBitmap(image))
+            .setContentIntent(openApplication)
+            .setSound(null);
+
+        notificationManager.notify(WITH_ERROR, notificationBuilder.build());
+        SettingsHelper.setString("errorMessage", errorMessage);
+    }
+
+    protected void onPreExecute() {
+        notificationManager = (NotificationManager) MainActivity.getActivity().getSystemService(NOTIFICATION_SERVICE);
+        cancelAllNotifications();
+
+        NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.setSound(null, null);
+        notificationChannel.setShowBadge(false);
+
+        notificationManager.createNotificationChannel(notificationChannel);
+
+        Intent notificationIntent = new Intent(MainActivity.getActivity(), MainActivity.getActivity().getClass());
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        int flag = android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.R ? 0 : PendingIntent.FLAG_IMMUTABLE;
+        openApplication = PendingIntent.getActivity(MainActivity.getActivity(), 0, notificationIntent, flag);
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        showProgressNotification(values.length > 0 ? values[0] : "");
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        cancelAllNotifications();
+
+        if (result.isEmpty()) {
+            showCompletedNotification();
+        } else {
+            showFailedNotification(result);
+        }
+    }
+
+    @Override
+    protected String doInBackground(Tale... tales) {
+        try {
+            this.count = tales.length;
+            this.current = 0;
+
+            for (Tale tale:tales) {
+                if (tale.isDownloaded) publishProgress();
+            }
+
+            for (Tale tale:tales) {
+                if (tale.isDownloaded) continue;
+                long freeSpace = SettingsHelper.freeSpace();
+                long required = 100 * 1024 * 1024;
+
+                if (freeSpace < required) {
+                    throw new Exception(MainActivity.getActivity().getString(
+                        R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
+                }
+
+                InputStream is = (InputStream) new URL(tale.stream).getContent();
+                SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
+                publishProgress(tale.getReader() + ": " + tale.getTitle());
+                current++;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+
+        return "";
+    }
+}
