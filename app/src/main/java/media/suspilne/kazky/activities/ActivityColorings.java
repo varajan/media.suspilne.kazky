@@ -38,7 +38,7 @@ public class ActivityColorings extends ListActivity {
 
         categories = Categories.Items.stream()
                 .filter(c -> c.taleIds.stream()
-                        .anyMatch(t -> tales.getById(t).coloring > 0))
+                        .anyMatch(t -> tales.getById(t).hasColoring))
                 .map(c -> c.title)
                 .collect(Collectors.toList());
         
@@ -83,7 +83,7 @@ public class ActivityColorings extends ListActivity {
         boolean showBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
 
         for (final Tale tale:tales.getTalesList()) {
-            if (tale.coloring == 0) continue;
+            if (!tale.hasColoring) continue;
 
             View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, ItemsList, false);
             taleView.setTag(tale.id);

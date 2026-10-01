@@ -69,7 +69,7 @@ public class TaleView {
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(taleData.isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
             if (preview != null) ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
 
-            title.setText(taleData.titleId);
+            title.setText(taleData.getTitle());
             title.setTextColor(color);
 
             reader.setText(taleData.readerId);
@@ -108,7 +108,7 @@ public class TaleView {
 
             if (preview != null) ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
 
-            title.setText(taleData.titleId);
+            title.setText(taleData.getTitle());
             title.setTextColor(color);
 
             reader.setText(taleData.readerId);
