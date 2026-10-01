@@ -3,852 +3,1136 @@
         "id":  1,
         "title":  "",
         "duration":  "02:04",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7200,
+        "reader":  "Андрій Хливнюк"
     },
     {
         "id":  2,
         "title":  "",
         "duration":  "02:28",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7200,
+        "reader":  "Андрій Хливнюк"
     },
     {
         "id":  3,
         "title":  "",
         "duration":  "02:10",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  8200,
+        "reader":  "Андрій Хливнюк"
     },
     {
         "id":  4,
         "title":  "",
         "duration":  "01:11",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7500,
+        "reader":  "Марко Галаневич"
     },
     {
         "id":  5,
         "title":  "",
         "duration":  "02:50",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Марко Галаневич"
     },
     {
         "id":  6,
         "title":  "",
         "duration":  "03:31",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Аліна Паш"
     },
     {
         "id":  7,
         "title":  "",
         "duration":  "03:34",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Саша Кольцова"
     },
     {
         "id":  8,
         "title":  "",
         "duration":  "01:48",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Саша Кольцова"
     },
     {
         "id":  9,
         "title":  "",
         "duration":  "02:44",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Саша Кольцова"
     },
     {
         "id":  10,
         "title":  "",
         "duration":  "03:45",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Євген Малуха"
     },
     {
         "id":  11,
         "title":  "",
         "duration":  "02:15",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  8200,
+        "reader":  "Євген Малуха"
     },
     {
         "id":  12,
         "title":  "",
         "duration":  "03:01",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Євген Малуха"
     },
     {
         "id":  13,
         "title":  "",
         "duration":  "03:20",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6800,
+        "reader":  "Сергій Жадан"
     },
     {
         "id":  14,
         "title":  "",
         "duration":  "04:53",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Сергій Жадан"
     },
     {
         "id":  15,
         "title":  "",
         "duration":  "05:01",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6900,
+        "reader":  "Сергій Жадан"
     },
     {
         "id":  16,
         "title":  "",
         "duration":  "09:11",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7700,
+        "reader":  "Христина Соловій"
     },
     {
         "id":  17,
         "title":  "",
         "duration":  "13:33",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Христина Соловій"
     },
     {
         "id":  18,
         "title":  "",
         "duration":  "08:36",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7200,
+        "reader":  "Христина Соловій"
     },
     {
         "id":  19,
         "title":  "",
         "duration":  "04:03",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Олексій Доричевський"
     },
     {
         "id":  20,
         "title":  "",
         "duration":  "03:59",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Олексій Доричевський"
     },
     {
         "id":  21,
         "title":  "",
         "duration":  "05:05",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Олексій Доричевський"
     },
     {
         "id":  22,
         "title":  "",
         "duration":  "05:42",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6200,
+        "reader":  "Аліна Паш"
     },
     {
         "id":  23,
         "title":  "",
         "duration":  "10:56",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7500,
+        "reader":  "Юлія Юріна"
     },
     {
         "id":  24,
         "title":  "",
         "duration":  "01:03",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Юлія Юріна"
     },
     {
         "id":  25,
         "title":  "",
         "duration":  "04:27",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Марта Любчик"
     },
     {
         "id":  26,
         "title":  "",
         "duration":  "05:51",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Alyona Alyona"
     },
     {
         "id":  27,
         "title":  "",
         "duration":  "03:51",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6200,
+        "reader":  "Аліна Паш"
     },
     {
         "id":  28,
         "title":  "",
         "duration":  "03:03",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Мар\\\u0027яна Головко"
     },
     {
         "id":  29,
         "title":  "",
         "duration":  "04:14",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6200,
+        "reader":  "Дмитро Щебетюк"
     },
     {
         "id":  30,
         "title":  "",
         "duration":  "03:51",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Дмитро Щебетюк"
     },
     {
         "id":  31,
         "title":  "",
         "duration":  "06:30",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Ярослав Лодигін"
     },
     {
         "id":  32,
         "title":  "",
         "duration":  "07:31",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Юлія Юріна"
     },
     {
         "id":  33,
         "title":  "",
         "duration":  "02:01",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Мар\\\u0027яна Головко"
     },
     {
         "id":  34,
         "title":  "",
         "duration":  "02:58",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Майкл Щур"
     },
     {
         "id":  35,
         "title":  "",
         "duration":  "05:27",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6550,
+        "reader":  "Ярослав Лодигін"
     },
     {
         "id":  36,
         "title":  "",
         "duration":  "05:36",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Ярослав Лодигін"
     },
     {
         "id":  37,
         "title":  "",
         "duration":  "03:19",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Alyona Alyona"
     },
     {
         "id":  38,
         "title":  "",
         "duration":  "05:58",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Мар\\\u0027яна Головко"
     },
     {
         "id":  39,
         "title":  "",
         "duration":  "04:01",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Alyona Alyona"
     },
     {
         "id":  40,
         "title":  "",
         "duration":  "03:39",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6600,
+        "reader":  "Дмитро Щебетюк"
     },
     {
         "id":  41,
         "title":  "",
         "duration":  "05:09",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Марта Любчик"
     },
     {
         "id":  42,
         "title":  "",
         "duration":  "05:11",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Марта Любчик"
     },
     {
         "id":  43,
         "title":  "",
         "duration":  "04:13",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6200,
+        "reader":  "Майкл Щур"
     },
     {
         "id":  44,
         "title":  "",
         "duration":  "03:51",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6150,
+        "reader":  "Руслана Хазіпова"
     },
     {
         "id":  45,
         "title":  "",
         "duration":  "07:04",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5700,
+        "reader":  "Руслана Хазіпова"
     },
     {
         "id":  46,
         "title":  "",
         "duration":  "03:31",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Руслана Хазіпова"
     },
     {
         "id":  47,
         "title":  "",
         "duration":  "02:32",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Vova zi Lvova"
     },
     {
         "id":  48,
         "title":  "",
         "duration":  "02:43",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6850,
+        "reader":  "Vova zi Lvova"
     },
     {
         "id":  49,
         "title":  "",
         "duration":  "05:55",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7200,
+        "reader":  "Євген Клопотенко"
     },
     {
         "id":  50,
         "title":  "",
         "duration":  "04:25",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Маруся Іонова"
     },
     {
         "id":  51,
         "title":  "",
         "duration":  "04:42",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7300,
+        "reader":  "Євген Клопотенко"
     },
     {
         "id":  52,
         "title":  "",
         "duration":  "06:20",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6850,
+        "reader":  "Євген Клопотенко"
     },
     {
         "id":  53,
         "title":  "",
         "duration":  "09:52",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5700,
+        "reader":  "Маруся Іонова"
     },
     {
         "id":  54,
         "title":  "",
         "duration":  "07:48",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6800,
+        "reader":  "Маруся Іонова"
     },
     {
         "id":  55,
         "title":  "",
         "duration":  "03:50",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Соломія Мельник"
     },
     {
         "id":  56,
         "title":  "",
         "duration":  "05:46",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6600,
+        "reader":  "Соломія Мельник"
     },
     {
         "id":  57,
         "title":  "",
         "duration":  "03:36",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Соломія Мельник"
     },
     {
         "id":  58,
         "title":  "",
         "duration":  "02:52",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6600,
+        "reader":  "Соломія Мельник"
     },
     {
         "id":  59,
         "title":  "",
         "duration":  "02:28",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Анна Нікітіна"
     },
     {
         "id":  60,
         "title":  "",
         "duration":  "02:16",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6250,
+        "reader":  "Анна Нікітіна"
     },
     {
         "id":  61,
         "title":  "",
         "duration":  "03:27",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Анна Нікітіна"
     },
     {
         "id":  62,
         "title":  "",
         "duration":  "04:05",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6600,
+        "reader":  "Vova zi Lvova"
     },
     {
         "id":  63,
         "title":  "",
         "duration":  "02:52",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6350,
+        "reader":  "Роман Ясиновський"
     },
     {
         "id":  64,
         "title":  "",
         "duration":  "07:20",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7200,
+        "reader":  "Роман Ясиновський"
     },
     {
         "id":  65,
         "title":  "",
         "duration":  "02:10",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Роман Ясиновський"
     },
     {
         "id":  66,
         "title":  "",
         "duration":  "03:01",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Влад Фісун"
     },
     {
         "id":  67,
         "title":  "",
         "duration":  "01:24",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Влад Фісун"
     },
     {
         "id":  68,
         "title":  "",
         "duration":  "03:34",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Влад Фісун"
     },
     {
         "id":  69,
         "title":  "",
         "duration":  "03:27",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Тімур Мірошниченко"
     },
     {
         "id":  70,
         "title":  "",
         "duration":  "06:10",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Тімур Мірошниченко"
     },
     {
         "id":  71,
         "title":  "",
         "duration":  "04:14",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Тімур Мірошниченко"
     },
     {
         "id":  72,
         "title":  "",
         "duration":  "02:43",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6250,
+        "reader":  "Павло Варєніца"
     },
     {
         "id":  73,
         "title":  "",
         "duration":  "02:54",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Павло Варєніца"
     },
     {
         "id":  74,
         "title":  "",
         "duration":  "02:30",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6550,
+        "reader":  "Павло Варєніца"
     },
     {
         "id":  75,
         "title":  "",
         "duration":  "02:10",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Сергій Колос"
     },
     {
         "id":  76,
         "title":  "",
         "duration":  "02:00",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6350,
+        "reader":  "Сергій Колос"
     },
     {
         "id":  77,
         "title":  "",
         "duration":  "09:37",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5500,
+        "reader":  "Сергій Колос"
     },
     {
         "id":  78,
         "title":  "",
         "duration":  "04:54",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Стас Корольов"
     },
     {
         "id":  79,
         "title":  "",
         "duration":  "05:55",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Стас Корольов"
     },
     {
         "id":  80,
         "title":  "",
         "duration":  "04:30",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Стас Корольов"
     },
     {
         "id":  81,
         "title":  "",
         "duration":  "07:58",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5700,
+        "reader":  "Катя Рогова"
     },
     {
         "id":  82,
         "title":  "",
         "duration":  "06:39",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Катя Рогова"
     },
     {
         "id":  83,
         "title":  "",
         "duration":  "09:23",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Катя Рогова"
     },
     {
         "id":  84,
         "title":  "",
         "duration":  "09:02",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5500,
+        "reader":  "Іван Марунич"
     },
     {
         "id":  85,
         "title":  "",
         "duration":  "05:45",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6800,
+        "reader":  "Іван Марунич"
     },
     {
         "id":  86,
         "title":  "",
         "duration":  "05:48",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Іван Марунич"
     },
     {
         "id":  87,
         "title":  "",
         "duration":  "05:53",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Ната Смірнова"
     },
     {
         "id":  88,
         "title":  "",
         "duration":  "09:14",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5500,
+        "reader":  "Ната Смірнова"
     },
     {
         "id":  89,
         "title":  "",
         "duration":  "12:32",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5600,
+        "reader":  "Ната Смірнова"
     },
     {
         "id":  90,
         "title":  "",
         "duration":  "12:18",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5750,
+        "reader":  "Олег Москаленко"
     },
     {
         "id":  91,
         "title":  "",
         "duration":  "06:54",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5400,
+        "reader":  "Олег Москаленко"
     },
     {
         "id":  92,
         "title":  "",
         "duration":  "07:44",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5800,
+        "reader":  "Олег Москаленко"
     },
     {
         "id":  93,
         "title":  "",
         "duration":  "08:39",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7200,
+        "reader":  "Росава"
     },
     {
         "id":  94,
         "title":  "",
         "duration":  "03:45",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6800,
+        "reader":  "Росава"
     },
     {
         "id":  95,
         "title":  "",
         "duration":  "08:00",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7000,
+        "reader":  "Росава"
     },
     {
         "id":  96,
         "title":  "",
         "duration":  "03:37",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6600,
+        "reader":  "Jamala"
     },
     {
         "id":  97,
         "title":  "",
         "duration":  "02:59",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Jamala"
     },
     {
         "id":  98,
         "title":  "",
         "duration":  "06:30",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Jamala"
     },
     {
         "id":  99,
         "title":  "",
         "duration":  "02:56",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Сергій Танчинець"
     },
     {
         "id":  100,
         "title":  "",
         "duration":  "02:09",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Сергій Танчинець"
     },
     {
         "id":  101,
         "title":  "",
         "duration":  "05:42",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6700,
+        "reader":  "Сергій Танчинець"
     },
     {
         "id":  102,
         "title":  "",
         "duration":  "08:54",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7300,
+        "reader":  "Інна Гребенюк"
     },
     {
         "id":  103,
         "title":  "",
         "duration":  "04:27",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Інна Гребенюк"
     },
     {
         "id":  104,
         "title":  "",
         "duration":  "06:39",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Інна Гребенюк"
     },
     {
         "id":  105,
         "title":  "",
         "duration":  "05:57",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6800,
+        "reader":  "Оля Шурова"
     },
     {
         "id":  106,
         "title":  "",
         "duration":  "02:46",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6200,
+        "reader":  "Оля Шурова"
     },
     {
         "id":  107,
         "title":  "",
         "duration":  "04:50",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6300,
+        "reader":  "Оля Шурова"
     },
     {
         "id":  108,
         "title":  "",
         "duration":  "02:43",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Анастасія Гудима"
     },
     {
         "id":  109,
         "title":  "",
         "duration":  "05:10",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Анастасія Гудима"
     },
     {
         "id":  110,
         "title":  "",
         "duration":  "03:37",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6850,
+        "reader":  "Анастасія Гудима"
     },
     {
         "id":  111,
         "title":  "",
         "duration":  "10:00",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7500,
+        "reader":  "Дмитро Хоркін"
     },
     {
         "id":  112,
         "title":  "",
         "duration":  "10:26",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5500,
+        "reader":  "Дмитро Хоркін"
     },
     {
         "id":  113,
         "title":  "",
         "duration":  "12:33",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  5500,
+        "reader":  "Дмитро Хоркін"
     },
     {
         "id":  114,
         "title":  "",
         "duration":  "06:01",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6500,
+        "reader":  "Дмитро Хоркін"
     },
     {
         "id":  115,
         "title":  "",
         "duration":  "05:55",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7800,
+        "reader":  "Катерина Офліян"
     },
     {
         "id":  116,
         "title":  "",
         "duration":  "06:52",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  6000,
+        "reader":  "Катерина Офліян"
     },
     {
         "id":  117,
         "title":  "",
         "duration":  "03:16",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  7400,
+        "reader":  "Катерина Офліян"
     },
     {
         "id":  118,
         "title":  "",
         "duration":  "18:56",
-        "hasColoring":  true
+        "hasColoring":  true,
+        "intro":  0,
+        "reader":  "Іра Бова"
     },
     {
         "id":  119,
         "title":  "",
         "duration":  "03:10",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  0,
+        "reader":  "Ніна Матвієнко"
     },
     {
         "id":  120,
         "title":  "",
         "duration":  "02:13",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  0,
+        "reader":  "Ольга Токар"
     },
     {
         "id":  121,
         "title":  "",
         "duration":  "04:25",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  0,
+        "reader":  "Ольга Токар"
     },
     {
         "id":  122,
         "title":  "",
         "duration":  "03:35",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  0,
+        "reader":  "Віталій Білоножко"
     },
     {
         "id":  123,
         "title":  "",
         "duration":  "17:35",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  7000,
+        "reader":  "Наталя Васько"
     },
     {
         "id":  124,
         "title":  "",
         "duration":  "11:24",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  2000,
+        "reader":  "РуханкоМен"
     },
     {
         "id":  125,
         "title":  "",
         "duration":  "07:09",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  2000,
+        "reader":  "Roxolana"
     },
     {
         "id":  126,
         "title":  "",
         "duration":  "07:53",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  4000,
+        "reader":  "Іван Калюжний"
     },
     {
         "id":  127,
         "title":  "",
         "duration":  "08:27",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  500,
+        "reader":  "Антоніна Хижняк"
     },
     {
         "id":  128,
         "title":  "",
         "duration":  "07:42",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  3000,
+        "reader":  "Kola"
     },
     {
         "id":  129,
         "title":  "",
         "duration":  "09:33",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  500,
+        "reader":  "Kler"
     },
     {
         "id":  130,
         "title":  "",
         "duration":  "09:52",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  6000,
+        "reader":  "Юлія Саніна"
     },
     {
         "id":  131,
         "title":  "",
         "duration":  "06:10",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  4000,
+        "reader":  "Олександр, Лео та Елвін Буша"
     },
     {
         "id":  132,
         "title":  "",
         "duration":  "12:33",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  12000,
+        "reader":  "Павло Вишебаба"
     },
     {
         "id":  133,
         "title":  "",
         "duration":  "14:57",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  12000,
+        "reader":  "Ірма Вітовська"
     },
     {
         "id":  134,
         "title":  "",
         "duration":  "12:51",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  11000,
+        "reader":  "Олена Тополя"
     },
     {
         "id":  135,
         "title":  "",
         "duration":  "12:38",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  3000,
+        "reader":  "Антоніна Хижняк"
     },
     {
         "id":  136,
         "title":  "",
         "duration":  "12:43",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  3000,
+        "reader":  "Тімур Мірошниченко"
     },
     {
         "id":  137,
         "title":  "",
         "duration":  "09:02",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  2500,
+        "reader":  "Сергій Притула"
     },
     {
         "id":  138,
         "title":  "",
         "duration":  "07:33",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  4000,
+        "reader":  "Roxolana"
     },
     {
         "id":  139,
         "title":  "",
         "duration":  "10:42",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  11000,
+        "reader":  "Наталка Денисенко"
     },
     {
         "id":  140,
         "title":  "",
         "duration":  "08:46",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  4000,
+        "reader":  "Злата Огнєвіч"
     },
     {
         "id":  141,
         "title":  "",
         "duration":  "12:13",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  3500,
+        "reader":  "Тарас Компаніченко"
     },
     {
         "id":  142,
         "title":  "",
         "duration":  "06:27",
-        "hasColoring":  false
+        "hasColoring":  false,
+        "intro":  3000,
+        "reader":  "Влад Рудніцький"
     }
 ]
