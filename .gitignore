@@ -14,3 +14,4 @@
 /.idea/*
 .idea/vcs.xml
 app/release/app.aab
+app/release/app-release.aab
