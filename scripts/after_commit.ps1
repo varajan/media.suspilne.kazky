@@ -1,41 +1,41 @@
-$dirTask1 = "./../colorings"
-$dirTask2 = "./../tales"
+$coloringsDir = "./../colorings"
+$talesDir     = "./../tales"
+$talesInfo    = "./../app/src/main/assets/talesInfo.json"
+$ffprobe      = "C:/Program Files/ffmpeg/bin/ffprobe.exe"
 
-$outputTask1 = "colorings.txt"
-$outputTask2 = "tales_info.txt"
-
-# --------------------------------------------------
-# Task 1: Get list of colorings
-# --------------------------------------------------
-if (Test-Path $dirTask1) {
-    Get-ChildItem -Path $dirTask1 -File | Select-Object -ExpandProperty Name | Out-File -FilePath $outputTask1 -Encoding utf8
-} else {
-    Write-Host "folder not found"
+$coloringIds = @()
+if (Test-Path $coloringsDir) {
+    $coloringIds = Get-ChildItem -Path $coloringsDir -File | 
+        Where-Object { $_.Extension -match '^\.jpe?g$' } | 
+        ForEach-Object {
+            $id = 0
+            if ([int]::TryParse($_.BaseName, [ref]$id)) {
+                $id
+            }
+        }
 }
 
-# --------------------------------------------------
-# Task 2: Get tales' duration
-# --------------------------------------------------
-if (Test-Path $dirTask2) {$audioResults = @()
-	$ffprobe = "C:/Program Files/ffmpeg/bin/ffprobe.exe"
-	
-    Get-ChildItem -Path $dirTask2 -File | ForEach-Object {
-        $filePath =$_.FullName
-        $fileName =$_.Name
+$audioResults = @()
+
+if (Test-Path $talesDir) {
+    Get-ChildItem -Path $talesDir -File -Filter "*.mp3" | ForEach-Object {
+        $filePath = $_.FullName
+        $fileName = $_.Name
+        $id = [int]($_.BaseName)
 
         $durationSeconds = & $ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$filePath" 2>$null
+		$seconds = [math]::Truncate([double]$durationSeconds)
+		$ts = [timespan]::FromSeconds($seconds)
+		$formattedDuration = "{0:D2}:{1:D2}" -f [int]$ts.TotalMinutes, $ts.Seconds
 
-        if ($durationSeconds -and [double]::TryParse($durationSeconds, [ref]$null)) {
-            $ts = [timespan]::FromSeconds([double]$durationSeconds)
-            $formattedDuration =$ts.ToString("hh`:mm`:ss")
-            $audioResults += "$fileName -$formattedDuration"
-            $audioResults += "$fileName -$ts"
-        } else {
-            $audioResults += "$fileName - $durationSeconds"
+        $hasColoring = $coloringIds -contains $id
+
+        $audioResults += [PSCustomObject]@{
+            id          = $id
+            duration    = $formattedDuration
+            hasColoring = $hasColoring
         }
     }
-
-    $audioResults | Out-File -FilePath $outputTask2 -Encoding utf8
-} else {
-    Write-Host "Folder $dirTask2 not found"
 }
+
+$audioResults | ConvertTo-Json -Depth 2 | Out-File -FilePath $talesInfo -Encoding utf8
