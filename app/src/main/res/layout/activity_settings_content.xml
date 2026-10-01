@@ -216,7 +216,7 @@
                     android:layout_marginLeft="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text= "@string/sortAsc"
+                    android:text= "@string/sortByName"
                     android:fontFamily="@font/chalkboard"
                     android:textSize="16sp" />
 

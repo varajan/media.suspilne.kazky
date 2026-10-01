@@ -19,6 +19,17 @@ public class ImageHelper {
         return bitmap;
     }
 
+    public static Drawable getDrawable(Bitmap bitmap) {
+        return new BitmapDrawable(bitmap);
+    }
+
+    public static Drawable getCircularDrawable(Drawable drawable) {
+        Bitmap bitmap = getBitmap(drawable);
+        Bitmap result = getCircularDrawable(bitmap);
+
+        return getDrawable(result);
+    }
+
     public static Bitmap getCircularDrawable(Bitmap bitmap) {
         if (bitmap == null || bitmap.isRecycled()) {
             return null;

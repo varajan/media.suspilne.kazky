@@ -8,6 +8,7 @@ import com.google.android.gms.common.util.IOUtils;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.activities.views.TaleView;
@@ -80,7 +81,7 @@ public class Tale {
                 .stream()
                 .filter(category -> categories.contains(category.title))
                 .flatMap(category -> category.taleIds.stream())
-                .toList();
+                .collect(Collectors.toList());
 
         return categoryTaleIds.contains(this.id);
     }

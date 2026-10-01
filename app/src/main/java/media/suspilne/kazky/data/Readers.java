@@ -97,6 +97,5 @@ public class Readers {
             new Reader(R.string.ivanna_onufriichuck, R.string.ivanna_onufriichuck_description),
             new Reader(R.string.oleksandr_teren, R.string.oleksandr_teren_description),
             new Reader(R.string.khayat, R.string.khayat_description)
-
     );
 }

@@ -1,6 +1,6 @@
 package media.suspilne.kazky.activities;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -12,8 +12,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -223,6 +225,7 @@ public abstract class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         MainActivity.activity = this;
         readSettingsFromGit();
+        setupBackPressedHandler();
 
         switch (currentView) {
             case R.id.tales_menu:
@@ -269,6 +272,25 @@ public abstract class MainActivity extends AppCompatActivity
         MainActivity.activity = this;
     }
 
+    protected void setupBackPressedHandler() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    onBackPressedCustomAction();
+                }
+            }
+        });
+    }
+
+    protected void onBackPressedCustomAction() {
+        finish();
+    }
+
     private void showErrorMessage() {
         String errorMessage = SettingsHelper.getString("errorMessage");
 
@@ -288,19 +310,7 @@ public abstract class MainActivity extends AppCompatActivity
         System.exit(1);
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
-            showQuitDialog();
-        }
-    }
-
-    private void showQuitDialog() {
+    protected void showQuitDialog() {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.confirm_exit)
@@ -459,6 +469,15 @@ public abstract class MainActivity extends AppCompatActivity
         }
     }
 
+    protected void checkForNotifications() {
+        if (!SettingsHelper.getBoolean("checkForNotifications")) return;
+        SettingsHelper.setBoolean("checkForNotifications", false);
+
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+            requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
+        }
+    }
+
     private void checkForUpdates() {
         if (!SettingsHelper.getBoolean("checkForUpdates")) return;
         if (this.isNetworkUnavailable()) return;
@@ -473,6 +492,8 @@ public abstract class MainActivity extends AppCompatActivity
 
             if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ) {
                     SettingsHelper.setString("LatestVersion", latestVersion);
+
+                if (latestVersion.isEmpty() || whatsNew.equals("• ")) return;
 
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)

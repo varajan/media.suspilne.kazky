@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
@@ -32,17 +33,21 @@ public class Reader {
         List<Integer> categoryTales = Categories.Items.stream()
                 .filter(c -> categories.contains(c.title))
                 .flatMap(c -> c.taleIds.stream())
-                .toList();
+                .collect(Collectors.toList());
+
+        String finalFilter = filter.toLowerCase().trim();
 
         List<Tale> allReaderTales = new Tales().items.stream()
                 .filter(t -> t.getReaderId() == this.name)
                 .filter(t -> !showOnlyFavorite || t.isFavorite)
                 .filter(t -> categoryTales.contains(t.id))
                 .toList();
+                .collect(Collectors.toList());
 
         String finalFilter = filter.toLowerCase().trim();
         boolean matchName = getName().toLowerCase().contains(finalFilter) || getDescription().toLowerCase().contains(finalFilter);
-        List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.getTitle().toLowerCase().contains(finalFilter)).toList();
+        List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.getTitle().toLowerCase().contains(finalFilter))
+                .collect(Collectors.toList());
 
         return matchName
                 ? allReaderTales.size()

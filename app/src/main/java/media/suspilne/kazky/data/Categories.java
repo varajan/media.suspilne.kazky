@@ -2,6 +2,7 @@ package media.suspilne.kazky.data;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import media.suspilne.kazky.R;
 
@@ -69,5 +70,7 @@ public class Categories {
             new Category(R.string.lullabies, new Range(119, 122))
         );
 
-    public static List<Integer> NameIds = Items.stream().map(category -> category.title).toList();
+    public static List<Integer> NameIds = Items.stream()
+            .map(category -> category.title)
+            .collect(Collectors.toList());
 }

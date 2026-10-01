@@ -80,7 +80,7 @@ public abstract class ListActivity extends MainActivity {
     protected void resetFilter() { resetFilter(null); }
 
     protected void resetFilter(Runnable filterAction) {
-        List<String> categoryNames = categories.stream().map(this::getString).toList();
+        List<String> categoryNames = categories.stream().map(this::getString).collect(Collectors.toList());
         saveFilters("", false, categoryNames, categories);
         if (filterAction != null) filterAction.run();
     }
