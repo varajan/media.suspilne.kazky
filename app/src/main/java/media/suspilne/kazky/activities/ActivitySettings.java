@@ -82,10 +82,7 @@ public class ActivitySettings extends MainActivity {
         skipIntro.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitch("skipIntro", isChecked));
 
         if (SettingsHelper.getBoolean("parentLock")) applyParentLock();
-
-        if (!hasPermission(android.Manifest.permission.POST_NOTIFICATIONS)) {
-            requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
-        }
+        checkForNotifications();
     }
 
     int random(int min, int max) {

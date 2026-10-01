@@ -14,6 +14,7 @@ public class Kazky extends Application {
         SharedPreferences sharedPreferences = getSharedPreferences(SettingsHelper.application, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putString("checkForNotifications", String.valueOf(true));
         editor.putString("checkForUpdates", String.valueOf(true));
         editor.putString("readSettingsFromGit", String.valueOf(true));
         editor.putString("tales.count.updated", String.valueOf(false));

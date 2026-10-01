@@ -46,11 +46,12 @@
     <string name="volume_timeout_text">Зменшувати гучність кожні %s хв.</string>
     <string name="coloring_download_ask">Зберегти розмальовку в папку Downloads?</string>
     <string name="coloring_download">Розмальовку буде збережено в папку Downloads</string>
-    <string name="no_write_permission">Програма не має дозволу на збереження файлів.</string>
+    <string name="no_write_permission_title">Програма не має дозволу на збереження файлів.</string>
+    <string name="no_write_permission_error">Щоб зберегти розмальовку на пристрій, дозвольте програмі доступ на збереження файлів у системних налаштуваннях.</string>
     <string name="no_post_notifications_permissions">Без дозволу на сповіщення мініплеєр недоступний.</string>
     <string name="no_post_notifications_permissions_title">Мініплеєр недоступний</string>
     <string name="no_post_notifications_permissions_error">Програма не має дозволу показувати повідомлення.</string>
-    <string name="grant_permissions">Відкрити системні налаштування?</string>
+    <string name="grant_permissions">Відкрити системні налаштування</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
     <string name="lullabies">Колискові</string>

@@ -2,6 +2,7 @@ package media.suspilne.kazky.data;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Category {
@@ -12,6 +13,6 @@ public class Category {
         this.title = title;
         this.taleIds = Arrays.stream(ranges)
                 .flatMap(range -> IntStream.rangeClosed(range.from, range.to).boxed())
-                .toList();
+                .collect(Collectors.toList());
     }
 }

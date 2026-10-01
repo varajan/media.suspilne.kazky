@@ -1,8 +1,10 @@
 package media.suspilne.kazky.activities;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import media.suspilne.kazky.activities.views.TaleView;
 import media.suspilne.kazky.data.Categories;
@@ -36,7 +39,7 @@ public class ActivityColorings extends ListActivity {
                 .filter(c -> c.taleIds.stream()
                         .anyMatch(t -> tales.getById(t).coloring > 0))
                 .map(c -> c.title)
-                .toList();
+                .collect(Collectors.toList());
         
         searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
         titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
@@ -45,6 +48,17 @@ public class ActivityColorings extends ListActivity {
         showTales();
         if (nothingToShow) resetFilter();
         applyFilter(this::filterTales);
+    }
+
+    private boolean hasWritePermission() {
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P && !hasPermission(permission)) {
+            requestPermission(permission, R.string.no_write_permission_title, R.string.no_write_permission_error);
+            return false;
+        }
+
+        return true;
     }
 
     private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
@@ -76,6 +90,11 @@ public class ActivityColorings extends ListActivity {
             new TaleView(tale).setColoringDetails(showBigImages);
 
             taleView.findViewById(R.id.play).setOnClickListener(v -> {
+                if (!hasWritePermission()) {
+                    Toast.makeText(getActivity(), R.string.no_write_permission_title, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (this.isNetworkUnavailable()) {
                     Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_LONG).show();
                     return;
@@ -102,7 +121,9 @@ public class ActivityColorings extends ListActivity {
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             downloadManager.enqueue(request);
+
         } catch (Exception ex) {
+            ex.printStackTrace();
             Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_LONG).show();
         }
     }
