@@ -72,4 +72,5 @@ foreach ($tale in $existingTales) {
 $allTales = @($existingTales) + @($newTales)
 $sortedTales = $allTales | Sort-Object -Property { [int]$_.id }
 
+# save file
 $sortedTales | ConvertTo-Json -Depth 2 -EscapeHandling EscapeNonAscii | Out-File -FilePath $talesInfo -Encoding utf8
