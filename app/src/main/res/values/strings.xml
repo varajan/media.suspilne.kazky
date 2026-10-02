@@ -55,12 +55,6 @@
     <string name="grant_permissions">Відкрити системні налаштування</string>
     <string name="title">Назва</string>
     <string name="reader">Казкар</string>
-    <string name="lullabies">Колискові</string>
-    <string name="brave">Хоробрі казки</string>
-    <string name="ukrainianFolkTales">Українські народні казки</string>
-    <string name="internationalTales">Казки народів світу</string>
-    <string name="bigWorldAnimals">Казки про тварин великого світу</string>
-    <string name="modernAuthorTales">Сучасні авторські казки</string>
     <string name="showOnlyFavorite">Лише улюблені, відмічені ⭐</string>
     <string name="favoriteTales">Улюблені казки</string>
     <string name="allTales">Усі казки</string>
