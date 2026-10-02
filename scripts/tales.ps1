@@ -1,6 +1,6 @@
 $coloringsDir = Join-Path $PSScriptRoot "../colorings"
 $talesDir     = Join-Path $PSScriptRoot "../tales"
-$talesInfo    = Join-Path $PSScriptRoot "../app/src/main/assets/tales.json"
+$talesJson    = Join-Path $PSScriptRoot "../app/src/main/assets/tales.json"
 $readersJson  = Join-Path $PSScriptRoot "../app/src/main/assets/readers.json"
 $ffprobe      = "C:/Program Files/ffmpeg/bin/ffprobe.exe"
 
@@ -18,8 +18,8 @@ $coloringIds = Get-ChildItem -Path $coloringsDir -File |
 		}
 	}
 
-# read current talesInfo
-$jsonContent = Get-Content -Path $talesInfo -Raw -Encoding utf8
+# read current talesJson
+$jsonContent = Get-Content -Path $talesJson -Raw -Encoding utf8
 $existingTales = $jsonContent | ConvertFrom-Json
 $existingIds = $existingTales | ForEach-Object { [int]$_.id }
 
@@ -73,9 +73,9 @@ $allTales = @($existingTales) + @($newTales)
 $sortedTales = $allTales | Sort-Object -Property { [int]$_.id }
 
 # save file
-$sortedTales | ConvertTo-Json -Depth 2 | Out-File -FilePath $talesInfo -Encoding utf8
+$sortedTales | ConvertTo-Json -Depth 2 | Out-File -FilePath $talesJson -Encoding utf8
 
 # replace \u0027 with '
-(Get-Content $talesInfo -Raw -Encoding utf8) `
+(Get-Content $talesJson -Raw -Encoding utf8) `
     -replace '\\u0027', "'" |
-    Set-Content $talesInfo -Encoding utf8
+    Set-Content $talesJson -Encoding utf8
