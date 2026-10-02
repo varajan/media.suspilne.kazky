@@ -1,0 +1,302 @@
+﻿[
+    {
+        "id":  "anastasiia_gudyma",
+        "name":  "Анастасія Гудима",
+        "description":  "Керівниця Координаційного центру національних меншин ПАТ НСТУ"
+    },
+    {
+        "id":  "andrii_hlyvniuk",
+        "name":  "Андрій Хливнюк",
+        "description":  "Вокаліст гурту 'Бумбокс'"
+    },
+    {
+        "id":  "alina_pash",
+        "name":  "Аліна Паш",
+        "description":  "Співачка"
+    },
+    {
+        "id":  "alyona_alyona",
+        "name":  "Alyona Alyona",
+        "description":  "Хіп-хоп виконавиця"
+    },
+    {
+        "id":  "evgen_klopotenko",
+        "name":  "Євген Клопотенко",
+        "description":  "Ресторатор"
+    },
+    {
+        "id":  "evgen_maluha",
+        "name":  "Євген Малуха",
+        "description":  "Актор театру, кіно та дубляжу"
+    },
+    {
+        "id":  "anna_nikitina",
+        "name":  "Анна Нікітіна",
+        "description":  "Солістка гурту Dakh Daughters"
+    },
+    {
+        "id":  "dmytro_horkin",
+        "name":  "Дмитро Хоркін",
+        "description":  "Радіоведучий"
+    },
+    {
+        "id":  "dmytro_schebetiuk",
+        "name":  "Дмитро Щебетюк",
+        "description":  "Телеведучій, журналіст"
+    },
+    {
+        "id":  "ivan_marunych",
+        "name":  "Іван Марунич",
+        "description":  "Співак"
+    },
+    {
+        "id":  "inna_grebeniuk",
+        "name":  "Інна Гребенюк",
+        "description":  "Членкиня правління ПАТ НСТУ"
+    },
+    {
+        "id":  "julia_jurina",
+        "name":  "Юлія Юріна",
+        "description":  "Учасниця гурту 'YUKO'"
+    },
+    {
+        "id":  "jaroslav_lodygin",
+        "name":  "Ярослав Лодигін",
+        "description":  "Кінорежисер"
+    },
+    {
+        "id":  "jamala",
+        "name":  "Jamala",
+        "description":  "Співачка"
+    },
+    {
+        "id":  "katia_rogova",
+        "name":  "Катя Рогова",
+        "description":  "Співачка INAIA"
+    },
+    {
+        "id":  "kateryna_ofliyan",
+        "name":  "Катерина Офліян",
+        "description":  "Співачка, гурт Ofliyan"
+    },
+    {
+        "id":  "michel_schur",
+        "name":  "Майкл Щур",
+        "description":  "Телеведучій"
+    },
+    {
+        "id":  "mariana_golovko",
+        "name":  "Мар'яна Головко",
+        "description":  "Співачка, акторка"
+    },
+    {
+        "id":  "marko_galanevych",
+        "name":  "Марко Галаневич",
+        "description":  "Учасник гурту 'Dakhabraha'"
+    },
+    {
+        "id":  "marta_liubchyk",
+        "name":  "Марта Любчик",
+        "description":  "Співачка, гурт Правиця"
+    },
+    {
+        "id":  "marusia_ionova",
+        "name":  "Маруся Іонова",
+        "description":  "Акторка, учасниця гурту 'ЦеШо'"
+    },
+    {
+        "id":  "nata_smirnova",
+        "name":  "Ната Смірнова",
+        "description":  "Співачка, учасниця гурту 'PUR:PUR'"
+    },
+    {
+        "id":  "oleg_moskalenko",
+        "name":  "Олег Москаленко",
+        "description":  "Актор"
+    },
+    {
+        "id":  "oleksiy_dorychevsky",
+        "name":  "Олексій Доричевський",
+        "description":  "Актор"
+    },
+    {
+        "id":  "olga_shurova",
+        "name":  "Оля Шурова",
+        "description":  "Учасниця гурту Pianoboy"
+    },
+    {
+        "id":  "pavlo_varenitsa",
+        "name":  "Павло Варєніца",
+        "description":  "Фронтмет гурту 'Epolets'"
+    },
+    {
+        "id":  "roman_yasynovsky",
+        "name":  "Роман Ясиновський",
+        "description":  "Актор"
+    },
+    {
+        "id":  "rosava",
+        "name":  "Росава",
+        "description":  "Співачка"
+    },
+    {
+        "id":  "ruslana_khazipova",
+        "name":  "Руслана Хазіпова",
+        "description":  "Солістка гурту Dakh Daughters"
+    },
+    {
+        "id":  "sasha_koltsova",
+        "name":  "Саша Кольцова",
+        "description":  "Лідерка гурту 'Крихітка'"
+    },
+    {
+        "id":  "sergii_zhadan",
+        "name":  "Сергій Жадан",
+        "description":  "Поет і письменник"
+    },
+    {
+        "id":  "sergii_kolos",
+        "name":  "Сергій Колос",
+        "description":  "Фронтмен гурту Фіолет"
+    },
+    {
+        "id":  "sergii_tanchynets",
+        "name":  "Сергій Танчинець",
+        "description":  "Гурт Без Обмежень"
+    },
+    {
+        "id":  "solomia_melnyk",
+        "name":  "Соломія Мельник",
+        "description":  "Солістка гурту Dakh Daughters"
+    },
+    {
+        "id":  "stas_koroliov",
+        "name":  "Стас Корольов",
+        "description":  "Учасник гурту 'YUKO'"
+    },
+    {
+        "id":  "timur_miroshnychenko",
+        "name":  "Тімур Мірошниченко",
+        "description":  "Телеведучій"
+    },
+    {
+        "id":  "hrystyna_soloviy",
+        "name":  "Христина Соловій",
+        "description":  "Співачка"
+    },
+    {
+        "id":  "vlad_fisun",
+        "name":  "Влад Фісун",
+        "description":  "Діджей Dj Buro"
+    },
+    {
+        "id":  "vova_zi_lvova",
+        "name":  "Vova zi Lvova",
+        "description":  "Хіп-хоп виконавець"
+    },
+    {
+        "id":  "ira_bova",
+        "name":  "Іра Бова",
+        "description":  "Дитяча письменниця"
+    },
+    {
+        "id":  "nina_matvienko",
+        "name":  "Ніна Матвієнко",
+        "description":  "Українська співачка та акторка, народна артистка України"
+    },
+    {
+        "id":  "olga_tokar",
+        "name":  "Ольга Токар",
+        "description":  "Аранжувальниця та хормайстриня"
+    },
+    {
+        "id":  "vitaliy_bilonozhko",
+        "name":  "Віталій Білоножко",
+        "description":  "Засновник Міжнародного фестивалю родинної творчості 'Мелодія двох сердець'"
+    },
+    {
+        "id":  "nataliya_vasko",
+        "name":  "Наталя Васько",
+        "description":  "Провідна акторка Київського Молодого театру"
+    },
+    {
+        "id":  "ruhanko_man",
+        "name":  "РуханкоМен",
+        "description":  "Музичний виконавець"
+    },
+    {
+        "id":  "roxolana",
+        "name":  "Roxolana",
+        "description":  "Українська авторка пісень і співачка"
+    },
+    {
+        "id":  "antonina_hyzhniak",
+        "name":  "Антоніна Хижняк",
+        "description":  "Українська акторка театру, кіно та дубляжу"
+    },
+    {
+        "id":  "kola",
+        "name":  "Kola",
+        "description":  "Українська співачка, авторка і виконавиця власних пісень"
+    },
+    {
+        "id":  "kler",
+        "name":  "Kler",
+        "description":  "Українська співачка і авторка пісень"
+    },
+    {
+        "id":  "ivan_kaluzhny",
+        "name":  "Іван Калюжний",
+        "description":  "Гравець національної збірної України з футболу"
+    },
+    {
+        "id":  "julia_sanina",
+        "name":  "Юлія Саніна",
+        "description":  "Фронтвумен українського гурту The Hardkiss"
+    },
+    {
+        "id":  "busha",
+        "name":  "Олександр, Лео та Елвін Буша",
+        "description":  "Творча родина з Ірпеня"
+    },
+    {
+        "id":  "pavlo_vyshebaba",
+        "name":  "Павло Вишебаба",
+        "description":  "Письменник, військовий, музикант"
+    },
+    {
+        "id":  "irma_vitovska",
+        "name":  "Ірма Вітовська",
+        "description":  "Заслужена артистка України"
+    },
+    {
+        "id":  "olena_topolia",
+        "name":  "Олена Тополя",
+        "description":  "Українська співачка Alyosha"
+    },
+    {
+        "id":  "serhii_prytula",
+        "name":  "Сергій Притула",
+        "description":  "Волонтер і громадський діяч"
+    },
+    {
+        "id":  "natalka_denysenko",
+        "name":  "Наталка Денисенко",
+        "description":  "Українська акторка театру, кіно та дубляжу, дикторка, режисерка та телеведуча"
+    },
+    {
+        "id":  "zlata_ognevich",
+        "name":  "Злата Огнєвіч",
+        "description":  "Українська співачка, заслужена артистка АР Крим"
+    },
+    {
+        "id":  "taras_kompanichenko",
+        "name":  "Тарас Компаніченко",
+        "description":  "Композитор, поет, кобзар, бандурист, лірник"
+    },
+    {
+        "id":  "vlad_rudnitsky",
+        "name":  "Влад Рудніцький",
+        "description":  "Ведучий та журналіст підліткових новин на @suspilne.media"
+    }
+]

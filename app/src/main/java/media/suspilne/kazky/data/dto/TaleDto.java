@@ -20,15 +20,15 @@ public class TaleDto {
         this.reader = reader;
     }
 
-    public int getId() {
+    public int id() {
         return id;
     }
 
-    public String getTitle() {
+    public String title() {
         return title;
     }
 
-    public String getDuration() {
+    public String duration() {
         return duration;
     }
 
@@ -36,11 +36,11 @@ public class TaleDto {
         return hasColoring;
     }
 
-    public int getIntro() {
+    public int intro() {
         return intro;
     }
 
-    public String getReader() {
+    public String reader() {
         return reader;
     }
 

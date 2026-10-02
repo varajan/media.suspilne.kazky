@@ -33,13 +33,13 @@ public class Tale {
 
     Tale() { id = -1; }
 
-    Tale(TaleDto info) {
-        this.id = info.getId();
-        this.introTime = info.getIntro();
-        this.hasColoring = info.hasColoring();
-        this.duration = "⏱ " + info.getDuration();
-        this.title = info.getTitle();
-        this.readerName = info.getReader();
+    Tale(TaleDto tale) {
+        this.id = tale.id();
+        this.introTime = tale.intro();
+        this.hasColoring = tale.hasColoring();
+        this.duration = "⏱ " + tale.duration();
+        this.title = tale.title();
+        this.readerName = tale.reader();
         this.image = this.getTaleImage();
         this.isFavorite = SettingsHelper.getBoolean(isFavoriteKey + id);
         this.isDownloaded = id > 0 && isDownloaded(this.id);
