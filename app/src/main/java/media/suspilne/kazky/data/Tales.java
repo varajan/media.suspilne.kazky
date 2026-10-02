@@ -22,7 +22,7 @@ public class Tales {
     private static final List<TaleInfo> staticTalesInfo;
 
     static {
-        String jsonString = AssetUtils.loadJSON(MainActivity.getActivity(), "talesInfo.json");
+        String jsonString = AssetUtils.loadJSON(MainActivity.getActivity(), "tales.json");
         Type listType = new TypeToken<List<TaleInfo>>() {}.getType();
         staticTalesInfo = JsonUtils.fromJson(jsonString, listType);
     }

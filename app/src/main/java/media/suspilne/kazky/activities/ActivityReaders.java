@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import media.suspilne.kazky.Kazky;
+import media.suspilne.kazky.activities.views.ReaderView;
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.data.Reader;
@@ -75,12 +76,13 @@ public class ActivityReaders extends ListActivity {
 
         for (final Reader reader: new Readers().Readers) {
             Integer matchedTales = reader.getMatchedTales(filter, showOnlyFavorite, categories);
+            ReaderView readerView = new ReaderView(reader);
 
             if (matchedTales > 0) {
-                reader.show(this, matchedTales);
+                readerView.show(this, matchedTales);
                 nothingToShowVisibility = View.GONE;
             } else {
-                reader.hide();
+                readerView.hide();
             }
         }
 
@@ -95,7 +97,7 @@ public class ActivityReaders extends ListActivity {
             View readerView = LayoutInflater.from(this).inflate(R.layout.reader_item, ItemsList, false);
             readerView.setTag(reader.getName());
             ItemsList.addView(readerView);
-            reader.setViewDetails();
+            new ReaderView(reader).setViewDetails();
             readerView.setOnClickListener(onReaderClick);
         }
     }

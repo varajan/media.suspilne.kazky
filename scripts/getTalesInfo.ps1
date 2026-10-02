@@ -1,6 +1,6 @@
 $coloringsDir 	= Join-Path $PSScriptRoot "../colorings"
 $talesDir     	= Join-Path $PSScriptRoot "../tales"
-$talesInfo    	= Join-Path $PSScriptRoot "../app/src/main/assets/talesInfo.json"
+$talesInfo    	= Join-Path $PSScriptRoot "../app/src/main/assets/tales.json"
 $stringsXmlPath = Join-Path $PSScriptRoot "../app/src/main/res/values/strings.xml"
 $ffprobe      	= "C:/Program Files/ffmpeg/bin/ffprobe.exe"
 
