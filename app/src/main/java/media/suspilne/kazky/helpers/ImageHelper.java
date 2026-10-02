@@ -35,7 +35,7 @@ public class ImageHelper {
 
         Canvas canvas = new Canvas(canvasBitmap);
 
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+        canvas.drawCircle((float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2,
                 radius, paint);
 
         return canvasBitmap;

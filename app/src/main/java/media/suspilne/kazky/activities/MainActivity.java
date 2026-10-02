@@ -499,6 +499,8 @@ public abstract class MainActivity extends AppCompatActivity
 
                 if (latestVersion.isEmpty() || whatsNew.equals("• ")) return;
 
+                if (latestVersion.isEmpty() || whatsNew.equals("• ")) return;
+
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
                         .setTitle(getString(R.string.newVersion, latestVersion))

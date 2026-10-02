@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="requiredSpace">852</string>
+    <string name="requiredSpace">925</string>
     <string name="settingsUrl">https://raw.githubusercontent.com/varajan/media.suspilne.kazky/master/app/src/main/res/settings</string>
     <string name="gitTaleUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/tales/%02d.mp3</string>
     <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/master/colorings/%03d.jpg</string>
@@ -19,7 +19,7 @@
     <string name="info">Про програму</string>
     <string name="description">
         Версія %s\n\n
-        [Казки] — більше сотні казок: слухайте, шукайте за назвою чи іменем казкаря, фільтруйте за категоріями, показуйте лише улюблені та позначайте казки як «улюблені».
+        [Казки] — півтори сотні казок: слухайте, шукайте за назвою чи іменем казкаря, фільтруйте за категоріями, показуйте лише улюблені та позначайте казки як \'улюблені\'.
         Збережені на пристрої казки позначені значком 💾\n\n
 
         [Казкарі] — шукайте за іменем та відкривайте всі казки казкаря в один клік.\n\n
@@ -98,9 +98,21 @@
     <string name="talesView">Список казок:</string>
     <string name="sort19">За тривалістю (спершу найкоротші)</string>
     <string name="sort91">За тривалістю (спершу найдовші)</string>
-    <string name="sortAsc">За назвою</string>
-    <string name="sortByName">За алфавітом</string>
+    <string name="sortAsc">За алфавітом</string>
     <string name="sortByTalesCount">За кількістю казок</string>
     <string name="shuffle">Перемішати казки</string>
     <string name="skipIntro">Пропускати мелодію перед казкою</string>
+
+    <string name="tale_141">Воїни-котики з острова Паляниця</string>
+    <string name="tale_142">Котик-хвалько</string>
+    <string name="tale_143">Я тобі заспіваю</string>
+    <string name="tale_144">Свого не цуратись і чужого навчатись</string>
+    <string name="tale_145">Котяча пригода</string>
+    <string name="tale_146">Як свинка Альба познайомилася з лелекою Онуфрієм</string>
+    <string name="tale_147">Поросятко Бантик і чарівна Осінь</string>
+    <string name="tale_148">Мишеня, яке стало хоробрим</string>
+    <string name="tale_149">Рома і Черепаха Мудрида</string>
+    <string name="tale_150">Супергерої з протезами</string>
+
+    <string name="tale_151">Інше небо</string>
 </resources>

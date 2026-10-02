@@ -1,9 +1,9 @@
 package media.suspilne.kazky.player;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ServiceCompat;
 import androidx.core.content.ContextCompat;
 
@@ -30,9 +29,8 @@ import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
-import media.suspilne.kazky.activities.MainActivity;
 
-public class PlayerService extends IntentService {
+public class PlayerService extends Service {
     private ExoPlayer player;
     private PlayerNotificationManager playerNotificationManager;
 
@@ -40,7 +38,7 @@ public class PlayerService extends IntentService {
     public static int NOTIFICATION_ID = 21;
 
     public PlayerService() {
-        super(NOTIFICATION_CHANNEL);
+        super();
     }
 
     @Override
@@ -49,15 +47,9 @@ public class PlayerService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        // not implemented
-    }
-    
-    @Override
     public void onCreate() {
         registerReceiver();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
         NotificationChannel channel = notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL);
 
         if (channel == null){
@@ -93,7 +85,7 @@ public class PlayerService extends IntentService {
                 .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
                 .build();
 
-        player = new ExoPlayer.Builder(MainActivity.getActivity()).build();
+        player = new ExoPlayer.Builder(this).build();
         player.setMediaItem(mediaItem);
         player.prepare();
         player.setAudioAttributes(audioAttributes, true);
@@ -184,16 +176,12 @@ public class PlayerService extends IntentService {
             PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
                 @Override
                 public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                    if (ongoing) {
-                        ServiceCompat.startForeground(
-                                PlayerService.this,
-                                notificationId,
-                                notification,
-                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-                        );
-                    } else {
-                        ServiceCompat.stopForeground(PlayerService.this, ServiceCompat.STOP_FOREGROUND_DETACH);
-                    }
+                    ServiceCompat.startForeground(
+                            PlayerService.this,
+                            notificationId,
+                            notification,
+                            ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                    );
                 }
 
                 @Override
