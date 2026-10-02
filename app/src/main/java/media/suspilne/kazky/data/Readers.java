@@ -46,5 +46,4 @@ public class Readers {
     public static boolean isAscSorted() {
         return SettingsHelper.getBoolean(Kazky.Constants.isAscSorted);
     }
-
 }
