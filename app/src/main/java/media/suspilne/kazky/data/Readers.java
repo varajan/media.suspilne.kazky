@@ -88,6 +88,14 @@ public class Readers {
             new Reader(R.string.natalka_denysenko, R.string.natalka_denysenko_description),
             new Reader(R.string.zlata_ognevich, R.string.zlata_ognevich_description),
             new Reader(R.string.taras_kompanichenko, R.string.taras_kompanichenko_description),
-            new Reader(R.string.vlad_rudnitsky, R.string.vlad_rudnitsky_description)
+            new Reader(R.string.vlad_rudnitsky, R.string.vlad_rudnitsky_description),
+            new Reader(R.string.sofia_nersesian, R.string.sofia_nersesian_description),
+            new Reader(R.string.vitaliia, R.string.vitaliia_description),
+            new Reader(R.string.daniil_mireschkin, R.string.daniil_mireschkin_description),
+            new Reader(R.string.yevgen_yanovych, R.string.yevgen_yanovych_description),
+            new Reader(R.string.marta_zotsenko, R.string.marta_zotsenko_description),
+            new Reader(R.string.ivanna_onufriichuck, R.string.ivanna_onufriichuck_description),
+            new Reader(R.string.oleksandr_teren, R.string.oleksandr_teren_description),
+            new Reader(R.string.khayat, R.string.khayat_description)
     );
 }
