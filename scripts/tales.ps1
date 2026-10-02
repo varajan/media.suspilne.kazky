@@ -20,10 +20,8 @@ $coloringIds = Get-ChildItem -Path $coloringsDir -File |
 
 # read current talesInfo
 $jsonContent = Get-Content -Path $talesInfo -Raw -Encoding utf8
-if (-not [string]::IsNullOrWhiteSpace($jsonContent)) {
-	$existingTales = $jsonContent | ConvertFrom-Json
-	$existingIds = $existingTales | ForEach-Object { [int]$_.id }
-}
+$existingTales = $jsonContent | ConvertFrom-Json
+$existingIds = $existingTales | ForEach-Object { [int]$_.id }
 
 # generate new items
 $newTales = @()
