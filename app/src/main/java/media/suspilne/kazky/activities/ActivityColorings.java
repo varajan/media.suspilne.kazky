@@ -19,6 +19,7 @@ import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.activities.views.TaleView;
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.R;
+import media.suspilne.kazky.data.dto.CategoryDto;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
@@ -37,9 +38,9 @@ public class ActivityColorings extends ListActivity {
         initControls();
 
         categories = Categories.Items.stream()
-                .filter(c -> c.taleIds.stream()
+                .filter(c -> c.taleIds().stream()
                         .anyMatch(t -> tales.getById(t).hasColoring))
-                .map(c -> c.title)
+                .map(CategoryDto::title)
                 .collect(Collectors.toList());
         
         searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
@@ -62,7 +63,7 @@ public class ActivityColorings extends ListActivity {
         return true;
     }
 
-    private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+    private int filterTales(String filter, boolean showOnlyFavorite, List<String> categories) {
         int nothingToShowVisibility = View.VISIBLE;
 
         for (final Tale tale:tales.getTalesList()) {

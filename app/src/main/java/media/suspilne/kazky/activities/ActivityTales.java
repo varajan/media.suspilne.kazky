@@ -148,7 +148,7 @@ public class ActivityTales extends ListActivity {
         checkForNotifications();
     }
 
-    private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+    private int filterTales(String filter, boolean showOnlyFavorite, List<String> categories) {
         int nothingToShowVisibility = View.VISIBLE;
         StringBuilder list = new StringBuilder();
 

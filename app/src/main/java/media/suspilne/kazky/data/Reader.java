@@ -22,10 +22,10 @@ public class Reader {
         this.photo = getPhoto(reader.id());
     }
 
-    public Integer getMatchedTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+    public Integer getMatchedTales(String filter, boolean showOnlyFavorite, List<String> categories) {
         List<Integer> categoryTales = Categories.Items.stream()
-                .filter(c -> categories.contains(c.title))
-                .flatMap(c -> c.taleIds.stream())
+                .filter(c -> categories.contains(c.title()))
+                .flatMap(c -> c.taleIds().stream())
                 .collect(Collectors.toList());
 
         List<Tale> allReaderTales = new Tales().items.stream()

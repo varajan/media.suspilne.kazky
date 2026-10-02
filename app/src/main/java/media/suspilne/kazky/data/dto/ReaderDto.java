@@ -28,7 +28,7 @@ public class ReaderDto {
 
     @Override
     public String toString() {
-        return "TaleInfo{" +
+        return "ReaderDto{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

@@ -62,8 +62,7 @@ public class ActivityReaders extends ListActivity {
         Tales.setFilter(fromReadersFilter, filter);
         Tales.setShowOnlyFavorite(fromReadersFilter,Tales.getShowOnlyFavorite(activityName));
 
-        for (final Integer categoryId : categories) {
-            String category = getString(categoryId);
+        for (final String category : categories) {
             boolean enabled = Tales.getShowCategory(activityName, category);
             Tales.setShowCategory(fromReadersFilter, category, enabled);
         }
@@ -71,7 +70,7 @@ public class ActivityReaders extends ListActivity {
         startActivityForResult(intent, 0);
     };
 
-    private int filterReaders(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+    private int filterReaders(String filter, boolean showOnlyFavorite, List<String> categories) {
         int nothingToShowVisibility = View.VISIBLE;
 
         for (final Reader reader: new Readers().Readers) {

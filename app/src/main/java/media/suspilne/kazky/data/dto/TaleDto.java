@@ -46,7 +46,7 @@ public class TaleDto {
 
     @Override
     public String toString() {
-        return "TaleInfo{" +
+        return "TaleDto{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", duration='" + duration + '\'' +

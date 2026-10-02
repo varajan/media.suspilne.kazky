@@ -58,18 +58,18 @@ public class Tale {
         if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
     }
 
-    public boolean shouldBeShown(boolean showOnlyFavorite, List<Integer> categories, String filter) {
+    public boolean shouldBeShown(boolean showOnlyFavorite, List<String> categories, String filter) {
         return matchesFilter(filter)
                 && (!showOnlyFavorite || isFavorite)
                 && shouldBeShown(categories);
     }
 
-    boolean shouldBeShown(List<Integer> categories) {
+    boolean shouldBeShown(List<String> categories) {
         List<Integer> categoryTaleIds = Categories
                 .Items
                 .stream()
-                .filter(category -> categories.contains(category.title))
-                .flatMap(category -> category.taleIds.stream())
+                .filter(category -> categories.contains(category.title()))
+                .flatMap(category -> category.taleIds().stream())
                 .collect(Collectors.toList());
 
         return categoryTaleIds.contains(this.id);
