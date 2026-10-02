@@ -45,7 +45,7 @@ Get-ChildItem -Path $talesDir -File -Filter "*.mp3" | ForEach-Object {
 
 	$newTales += [PSCustomObject]@{
 		id          = $id
-		title 		= $titlesMap[$id]
+		title 		= "???"
 		reader		= "???"
 		duration    = $formattedDuration
 		intro		= 0
@@ -55,7 +55,8 @@ Get-ChildItem -Path $talesDir -File -Filter "*.mp3" | ForEach-Object {
 
 # check reader's name is correct
 [xml]$xml = Get-Content -Path $stringsXmlPath -Encoding utf8
-$stringValues = $xml.resources.string | ForEach-Object { $_.'#text' }
+$stringValues = $xml.resources.string | ForEach-Object { $_.'#text' -replace "\\'", "'" }
+
 foreach ($tale in $existingTales) {
     if (-not [string]::IsNullOrWhiteSpace($tale.reader)) {
         if ($tale.reader.StartsWith("???")) {
@@ -73,4 +74,9 @@ $allTales = @($existingTales) + @($newTales)
 $sortedTales = $allTales | Sort-Object -Property { [int]$_.id }
 
 # save file
-$sortedTales | ConvertTo-Json -Depth 2 -EscapeHandling EscapeNonAscii | Out-File -FilePath $talesInfo -Encoding utf8
+$sortedTales | ConvertTo-Json -Depth 2 | Out-File -FilePath $talesInfo -Encoding utf8
+
+# replace \u0027 with '
+(Get-Content $talesInfo -Raw -Encoding utf8) `
+    -replace '\\u0027', "'" |
+    Set-Content $talesInfo -Encoding utf8
