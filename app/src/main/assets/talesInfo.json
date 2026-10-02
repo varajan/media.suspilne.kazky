@@ -221,7 +221,7 @@
         "duration":  "03:03",
         "hasColoring":  true,
         "intro":  6500,
-        "reader":  "Мар\\\u0027яна Головко"
+        "reader":  "Мар'яна Головко"
     },
     {
         "id":  29,
@@ -261,7 +261,7 @@
         "duration":  "02:01",
         "hasColoring":  true,
         "intro":  6500,
-        "reader":  "Мар\\\u0027яна Головко"
+        "reader":  "Мар'яна Головко"
     },
     {
         "id":  34,
@@ -301,7 +301,7 @@
         "duration":  "05:58",
         "hasColoring":  true,
         "intro":  7000,
-        "reader":  "Мар\\\u0027яна Головко"
+        "reader":  "Мар'яна Головко"
     },
     {
         "id":  39,
@@ -993,7 +993,7 @@
     },
     {
         "id":  125,
-        "title":  "Запасливий хом\\\u0027ячок",
+        "title":  "Запасливий хом'ячок",
         "duration":  "07:09",
         "hasColoring":  false,
         "intro":  2000,
