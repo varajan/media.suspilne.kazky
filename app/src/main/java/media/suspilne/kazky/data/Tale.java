@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.activities.views.TaleView;
+import media.suspilne.kazky.data.dto.TaleDto;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.activities.MainActivity;
 import media.suspilne.kazky.activities.ActivityTales;
@@ -32,7 +33,7 @@ public class Tale {
 
     Tale() { id = -1; }
 
-    Tale(TaleInfo info) {
+    Tale(TaleDto info) {
         this.id = info.getId();
         this.introTime = info.getIntro();
         this.hasColoring = info.hasColoring();

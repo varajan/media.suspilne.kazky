@@ -13,17 +13,18 @@ import java.util.stream.Collectors;
 
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.activities.MainActivity;
+import media.suspilne.kazky.data.dto.TaleDto;
 import media.suspilne.kazky.helpers.AssetUtils;
 import media.suspilne.kazky.helpers.JsonUtils;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.helpers.ListHelper;
 
 public class Tales {
-    private static final List<TaleInfo> staticTalesInfo;
+    private static final List<TaleDto> staticTalesInfo;
 
     static {
         String jsonString = AssetUtils.loadJSON(MainActivity.getActivity(), "tales.json");
-        Type listType = new TypeToken<List<TaleInfo>>() {}.getType();
+        Type listType = new TypeToken<List<TaleDto>>() {}.getType();
         staticTalesInfo = JsonUtils.fromJson(jsonString, listType);
     }
 

@@ -1,6 +1,6 @@
-package media.suspilne.kazky.data;
+package media.suspilne.kazky.data.dto;
 
-public class TaleInfo {
+public class TaleDto {
     private int id;
     private String title;
     private String duration;
@@ -8,10 +8,10 @@ public class TaleInfo {
     private int intro;
     private String reader;
 
-    public TaleInfo() {
+    public TaleDto() {
     }
 
-    public TaleInfo(int id, String title, String duration, boolean hasColoring, int intro, String reader) {
+    public TaleDto(int id, String title, String duration, boolean hasColoring, int intro, String reader) {
         this.id = id;
         this.title = title;
         this.duration = duration;
