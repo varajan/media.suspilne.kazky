@@ -95,7 +95,7 @@ public class ActivityReaders extends ListActivity {
 
         for (final Reader reader:new Readers().Readers) {
             View readerView = LayoutInflater.from(this).inflate(R.layout.reader_item, ItemsList, false);
-            readerView.setTag(reader.getName());
+            readerView.setTag(reader.name);
             ItemsList.addView(readerView);
             new ReaderView(reader).setViewDetails();
             readerView.setOnClickListener(onReaderClick);

@@ -1,27 +1,37 @@
 package media.suspilne.kazky.data;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import com.google.common.reflect.TypeToken;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import media.suspilne.kazky.Kazky;
-import media.suspilne.kazky.R;
 import media.suspilne.kazky.activities.MainActivity;
+import media.suspilne.kazky.data.dto.ReaderDto;
+import media.suspilne.kazky.helpers.AssetUtils;
+import media.suspilne.kazky.helpers.JsonUtils;
 import media.suspilne.kazky.helpers.SettingsHelper;
-import media.suspilne.kazky.helpers.StringHelper;
 
 public class Readers {
+    private static final List<ReaderDto> staticReadersData;
+
+    static {
+        String jsonString = AssetUtils.loadJSON(MainActivity.getActivity(), "readers.json");
+        Type listType = new TypeToken<List<ReaderDto>>() {}.getType();
+        staticReadersData = JsonUtils.fromJson(jsonString, listType);
+    }
+
     public List<Reader> Readers;
 
     public Readers() {
-        List<Reader> items = getReaders();
+        List<Reader> items = staticReadersData.stream()
+                .map(Reader::new)
+                .collect(Collectors.toList());
 
         if (isAscSorted()) {
-            items.sort(Comparator.comparing(Reader::getName));
+            items.sort(Comparator.comparing(c -> c.name));
         } else {
             items.sort((c1, c2) -> c2.talesCount.compareTo(c1.talesCount));
         }
@@ -37,38 +47,4 @@ public class Readers {
         return SettingsHelper.getBoolean(Kazky.Constants.isAscSorted);
     }
 
-    private static List<Reader> getReaders() {
-        Activity activity = MainActivity.getActivity();
-        List<Reader> readers = new ArrayList<>();
-        String postfix = "_description";
-        Field[] fields = R.string.class.getFields();
-
-        for (Field field : fields) {
-            String fieldName = field.getName();
-
-            if (!fieldName.endsWith(postfix)) {
-                continue;
-            }
-
-            try {
-                int descriptionResId = field.getInt(null);
-                String name = StringHelper.substringTo(fieldName, postfix);
-                @SuppressLint("DiscouragedApi")
-                int nameResId = activity.getResources().getIdentifier(
-                        name,
-                        "string",
-                        activity.getPackageName()
-                );
-
-                if (nameResId != 0) {
-                    readers.add(new Reader(nameResId, descriptionResId));
-                }
-
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return readers;
-    }
 }

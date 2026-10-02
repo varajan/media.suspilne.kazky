@@ -30,7 +30,7 @@ public class ReaderView {
         View readerView = getReaderView();
         TextView description = readerView.findViewById(R.id.description);
 
-        description.setText(context.getString(R.string.reader_description, readerData.getDescription(), talesCount));
+        description.setText(context.getString(R.string.reader_description, readerData.description, talesCount));
     }
 
     public void setViewDetails() {
@@ -57,10 +57,10 @@ public class ReaderView {
     }
 
     private View getView() {
-        return ActivityReaders.getActivity().findViewById(R.id.itemsList).findViewWithTag(readerData.getName());
+        return ActivityReaders.getActivity().findViewById(R.id.itemsList).findViewWithTag(readerData.name);
     }
 
     private View getReaderView() {
-        return MainActivity.getActivity().findViewById(R.id.itemsList).findViewWithTag(readerData.getName());
+        return MainActivity.getActivity().findViewById(R.id.itemsList).findViewWithTag(readerData.name);
     }
 }

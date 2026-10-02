@@ -8,17 +8,18 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import media.suspilne.kazky.activities.MainActivity;
+import media.suspilne.kazky.data.dto.ReaderDto;
 
 public class Reader {
-    public Integer name;
-    public Integer description;
+    public String name;
+    public String description;
     public Integer photo;
     public Integer talesCount = 0;
 
-    public Reader(int name, int description) {
-        this.name = name;
-        this.description = description;
-        this.photo = getPhoto();
+    public Reader(ReaderDto reader) {
+        this.name = reader.name();
+        this.description = reader.description();
+        this.photo = getPhoto(reader.id());
     }
 
     public Integer getMatchedTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
@@ -28,13 +29,13 @@ public class Reader {
                 .collect(Collectors.toList());
 
         List<Tale> allReaderTales = new Tales().items.stream()
-                .filter(t -> Objects.equals(t.readerName, this.getName()))
+                .filter(t -> Objects.equals(t.readerName, this.name))
                 .filter(t -> !showOnlyFavorite || t.isFavorite)
                 .filter(t -> categoryTales.contains(t.id))
                 .collect(Collectors.toList());
 
         String finalFilter = filter.toLowerCase().trim();
-        boolean matchName = getName().toLowerCase().contains(finalFilter) || getDescription().toLowerCase().contains(finalFilter);
+        boolean matchName = name.toLowerCase().contains(finalFilter) || description.toLowerCase().contains(finalFilter);
         List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.title.toLowerCase().contains(finalFilter))
                 .collect(Collectors.toList());
 
@@ -43,17 +44,9 @@ public class Reader {
                 : talesMatchFilter.size();
     }
 
-    public String getName() {
-        return MainActivity.getActivity().getString(name);
-    }
-    public String getDescription() {
-        return MainActivity.getActivity().getString(description);
-    }
-
     @SuppressLint("DiscouragedApi")
-    private int getPhoto() {
+    private int getPhoto(String resourceId) {
         Activity activity = MainActivity.getActivity();
-        String resourceId = activity.getResources().getResourceEntryName(name);
 
         return activity.getResources().getIdentifier(
                 resourceId,
