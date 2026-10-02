@@ -34,7 +34,7 @@
     {
         "id":  5,
         "title":  "Жаба боязкіша за зайця",
-        "duration":  "02:50",
+        "duration":  "01:50",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Марко Галаневич"
@@ -42,7 +42,7 @@
     {
         "id":  6,
         "title":  "Лисиця і Рак",
-        "duration":  "03:31",
+        "duration":  "02:31",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Аліна Паш"
@@ -50,7 +50,7 @@
     {
         "id":  7,
         "title":  "Сонячна квітка",
-        "duration":  "03:34",
+        "duration":  "02:34",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Саша Кольцова"
@@ -58,7 +58,7 @@
     {
         "id":  8,
         "title":  "Чому кіт умивається тільки по обіді",
-        "duration":  "01:48",
+        "duration":  "00:48",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Саша Кольцова"
@@ -66,7 +66,7 @@
     {
         "id":  9,
         "title":  "Як лис вовка маслом частував",
-        "duration":  "02:44",
+        "duration":  "01:44",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Саша Кольцова"
@@ -74,7 +74,7 @@
     {
         "id":  10,
         "title":  "Мишача рада",
-        "duration":  "03:45",
+        "duration":  "02:45",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Євген Малуха"
@@ -106,7 +106,7 @@
     {
         "id":  14,
         "title":  "Іссумбосі",
-        "duration":  "04:53",
+        "duration":  "03:53",
         "hasColoring":  true,
         "intro":  6700,
         "reader":  "Сергій Жадан"
@@ -130,7 +130,7 @@
     {
         "id":  17,
         "title":  "Чарівне горнятко",
-        "duration":  "13:33",
+        "duration":  "12:33",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Христина Соловій"
@@ -138,7 +138,7 @@
     {
         "id":  18,
         "title":  "Просинка",
-        "duration":  "08:36",
+        "duration":  "07:36",
         "hasColoring":  true,
         "intro":  7200,
         "reader":  "Христина Соловій"
@@ -154,7 +154,7 @@
     {
         "id":  20,
         "title":  "Лисичка та Журавель",
-        "duration":  "03:59",
+        "duration":  "02:59",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Олексій Доричевський"
@@ -170,7 +170,7 @@
     {
         "id":  22,
         "title":  "Дві білочки",
-        "duration":  "05:42",
+        "duration":  "04:42",
         "hasColoring":  true,
         "intro":  6200,
         "reader":  "Аліна Паш"
@@ -178,7 +178,7 @@
     {
         "id":  23,
         "title":  "Коза-дереза",
-        "duration":  "10:56",
+        "duration":  "09:56",
         "hasColoring":  true,
         "intro":  7500,
         "reader":  "Юлія Юріна"
@@ -202,7 +202,7 @@
     {
         "id":  26,
         "title":  "Пан Коцький",
-        "duration":  "05:51",
+        "duration":  "04:51",
         "hasColoring":  true,
         "intro":  6300,
         "reader":  "Alyona Alyona"
@@ -210,7 +210,7 @@
     {
         "id":  27,
         "title":  "Лисичка суддя",
-        "duration":  "03:51",
+        "duration":  "02:51",
         "hasColoring":  true,
         "intro":  6200,
         "reader":  "Аліна Паш"
@@ -234,7 +234,7 @@
     {
         "id":  30,
         "title":  "Казка про билинку та горобця",
-        "duration":  "03:51",
+        "duration":  "02:51",
         "hasColoring":  true,
         "intro":  6000,
         "reader":  "Дмитро Щебетюк"
@@ -250,7 +250,7 @@
     {
         "id":  32,
         "title":  "Кривенька качечка",
-        "duration":  "07:31",
+        "duration":  "06:31",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Юлія Юріна"
@@ -266,7 +266,7 @@
     {
         "id":  34,
         "title":  "Як соловейко чоловіка розуму навчив",
-        "duration":  "02:58",
+        "duration":  "01:58",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Майкл Щур"
@@ -282,7 +282,7 @@
     {
         "id":  36,
         "title":  "Розум та щастя",
-        "duration":  "05:36",
+        "duration":  "04:36",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Ярослав Лодигін"
@@ -298,7 +298,7 @@
     {
         "id":  38,
         "title":  "Як дурень випросив вогню",
-        "duration":  "05:58",
+        "duration":  "04:58",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Мар'яна Головко"
@@ -314,7 +314,7 @@
     {
         "id":  40,
         "title":  "Чому зайці сірі",
-        "duration":  "03:39",
+        "duration":  "02:39",
         "hasColoring":  true,
         "intro":  6600,
         "reader":  "Дмитро Щебетюк"
@@ -346,7 +346,7 @@
     {
         "id":  44,
         "title":  "Чому гуси миються у воді",
-        "duration":  "03:51",
+        "duration":  "02:51",
         "hasColoring":  true,
         "intro":  6150,
         "reader":  "Руслана Хазіпова"
@@ -362,7 +362,7 @@
     {
         "id":  46,
         "title":  "Коржик",
-        "duration":  "03:31",
+        "duration":  "02:31",
         "hasColoring":  true,
         "intro":  6700,
         "reader":  "Руслана Хазіпова"
@@ -370,7 +370,7 @@
     {
         "id":  47,
         "title":  "Лисичка і глечик",
-        "duration":  "02:32",
+        "duration":  "01:32",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Vova zi Lvova"
@@ -378,7 +378,7 @@
     {
         "id":  48,
         "title":  "Старий дуб і діброва",
-        "duration":  "02:43",
+        "duration":  "01:43",
         "hasColoring":  true,
         "intro":  6850,
         "reader":  "Vova zi Lvova"
@@ -386,7 +386,7 @@
     {
         "id":  49,
         "title":  "Золотий мак",
-        "duration":  "05:55",
+        "duration":  "04:55",
         "hasColoring":  true,
         "intro":  7200,
         "reader":  "Євген Клопотенко"
@@ -402,7 +402,7 @@
     {
         "id":  51,
         "title":  "Про найцінніше",
-        "duration":  "04:42",
+        "duration":  "03:42",
         "hasColoring":  true,
         "intro":  7300,
         "reader":  "Євген Клопотенко"
@@ -418,7 +418,7 @@
     {
         "id":  53,
         "title":  "Дарунки з трьох зернин",
-        "duration":  "09:52",
+        "duration":  "08:52",
         "hasColoring":  true,
         "intro":  5700,
         "reader":  "Маруся Іонова"
@@ -426,7 +426,7 @@
     {
         "id":  54,
         "title":  "Три персні",
-        "duration":  "07:48",
+        "duration":  "06:48",
         "hasColoring":  true,
         "intro":  6800,
         "reader":  "Маруся Іонова"
@@ -434,7 +434,7 @@
     {
         "id":  55,
         "title":  "Про бідного багача",
-        "duration":  "03:50",
+        "duration":  "02:50",
         "hasColoring":  true,
         "intro":  6000,
         "reader":  "Соломія Мельник"
@@ -442,7 +442,7 @@
     {
         "id":  56,
         "title":  "Казка про чемного кушніра",
-        "duration":  "05:46",
+        "duration":  "04:46",
         "hasColoring":  true,
         "intro":  6600,
         "reader":  "Соломія Мельник"
@@ -450,7 +450,7 @@
     {
         "id":  57,
         "title":  "Війна грибів з жуками",
-        "duration":  "03:36",
+        "duration":  "02:36",
         "hasColoring":  true,
         "intro":  6700,
         "reader":  "Соломія Мельник"
@@ -458,7 +458,7 @@
     {
         "id":  58,
         "title":  "Вовк та вовчиця",
-        "duration":  "02:52",
+        "duration":  "01:52",
         "hasColoring":  true,
         "intro":  6600,
         "reader":  "Соломія Мельник"
@@ -498,7 +498,7 @@
     {
         "id":  63,
         "title":  "Лисиця та їжак",
-        "duration":  "02:52",
+        "duration":  "01:52",
         "hasColoring":  true,
         "intro":  6350,
         "reader":  "Роман Ясиновський"
@@ -538,7 +538,7 @@
     {
         "id":  68,
         "title":  "Хліб і золото",
-        "duration":  "03:34",
+        "duration":  "02:34",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Влад Фісун"
@@ -570,7 +570,7 @@
     {
         "id":  72,
         "title":  "Олень, черепаха і птах",
-        "duration":  "02:43",
+        "duration":  "01:43",
         "hasColoring":  true,
         "intro":  6250,
         "reader":  "Павло Варєніца"
@@ -578,7 +578,7 @@
     {
         "id":  73,
         "title":  "Вовк під вікном",
-        "duration":  "02:54",
+        "duration":  "01:54",
         "hasColoring":  true,
         "intro":  6700,
         "reader":  "Павло Варєніца"
@@ -586,7 +586,7 @@
     {
         "id":  74,
         "title":  "Бджоли та ведмідь",
-        "duration":  "02:30",
+        "duration":  "01:30",
         "hasColoring":  true,
         "intro":  6550,
         "reader":  "Павло Варєніца"
@@ -610,7 +610,7 @@
     {
         "id":  77,
         "title":  "Вівчар Василько і золоті гори",
-        "duration":  "09:37",
+        "duration":  "08:37",
         "hasColoring":  true,
         "intro":  5500,
         "reader":  "Сергій Колос"
@@ -618,7 +618,7 @@
     {
         "id":  78,
         "title":  "Чому тигр такий злий на кота",
-        "duration":  "04:54",
+        "duration":  "03:54",
         "hasColoring":  true,
         "intro":  6000,
         "reader":  "Стас Корольов"
@@ -626,7 +626,7 @@
     {
         "id":  79,
         "title":  "Як Джек ходив щастя шукати",
-        "duration":  "05:55",
+        "duration":  "04:55",
         "hasColoring":  true,
         "intro":  7000,
         "reader":  "Стас Корольов"
@@ -634,7 +634,7 @@
     {
         "id":  80,
         "title":  "Як жаби подорожували",
-        "duration":  "04:30",
+        "duration":  "03:30",
         "hasColoring":  true,
         "intro":  6000,
         "reader":  "Стас Корольов"
@@ -642,7 +642,7 @@
     {
         "id":  81,
         "title":  "Полохлива душа",
-        "duration":  "07:58",
+        "duration":  "06:58",
         "hasColoring":  true,
         "intro":  5700,
         "reader":  "Катя Рогова"
@@ -650,7 +650,7 @@
     {
         "id":  82,
         "title":  "Чому в ластівки хвостик, мов ріжки",
-        "duration":  "06:39",
+        "duration":  "05:39",
         "hasColoring":  true,
         "intro":  6000,
         "reader":  "Катя Рогова"
@@ -674,7 +674,7 @@
     {
         "id":  85,
         "title":  "Кінь, що літати вмів",
-        "duration":  "05:45",
+        "duration":  "04:45",
         "hasColoring":  true,
         "intro":  6800,
         "reader":  "Іван Марунич"
@@ -682,7 +682,7 @@
     {
         "id":  86,
         "title":  "Лісовики",
-        "duration":  "05:48",
+        "duration":  "04:48",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Іван Марунич"
@@ -690,7 +690,7 @@
     {
         "id":  87,
         "title":  "Звідки взялися місяць та зорі на небі",
-        "duration":  "05:53",
+        "duration":  "04:53",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Ната Смірнова"
@@ -706,7 +706,7 @@
     {
         "id":  89,
         "title":  "Три брати і жаба",
-        "duration":  "12:32",
+        "duration":  "11:32",
         "hasColoring":  true,
         "intro":  5600,
         "reader":  "Ната Смірнова"
@@ -722,7 +722,7 @@
     {
         "id":  91,
         "title":  "І на силу знайдеться сила",
-        "duration":  "06:54",
+        "duration":  "05:54",
         "hasColoring":  true,
         "intro":  5400,
         "reader":  "Олег Москаленко"
@@ -730,7 +730,7 @@
     {
         "id":  92,
         "title":  "Який гук такий відгук",
-        "duration":  "07:44",
+        "duration":  "06:44",
         "hasColoring":  true,
         "intro":  5800,
         "reader":  "Олег Москаленко"
@@ -738,7 +738,7 @@
     {
         "id":  93,
         "title":  "Замок на скелі",
-        "duration":  "08:39",
+        "duration":  "07:39",
         "hasColoring":  true,
         "intro":  7200,
         "reader":  "Росава"
@@ -746,7 +746,7 @@
     {
         "id":  94,
         "title":  "Поросяче життя",
-        "duration":  "03:45",
+        "duration":  "02:45",
         "hasColoring":  true,
         "intro":  6800,
         "reader":  "Росава"
@@ -762,7 +762,7 @@
     {
         "id":  96,
         "title":  "Материнська любов",
-        "duration":  "03:37",
+        "duration":  "02:37",
         "hasColoring":  true,
         "intro":  6600,
         "reader":  "Jamala"
@@ -770,7 +770,7 @@
     {
         "id":  97,
         "title":  "Задавака",
-        "duration":  "02:59",
+        "duration":  "01:59",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Jamala"
@@ -786,7 +786,7 @@
     {
         "id":  99,
         "title":  "Віслюк-мудрагель",
-        "duration":  "02:56",
+        "duration":  "01:56",
         "hasColoring":  true,
         "intro":  6700,
         "reader":  "Сергій Танчинець"
@@ -802,7 +802,7 @@
     {
         "id":  101,
         "title":  "Золота прядочка",
-        "duration":  "05:42",
+        "duration":  "04:42",
         "hasColoring":  true,
         "intro":  6700,
         "reader":  "Сергій Танчинець"
@@ -810,7 +810,7 @@
     {
         "id":  102,
         "title":  "Синя свита навиворіт пошита",
-        "duration":  "08:54",
+        "duration":  "07:54",
         "hasColoring":  true,
         "intro":  7300,
         "reader":  "Інна Гребенюк"
@@ -826,7 +826,7 @@
     {
         "id":  104,
         "title":  "Як лікувати лінь",
-        "duration":  "06:39",
+        "duration":  "05:39",
         "hasColoring":  true,
         "intro":  6000,
         "reader":  "Інна Гребенюк"
@@ -834,7 +834,7 @@
     {
         "id":  105,
         "title":  "Як пес вовка в чоботи взув",
-        "duration":  "05:57",
+        "duration":  "04:57",
         "hasColoring":  true,
         "intro":  6800,
         "reader":  "Оля Шурова"
@@ -842,7 +842,7 @@
     {
         "id":  106,
         "title":  "Кінь і віл",
-        "duration":  "02:46",
+        "duration":  "01:46",
         "hasColoring":  true,
         "intro":  6200,
         "reader":  "Оля Шурова"
@@ -850,7 +850,7 @@
     {
         "id":  107,
         "title":  "Сто золотих монет",
-        "duration":  "04:50",
+        "duration":  "03:50",
         "hasColoring":  true,
         "intro":  6300,
         "reader":  "Оля Шурова"
@@ -858,7 +858,7 @@
     {
         "id":  108,
         "title":  "Ром і водяник",
-        "duration":  "02:43",
+        "duration":  "01:43",
         "hasColoring":  true,
         "intro":  6500,
         "reader":  "Анастасія Гудима"
@@ -874,7 +874,7 @@
     {
         "id":  110,
         "title":  "Сім лозин",
-        "duration":  "03:37",
+        "duration":  "02:37",
         "hasColoring":  true,
         "intro":  6850,
         "reader":  "Анастасія Гудима"
@@ -898,7 +898,7 @@
     {
         "id":  113,
         "title":  "Круглий камінь",
-        "duration":  "12:33",
+        "duration":  "11:33",
         "hasColoring":  true,
         "intro":  5500,
         "reader":  "Дмитро Хоркін"
@@ -914,7 +914,7 @@
     {
         "id":  115,
         "title":  "Вовк і лисиця",
-        "duration":  "05:55",
+        "duration":  "04:55",
         "hasColoring":  true,
         "intro":  7800,
         "reader":  "Катерина Офліян"
@@ -922,7 +922,7 @@
     {
         "id":  116,
         "title":  "Чарівне джерело",
-        "duration":  "06:52",
+        "duration":  "05:52",
         "hasColoring":  true,
         "intro":  6000,
         "reader":  "Катерина Офліян"
@@ -938,7 +938,7 @@
     {
         "id":  118,
         "title":  "Хаппі та її суперсила",
-        "duration":  "18:56",
+        "duration":  "17:56",
         "hasColoring":  true,
         "intro":  0,
         "reader":  "Іра Бова"
@@ -970,7 +970,7 @@
     {
         "id":  122,
         "title":  "Тепле сонечко сідає",
-        "duration":  "03:35",
+        "duration":  "02:35",
         "hasColoring":  false,
         "intro":  0,
         "reader":  "Віталій Білоножко"
@@ -978,7 +978,7 @@
     {
         "id":  123,
         "title":  "Снігова королева",
-        "duration":  "17:35",
+        "duration":  "16:35",
         "hasColoring":  false,
         "intro":  7000,
         "reader":  "Наталя Васько"
@@ -1002,7 +1002,7 @@
     {
         "id":  126,
         "title":  "Витівки мавпочки Зізі",
-        "duration":  "07:53",
+        "duration":  "06:53",
         "hasColoring":  false,
         "intro":  4000,
         "reader":  "Іван Калюжний"
@@ -1018,7 +1018,7 @@
     {
         "id":  128,
         "title":  "Дивна мрія лабрадора",
-        "duration":  "07:42",
+        "duration":  "06:42",
         "hasColoring":  false,
         "intro":  3000,
         "reader":  "Kola"
@@ -1026,7 +1026,7 @@
     {
         "id":  129,
         "title":  "Тигреня, яке не вміло гарчати",
-        "duration":  "09:33",
+        "duration":  "08:33",
         "hasColoring":  false,
         "intro":  500,
         "reader":  "Kler"
@@ -1034,7 +1034,7 @@
     {
         "id":  130,
         "title":  "Вел і Цуц",
-        "duration":  "09:52",
+        "duration":  "08:52",
         "hasColoring":  false,
         "intro":  6000,
         "reader":  "Юлія Саніна"
@@ -1050,7 +1050,7 @@
     {
         "id":  132,
         "title":  "Кепка сили",
-        "duration":  "12:33",
+        "duration":  "11:33",
         "hasColoring":  false,
         "intro":  12000,
         "reader":  "Павло Вишебаба"
@@ -1058,7 +1058,7 @@
     {
         "id":  133,
         "title":  "Їжачок Лесик і лісова зграя",
-        "duration":  "14:57",
+        "duration":  "13:57",
         "hasColoring":  false,
         "intro":  12000,
         "reader":  "Ірма Вітовська"
@@ -1066,7 +1066,7 @@
     {
         "id":  134,
         "title":  "Їжачок Лесик на новому березі",
-        "duration":  "12:51",
+        "duration":  "11:51",
         "hasColoring":  false,
         "intro":  11000,
         "reader":  "Олена Тополя"
@@ -1074,7 +1074,7 @@
     {
         "id":  135,
         "title":  "Любий мамозавр",
-        "duration":  "12:38",
+        "duration":  "11:38",
         "hasColoring":  false,
         "intro":  3000,
         "reader":  "Антоніна Хижняк"
@@ -1082,7 +1082,7 @@
     {
         "id":  136,
         "title":  "Бульбашки для зайчика Вжуха",
-        "duration":  "12:43",
+        "duration":  "11:43",
         "hasColoring":  false,
         "intro":  3000,
         "reader":  "Тімур Мірошниченко"
@@ -1098,7 +1098,7 @@
     {
         "id":  138,
         "title":  "Диво у темряві",
-        "duration":  "07:33",
+        "duration":  "06:33",
         "hasColoring":  false,
         "intro":  4000,
         "reader":  "Roxolana"
@@ -1106,7 +1106,7 @@
     {
         "id":  139,
         "title":  "Біжи, мишеня",
-        "duration":  "10:42",
+        "duration":  "09:42",
         "hasColoring":  false,
         "intro":  11000,
         "reader":  "Наталка Денисенко"
@@ -1114,7 +1114,7 @@
     {
         "id":  140,
         "title":  "Мій (Над)звичайний Пес",
-        "duration":  "08:46",
+        "duration":  "07:46",
         "hasColoring":  false,
         "intro":  4000,
         "reader":  "Злата Огнєвіч"
@@ -1139,7 +1139,7 @@
         "id":  143,
         "title":  "Я тобі заспіваю",
         "reader":  "Софія Нерсесян",
-        "duration":  "06:46",
+        "duration":  "05:46",
         "intro":  0,
         "hasColoring":  false
     },
@@ -1147,7 +1147,7 @@
         "id":  144,
         "title":  "Свого не цуратись і чужого навчатись",
         "reader":  "Vitaliia",
-        "duration":  "07:35",
+        "duration":  "06:35",
         "intro":  0,
         "hasColoring":  false
     },
@@ -1155,7 +1155,7 @@
         "id":  145,
         "title":  "Котяча пригода",
         "reader":  "Данііл Мірешкін",
-        "duration":  "09:37",
+        "duration":  "08:37",
         "intro":  0,
         "hasColoring":  false
     },
@@ -1163,7 +1163,7 @@
         "id":  146,
         "title":  "Як свинка Альба познайомилася з лелекою Онуфрієм",
         "reader":  "Alyona Alyona",
-        "duration":  "07:57",
+        "duration":  "06:57",
         "intro":  0,
         "hasColoring":  false
     },
@@ -1171,7 +1171,7 @@
         "id":  147,
         "title":  "Поросятко Бантик і чарівна Осінь",
         "reader":  "Євген Янович",
-        "duration":  "07:31",
+        "duration":  "06:31",
         "intro":  0,
         "hasColoring":  false
     },
@@ -1187,7 +1187,7 @@
         "id":  149,
         "title":  "Рома і Черепаха Мудрида",
         "reader":  "Іванна Онуфрійчук",
-        "duration":  "08:54",
+        "duration":  "07:54",
         "intro":  0,
         "hasColoring":  false
     },
@@ -1195,7 +1195,7 @@
         "id":  150,
         "title":  "Супергерої з протезами",
         "reader":  "Олександр Терен",
-        "duration":  "09:37",
+        "duration":  "08:37",
         "intro":  0,
         "hasColoring":  false
     },

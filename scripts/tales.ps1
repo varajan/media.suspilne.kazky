@@ -37,7 +37,7 @@ Get-ChildItem -Path $talesDir -File -Filter "*.mp3" | ForEach-Object {
 	$durationSeconds = & $ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$filePath" 2>$null
 	$seconds = [math]::Truncate([double]$durationSeconds)
 	$ts = [timespan]::FromSeconds($seconds)
-	$formattedDuration = "{0:D2}:{1:D2}" -f [int]$ts.TotalMinutes, $ts.Seconds
+	$formattedDuration = "{0:D2}:{1:D2}" -f [int]$ts.Minutes, $ts.Seconds
 
 	$hasColoring = $coloringIds -contains $id
 
