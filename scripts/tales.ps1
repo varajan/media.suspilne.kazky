@@ -1,8 +1,8 @@
-$coloringsDir 	= Join-Path $PSScriptRoot "../colorings"
-$talesDir     	= Join-Path $PSScriptRoot "../tales"
-$talesInfo    	= Join-Path $PSScriptRoot "../app/src/main/assets/tales.json"
-$stringsXmlPath = Join-Path $PSScriptRoot "../app/src/main/res/values/strings.xml"
-$ffprobe      	= "C:/Program Files/ffmpeg/bin/ffprobe.exe"
+$coloringsDir = Join-Path $PSScriptRoot "../colorings"
+$talesDir     = Join-Path $PSScriptRoot "../tales"
+$talesInfo    = Join-Path $PSScriptRoot "../app/src/main/assets/tales.json"
+$readersJson  = Join-Path $PSScriptRoot "../app/src/main/assets/readers.json"
+$ffprobe      = "C:/Program Files/ffmpeg/bin/ffprobe.exe"
 
 $existingTales = @()
 $existingIds = @()
@@ -54,8 +54,9 @@ Get-ChildItem -Path $talesDir -File -Filter "*.mp3" | ForEach-Object {
 }
 
 # check reader's name is correct
-[xml]$xml = Get-Content -Path $stringsXmlPath -Encoding utf8
-$stringValues = $xml.resources.string | ForEach-Object { $_.'#text' -replace "\\'", "'" }
+$readersJsonContent = Get-Content -Path $readersJson -Raw -Encoding utf8
+$existingReaders = $readersJsonContent | ConvertFrom-Json
+$existingNames = $existingReaders | ForEach-Object { $_.name }
 
 foreach ($tale in $existingTales) {
     if (-not [string]::IsNullOrWhiteSpace($tale.reader)) {
@@ -63,7 +64,7 @@ foreach ($tale in $existingTales) {
             continue
         }
         
-        if ($stringValues -notcontains $tale.reader) {
+        if ($existingNames -notcontains $tale.reader) {
             $tale.reader = "??? " + $tale.reader
         }
     }
