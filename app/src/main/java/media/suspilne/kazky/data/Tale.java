@@ -76,11 +76,11 @@ public class Tale {
 
     boolean matchesFilter(String filter) {
         filter = filter.toLowerCase();
-        String reader = StringHelper.substringTo(filter, ",").trim();
-        String title = StringHelper.substringFrom(filter, ",").trim();
+        String readerFilter = StringHelper.substringTo(filter, ",").trim();
+        String titleFilter = StringHelper.substringFrom(filter, ",").trim();
 
-        if (!reader.isEmpty())
-            return title.toLowerCase().contains(title) && readerName.toLowerCase().contains(reader);
+        if (!readerFilter.isEmpty())
+            return title.toLowerCase().contains(titleFilter) && readerName.toLowerCase().contains(readerFilter);
 
         return title.toLowerCase().contains(filter) || readerName.toLowerCase().contains(filter);
     }
