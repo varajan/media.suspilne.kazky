@@ -102,17 +102,4 @@
     <string name="sortByTalesCount">За кількістю казок</string>
     <string name="shuffle">Перемішати казки</string>
     <string name="skipIntro">Пропускати мелодію перед казкою</string>
-
-    <string name="tale_141">Воїни-котики з острова Паляниця</string>
-    <string name="tale_142">Котик-хвалько</string>
-    <string name="tale_143">Я тобі заспіваю</string>
-    <string name="tale_144">Свого не цуратись і чужого навчатись</string>
-    <string name="tale_145">Котяча пригода</string>
-    <string name="tale_146">Як свинка Альба познайомилася з лелекою Онуфрієм</string>
-    <string name="tale_147">Поросятко Бантик і чарівна Осінь</string>
-    <string name="tale_148">Мишеня, яке стало хоробрим</string>
-    <string name="tale_149">Рома і Черепаха Мудрида</string>
-    <string name="tale_150">Супергерої з протезами</string>
-
-    <string name="tale_151">Інше небо</string>
 </resources>

@@ -1134,6 +1134,78 @@
         "hasColoring":  false,
         "intro":  3000,
         "reader":  "Влад Рудніцький"
+    },
+    {
+        "id":  143,
+        "title":  "Я тобі заспіваю",
+        "reader":  "Софія Нерсесян",
+        "duration":  "06:46",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  144,
+        "title":  "Свого не цуратись і чужого навчатись",
+        "reader":  "Vitaliia",
+        "duration":  "07:35",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  145,
+        "title":  "Котяча пригода",
+        "reader":  "Данііл Мірешкін",
+        "duration":  "09:37",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  146,
+        "title":  "Як свинка Альба познайомилася з лелекою Онуфрієм",
+        "reader":  "Alyona Alyona",
+        "duration":  "07:57",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  147,
+        "title":  "Поросятко Бантик і чарівна Осінь",
+        "reader":  "Євген Янович",
+        "duration":  "07:31",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  148,
+        "title":  "Мишеня, яке стало хоробрим",
+        "reader":  "Марта Зоценко",
+        "duration":  "04:18",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  149,
+        "title":  "Рома і Черепаха Мудрида",
+        "reader":  "Іванна Онуфрійчук",
+        "duration":  "08:54",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  150,
+        "title":  "Супергерої з протезами",
+        "reader":  "Олександр Терен",
+        "duration":  "09:37",
+        "intro":  0,
+        "hasColoring":  false
+    },
+    {
+        "id":  151,
+        "title":  "Інше небо",
+        "reader":  "KHAYAT",
+        "duration":  "08:18",
+        "intro":  0,
+        "hasColoring":  false
     }
 ]
 
