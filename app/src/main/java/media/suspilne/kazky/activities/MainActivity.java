@@ -277,11 +277,11 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void setupBackPressedHandler() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
                 if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
                     drawer.closeDrawer(GravityCompat.START);
                 } else {
