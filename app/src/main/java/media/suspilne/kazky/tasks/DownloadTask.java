@@ -21,6 +21,7 @@ import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.activities.MainActivity;
 import media.suspilne.kazky.helpers.ImageHelper;
+import media.suspilne.kazky.helpers.StringHelper;
 
 public class DownloadTask extends AsyncTask<Tale, String, String> {
     private NotificationManager notificationManager;
@@ -137,7 +138,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
 
                 if (freeSpace < required) {
                     throw new Exception(MainActivity.getActivity().getString(
-                        R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
+                        R.string.not_enough_space, StringHelper.formattedSize(freeSpace), StringHelper.formattedSize(required)));
                 }
 
                 InputStream is = (InputStream) new URL(tale.stream).getContent();

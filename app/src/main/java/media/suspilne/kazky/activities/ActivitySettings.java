@@ -25,6 +25,7 @@ import media.suspilne.kazky.data.Readers;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
+import media.suspilne.kazky.helpers.StringHelper;
 
 public class ActivitySettings extends MainActivity {
     private Switch fontColor;
@@ -210,7 +211,7 @@ public class ActivitySettings extends MainActivity {
 
         if (available < required) {
             String title = getString(R.string.an_error_occurred);
-            String message = getString(R.string.not_enough_space, SettingsHelper.formattedSize(available), SettingsHelper.formattedSize(required));
+            String message = getString(R.string.not_enough_space, StringHelper.formattedSize(available), StringHelper.formattedSize(required));
 
             showAlert(title, message);
 
@@ -246,7 +247,7 @@ public class ActivitySettings extends MainActivity {
 
     private final CompoundButton.OnCheckedChangeListener onDownloadAllSelect = (buttonView, isChecked) -> {
         long usedSpace = SettingsHelper.usedSpace();
-        String required = SettingsHelper.formattedSize(totalRequiredSpace - usedSpace);
+        String required = StringHelper.formattedSize(totalRequiredSpace - usedSpace);
 
         new AlertDialog.Builder(ActivitySettings.this)
             .setIcon(R.mipmap.logo)
@@ -288,8 +289,8 @@ public class ActivitySettings extends MainActivity {
 
         int activeColor   = SettingsHelper.getColor();
         int inactiveColor = ContextCompat.getColor(this, R.color.gray);
-        String usedSpace = getString(R.string.usedSpace, SettingsHelper.formattedSize(SettingsHelper.usedSpace()));
-        String freeSpace = getString(R.string.freeSpace, SettingsHelper.formattedSize(SettingsHelper.freeSpace()));
+        String usedSpace = getString(R.string.usedSpace, StringHelper.formattedSize(SettingsHelper.usedSpace()));
+        String freeSpace = getString(R.string.freeSpace, StringHelper.formattedSize(SettingsHelper.freeSpace()));
         String quitMinutes = SettingsHelper.getString(Kazky.Constants.timeout, "5");
         String volumeMinutes = SettingsHelper.getString(Kazky.Constants.volumeMinutes, "5");
 

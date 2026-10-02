@@ -1,20 +1,15 @@
 package media.suspilne.kazky.helpers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Environment;
 import android.os.StatFs;
-import android.util.DisplayMetrics;
 
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DecimalFormat;
-import java.util.List;
 
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
@@ -119,13 +114,6 @@ public class SettingsHelper {
                 length += folderSize(file);
         }
         return length;
-    }
-
-    public static String formattedSize(long size) {
-        if(size <= 0) return "0";
-        final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
-        int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
-        return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 
     public static long usedSpace() {
