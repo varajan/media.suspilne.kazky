@@ -1268,7 +1268,7 @@
         "title":  "Мамоніт, Мамотак і великі хвилі",
         "reader":  "Leleka",
         "duration":  "08:03",
-        "intro":  0,
+        "intro":  2500,
         "hasColoring":  false
     },
     {
@@ -1276,7 +1276,7 @@
         "title":  "Мамоніт і Мамотак – ловці океану",
         "reader":  "Анастасія Пустовіт",
         "duration":  "07:52",
-        "intro":  0,
+        "intro":  2000,
         "hasColoring":  false
     },
     {
@@ -1284,7 +1284,7 @@
         "title":  "Мамоніт, Мамотак на Великому бар’єрному рифі",
         "reader":  "Саша Ганапольська",
         "duration":  "06:51",
-        "intro":  0,
+        "intro":  3000,
         "hasColoring":  false
     }
 ]
