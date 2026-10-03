@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="settingsUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/new-tales/app/src/main/res/settings</string>
+    <string name="taleUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/new-tales/tales/%02d.mp3</string>
+    <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/new-tales/colorings/%03d.jpg</string>
+    <string name="description">Версія %s</string>
+</resources>
