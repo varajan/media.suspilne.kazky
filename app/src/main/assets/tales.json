@@ -1206,6 +1206,30 @@
         "duration":  "08:18",
         "intro":  0,
         "hasColoring":  false
+    },
+    {
+        "id":  152,
+        "title":  "Традиція родинного вечора",
+        "reader":  "Владислав Васицький",
+        "duration":  "03:55",
+        "intro":  2500,
+        "hasColoring":  false
+    },
+    {
+        "id":  153,
+        "title":  "Велика злива",
+        "reader":  "Владислав Васицький",
+        "duration":  "06:53",
+        "intro":  2000,
+        "hasColoring":  false
+    },
+    {
+        "id":  154,
+        "title":  "Розбите коліно",
+        "reader":  "Владислав Васицький",
+        "duration":  "06:25",
+        "intro":  2500,
+        "hasColoring":  false
     }
 ]
 
