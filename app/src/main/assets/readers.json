@@ -20,6 +20,11 @@
         "description":  "Керівниця Координаційного центру Суспільного"
     },
     {
+        "id":  "anastasiia_pustovit",
+        "name":  "Анастасія Пустовіт",
+        "description":  "Акторка театру та кіно, громадська діячка"
+    },
+    {
         "id":  "andrii_hlyvniuk",
         "name":  "Андрій Хливнюк",
         "description":  "Вокаліст гурту 'Бумбокс'"
@@ -63,6 +68,11 @@
         "id":  "evgen_maluha",
         "name":  "Євген Малуха",
         "description":  "Актор театру, кіно та дубляжу"
+    },
+    {
+        "id":  "ganna_polska",
+        "name":  "Саша Ганапольська",
+        "description":  "Співачка, вокалістка інді-поп дуету Tember Blanche"
     },
     {
         "id":  "hrystyna_soloviy",
@@ -143,6 +153,11 @@
         "id":  "kola",
         "name":  "Kola",
         "description":  "Співачка, авторка та виконавиця пісень"
+    },
+    {
+        "id":  "leleka",
+        "name":  "Leleka",
+        "description":  "Джазова співачка та засновниця етно-проекту LELEKA"
     },
     {
         "id":  "mariana_golovko",
