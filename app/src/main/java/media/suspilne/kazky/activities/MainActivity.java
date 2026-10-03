@@ -81,26 +81,23 @@ public abstract class MainActivity extends AppCompatActivity
         int timeout = SettingsHelper.getInt(Kazky.Constants.volumeMinutes);
         timeout = timeout == 0 ? 5 : timeout;
 
-        volumeReduceRunnable = new Runnable() {
-            @Override
-            public void run() {
-                MediaVolume media = new MediaVolume();
+        volumeReduceRunnable = () -> {
+            MediaVolume media = new MediaVolume();
 
-                if (media.getLevel() > 1) {
-                    media.setLevel(media.getLevel() - 1);
-                    resetVolumeReduceTimer();
-                } else {
-                    media.setLevel(media.getMaxLevel() / 2);
-                    stopVolumeReduceTimer();
-                    stopPlayerService();
+            if (media.getLevel() > 1) {
+                media.setLevel(media.getLevel() - 1);
+                resetVolumeReduceTimer();
+            } else {
+                media.setLevel(media.getMaxLevel() / 2);
+                stopVolumeReduceTimer();
+                stopPlayerService();
 
-                    Tales.setNowPlaying(-1);
-                    Intent intent = new Intent();
-                    intent.setAction(Kazky.Constants.application);
-                    intent.setPackage(getPackageName());
-                    intent.putExtra("code", Kazky.Constants.codeSetPlayBtnIcon);
-                    sendBroadcast(intent);
-                }
+                Tales.setNowPlaying(-1);
+                Intent intent = new Intent();
+                intent.setAction(Kazky.Constants.application);
+                intent.setPackage(getPackageName());
+                intent.putExtra("code", Kazky.Constants.codeSetPlayBtnIcon);
+                sendBroadcast(intent);
             }
         };
 
