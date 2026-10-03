@@ -248,7 +248,9 @@ public class PlayerService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (Kazky.Constants.codeStopPlay.equals(intent.getStringExtra("code"))) {
+            String code = intent.getStringExtra("code");
+
+            if (code.equals(Kazky.Constants.codeStopPlay)) {
                 Tales.setNowPlaying(-1);
                 sendMessage(Kazky.Constants.codeSetPlayBtnIcon);
                 stopSelf();

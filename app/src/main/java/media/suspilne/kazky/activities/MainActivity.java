@@ -24,6 +24,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -36,8 +38,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.tasks.DownloadTask;
@@ -52,8 +52,12 @@ public abstract class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private NotificationManager notificationManager;
-    private Timer quitTimer;
-    private Timer volumeReduceTimer;
+
+    private final Handler volumeReduceHandler = new Handler(Looper.getMainLooper());
+    private Runnable volumeReduceRunnable;
+
+    private final Handler quitHandler = new Handler(Looper.getMainLooper());
+    private Runnable quitRunnable;
 
     protected NavigationView navigation;
     protected TextView activityTitle;
@@ -63,19 +67,10 @@ public abstract class MainActivity extends AppCompatActivity
     public static Activity getActivity() { return activity; }
 
     private void stopVolumeReduceTimer() {
-        if (volumeReduceTimer != null) {
-            volumeReduceTimer.cancel();
-            volumeReduceTimer = null;
+        if (volumeReduceRunnable != null) {
+            volumeReduceHandler.removeCallbacks(volumeReduceRunnable);
+            volumeReduceRunnable = null;
         }
-    }
-
-    private void stopQuitTimer() {
-        if (quitTimer != null) {
-            quitTimer.cancel();
-            quitTimer = null;
-        }
-
-        SettingsHelper.setBoolean(Kazky.Constants.stopPlaybackOnTimeout, false);
     }
 
     protected void resetVolumeReduceTimer() {
@@ -86,60 +81,60 @@ public abstract class MainActivity extends AppCompatActivity
         int timeout = SettingsHelper.getInt(Kazky.Constants.volumeMinutes);
         timeout = timeout == 0 ? 5 : timeout;
 
-        volumeReduceTimer = new Timer();
-        volumeReduceTimer.schedule(new reduceVolume(), timeout * 60_000L);
+        volumeReduceRunnable = new Runnable() {
+            @Override
+            public void run() {
+                MediaVolume media = new MediaVolume();
+
+                if (media.getLevel() > 1) {
+                    media.setLevel(media.getLevel() - 1);
+                    resetVolumeReduceTimer();
+                } else {
+                    media.setLevel(media.getMaxLevel() / 2);
+                    stopVolumeReduceTimer();
+                    stopPlayerService();
+
+                    Tales.setNowPlaying(-1);
+                    Intent intent = new Intent();
+                    intent.setAction(Kazky.Constants.application);
+                    intent.setPackage(getPackageName());
+                    intent.putExtra("code", Kazky.Constants.codeSetPlayBtnIcon);
+                    sendBroadcast(intent);
+                }
+            }
+        };
+
+        volumeReduceHandler.postDelayed(volumeReduceRunnable, timeout * 60_000L);
     }
 
     protected void resetQuitTimeout() {
+        stopQuitTimer();
+
         if (SettingsHelper.getBoolean(Kazky.Constants.autoQuit)) {
-            stopQuitTimer();
-
             int timeout = SettingsHelper.getInt(Kazky.Constants.timeout);
-            timeout = timeout==0 ? 5 : timeout;
+            timeout = timeout == 0 ? 5 : timeout;
 
-            quitTimer = new Timer();
-            quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60_000L);
-        } else {
-            stopQuitTimer();
-        }
-    }
-
-    class stopPlaybackOnTimeout extends TimerTask {
-        @Override
-        public void run() {
-            stopVolumeReduceTimer();
-
-            if (isTalePlaying()) {
-                Intent intent = new Intent();
-                intent.setAction(Kazky.Constants.application);
-                intent.putExtra("code", Kazky.Constants.codeStopPlay);
-                sendBroadcast(intent);
-            }
-            else {
-                SettingsHelper.setBoolean(Kazky.Constants.stopPlaybackOnTimeout, true);
-            }
-        }
-    }
-
-    class reduceVolume extends TimerTask {
-        @Override
-        public void run() {
-            MediaVolume media = new MediaVolume();
-
-            if (media.getLevel() > 1) {
-                media.setLevel(media.getLevel() - 1);
-                resetVolumeReduceTimer();
-            } else {
-                media.setLevel(media.getMaxLevel() / 2);
+            quitRunnable = () -> {
                 stopVolumeReduceTimer();
-                stopPlayerService();
+                if (isTalePlaying()) {
+                    Intent intent = new Intent();
+                    intent.setAction(Kazky.Constants.application);
+                    intent.setPackage(getPackageName());
+                    intent.putExtra("code", Kazky.Constants.codeStopPlay);
+                    sendBroadcast(intent);
+                } else {
+                    SettingsHelper.setBoolean(Kazky.Constants.stopPlaybackOnTimeout, true);
+                }
+            };
 
-                Tales.setNowPlaying(-1);
-                Intent intent = new Intent();
-                intent.setAction(Kazky.Constants.application);
-                intent.putExtra("code", Kazky.Constants.codeSetPlayBtnIcon);
-                sendBroadcast(intent);
-            }
+            quitHandler.postDelayed(quitRunnable, timeout * 60_000L);
+        }
+    }
+
+    protected void stopQuitTimer() {
+        if (quitRunnable != null) {
+            quitHandler.removeCallbacks(quitRunnable);
+            quitRunnable = null;
         }
     }
 

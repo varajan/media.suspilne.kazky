@@ -239,7 +239,9 @@ public class ActivityTales extends ListActivity {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        switch (intent.getStringExtra("code")) {
+            String code = intent.getStringExtra("code");
+
+            switch (code) {
             case Kazky.Constants.codeSourceIsNotAccessible:
                 Tales.setPause(true);
                 setPlayBtnIcon();
