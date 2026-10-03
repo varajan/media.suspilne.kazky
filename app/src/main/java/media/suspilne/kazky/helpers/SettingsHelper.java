@@ -58,7 +58,7 @@ public class SettingsHelper {
 
     public static boolean getBoolean(String setting, boolean defaultValue) {
         try {
-            return getString(setting).equalsIgnoreCase("true");
+            return getString(setting, String.valueOf(defaultValue)).equalsIgnoreCase("true");
         }
         catch (Exception e) {
             return defaultValue;
