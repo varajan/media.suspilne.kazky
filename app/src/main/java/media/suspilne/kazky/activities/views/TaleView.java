@@ -69,21 +69,21 @@ public class TaleView {
             ((ImageView)taleView.findViewById(R.id.favorite)).setImageResource(taleData.isFavorite ? R.drawable.ic_favorite : R.drawable.ic_notfavorite);
             if (preview != null) ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
 
-            title.setText(taleData.titleId);
+            title.setText(taleData.title);
             title.setTextColor(color);
 
-            reader.setText(taleData.readerId);
+            reader.setText(taleData.readerName);
             reader.setTextColor(color);
 
             duration.setText(taleData.duration);
             duration.setTextColor(color);
 
             setDownloadedIcon();
-        }catch (Exception e) {
+        } catch (Exception e) {
             Kazky.logError("Failed to load tale #" + taleData.id, false);
             Kazky.logError(e.getMessage());
 
-            SettingsHelper.setBoolean("showBigImages", false);
+            SettingsHelper.setBoolean(Kazky.Constants.showBigImages, false);
         }
     }
 
@@ -108,10 +108,10 @@ public class TaleView {
 
             if (preview != null) ((ImageView)taleView.findViewById(R.id.preview)).setImageBitmap(preview);
 
-            title.setText(taleData.titleId);
+            title.setText(taleData.title);
             title.setTextColor(color);
 
-            reader.setText(taleData.readerId);
+            reader.setText(taleData.readerName);
             reader.setTextColor(color);
 
             duration.setText("");
@@ -119,11 +119,11 @@ public class TaleView {
             if (showBigImages) ((ImageView)taleView.findViewById(R.id.favoriteShadow)).setVisibility(View.INVISIBLE);
             ((ImageView)taleView.findViewById(R.id.favorite)).setVisibility(View.INVISIBLE);
             ((ImageView)taleView.findViewById(R.id.play)).setImageResource(R.mipmap.download);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Kazky.logError("Failed to load tale #" + taleData.id, false);
             Kazky.logError(e.getMessage());
 
-            SettingsHelper.setBoolean("showBigImages", false);
+            SettingsHelper.setBoolean(Kazky.Constants.showBigImages, false);
         }
     }
 
@@ -148,7 +148,7 @@ public class TaleView {
     }
 
     private View getView() {
-        try{
+        try {
             return ActivityTales.getActivity().findViewById(R.id.itemsList).findViewWithTag(taleData.id);
         }
         catch (Exception e) {
