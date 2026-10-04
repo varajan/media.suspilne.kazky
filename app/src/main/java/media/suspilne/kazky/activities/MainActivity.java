@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -515,13 +516,17 @@ public abstract class MainActivity extends AppCompatActivity
     protected void requestPermission(String permission, int title, int error) {
         if (hasPermission(permission)) return;
 
-        new AlertDialog.Builder(this)
-                .setIcon(R.mipmap.logo)
-                .setTitle(title)
-                .setMessage(error)
-                .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
-                .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
-                .show();
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+            new AlertDialog.Builder(this)
+                    .setIcon(R.mipmap.logo)
+                    .setTitle(title)
+                    .setMessage(error)
+                    .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
+                    .show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
+        }
     }
 
     private void openAndroidSettings() {
