@@ -36,7 +36,6 @@ public class Reader {
                 .filter(t -> categoryTales.contains(t.id))
                 .collect(Collectors.toList());
 
-        String finalFilter = filter.toLowerCase().trim();
         boolean matchName = name.toLowerCase().contains(finalFilter) || description.toLowerCase().contains(finalFilter);
         List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.title.toLowerCase().contains(finalFilter))
                 .collect(Collectors.toList());
