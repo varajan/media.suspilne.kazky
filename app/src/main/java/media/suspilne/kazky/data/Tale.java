@@ -1,86 +1,75 @@
 package media.suspilne.kazky.data;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
+import android.app.Activity;
 
-import com.google.android.gms.common.util.IOUtils;
-
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.activities.views.TaleView;
+import media.suspilne.kazky.data.dto.TaleDto;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.activities.MainActivity;
 import media.suspilne.kazky.activities.ActivityTales;
 import media.suspilne.kazky.helpers.StringHelper;
+import media.suspilne.kazky.tasks.DownloadTaleTask;
 
 public class Tale {
     public int id;
     public int introTime;
-    public int coloring;
-    public int titleId;
-    public int readerId;
+    public boolean hasColoring;
+    public String title;
+    public String readerName;
     public int image;
     public boolean isFavorite;
     public boolean isDownloaded;
     public String stream;
     public String fileName;
     public String duration;
+    private final String isFavoriteKey = "isFavorite_";
 
     Tale() { id = -1; }
 
-    Tale(int id, String duration, int intro, int coloring, int title, int name, int img) {
-        this.id = id;
-        this.introTime = intro;
-        this.coloring = coloring;
-        this.duration = "⏱ " + duration;
-        this.titleId = title;
-        this.readerId = name;
-        this.image = img;
-        this.isFavorite = SettingsHelper.getBoolean("isFavorite_" + id);
+    Tale(TaleDto tale) {
+        this.id = tale.id();
+        this.introTime = tale.intro();
+        this.hasColoring = tale.hasColoring();
+        this.duration = "⏱ " + tale.duration();
+        this.title = tale.title();
+        this.readerName = tale.reader();
+        this.image = this.getTaleImage();
+        this.isFavorite = SettingsHelper.getBoolean(isFavoriteKey + id);
         this.isDownloaded = id > 0 && isDownloaded(this.id);
         this.stream = id > 0 ? stream(id) : null;
         this.fileName = id > 0 ? fileName(id) : null;
     }
 
-    int getReaderId() {
-        return readerId;
-    }
-
-    public String getReader() {
-        return ActivityTales.getActivity().getString(readerId);
-    }
-
-    public String getTitle() {
-        return ActivityTales.getActivity().getString(titleId);
-    }
-
     public void resetFavorite() {
-        boolean downloadAll = SettingsHelper.getBoolean("downloadAllTales");
-        boolean downloadFavorite = SettingsHelper.getBoolean("downloadFavoriteTales");
+        boolean downloadAll = SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
+        boolean downloadFavorite = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales);
 
         isFavorite = !isFavorite;
-        SettingsHelper.setBoolean("isFavorite_" + id, isFavorite);
+        SettingsHelper.setBoolean(isFavoriteKey + id, isFavorite);
 
         if ( isFavorite && downloadFavorite && !downloadAll) this.download();
         if (!isFavorite && downloadFavorite && !downloadAll) this.deleteFile();
     }
 
-    public boolean shouldBeShown(boolean showOnlyFavorite, List<Integer> categories, String filter) {
+    public boolean shouldBeShown(boolean showOnlyFavorite, List<String> categories, String filter) {
         return matchesFilter(filter)
                 && (!showOnlyFavorite || isFavorite)
                 && shouldBeShown(categories);
     }
 
-    boolean shouldBeShown(List<Integer> categories) {
+    boolean shouldBeShown(List<String> categories) {
         List<Integer> categoryTaleIds = Categories
                 .Items
                 .stream()
-                .filter(category -> categories.contains(category.title))
-                .flatMap(category -> category.taleIds.stream())
+                .filter(category -> categories.contains(category.title()))
+                .flatMap(category -> category.taleIds().stream())
                 .collect(Collectors.toList());
 
         return categoryTaleIds.contains(this.id);
@@ -88,13 +77,13 @@ public class Tale {
 
     boolean matchesFilter(String filter) {
         filter = filter.toLowerCase();
-        String reader = StringHelper.substringTo(filter, ",").trim();
-        String title = StringHelper.substringFrom(filter, ",").trim();
+        String readerFilter = StringHelper.substringTo(filter, ",").trim();
+        String titleFilter = StringHelper.substringFrom(filter, ",").trim();
 
-        if (reader != "")
-            return getTitle().toLowerCase().contains(title) && getReader().toLowerCase().contains(reader);
+        if (!readerFilter.isEmpty())
+            return title.toLowerCase().contains(titleFilter) && readerName.toLowerCase().contains(readerFilter);
 
-        return getTitle().toLowerCase().contains(filter) || getReader().toLowerCase().contains(filter);
+        return title.toLowerCase().contains(filter) || readerName.toLowerCase().contains(filter);
     }
 
     @SuppressLint("DefaultLocale")
@@ -103,11 +92,24 @@ public class Tale {
     }
 
     public boolean isDownloaded(int tale) {
-        try{
+        try {
             return MainActivity.getActivity().getFileStreamPath(fileName(tale)).exists();
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private int getTaleImage() {
+        Activity activity = MainActivity.getActivity();
+        boolean showBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
+        String imageName = String.format(Locale.US, "t%03d%s", id, showBigImages ? "" : "_min");
+
+        return activity.getResources().getIdentifier(
+                imageName,
+                "drawable",
+                activity.getPackageName()
+        );
     }
 
     private String stream(int tale) {
@@ -117,38 +119,12 @@ public class Tale {
     }
 
     public void download() {
-        new DownloadTrack().execute(this);
+        new DownloadTaleTask().execute(this);
     }
 
     public void deleteFile() {
         MainActivity.getActivity().deleteFile(fileName);
         TaleView taleView = new TaleView(this);
         taleView.setDownloadedIcon();
-    }
-
-    static class DownloadTrack extends AsyncTask<Tale, Void, Void> {
-        private Tale tale;
-
-        @Override
-        protected void onPostExecute(Void result) {
-            TaleView taleView = new TaleView(tale);
-            taleView.setDownloadedIcon();
-        }
-
-        @Override
-        protected Void doInBackground(Tale... tales) {
-            try {
-                tale = tales[0];
-                if (!tale.isDownloaded)
-                {
-                    InputStream is = (InputStream) new URL(tale.stream).getContent();
-                    SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
-                }
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
     }
 }

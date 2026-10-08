@@ -15,11 +15,13 @@ import java.net.URL;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.activities.MainActivity;
 import media.suspilne.kazky.helpers.ImageHelper;
+import media.suspilne.kazky.helpers.StringHelper;
 
 public class DownloadTask extends AsyncTask<Tale, String, String> {
     private NotificationManager notificationManager;
@@ -41,7 +43,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     }
 
     private void showProgressNotification(String text) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), Kazky.Constants.application)
             .setSmallIcon(R.drawable.ic_cloud_download)
             .setContentTitle(MainActivity.getActivity().getString(R.string.downloading))
             .setContentText(text)
@@ -59,7 +61,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
         if (count == 0) {
             cancelAllNotifications();
         } else {
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), Kazky.Constants.application)
                     .setSmallIcon(R.drawable.ic_cloud_done)
                     .setContentTitle(MainActivity.getActivity().getString(R.string.download_completed, count))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -73,7 +75,7 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
     }
 
     private void showFailedNotification(String errorMessage) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), SettingsHelper.application)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.getActivity(), Kazky.Constants.application)
             .setSmallIcon(R.drawable.ic_error)
             .setContentTitle(MainActivity.getActivity().getString(R.string.an_error_occurred))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -83,14 +85,14 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
             .setSound(null);
 
         notificationManager.notify(WITH_ERROR, notificationBuilder.build());
-        SettingsHelper.setString("errorMessage", errorMessage);
+        SettingsHelper.setString(Kazky.Constants.errorMessage, errorMessage);
     }
 
     protected void onPreExecute() {
         notificationManager = (NotificationManager) MainActivity.getActivity().getSystemService(NOTIFICATION_SERVICE);
         cancelAllNotifications();
 
-        NotificationChannel notificationChannel = new NotificationChannel(SettingsHelper.application, SettingsHelper.application, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel notificationChannel = new NotificationChannel(Kazky.Constants.application, Kazky.Constants.application, NotificationManager.IMPORTANCE_DEFAULT);
         notificationChannel.setSound(null, null);
         notificationChannel.setShowBadge(false);
 
@@ -136,15 +138,15 @@ public class DownloadTask extends AsyncTask<Tale, String, String> {
 
                 if (freeSpace < required) {
                     throw new Exception(MainActivity.getActivity().getString(
-                        R.string.not_enough_space, SettingsHelper.formattedSize(freeSpace), SettingsHelper.formattedSize(required)));
+                        R.string.not_enough_space, StringHelper.formattedSize(freeSpace), StringHelper.formattedSize(required)));
                 }
 
                 InputStream is = (InputStream) new URL(tale.stream).getContent();
                 SettingsHelper.saveFile(tale.fileName, IOUtils.toByteArray(is));
-                publishProgress(tale.getReader() + ": " + tale.getTitle());
+                publishProgress(tale.readerName + ": " + tale.title);
                 current++;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
         }

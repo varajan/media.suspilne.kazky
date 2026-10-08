@@ -20,10 +20,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -36,9 +39,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.tasks.DownloadTask;
 import media.suspilne.kazky.player.MediaVolume;
 import media.suspilne.kazky.player.PlayerService;
@@ -51,8 +53,12 @@ public abstract class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private NotificationManager notificationManager;
-    private Timer quitTimer;
-    private Timer volumeReduceTimer;
+
+    private final Handler volumeReduceHandler = new Handler(Looper.getMainLooper());
+    private Runnable volumeReduceRunnable;
+
+    private final Handler quitHandler = new Handler(Looper.getMainLooper());
+    private Runnable quitRunnable;
 
     protected NavigationView navigation;
     protected TextView activityTitle;
@@ -62,67 +68,21 @@ public abstract class MainActivity extends AppCompatActivity
     public static Activity getActivity() { return activity; }
 
     private void stopVolumeReduceTimer() {
-        if (volumeReduceTimer != null) {
-            volumeReduceTimer.cancel();
-            volumeReduceTimer = null;
+        if (volumeReduceRunnable != null) {
+            volumeReduceHandler.removeCallbacks(volumeReduceRunnable);
+            volumeReduceRunnable = null;
         }
-    }
-
-    private void stopQuitTimer() {
-        if (quitTimer != null) {
-            quitTimer.cancel();
-            quitTimer = null;
-        }
-
-        SettingsHelper.setBoolean("stopPlaybackOnTimeout", false);
     }
 
     protected void resetVolumeReduceTimer() {
         stopVolumeReduceTimer();
-        if (!SettingsHelper.getBoolean("volumeControl")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.volumeControl)) return;
         if (!isTalePlaying()) return;
 
-        int timeout = SettingsHelper.getInt("volumeMinutes");
+        int timeout = SettingsHelper.getInt(Kazky.Constants.volumeMinutes);
         timeout = timeout == 0 ? 5 : timeout;
 
-        volumeReduceTimer = new Timer();
-        volumeReduceTimer.schedule(new reduceVolume(), timeout * 60_000L);
-    }
-
-    protected void resetQuitTimeout() {
-        if (SettingsHelper.getBoolean("autoQuit")) {
-            stopQuitTimer();
-
-            int timeout = SettingsHelper.getInt("timeout");
-            timeout = timeout==0 ? 5 : timeout;
-
-            quitTimer = new Timer();
-            quitTimer.schedule(new stopPlaybackOnTimeout(), timeout * 60_000L);
-        } else {
-            stopQuitTimer();
-        }
-    }
-
-    class stopPlaybackOnTimeout extends TimerTask {
-        @Override
-        public void run() {
-            stopVolumeReduceTimer();
-
-            if (isTalePlaying()) {
-                Intent intent = new Intent();
-                intent.setAction(SettingsHelper.application);
-                intent.putExtra("code", "StopPlay");
-                sendBroadcast(intent);
-            }
-            else {
-                SettingsHelper.setBoolean("stopPlaybackOnTimeout", true);
-            }
-        }
-    }
-
-    class reduceVolume extends TimerTask {
-        @Override
-        public void run() {
+        volumeReduceRunnable = () -> {
             MediaVolume media = new MediaVolume();
 
             if (media.getLevel() > 1) {
@@ -135,16 +95,50 @@ public abstract class MainActivity extends AppCompatActivity
 
                 Tales.setNowPlaying(-1);
                 Intent intent = new Intent();
-                intent.setAction(SettingsHelper.application);
-                intent.putExtra("code", "SetPlayBtnIcon");
+                intent.setAction(Kazky.Constants.application);
+                intent.setPackage(getPackageName());
+                intent.putExtra("code", Kazky.Constants.codeSetPlayBtnIcon);
                 sendBroadcast(intent);
             }
+        };
+
+        volumeReduceHandler.postDelayed(volumeReduceRunnable, timeout * 60_000L);
+    }
+
+    protected void resetQuitTimeout() {
+        stopQuitTimer();
+
+        if (SettingsHelper.getBoolean(Kazky.Constants.autoQuit)) {
+            int timeout = SettingsHelper.getInt(Kazky.Constants.timeout);
+            timeout = timeout == 0 ? 5 : timeout;
+
+            quitRunnable = () -> {
+                stopVolumeReduceTimer();
+                if (isTalePlaying()) {
+                    Intent intent = new Intent();
+                    intent.setAction(Kazky.Constants.application);
+                    intent.setPackage(getPackageName());
+                    intent.putExtra("code", Kazky.Constants.codeStopPlay);
+                    sendBroadcast(intent);
+                } else {
+                    SettingsHelper.setBoolean(Kazky.Constants.stopPlaybackOnTimeout, true);
+                }
+            };
+
+            quitHandler.postDelayed(quitRunnable, timeout * 60_000L);
+        }
+    }
+
+    protected void stopQuitTimer() {
+        if (quitRunnable != null) {
+            quitHandler.removeCallbacks(quitRunnable);
+            quitRunnable = null;
         }
     }
 
     protected boolean isTalePlaying() {
         return isServiceRunning()
-                && SettingsHelper.getString("StreamType").equals(getString(R.string.tales))
+                && SettingsHelper.getString(Kazky.Constants.streamType).equals(getString(R.string.tales))
                 && !Tales.isPaused();
     }
 
@@ -159,13 +153,13 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     private void readSettingsFromGit() {
-        if (!SettingsHelper.getBoolean("readSettingsFromGit")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.readSettingsFromGit)) return;
 
         new Thread(() -> {
             ArrayList<String> settings = new ArrayList<>();
 
             try {
-                String url = "https://raw.githubusercontent.com/varajan/media.suspilne.kazky/master/app/src/main/res/settings";
+                String url = this.getString(R.string.settingsUrl);
                 HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
                 conn.setConnectTimeout(SettingsHelper.timeout);
 
@@ -180,10 +174,9 @@ public abstract class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            SettingsHelper.setBoolean("playTalesFromGit", settings.contains("talesFromGit:true"));
-            SettingsHelper.setBoolean("readSettingsFromGit", false);
-            SettingsHelper.setString("version", getSettingsValue(settings, "version", SettingsHelper.getVersionName()));
-            SettingsHelper.setString("whatsNew", getSettingsValue(settings,"whatsNew", "Щось дуже корисне."));
+            SettingsHelper.setBoolean(Kazky.Constants.readSettingsFromGit, false);
+            SettingsHelper.setString(Kazky.Constants.version, getSettingsValue(settings, Kazky.Constants.version, SettingsHelper.getVersionName()));
+            SettingsHelper.setString(Kazky.Constants.whatsNew, getSettingsValue(settings,Kazky.Constants.whatsNew, "Щось дуже корисне."));
         }).start();
     }
 
@@ -200,6 +193,10 @@ public abstract class MainActivity extends AppCompatActivity
     protected boolean isNetworkUnavailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        boolean a = activeNetworkInfo == null;
+        boolean b = !activeNetworkInfo.isConnected();
+        boolean c = !isNetworkSpeedOk();
 
         return activeNetworkInfo == null || !activeNetworkInfo.isConnected() || !isNetworkSpeedOk();
     }
@@ -273,11 +270,11 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void setupBackPressedHandler() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
                 if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
                     drawer.closeDrawer(GravityCompat.START);
                 } else {
@@ -292,14 +289,14 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     private void showErrorMessage() {
-        String errorMessage = SettingsHelper.getString("errorMessage");
+        String errorMessage = SettingsHelper.getString(Kazky.Constants.errorMessage);
 
         if (!errorMessage.isEmpty()) {
             notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
             showAlert(getString(R.string.an_error_occurred), errorMessage);
             notificationManager.cancel(DownloadTask.WITH_ERROR);
-            SettingsHelper.setString("errorMessage", "");
+            SettingsHelper.setString(Kazky.Constants.errorMessage, "");
         }
     }
 
@@ -335,7 +332,7 @@ public abstract class MainActivity extends AppCompatActivity
         }
     }
 
-    protected void openActivity(Class view) {
+    private void openActivity(Class view) {
         Intent intent = new Intent(this, view);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
@@ -394,11 +391,11 @@ public abstract class MainActivity extends AppCompatActivity
             goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             startActivity(goToMarket);
         } catch (ActivityNotFoundException a) {
-            try{
+            try {
                 a.printStackTrace();
 
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -408,15 +405,15 @@ public abstract class MainActivity extends AppCompatActivity
         if (this.isNetworkUnavailable()) {
             Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         } else {
-            boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
+            boolean onlyFavorite = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales) && !SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
             Tale[] download = new Tales().getTalesList(onlyFavorite).toArray(new Tale[0]);
 
-            SettingsHelper.setBoolean("checkForUpdates", false);
+            SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
             new DownloadTask().execute(download);
         }
     }
 
-    public void showAlert(String title, String message) {
+    protected void showAlert(String title, String message) {
         new AlertDialog.Builder(this)
             .setIcon(R.mipmap.logo)
             .setTitle(title)
@@ -426,11 +423,11 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void continueDownloadTales() {
-        if (!SettingsHelper.getBoolean("downloadAllTales") && !SettingsHelper.getBoolean("downloadFavoriteTales")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales) && !SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales)) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
         boolean allAreDownloaded = true;
-        boolean onlyFavorite = SettingsHelper.getBoolean("downloadFavoriteTales") && !SettingsHelper.getBoolean("downloadAllTales");
+        boolean onlyFavorite = SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales) && !SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales);
 
         for (Tale tale : new Tales().getTalesList()) {
             if ((!onlyFavorite || tale.isFavorite) && !tale.isDownloaded) {
@@ -443,20 +440,20 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void suggestToDownloadFavoriteTales() {
-        if (SettingsHelper.getBoolean("suggestToDownloadFavoriteTales")) return;
-        if (SettingsHelper.getBoolean("downloadAllTales") || SettingsHelper.getBoolean("downloadFavoriteTales")) return;
+        if (SettingsHelper.getBoolean(Kazky.Constants.suggestToDownloadFavoriteTales)) return;
+        if (SettingsHelper.getBoolean(Kazky.Constants.downloadAllTales) || SettingsHelper.getBoolean(Kazky.Constants.downloadFavoriteTales)) return;
         if (SettingsHelper.freeSpace() < 150 || isNetworkUnavailable()) return;
 
         int favorites = new Tales().getTalesList(true).size();
         if (favorites < 5) return;
 
-        SettingsHelper.setBoolean("suggestToDownloadFavoriteTales", true);
+        SettingsHelper.setBoolean(Kazky.Constants.suggestToDownloadFavoriteTales, true);
 
         new AlertDialog.Builder(MainActivity.this)
             .setIcon(R.mipmap.logo)
             .setTitle(R.string.download)
             .setMessage(getString(R.string.suggestToDownloadFavorite, favorites))
-            .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean("downloadFavoriteTales", true); download();})
+            .setPositiveButton(R.string.download, (dialog, which) -> {SettingsHelper.setBoolean(Kazky.Constants.downloadFavoriteTales, true); download();})
             .setNegativeButton(R.string.no, null)
             .show();
     }
@@ -470,8 +467,8 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected void checkForNotifications() {
-        if (!SettingsHelper.getBoolean("checkForNotifications")) return;
-        SettingsHelper.setBoolean("checkForNotifications", false);
+        if (!SettingsHelper.getBoolean(Kazky.Constants.checkForNotifications)) return;
+        SettingsHelper.setBoolean(Kazky.Constants.checkForNotifications, false);
 
         if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
             requestPermission(Manifest.permission.POST_NOTIFICATIONS, R.string.no_post_notifications_permissions_title, R.string.no_post_notifications_permissions_error);
@@ -479,19 +476,21 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     private void checkForUpdates() {
-        if (!SettingsHelper.getBoolean("checkForUpdates")) return;
+        if (!SettingsHelper.getBoolean(Kazky.Constants.checkForUpdates)) return;
         if (this.isNetworkUnavailable()) return;
 
         try {
-            SettingsHelper.setBoolean("checkForUpdates", false);
+            SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
 
-            String latestVersion = SettingsHelper.getString("version");
-            String whatsNew = "• " + SettingsHelper.getString("whatsNew").replace(". ", ".\n• ");
+            String latestVersion = SettingsHelper.getString(Kazky.Constants.version);
+            String whatsNew = "• " + SettingsHelper.getString(Kazky.Constants.whatsNew).replace(". ", ".\n• ");
             String currentVersion = SettingsHelper.getVersionName();
-            String loggedVersion = SettingsHelper.getString("LatestVersion", currentVersion);
+            String loggedVersion = SettingsHelper.getString(Kazky.Constants.latestVersion, currentVersion);
 
             if (!latestVersion.equals(currentVersion) && !latestVersion.equals(loggedVersion) ) {
-                    SettingsHelper.setString("LatestVersion", latestVersion);
+                    SettingsHelper.setString(Kazky.Constants.latestVersion, latestVersion);
+
+                if (latestVersion.isEmpty() || whatsNew.equals("• ")) return;
 
                 if (latestVersion.isEmpty() || whatsNew.equals("• ")) return;
 
@@ -505,13 +504,9 @@ public abstract class MainActivity extends AppCompatActivity
                         .show();
             }
         } catch (Exception e) {
-            SettingsHelper.setBoolean("checkForUpdates", false);
+            SettingsHelper.setBoolean(Kazky.Constants.checkForUpdates, false);
             e.printStackTrace();
         }
-    }
-
-    protected String getResourceString(Integer stringId) {
-        return getText(stringId).toString();
     }
 
     protected boolean hasPermission(String permission) {
@@ -521,13 +516,17 @@ public abstract class MainActivity extends AppCompatActivity
     protected void requestPermission(String permission, int title, int error) {
         if (hasPermission(permission)) return;
 
-        new AlertDialog.Builder(this)
-                .setIcon(R.mipmap.logo)
-                .setTitle(title)
-                .setMessage(error)
-                .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
-                .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
-                .show();
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+            new AlertDialog.Builder(this)
+                    .setIcon(R.mipmap.logo)
+                    .setTitle(title)
+                    .setMessage(error)
+                    .setPositiveButton(R.string.grant_permissions, (dialog, which) -> openAndroidSettings())
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show())
+                    .show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 12);
+        }
     }
 
     private void openAndroidSettings() {

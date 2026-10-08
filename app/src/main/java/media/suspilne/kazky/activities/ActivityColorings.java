@@ -15,9 +15,11 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.activities.views.TaleView;
 import media.suspilne.kazky.data.Categories;
 import media.suspilne.kazky.R;
+import media.suspilne.kazky.data.dto.CategoryDto;
 import media.suspilne.kazky.helpers.SettingsHelper;
 import media.suspilne.kazky.data.Tale;
 import media.suspilne.kazky.data.Tales;
@@ -36,9 +38,9 @@ public class ActivityColorings extends ListActivity {
         initControls();
 
         categories = Categories.Items.stream()
-                .filter(c -> c.taleIds.stream()
-                        .anyMatch(t -> tales.getById(t).coloring > 0))
-                .map(c -> c.title)
+                .filter(c -> c.taleIds().stream()
+                        .anyMatch(t -> tales.getById(t).hasColoring))
+                .map(CategoryDto::title)
                 .collect(Collectors.toList());
         
         searchBtn.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterTales)));
@@ -61,7 +63,7 @@ public class ActivityColorings extends ListActivity {
         return true;
     }
 
-    private int filterTales(String filter, boolean showOnlyFavorite, List<Integer> categories) {
+    private int filterTales(String filter, boolean showOnlyFavorite, List<String> categories) {
         int nothingToShowVisibility = View.VISIBLE;
 
         for (final Tale tale:tales.getTalesList()) {
@@ -79,10 +81,10 @@ public class ActivityColorings extends ListActivity {
     }
 
     private void showTales() {
-        boolean showBigImages = SettingsHelper.getBoolean("showBigImages");
+        boolean showBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
 
         for (final Tale tale:tales.getTalesList()) {
-            if (tale.coloring == 0) continue;
+            if (!tale.hasColoring) continue;
 
             View taleView = LayoutInflater.from(this).inflate(showBigImages ? R.layout.tale_item : R.layout.tale_item_small, ItemsList, false);
             taleView.setTag(tale.id);
@@ -104,7 +106,7 @@ public class ActivityColorings extends ListActivity {
                 new AlertDialog.Builder(this)
                         .setIcon(R.mipmap.logo)
                         .setTitle(R.string.coloring_download_ask)
-                        .setPositiveButton(R.string.yes, (dialog, which) -> download(url, tale.getTitle() + ".jpg"))
+                        .setPositiveButton(R.string.yes, (dialog, which) -> download(url, tale.title + ".jpg"))
                         .setNegativeButton(R.string.no, null)
                         .show();
             });
@@ -114,7 +116,7 @@ public class ActivityColorings extends ListActivity {
     private void download(String url, String fileName) {
         Toast.makeText(getActivity(), R.string.coloring_download, Toast.LENGTH_LONG).show();
 
-        try{
+        try {
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
             DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
