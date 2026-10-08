@@ -245,6 +245,11 @@
         "description":  "Аранжувальниця та хормайстриня"
     },
     {
+        "id":  "onuka",
+        "name":  "ONUKA",
+        "description":  "Музикантка, співачка, мультиінструменталістка та лідерка гурту 'ONUKA'"
+    },
+    {
         "id":  "pavlo_varenitsa",
         "name":  "Павло Варєніца",
         "description":  "Фронтмен гурту 'Epolets'"
