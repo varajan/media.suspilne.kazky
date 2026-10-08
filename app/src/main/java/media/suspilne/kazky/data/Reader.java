@@ -28,6 +28,8 @@ public class Reader {
                 .flatMap(c -> c.taleIds().stream())
                 .collect(Collectors.toList());
 
+        String finalFilter = filter.toLowerCase().trim();
+
         List<Tale> allReaderTales = new Tales().items.stream()
                 .filter(t -> Objects.equals(t.readerName, this.name))
                 .filter(t -> !showOnlyFavorite || t.isFavorite)
