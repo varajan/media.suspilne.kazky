@@ -28,13 +28,14 @@ public class Reader {
                 .flatMap(c -> c.taleIds().stream())
                 .collect(Collectors.toList());
 
+        String finalFilter = filter.toLowerCase().trim();
+
         List<Tale> allReaderTales = new Tales().items.stream()
                 .filter(t -> Objects.equals(t.readerName, this.name))
                 .filter(t -> !showOnlyFavorite || t.isFavorite)
                 .filter(t -> categoryTales.contains(t.id))
                 .collect(Collectors.toList());
 
-        String finalFilter = filter.toLowerCase().trim();
         boolean matchName = name.toLowerCase().contains(finalFilter) || description.toLowerCase().contains(finalFilter);
         List<Tale> talesMatchFilter = allReaderTales.stream().filter(t -> t.title.toLowerCase().contains(finalFilter))
                 .collect(Collectors.toList());
