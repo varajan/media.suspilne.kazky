@@ -1,6 +1,5 @@
 package media.suspilne.kazky.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;

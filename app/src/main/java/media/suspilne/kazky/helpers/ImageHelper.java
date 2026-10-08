@@ -7,16 +7,9 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 public class ImageHelper {
-    public static Drawable resize(Drawable image, int width, int height) {
-        Bitmap b = ((BitmapDrawable)image).getBitmap();
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, width, height, false);
-        return new BitmapDrawable(bitmapResized);
-    }
-
     public static Bitmap getBitmap(Drawable drawable) {
         final Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(bitmap);
@@ -24,17 +17,6 @@ public class ImageHelper {
         drawable.draw(canvas);
 
         return bitmap;
-    }
-
-    public static Drawable getDrawable(Bitmap bitmap) {
-        return new BitmapDrawable(bitmap);
-    }
-
-    public static Drawable getCircularDrawable(Drawable drawable) {
-        Bitmap bitmap = getBitmap(drawable);
-        Bitmap result = getCircularDrawable(bitmap);
-
-        return getDrawable(result);
     }
 
     public static Bitmap getCircularDrawable(Bitmap bitmap) {
@@ -53,7 +35,7 @@ public class ImageHelper {
 
         Canvas canvas = new Canvas(canvasBitmap);
 
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+        canvas.drawCircle((float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2,
                 radius, paint);
 
         return canvasBitmap;

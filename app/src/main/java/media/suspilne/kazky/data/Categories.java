@@ -65,6 +65,7 @@ public class Categories {
             new Category(R.string.internationalTales, internationalTales),
             new Category(R.string.bigWorldAnimals, bigWorldAnimalsTales),
             new Category(R.string.brave, new Range(130, 141)),
+            new Category(R.string.kind, new Range(143, 151)),
             new Category(R.string.modernAuthorTales, modernAuthorTales),
             new Category(R.string.lullabies, new Range(119, 122))
         );
