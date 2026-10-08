@@ -225,6 +225,11 @@
         "description":  "Ветеран війни, письменник, громадський діяч"
     },
     {
+        "id":  "oleksandra_zaritska",
+        "name":  "Олександра Заріцька",
+        "description":  "Співачка, фронтвумен та вокалістка гурту 'KAZKA'"
+    },
+    {
         "id":  "oleksiy_dorychevsky",
         "name":  "Олексій Доричевський",
         "description":  "Актор"
@@ -328,6 +333,11 @@
         "id":  "taras_kompanichenko",
         "name":  "Тарас Компаніченко",
         "description":  "Композитор, поет, кобзар, бандурист, лірник"
+    },
+    {
+        "id":  "tetiana_gudzovska",
+        "name":  "Тетяна Гудзовська",
+        "description":  "редакторка, журналістка та ведуча Суспільне Львів"
     },
     {
         "id":  "timur_miroshnychenko",
