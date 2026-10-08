@@ -115,7 +115,7 @@ public class Tale {
     private String stream(int tale) {
         return isDownloaded(tale)
             ? MainActivity.getActivity().getFilesDir() + "/" + fileName(tale)
-            : ActivityTales.getActivity().getString(R.string.gitTaleUrl, tale);
+            : ActivityTales.getActivity().getString(R.string.taleUrl, tale);
     }
 
     public void download() {

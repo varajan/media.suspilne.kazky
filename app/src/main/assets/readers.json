@@ -1,5 +1,10 @@
 ﻿[
     {
+        "id":  "albert_zukrenko",
+        "name":  "Альберт Цукренко",
+        "description":  "Музикант, учасник гурту «Хамерман Знімає Штани», журналіст"
+    },
+    {
         "id":  "alina_pash",
         "name":  "Аліна Паш",
         "description":  "Співачка"
@@ -13,6 +18,11 @@
         "id":  "anastasiia_gudyma",
         "name":  "Анастасія Гудима",
         "description":  "Керівниця Координаційного центру Суспільного"
+    },
+    {
+        "id":  "anastasiia_pustovit",
+        "name":  "Анастасія Пустовіт",
+        "description":  "Акторка театру та кіно, громадська діячка"
     },
     {
         "id":  "andrii_hlyvniuk",
@@ -58,6 +68,11 @@
         "id":  "evgen_maluha",
         "name":  "Євген Малуха",
         "description":  "Актор театру, кіно та дубляжу"
+    },
+    {
+        "id":  "ganna_polska",
+        "name":  "Саша Ганапольська",
+        "description":  "Співачка, вокалістка інді-поп дуету Tember Blanche"
     },
     {
         "id":  "hrystyna_soloviy",
@@ -140,6 +155,11 @@
         "description":  "Співачка, авторка та виконавиця пісень"
     },
     {
+        "id":  "leleka",
+        "name":  "Leleka",
+        "description":  "Джазова співачка та засновниця етно-проекту LELEKA"
+    },
+    {
         "id":  "mariana_golovko",
         "name":  "Мар'яна Головко",
         "description":  "Співачка, акторка"
@@ -190,6 +210,11 @@
         "description":  "Співачка, акторка, народна артистка України"
     },
     {
+        "id":  "oksana_grynko",
+        "name":  "Оксана Гринько",
+        "description":  "Журналістка, медіаменеджерка, голова ГО 'Суспільне Мовлення'"
+    },
+    {
         "id":  "oleg_moskalenko",
         "name":  "Олег Москаленко",
         "description":  "Актор"
@@ -198,6 +223,11 @@
         "id":  "oleksandr_teren",
         "name":  "Олександр Терен",
         "description":  "Ветеран війни, письменник, громадський діяч"
+    },
+    {
+        "id":  "oleksandra_zaritska",
+        "name":  "Олександра Заріцька",
+        "description":  "Співачка, фронтвумен та вокалістка гурту 'KAZKA'"
     },
     {
         "id":  "oleksiy_dorychevsky",
@@ -218,6 +248,11 @@
         "id":  "olga_tokar",
         "name":  "Ольга Токар",
         "description":  "Аранжувальниця та хормайстриня"
+    },
+    {
+        "id":  "onuka",
+        "name":  "ONUKA",
+        "description":  "Музикантка, співачка, мультиінструменталістка та лідерка гурту 'ONUKA'"
     },
     {
         "id":  "pavlo_varenitsa",
@@ -300,6 +335,11 @@
         "description":  "Композитор, поет, кобзар, бандурист, лірник"
     },
     {
+        "id":  "tetiana_gudzovska",
+        "name":  "Тетяна Гудзовська",
+        "description":  "редакторка, журналістка та ведуча Суспільне Львів"
+    },
+    {
         "id":  "timur_miroshnychenko",
         "name":  "Тімур Мірошниченко",
         "description":  "Телеведучий"
@@ -325,6 +365,11 @@
         "description":  "Ведучий та журналіст підліткових новин на Суспільному"
     },
     {
+        "id":  "vladyslav_vasytsky",
+        "name":  "Владислав Васицький",
+        "description":  "Cпівак, актор дубляжу та озвучення"
+    },
+    {
         "id":  "vova_zi_lvova",
         "name":  "Vova zi Lvova",
         "description":  "Хіп-хоп виконавець"
@@ -333,6 +378,11 @@
         "id":  "yevgen_yanovych",
         "name":  "Євген Янович",
         "description":  "Актор, комік, автор YouTube-шоу '20:23'"
+    },
+    {
+        "id":  "yuliia_levchenko",
+        "name":  "Юлія Левченко",
+        "description":  "Українська стрибунка у висоту, призерка чемпіонатів світу"
     },
     {
         "id":  "zlata_ognevich",

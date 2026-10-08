@@ -31,8 +31,9 @@ public class Tales {
     private static final String playerPositionKey = "PlayerPosition";
     private static final String onlyFavoriteKey = "_showOnlyFavorite";
 
-    public static boolean getShowCategory(String filterPrefix, String category)
-    { return SettingsHelper.getBoolean(filterPrefix + "_show_" + category, true); }
+    public static boolean getShowCategory(String filterPrefix, String category) {
+        return SettingsHelper.getBoolean(filterPrefix + "_show_" + category, true);
+    }
 
     public static void setShowCategory(String filterPrefix, String category, boolean value) {
         SettingsHelper.setBoolean(filterPrefix + "_show_" + category, value);

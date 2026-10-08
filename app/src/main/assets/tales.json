@@ -1206,6 +1206,110 @@
         "duration":  "08:18",
         "intro":  0,
         "hasColoring":  false
+    },
+    {
+        "id":  152,
+        "title":  "Традиція родинного вечора",
+        "reader":  "Владислав Васицький",
+        "duration":  "03:55",
+        "intro":  3000,
+        "hasColoring":  false
+    },
+    {
+        "id":  153,
+        "title":  "Велика злива",
+        "reader":  "Владислав Васицький",
+        "duration":  "06:53",
+        "intro":  2000,
+        "hasColoring":  false
+    },
+    {
+        "id":  154,
+        "title":  "Розбите коліно",
+        "reader":  "Владислав Васицький",
+        "duration":  "06:25",
+        "intro":  3000,
+        "hasColoring":  false
+    },
+    {
+        "id":  155,
+        "title":  "Сторіз із гнізда",
+        "reader":  "Оксана Гринько",
+        "duration":  "08:49",
+        "intro":  3750,
+        "hasColoring":  false
+    },
+    {
+        "id":  156,
+        "title":  "Несподівана зима",
+        "reader":  "Юлія Левченко",
+        "duration":  "08:13",
+        "intro":  3500,
+        "hasColoring":  false
+    },
+    {
+        "id":  157,
+        "title":  "Випробовування лелеки Оріна",
+        "reader":  "Alyona Alyona",
+        "duration":  "07:54",
+        "intro":  2000,
+        "hasColoring":  false
+    },
+    {
+        "id":  158,
+        "title":  "Допитливий горобчик",
+        "reader":  "Альберт Цукренко",
+        "duration":  "07:29",
+        "intro":  1000,
+        "hasColoring":  false
+    },
+    {
+        "id":  159,
+        "title":  "Мамоніт, Мамотак і великі хвилі",
+        "reader":  "Leleka",
+        "duration":  "08:03",
+        "intro":  2500,
+        "hasColoring":  false
+    },
+    {
+        "id":  160,
+        "title":  "Мамоніт і Мамотак – ловці океану",
+        "reader":  "Анастасія Пустовіт",
+        "duration":  "07:52",
+        "intro":  2000,
+        "hasColoring":  false
+    },
+    {
+        "id":  161,
+        "title":  "Мамоніт, Мамотак на Великому бар’єрному рифі",
+        "reader":  "Саша Ганапольська",
+        "duration":  "06:51",
+        "intro":  3000,
+        "hasColoring":  false
+    },
+    {
+        "id":  162,
+        "title":  "Мамоніт, Мамотак і морські малюки",
+        "reader":  "ONUKA",
+        "duration":  "07:13",
+        "intro":  1000,
+        "hasColoring":  false
+    },
+    {
+        "id":  163,
+        "title":  "Носоріг-забіяка",
+        "reader":  "Олександра Заріцька",
+        "duration":  "06:48",
+        "intro":  3000,
+        "hasColoring":  false
+    },
+    {
+        "id":  164,
+        "title":  "Слоненя, що знайшло свій талант",
+        "reader":  "Тетяна Гудзовська",
+        "duration":  "09:36",
+        "intro":  3000,
+        "hasColoring":  false
     }
 ]
 
