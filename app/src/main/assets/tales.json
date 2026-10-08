@@ -1300,7 +1300,7 @@
         "title":  "Носоріг-забіяка",
         "reader":  "Олександра Заріцька",
         "duration":  "06:48",
-        "intro":  0,
+        "intro":  3000,
         "hasColoring":  false
     },
     {
@@ -1308,7 +1308,7 @@
         "title":  "Слоненя, що знайшло свій талант",
         "reader":  "Тетяна Гудзовська",
         "duration":  "09:36",
-        "intro":  0,
+        "intro":  3000,
         "hasColoring":  false
     }
 ]
