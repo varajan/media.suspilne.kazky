@@ -9,15 +9,14 @@ android {
         applicationId "media.suspilne.kazky"
         minSdk = 26
         targetSdk 36
-        versionCode 145
-        versionName "4.151.0"
+        versionCode 147
+        versionName "4.164.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
