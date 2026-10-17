@@ -1310,6 +1310,14 @@
         "duration":  "09:36",
         "intro":  3000,
         "hasColoring":  false
+    },
+    {
+        "id":  165,
+        "title":  "Пі Пі не боїться грози",
+        "reader":  "Владислав Васицький",
+        "duration":  "06:26",
+        "intro":  2000,
+        "hasColoring":  false
     }
 ]
 
