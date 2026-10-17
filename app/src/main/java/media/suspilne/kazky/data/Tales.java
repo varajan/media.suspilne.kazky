@@ -21,11 +21,15 @@ import media.suspilne.kazky.helpers.ListHelper;
 
 public class Tales {
     private static final List<TaleDto> staticTalesInfo;
+    public static final List<Tale> items;
 
     static {
         String jsonString = AssetUtils.loadJSON(MainActivity.getActivity(), "tales.json");
         Type listType = new TypeToken<List<TaleDto>>() {}.getType();
         staticTalesInfo = JsonUtils.fromJson(jsonString, listType);
+        items = staticTalesInfo.stream()
+                .map(Tale::new)
+                .collect(Collectors.toList());
     }
 
     private static final String playerPositionKey = "PlayerPosition";
@@ -199,8 +203,4 @@ public class Tales {
 
         return result;
     }
-
-    public final List<Tale> items = staticTalesInfo.stream()
-            .map(Tale::new)
-            .collect(Collectors.toList());
 }
