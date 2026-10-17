@@ -231,7 +231,8 @@ public class ActivitySettings extends MainActivity {
     }
 
     private void doCleanup(boolean includeFavorite) {
-        for (Tale tale : new Tales().items) {
+        new Tales();
+        for (Tale tale : Tales.items) {
             if (includeFavorite || !tale.isFavorite) {
                 tale.deleteFile();
             }
