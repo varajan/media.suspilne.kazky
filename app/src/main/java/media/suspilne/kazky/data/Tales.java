@@ -93,7 +93,7 @@ public class Tales {
             int taleId = Integer.parseInt(id);
 
             if (taleId != nowPlaying && skip) continue;
-            if (taleId == nowPlaying) {skip = false; continue;}
+            if (taleId == nowPlaying) { skip = false; continue; }
 
             return getById(taleId);
         }
@@ -110,7 +110,7 @@ public class Tales {
             int taleId = Integer.parseInt(id);
 
             if (taleId != nowPlaying && skip) continue;
-            if (taleId == nowPlaying) {skip = false; continue;}
+            if (taleId == nowPlaying) { skip = false; continue; }
 
             return getById(taleId);
         }

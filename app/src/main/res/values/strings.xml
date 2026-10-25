@@ -85,7 +85,7 @@
   <string name="clearAllTalesQuestion">Видалити збережені казки? Улюблені казки залишаться на пристрої.</string>
   <string name="clearFavoriteTalesQuestion">Видалити збережені улюблені казки? Надалі для прослуховування буде потрібен Інтернет.</string>
   <string name="newVersion">Доступна нова версія %s!</string>
-  <string name="showBigImages">Великі зображення для Казок\n(впливає на швидкість роботи)</string>
+  <string name="showBigImages">Великі зображення для Казок</string>
   <string name="groupByReader">Групувати казки за казкарем</string>
   <string name="parentLock">Захистити Налаштування від дітей</string>
   <string name="update">Оновити</string>
