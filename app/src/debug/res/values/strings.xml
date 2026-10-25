@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="settingsUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/<branch>/app/src/main/res/settings</string>
-    <string name="taleUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/<branch>/tales/%02d.mp3</string>
-    <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/<branch>/colorings/%03d.jpg</string>
-    <string name="description">Версія %s</string>
+  <string name="settingsUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/[branch]/app/src/main/res/settings</string>
+  <string name="taleUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/[branch]/tales/%02d.mp3</string>
+  <string name="coloringUrl">https://github.com/varajan/media.suspilne.kazky/raw/refs/heads/[branch]/colorings/%03d.jpg</string>
+  <string name="description">Версія %s</string>
 </resources>
