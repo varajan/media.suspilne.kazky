@@ -102,8 +102,7 @@ public class Tale {
     @SuppressLint("DiscouragedApi")
     private int getTaleImage() {
         Activity activity = MainActivity.getActivity();
-        boolean showBigImages = SettingsHelper.getBoolean(Kazky.Constants.showBigImages);
-        String imageName = String.format(Locale.US, "t%03d%s", id, showBigImages ? "" : "_min");
+        String imageName = String.format(Locale.US, "t%03d", id);
 
         return activity.getResources().getIdentifier(
                 imageName,
