@@ -3,9 +3,9 @@ package media.suspilne.kazky.data;
 import com.google.common.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.activities.MainActivity;
@@ -25,10 +25,13 @@ public class Readers {
 
     public List<Reader> Readers;
 
-    public Readers() {
-        List<Reader> items = staticReadersData.stream()
-                .map(Reader::new)
-                .collect(Collectors.toList());
+    public Readers(String filter, boolean showOnlyFavorite, List<String> categories) {
+        List<Reader> items = new ArrayList<>(staticReadersData.size());
+        for (ReaderDto data : staticReadersData) {
+            Reader r = new Reader(data);
+            r.talesCount = r.getMatchedTales(filter, showOnlyFavorite, categories);
+            items.add(r);
+        }
 
         if (isAscSorted()) {
             items.sort(Comparator.comparing(c -> c.name));
