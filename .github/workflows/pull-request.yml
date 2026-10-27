@@ -8,3 +8,9 @@ jobs:
     name: AI
     uses: ./.github/workflows/review.yml
     secrets: inherit
+
+  tests:
+    if: ${{ !github.event.pull_request.draft }}
+    name: Tests
+    uses: ./.github/workflows/tests.yml
+    secrets: inherit
