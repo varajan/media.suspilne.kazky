@@ -2,8 +2,8 @@ on:
   workflow_call:
 
 jobs:
-  ai-review:
-    name: Code Review
+  tests:
+    name: Google Cloud
     runs-on: ubuntu-latest
 
     steps:
@@ -11,12 +11,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            app
-            gradle
-            *.gradle*
-            gradlew
-            gradlew.bat
-            gradle.properties
+            /*
+            !tales/
+            !colorings/
+          sparse-checkout-cone-mode: false
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
