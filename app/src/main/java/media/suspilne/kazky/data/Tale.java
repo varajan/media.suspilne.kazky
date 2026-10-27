@@ -5,7 +5,6 @@ import android.app.Activity;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.R;
@@ -70,7 +69,7 @@ public class Tale {
                 .stream()
                 .filter(category -> categories.contains(category.title()))
                 .flatMap(category -> category.taleIds().stream())
-                .collect(Collectors.toList());
+                .toList();
 
         return categoryTaleIds.contains(this.id);
     }

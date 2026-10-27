@@ -1,5 +1,7 @@
 package media.suspilne.kazky.data.dto;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public class CategoryDto {
@@ -22,6 +24,7 @@ public class CategoryDto {
         return title;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "CategoryDto{" +

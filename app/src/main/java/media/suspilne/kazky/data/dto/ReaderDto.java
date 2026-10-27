@@ -1,5 +1,7 @@
 package media.suspilne.kazky.data.dto;
 
+import androidx.annotation.NonNull;
+
 public class ReaderDto {
     private String id;
     private String name;
@@ -26,6 +28,7 @@ public class ReaderDto {
         return description;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ReaderDto{" +
