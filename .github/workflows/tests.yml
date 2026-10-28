@@ -43,7 +43,9 @@ jobs:
           gcloud firebase test android run \
             --type robo \
             --app app/build/outputs/apk/staging/app-staging.aab \
+            --device model=SmallPhone.arm,version=26,locale=uk,orientation=portrait \
             --device model=oriole,version=33,locale=uk,orientation=portrait \
+            --device model=MediumPhone.arm,version=36,locale=uk,orientation=portrait \
             --timeout 3m \
             --results-bucket=${{ secrets.GCP_STORAGE_BUCKET }} \
             --results-dir=test-results-${{ github.run_id }} \
