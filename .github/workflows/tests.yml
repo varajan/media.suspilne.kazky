@@ -42,7 +42,7 @@ jobs:
         run: |
           gcloud firebase test android run \
             --type robo \
-            --app app/build/outputs/apk/staging/app-staging.aab \
+            --app app/build/outputs/bundle/staging/app-staging.aab \
             --device model=SmallPhone.arm,version=26,locale=uk,orientation=portrait \
             --device model=oriole,version=33,locale=uk,orientation=portrait \
             --device model=MediumPhone.arm,version=36,locale=uk,orientation=portrait \
