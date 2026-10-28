@@ -27,7 +27,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build APK
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew bundleStaging --stacktrace
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -42,7 +42,7 @@ jobs:
         run: |
           gcloud firebase test android run \
             --type robo \
-            --app app/build/outputs/apk/release/app-release.apk \
+            --app app/build/outputs/apk/staging/app-staging.aab \
             --device model=oriole,version=33,locale=uk,orientation=portrait \
             --timeout 3m \
             --results-bucket=${{ secrets.GCP_STORAGE_BUCKET }} \
