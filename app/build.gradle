@@ -14,16 +14,25 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        
+        staging {
+            initWith release
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.debug
+        }
     }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    
     namespace 'media.suspilne.kazky'
 }
 
