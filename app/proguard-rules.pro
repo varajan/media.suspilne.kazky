@@ -19,3 +19,23 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Preserve generic type information
+-keepattributes Signature
+
+# Preserve Gson TypeToken and its subclasses
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Signature, *Annotation*, InnerClasses, EnclosingMethod
+
+# Gson TypeToken
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken { *; }
+
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+-keep class media.suspilne.kazky.data.dto.** { *; }
