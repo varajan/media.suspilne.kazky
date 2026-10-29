@@ -1,6 +1,6 @@
 package media.suspilne.kazky.data;
 
-import com.google.common.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.Comparator;
