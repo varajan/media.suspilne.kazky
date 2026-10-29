@@ -38,4 +38,4 @@
     @com.google.gson.annotations.SerializedName <fields>;
 }
 
--keep class media.suspilne.kazky.models.** { *; }
+-keep class media.suspilne.kazky.data.dto.** { *; }
