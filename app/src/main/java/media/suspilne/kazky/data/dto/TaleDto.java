@@ -1,5 +1,7 @@
 package media.suspilne.kazky.data.dto;
 
+import androidx.annotation.NonNull;
+
 public class TaleDto {
     private int id;
     private String title;
@@ -44,6 +46,7 @@ public class TaleDto {
         return reader;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "TaleDto{" +

@@ -146,8 +146,7 @@ public abstract class ListActivity extends MainActivity {
         for (int i = 0; i < container.getChildCount(); i++) {
             View view = container.getChildAt(i);
 
-            if (view instanceof CheckBox) {
-                CheckBox cb = (CheckBox) view;
+            if (view instanceof CheckBox cb) {
                 if (cb.isChecked()) {
                     result.add(cb.getText().toString());
                 }

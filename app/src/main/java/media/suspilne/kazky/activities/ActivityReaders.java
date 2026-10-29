@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import media.suspilne.kazky.Kazky;
 import media.suspilne.kazky.activities.views.ReaderView;
@@ -38,8 +39,8 @@ public class ActivityReaders extends ListActivity {
         titleFld.setOnClickListener(v -> showFilterDialog(() -> applyFilter(this::filterReaders)));
         boolean nothingToShow = SettingsHelper.getInt(activityName) == View.VISIBLE;
 
-        showReaders();
         if (nothingToShow) resetFilter();
+        showReaders();
         applyFilter(this::filterReaders);
     }
 
@@ -73,12 +74,11 @@ public class ActivityReaders extends ListActivity {
     private int filterReaders(String filter, boolean showOnlyFavorite, List<String> categories) {
         int nothingToShowVisibility = View.VISIBLE;
 
-        for (final Reader reader: new Readers().Readers) {
-            Integer matchedTales = reader.getMatchedTales(filter, showOnlyFavorite, categories);
+        for (final Reader reader: new Readers(filter, showOnlyFavorite, categories).Readers) {
             ReaderView readerView = new ReaderView(reader);
 
-            if (matchedTales > 0) {
-                readerView.show(this, matchedTales);
+            if (reader.talesCount > 0) {
+                readerView.show(this, reader.talesCount);
                 nothingToShowVisibility = View.GONE;
             } else {
                 readerView.hide();
@@ -90,9 +90,15 @@ public class ActivityReaders extends ListActivity {
 
     private void showReaders() {
         int nothingToShowElements = 2;
+        String filter = Tales.getFilter(activityName);
+        boolean showOnlyFavorite = Tales.getShowOnlyFavorite(activityName);
+        List<String> selectedCategories = categories.stream()
+                .filter(category -> Tales.getShowCategory(activityName, category))
+                .collect(Collectors.toList());
+
         ItemsList.removeViews(nothingToShowElements, ItemsList.getChildCount() - nothingToShowElements);
 
-        for (final Reader reader:new Readers().Readers) {
+        for (final Reader reader:new Readers(filter, showOnlyFavorite, selectedCategories).Readers) {
             View readerView = LayoutInflater.from(this).inflate(R.layout.reader_item, ItemsList, false);
             readerView.setTag(reader.name);
             ItemsList.addView(readerView);

@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.core.app.ServiceCompat;
 import androidx.core.content.ContextCompat;
 
@@ -62,11 +64,26 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // Start default background service
+        Notification defaultNotification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
+                .setContentTitle(getString(R.string.app_name))
+                .setSmallIcon(R.drawable.ic_tale).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ServiceCompat.startForeground(
+                    this,
+                    NOTIFICATION_ID,
+                    defaultNotification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+            );
+        } else {
+            startForeground(NOTIFICATION_ID, defaultNotification);
+        }
+
         String type = intent != null ? intent.getStringExtra(Kazky.Constants.typeExtra) : "null";
         SettingsHelper.setString(Kazky.Constants.streamType, type);
         registerReceiver();
 
-        if (type.equals(getString(R.string.tales))) {
+        if (type != null && type.equals(getString(R.string.tales))) {
             int taleId = intent != null ? intent.getIntExtra(Kazky.Constants.taleIdExtra, -1) : -1;
             Tale tale = new Tales().getById(taleId);
             playTale(tale);
@@ -176,12 +193,16 @@ public class PlayerService extends Service {
             PlayerNotificationManager.NotificationListener listener = new PlayerNotificationManager.NotificationListener() {
                 @Override
                 public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                    ServiceCompat.startForeground(
-                            PlayerService.this,
-                            notificationId,
-                            notification,
-                            ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-                    );
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        ServiceCompat.startForeground(
+                                PlayerService.this,
+                                notificationId,
+                                notification,
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                        );
+                    } else {
+                        startForeground(NOTIFICATION_ID, notification);
+                    }
                 }
 
                 @Override
