@@ -1,6 +1,7 @@
 package media.suspilne.kazky.data;
 
-import com.google.common.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

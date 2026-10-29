@@ -26,8 +26,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Build APK
+        run: ./gradlew bundleStaging --stacktrace
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -42,8 +42,10 @@ jobs:
         run: |
           gcloud firebase test android run \
             --type robo \
-            --app app/build/outputs/apk/debug/app-debug.apk \
+            --app app/build/outputs/bundle/staging/app-staging.aab \
+            --device model=SmallPhone.arm,version=26,locale=uk,orientation=portrait \
             --device model=oriole,version=33,locale=uk,orientation=portrait \
+            --device model=MediumPhone.arm,version=36,locale=uk,orientation=portrait \
             --timeout 3m \
             --results-bucket=${{ secrets.GCP_STORAGE_BUCKET }} \
             --results-dir=test-results-${{ github.run_id }} \

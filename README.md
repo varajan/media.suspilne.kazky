@@ -6,6 +6,6 @@
 * *Налаштування* - виберіть скачати всі казки чи тільки улюблені, встановіть таймер сну тощо.
 * *Екран блокування* - керуйте казками не розблоковуючи телефон: пауза, наступна чи попередня.
 
-Install from [GooglePlay](https://play.google.com/store/apps/details?id=media.suspilne.kazky).
+Встановіть з [GooglePlay](https://play.google.com/store/apps/details?id=media.suspilne.kazky).
 
 [![Tales list](https://lh3.googleusercontent.com/3z4L_iIyJrU2ZvpsBgVZKm8VCgSJfS1kZDmg2zMDp6XpELObSTD4-rpJmfXE2tqHv18=s180-rw)](https://play.google.com/store/apps/details?id=media.suspilne.kazky)
