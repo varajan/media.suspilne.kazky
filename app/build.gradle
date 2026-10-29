@@ -10,7 +10,7 @@ android {
         minSdk = 26
         targetSdk 36
         versionCode 149
-        versionName "4.166.0"
+        versionName "4.167.0"
 
         resourceConfigurations += ['uk', 'en']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
