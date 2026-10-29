@@ -26,3 +26,19 @@
 # Preserve Gson TypeToken and its subclasses
 -keep class com.google.gson.reflect.TypeToken { *; }
 -keep class * extends com.google.gson.reflect.TypeToken
+
+# Збереження інформації для налагодження та рефлексії
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Signature, *Annotation*, InnerClasses, EnclosingMethod
+
+# Gson TypeToken
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken { *; }
+
+# Збереження полів моделей даних, серіалізованих через Gson
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# (Опціонально) Якщо клас моделей не використовує @SerializedName, збережіть пакет моделей повністю:
+# -keep class media.suspilne.kazky.models.** { *; }
