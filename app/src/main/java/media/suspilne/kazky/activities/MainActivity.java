@@ -9,8 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -191,26 +191,19 @@ public abstract class MainActivity extends AppCompatActivity
     }
 
     protected boolean isNetworkUnavailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        boolean a = activeNetworkInfo == null;
-        boolean b = !activeNetworkInfo.isConnected();
-        boolean c = !isNetworkSpeedOk();
+        if (cm == null) return true;
 
-        return activeNetworkInfo == null || !activeNetworkInfo.isConnected() || !isNetworkSpeedOk();
-    }
+        Network network = cm.getActiveNetwork();
+        if (network == null) return true;
 
-    private boolean isNetworkSpeedOk() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkCapabilities networkCapabilities = connectivityManager != null
-                ? connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork())
-                : null;
+        NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+        if (capabilities == null) return true;
 
-        int downSpeed = networkCapabilities != null ? networkCapabilities.getLinkDownstreamBandwidthKbps() : 0;
-        int upSpeed   = networkCapabilities != null ? networkCapabilities.getLinkUpstreamBandwidthKbps() : 0;
-
-        return downSpeed > 20_000 && upSpeed > 2_000;
+        return !capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                || !capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
     }
 
     @Override
