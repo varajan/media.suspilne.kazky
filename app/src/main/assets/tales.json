@@ -1342,6 +1342,14 @@
         "duration":  "05:52",
         "intro":  2000,
         "hasColoring":  false
+    },
+    {
+        "id":  169,
+        "title":  "Порятунок пухнастиків",
+        "reader":  "Михайло Матюхін",
+        "duration":  "04:58",
+        "intro":  1500,
+        "hasColoring":  false
     }
 ]
 
