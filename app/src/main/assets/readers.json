@@ -195,6 +195,11 @@
         "description":  "Журналіст, телеведучий"
     },
     {
+        "id":  "mykhailo_matiukhin",
+        "name":  "Михайло Матюхін",
+        "description":  "Український актор театру та кіно"
+    },
+    {
         "id":  "nata_smirnova",
         "name":  "Ната Смірнова",
         "description":  "Співачка, учасниця гурту 'PUR:PUR'"
