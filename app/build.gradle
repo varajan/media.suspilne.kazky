@@ -9,8 +9,8 @@ android {
         applicationId "media.suspilne.kazky"
         minSdk = 26
         targetSdk 36
-        versionCode 150
-        versionName "4.167.0"
+        versionCode 152
+        versionName "4.169.0"
 
         resourceConfigurations += ['uk', 'en']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -49,6 +49,6 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-mediasession:2.19.1'
     implementation 'com.google.android.gms:play-services-safetynet:18.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation 'org.jsoup:jsoup:1.23.2'
+    implementation 'org.jsoup:jsoup:1.24.1'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
 }
